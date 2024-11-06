@@ -1,5 +1,11 @@
+import RootLayout from "./layout/RootLayout";
+
 function App() {
-  return <div className="text-red-100">Bartosz Lis</div>;
+  return (
+    <RootLayout>
+      <div className="text-red-600">Test</div>
+    </RootLayout>
+  );
 }
 
 export default App;
