@@ -31,10 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
+import { Outlet } from "react-router-dom";
 
 const menuItems = [
   { to: "/", label: "Home", icon: <Home /> },
@@ -50,7 +47,7 @@ const menuItems = [
   icon: React.ReactNode;
 }[];
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+const RootLayout: React.FC = () => {
   return (
     <SidebarProvider>
       <Sidebar>
@@ -110,7 +107,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       </Sidebar>
       <main>
         <SidebarTrigger />
-        {children}
+        <Outlet />
       </main>
     </SidebarProvider>
   );
