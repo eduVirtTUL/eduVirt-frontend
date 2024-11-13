@@ -14,7 +14,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useCreatePool } from "@/data/rgPool/useCreatepool";
+import { useCreatePool } from "@/data/rgPool/useCreatePool";
 
 type CreatePoolModalProps = {
   courseId: string;
