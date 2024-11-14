@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
   Book,
@@ -31,23 +30,41 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useMatches } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
+import { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const menuItems = [
-  { to: "/", label: "Home", icon: <Home /> },
-  { to: "/teams", label: "Teams", icon: <Users /> },
-  { to: "/rg", label: "Resource Groups", icon: <Boxes /> },
-  { to: "/rg-pools", label: "Resource Groups Pools", icon: <Group /> },
-  { to: "/courses", label: "Courses", icon: <Book /> },
-  { to: "/networks", label: "Networks", icon: <Network /> },
-  { to: "/reservation", label: "Reservations", icon: <CalendarDays /> },
+  { to: "/", label: (t) => t("menu.home"), icon: <Home /> },
+  { to: "/teams", label: (t) => t("menu.teams"), icon: <Users /> },
+  { to: "/rg", label: (t) => t("menu.resourceGroups"), icon: <Boxes /> },
+  { to: "/pools", label: (t) => t("menu.resourceGroupPools"), icon: <Group /> },
+  { to: "/courses", label: (t) => t("menu.courses"), icon: <Book /> },
+  { to: "/networks", label: (t) => t("menu.networks"), icon: <Network /> },
+  {
+    to: "/reservation",
+    label: (t) => t("menu.reservations"),
+    icon: <CalendarDays />,
+  },
 ] satisfies {
   to: string;
-  label: string;
+  label: (t: TFunction) => string;
   icon: React.ReactNode;
 }[];
 
 const RootLayout: React.FC = () => {
+  const { t } = useTranslation();
+  const matches = useMatches();
+
+  const lastMatch = matches.at(-1);
+
+  const activeElement =
+    menuItems
+      .slice()
+      .reverse()
+      .find((item) => lastMatch?.pathname.startsWith(item.to))?.to ?? "/";
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -63,11 +80,14 @@ const RootLayout: React.FC = () => {
               <SidebarMenu>
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.to}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={item.to === activeElement}
+                    >
+                      <Link to={item.to}>
                         {item.icon}
-                        <span>{item.label}</span>
-                      </a>
+                        <span>{item.label(t)}</span>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -105,9 +125,11 @@ const RootLayout: React.FC = () => {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      <main>
-        <SidebarTrigger />
-        <Outlet />
+      <main className="flex-1">
+        <div className="flex flex-col justify-center w-full px-10 py-8">
+          <Outlet />
+        </div>
+        <Toaster />
       </main>
     </SidebarProvider>
   );
