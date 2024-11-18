@@ -6,6 +6,8 @@ import LoginPage from "./pages/Login";
 import CoursesPage from "./pages/Courses";
 import CoursePage from "./pages/Course";
 import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
+import VnicProfilesPage from "./pages/VnicProfiles";
+import VlanRangesPage from "@/pages/VlanRanges";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -28,6 +30,15 @@ export const routes: RouteObject[] = [
             path: "/pools",
             children: [{ index: true, Component: ResourceGroupPoolsPage }],
           },
+          {
+            // TODO maybe change to /networking or /vnic-profiles,
+            //  actually we operating on vnic profiles and /networks may cause miss understanding
+            path: "/networks",
+            children: [
+                { index: true, Component: VnicProfilesPage },
+                { path: "vlans", Component: VlanRangesPage}
+            ],
+          }
         ],
       },
     ],

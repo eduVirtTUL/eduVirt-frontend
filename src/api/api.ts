@@ -143,6 +143,68 @@ export interface ResourceGroupPoolDto {
      */
     'name'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface VnicProfileDto
+ */
+export interface VnicProfileDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfileDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfileDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfileDto
+     */
+    'networkId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfileDto
+     */
+    'networkName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfileDto
+     */
+    'networkVlanId'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VnicProfileDto
+     */
+    'inPool'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface VnicProfilePoolMemberDto
+ */
+export interface VnicProfilePoolMemberDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof VnicProfilePoolMemberDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VnicProfilePoolMemberDto
+     */
+    'inUse'?: boolean;
+}
 
 /**
  * ClusterControllerApi - axios parameter creator
@@ -1177,6 +1239,39 @@ export const TestControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendSimpleMail: async (mailTo: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mailTo' is not null or undefined
+            assertParamExists('sendSimpleMail', 'mailTo', mailTo)
+            const localVarPath = `/test/send-simple-mail/{mail-to}`
+                .replace(`{${"mail-to"}}`, encodeURIComponent(String(mailTo)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1216,6 +1311,18 @@ export const TestControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendSimpleMail(mailTo, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.sendSimpleMail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1237,6 +1344,15 @@ export const TestControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.sendSimpleMail(mailTo, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1253,6 +1369,17 @@ export const TestControllerApiFactory = function (configuration?: Configuration,
  * @extends {BaseAPI}
  */
 export class TestControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} mailTo 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).sendSimpleMail(mailTo, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -1371,42 +1498,13 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFetchedVnicProfiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/vnic-profiles/ovirt`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {string} vnicProfileId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVnicProfilesPool: async (vnicProfileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        extendVnicProfilesPool: async (vnicProfileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'vnicProfileId' is not null or undefined
-            assertParamExists('getVnicProfilesPool', 'vnicProfileId', vnicProfileId)
+            assertParamExists('extendVnicProfilesPool', 'vnicProfileId', vnicProfileId)
             const localVarPath = `/resources/vnic-profiles/eduvirt/add-to-pool/{vnicProfileId}`
                 .replace(`{${"vnicProfileId"}}`, encodeURIComponent(String(vnicProfileId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1436,7 +1534,65 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVnicProfilesPool1: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getOvirtVnicProfiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/vnic-profiles/ovirt`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSynchronizedVnicProfiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/vnic-profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getVnicProfilesPool: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/resources/vnic-profiles/eduvirt`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1446,6 +1602,39 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             }
 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} vnicProfileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reduceVnicProfilesPool: async (vnicProfileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'vnicProfileId' is not null or undefined
+            assertParamExists('reduceVnicProfilesPool', 'vnicProfileId', vnicProfileId)
+            const localVarPath = `/resources/vnic-profiles/eduvirt/remove-from-pool/{vnicProfileId}`
+                .replace(`{${"vnicProfileId"}}`, encodeURIComponent(String(vnicProfileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1472,13 +1661,47 @@ export const VnicProfileControllerApiFp = function(configuration?: Configuration
     return {
         /**
          * 
+         * @param {string} vnicProfileId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFetchedVnicProfiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getFetchedVnicProfiles(options);
+        async extendVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VnicProfilePoolMemberDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.extendVnicProfilesPool(vnicProfileId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getFetchedVnicProfiles']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.extendVnicProfilesPool']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOvirtVnicProfiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOvirtVnicProfiles(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getOvirtVnicProfiles']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSynchronizedVnicProfiles(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getSynchronizedVnicProfiles']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getVnicProfilesPool(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfilePoolMemberDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVnicProfilesPool(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getVnicProfilesPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1487,21 +1710,10 @@ export const VnicProfileControllerApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVnicProfilesPool(vnicProfileId, options);
+        async reduceVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reduceVnicProfilesPool(vnicProfileId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getVnicProfilesPool']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getVnicProfilesPool1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVnicProfilesPool1(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getVnicProfilesPool1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.reduceVnicProfilesPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1516,11 +1728,36 @@ export const VnicProfileControllerApiFactory = function (configuration?: Configu
     return {
         /**
          * 
+         * @param {string} vnicProfileId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFetchedVnicProfiles(options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getFetchedVnicProfiles(options).then((request) => request(axios, basePath));
+        extendVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): AxiosPromise<VnicProfilePoolMemberDto> {
+            return localVarFp.extendVnicProfilesPool(vnicProfileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOvirtVnicProfiles(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
+            return localVarFp.getOvirtVnicProfiles(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
+            return localVarFp.getSynchronizedVnicProfiles(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getVnicProfilesPool(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfilePoolMemberDto>> {
+            return localVarFp.getVnicProfilesPool(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1528,16 +1765,8 @@ export const VnicProfileControllerApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getVnicProfilesPool(vnicProfileId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getVnicProfilesPool1(options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getVnicProfilesPool1(options).then((request) => request(axios, basePath));
+        reduceVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.reduceVnicProfilesPool(vnicProfileId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1551,12 +1780,43 @@ export const VnicProfileControllerApiFactory = function (configuration?: Configu
 export class VnicProfileControllerApi extends BaseAPI {
     /**
      * 
+     * @param {string} vnicProfileId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VnicProfileControllerApi
      */
-    public getFetchedVnicProfiles(options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getFetchedVnicProfiles(options).then((request) => request(this.axios, this.basePath));
+    public extendVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).extendVnicProfilesPool(vnicProfileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VnicProfileControllerApi
+     */
+    public getOvirtVnicProfiles(options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getOvirtVnicProfiles(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VnicProfileControllerApi
+     */
+    public getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getSynchronizedVnicProfiles(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VnicProfileControllerApi
+     */
+    public getVnicProfilesPool(options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getVnicProfilesPool(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1566,18 +1826,8 @@ export class VnicProfileControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VnicProfileControllerApi
      */
-    public getVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getVnicProfilesPool(vnicProfileId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof VnicProfileControllerApi
-     */
-    public getVnicProfilesPool1(options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getVnicProfilesPool1(options).then((request) => request(this.axios, this.basePath));
+    public reduceVnicProfilesPool(vnicProfileId: string, options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).reduceVnicProfilesPool(vnicProfileId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
