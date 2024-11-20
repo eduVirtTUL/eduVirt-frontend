@@ -38,6 +38,7 @@ const VnicProfilesPage: React.FC = () => {
     }
 
     /// TODO pagination
+    /// TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)
     return (
         <>
             <PageHeader title="Vnic profiles"/>
