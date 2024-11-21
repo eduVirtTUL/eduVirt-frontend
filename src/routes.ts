@@ -6,6 +6,7 @@ import LoginPage from "./pages/Login";
 import CoursesPage from "./pages/Courses";
 import CoursePage from "./pages/Course";
 import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
+import ResourceGroupEditor from "./pages/ResourceGroupEditor";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -23,7 +24,10 @@ export const routes: RouteObject[] = [
               { path: ":id", Component: CoursePage },
             ],
           },
-          { path: "/rg", Component: App },
+          {
+            path: "/rg",
+            children: [{ path: ":id", Component: ResourceGroupEditor }],
+          },
           {
             path: "/pools",
             children: [{ index: true, Component: ResourceGroupPoolsPage }],

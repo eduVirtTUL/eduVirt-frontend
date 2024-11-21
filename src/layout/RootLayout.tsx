@@ -125,8 +125,8 @@ const RootLayout: React.FC = () => {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      <main className="flex-1">
-        <div className="flex flex-col justify-center w-full px-10 py-8">
+      <main className="flex-1 h-screen">
+        <div className="flex flex-col w-full px-10 py-8 h-screen">
           <Outlet />
         </div>
         <Toaster />
