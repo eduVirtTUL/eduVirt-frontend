@@ -5,10 +5,19 @@ import {PlusIcon} from "lucide-react";
 import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal.tsx";
 import {useVlansRanges} from "@/data/network/useVlansRanges.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {useRemoveVlansRange} from "@/data/network/useRemoveVlansRange.ts";
 
 const VlanRangesPage: React.FC = () => {
     const {vlansRanges, isLoading} = useVlansRanges();
-    const { open } = useDialog();
+    const {open} = useDialog();
+    const {removeVlansRangeAsync} = useRemoveVlansRange();
+
+    const handleRemoveVlansRange = (async (vlansRangeId: string | undefined) => {
+        if (typeof vlansRangeId === "string") {
+            await removeVlansRangeAsync(vlansRangeId);
+        }
+    });
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -37,7 +46,7 @@ const VlanRangesPage: React.FC = () => {
                         </CardHeader>
                         <CardFooter>
                             <Button
-                                onClick={() => {alert("Removed!")}}>
+                                onClick={() => {handleRemoveVlansRange(vlansRange.id)}}>
                                 Remove
                             </Button>
                         </CardFooter>
