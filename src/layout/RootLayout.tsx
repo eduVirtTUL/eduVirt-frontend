@@ -18,7 +18,10 @@ import {
   ChevronUp,
   Group,
   Home,
+  MonitorCogIcon,
+  MoonIcon,
   Network,
+  SunIcon,
   User2,
   Users,
 } from "lucide-react";
@@ -28,12 +31,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, Outlet, useMatches } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/components/ThemeProvider";
 
 const menuItems = [
   { to: "/", label: (t) => t("menu.home"), icon: <Home /> },
@@ -56,6 +64,7 @@ const menuItems = [
 const RootLayout: React.FC = () => {
   const { t } = useTranslation();
   const matches = useMatches();
+  const { setTheme } = useTheme();
 
   const lastMatch = matches.at(-1);
 
@@ -110,6 +119,25 @@ const RootLayout: React.FC = () => {
                   side="top"
                   className="w-[--radix-popper-anchor-width]"
                 >
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => setTheme("dark")}>
+                          <MoonIcon />
+                          <span>Dark</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("light")}>
+                          <SunIcon />
+                          <span>Light</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("system")}>
+                          <MonitorCogIcon />
+                          <span>System</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
                   <DropdownMenuItem>
                     <span>Account</span>
                   </DropdownMenuItem>
