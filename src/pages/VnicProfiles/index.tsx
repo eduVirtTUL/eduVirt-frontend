@@ -2,7 +2,6 @@ import PageHeader from "@/components/PageHeader.tsx";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -15,6 +14,13 @@ import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool.ts
 import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool.ts";
 import {Link} from "react-router-dom";
 import {Separator} from "@/components/ui/separator.tsx";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+import {MoreHorizontal} from "lucide-react";
 
 const VnicProfilesPage: React.FC = () => {
     const {vnicProfiles, isLoading} = useVnicProfiles();
@@ -43,7 +49,6 @@ const VnicProfilesPage: React.FC = () => {
         <>
             <PageHeader title="Vnic profiles"/>
             <Table>
-                <TableCaption>A list of vnic profiles.</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Vnic profile name</TableHead>
@@ -61,12 +66,36 @@ const VnicProfilesPage: React.FC = () => {
                             <TableCell>
                                 <Checkbox disabled={true} checked={vnicProfile.inPool}/>
                             </TableCell>
-                            <TableCell>
-                                <Button disabled={vnicProfile.inPool} onClick={() => handleAddVnicProfile(vnicProfile.id)}>Add to pool</Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button disabled={!vnicProfile.inPool} onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}>Remove from pool</Button>
-                            </TableCell>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                        <span className="sr-only">Open menu</span>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem>
+                                        <Button variant="ghost"
+                                                disabled={vnicProfile.inPool}
+                                                onClick={() => handleAddVnicProfile(vnicProfile.id)}>
+                                            Add to pool
+                                        </Button>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Button variant="ghost"
+                                                disabled={!vnicProfile.inPool}
+                                                onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}>
+                                            Remove from pool
+                                        </Button>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                            {/*<TableCell>*/}
+                            {/*    <Button disabled={vnicProfile.inPool} onClick={() => handleAddVnicProfile(vnicProfile.id)}>Add to pool</Button>*/}
+                            {/*</TableCell>*/}
+                            {/*<TableCell>*/}
+                            {/*    <Button disabled={!vnicProfile.inPool} onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}>Remove from pool</Button>*/}
+                            {/*</TableCell>*/}
                         </TableRow>
                     ))}
                 </TableBody>
@@ -76,9 +105,11 @@ const VnicProfilesPage: React.FC = () => {
                 <Separator />
                 <br />
             </div>
-            <Button asChild>
-                <Link to={'/networks/vlans'}>VLAN ranges</Link>
-            </Button>
+            <div className={"text-center"}>
+                <Button asChild>
+                    <Link to={'/networks/vlans'}>VLAN ranges</Link>
+                </Button>
+            </div>
         </>
     );
 };

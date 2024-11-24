@@ -1,11 +1,12 @@
 import PageHeader from "@/components/PageHeader.tsx";
 import {useDialog} from "@/stores/dialogStore.ts";
 import {Button} from "@/components/ui/button.tsx";
-import {PlusIcon} from "lucide-react";
+import {PlusIcon, Undo2} from "lucide-react";
 import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal.tsx";
 import {useVlansRanges} from "@/data/network/useVlansRanges.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {useRemoveVlansRange} from "@/data/network/useRemoveVlansRange.ts";
+import {Link} from "react-router-dom";
 
 const VlanRangesPage: React.FC = () => {
     const {vlansRanges, isLoading} = useVlansRanges();
@@ -25,6 +26,13 @@ const VlanRangesPage: React.FC = () => {
     return (
         <>
             <CreateVlansRangeModal/>
+            <div>
+                <Button asChild variant="outline" size="icon">
+                    <Link to={"/networks"}>
+                        <Undo2/>
+                    </Link>
+                </Button>
+            </div>
             <PageHeader title="VLAN ranges"/>
             <div className="pb-5">
                 <Button
@@ -46,7 +54,9 @@ const VlanRangesPage: React.FC = () => {
                         </CardHeader>
                         <CardFooter>
                             <Button
-                                onClick={() => {handleRemoveVlansRange(vlansRange.id)}}>
+                                onClick={() => {
+                                    handleRemoveVlansRange(vlansRange.id)
+                                }}>
                                 Remove
                             </Button>
                         </CardFooter>
