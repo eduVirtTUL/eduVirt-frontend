@@ -13,7 +13,6 @@ import {Button} from "@/components/ui/button.tsx";
 import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool.ts";
 import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool.ts";
 import {Link} from "react-router-dom";
-import {Separator} from "@/components/ui/separator.tsx";
 import {
     DropdownMenu,
     DropdownMenuContent,
