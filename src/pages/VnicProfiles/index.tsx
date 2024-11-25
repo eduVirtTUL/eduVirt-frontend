@@ -48,6 +48,12 @@ const VnicProfilesPage: React.FC = () => {
     return (
         <>
             <PageHeader title="Vnic profiles"/>
+            <div>
+                <Button asChild>
+                    <Link to={'/networks/vlans'}>VLAN ranges</Link>
+                </Button>
+                <br/>
+            </div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -70,7 +76,7 @@ const VnicProfilesPage: React.FC = () => {
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="h-8 w-8 p-0">
                                         <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4" />
+                                        <MoreHorizontal className="h-4 w-4"/>
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
@@ -100,16 +106,6 @@ const VnicProfilesPage: React.FC = () => {
                     ))}
                 </TableBody>
             </Table>
-            <div>
-                <br />
-                <Separator />
-                <br />
-            </div>
-            <div className={"text-center"}>
-                <Button asChild>
-                    <Link to={'/networks/vlans'}>VLAN ranges</Link>
-                </Button>
-            </div>
         </>
     );
 };
