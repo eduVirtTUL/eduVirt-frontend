@@ -1,12 +1,4 @@
 import PageHeader from "@/components/PageHeader.tsx";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import {useVnicProfiles} from "@/data/network/useVnicProfiles.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Button} from "@/components/ui/button.tsx";
@@ -19,24 +11,92 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {MoreHorizontal} from "lucide-react";
+import {ArrowUpDown, MoreHorizontal} from "lucide-react";
+import DataTable from "@/pages/Courses/DataTable.tsx";
+import {ColumnDef} from "@tanstack/react-table";
+import {VnicProfileDto} from "@/api";
+import React from "react";
 
 const VnicProfilesPage: React.FC = () => {
     const {vnicProfiles, isLoading} = useVnicProfiles();
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
 
-    const handleAddVnicProfile = (async (vnicProfileId : string | undefined) => {
+    const handleAddVnicProfile = (async (vnicProfileId: string | undefined) => {
         if (typeof vnicProfileId === "string") {
             await addVnicProfileToPoolAsync(vnicProfileId);
         }
     });
 
-    const handleRemoveVnicProfileFromPool = (async (vnicProfileId : string | undefined) => {
+    const handleRemoveVnicProfileFromPool = (async (vnicProfileId: string | undefined) => {
         if (typeof vnicProfileId === "string") {
             await removeVnicProfileFromPoolAsync(vnicProfileId);
         }
     });
+
+    const columns: ColumnDef<VnicProfileDto>[] = [
+        {
+            accessorKey: "name",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Vnic profile name
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                );
+            },
+        },
+        {accessorKey: "networkName", header: "Network name"},
+        {accessorKey: "networkVlanId", header: "Network VLAN ID"},
+        {
+            header: "In pool",
+            cell: ({row}) => {
+                const vnicProfile = row.original;
+
+                return (
+                    <Checkbox disabled={true} checked={vnicProfile.inPool}/>
+                );
+            },
+        },
+        {
+            id: "actions",
+            cell: ({row}) => {
+                const vnicProfile = row.original;
+
+                return (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4"/>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                                <Button variant="ghost"
+                                        disabled={vnicProfile.inPool}
+                                        onClick={() => handleAddVnicProfile(vnicProfile.id)}
+                                >
+                                    Add to pool
+                                </Button>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Button variant="ghost"
+                                        disabled={!vnicProfile.inPool}
+                                        onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}
+                                >
+                                    Remove from pool
+                                </Button>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                );
+            },
+        },
+    ];
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -47,64 +107,14 @@ const VnicProfilesPage: React.FC = () => {
     return (
         <>
             <PageHeader title="Vnic profiles"/>
-            <div>
+
+            <div className="pb-5">
                 <Button asChild>
                     <Link to={'/networks/vlans'}>VLAN ranges</Link>
                 </Button>
-                <br/>
             </div>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Vnic profile name</TableHead>
-                        <TableHead>Network name</TableHead>
-                        <TableHead>Network VLAN ID</TableHead>
-                        <TableHead>In pool</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {(vnicProfiles?.length == 0 ? [] : vnicProfiles)?.map((vnicProfile) => (
-                        <TableRow key={vnicProfile.id}>
-                            <TableCell>{vnicProfile.name}</TableCell>
-                            <TableCell>{vnicProfile.networkName}</TableCell>
-                            <TableCell>{vnicProfile.networkVlanId ?? '-'}</TableCell>
-                            <TableCell>
-                                <Checkbox disabled={true} checked={vnicProfile.inPool}/>
-                            </TableCell>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4"/>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem>
-                                        <Button variant="ghost"
-                                                disabled={vnicProfile.inPool}
-                                                onClick={() => handleAddVnicProfile(vnicProfile.id)}>
-                                            Add to pool
-                                        </Button>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Button variant="ghost"
-                                                disabled={!vnicProfile.inPool}
-                                                onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}>
-                                            Remove from pool
-                                        </Button>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                            {/*<TableCell>*/}
-                            {/*    <Button disabled={vnicProfile.inPool} onClick={() => handleAddVnicProfile(vnicProfile.id)}>Add to pool</Button>*/}
-                            {/*</TableCell>*/}
-                            {/*<TableCell>*/}
-                            {/*    <Button disabled={!vnicProfile.inPool} onClick={() => handleRemoveVnicProfileFromPool(vnicProfile.id)}>Remove from pool</Button>*/}
-                            {/*</TableCell>*/}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+
+            <DataTable data={vnicProfiles ?? []} columns={columns}/>
         </>
     );
 };
