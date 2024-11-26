@@ -49,8 +49,10 @@ const VnicProfilesPage: React.FC = () => {
                 );
             },
         },
+        //TODO add sorting for other columns / multi sort
         {accessorKey: "networkName", header: "Network name"},
         {accessorKey: "networkVlanId", header: "Network VLAN ID"},
+        //TODO add filtering for flag values
         {
             header: "In pool",
             cell: ({row}) => {
