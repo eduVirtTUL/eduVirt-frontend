@@ -22,14 +22,14 @@ const VnicProfilesPage: React.FC = () => {
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
 
-    const handleAddVnicProfile = (async (vnicProfileId: string | undefined) => {
-        if (typeof vnicProfileId === "string") {
+    const handleAddVnicProfile = (async (vnicProfileId?: string) => {
+        if (vnicProfileId) {
             await addVnicProfileToPoolAsync(vnicProfileId);
         }
     });
 
-    const handleRemoveVnicProfileFromPool = (async (vnicProfileId: string | undefined) => {
-        if (typeof vnicProfileId === "string") {
+    const handleRemoveVnicProfileFromPool = (async (vnicProfileId?: string) => {
+        if (vnicProfileId) {
             await removeVnicProfileFromPoolAsync(vnicProfileId);
         }
     });

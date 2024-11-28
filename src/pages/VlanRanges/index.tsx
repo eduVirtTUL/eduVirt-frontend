@@ -7,14 +7,15 @@ import {useVlansRanges} from "@/data/network/useVlansRanges.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {useRemoveVlansRange} from "@/data/network/useRemoveVlansRange.ts";
 import {Link} from "react-router-dom";
+import React from "react";
 
 const VlanRangesPage: React.FC = () => {
     const {vlansRanges, isLoading} = useVlansRanges();
     const {open} = useDialog();
     const {removeVlansRangeAsync} = useRemoveVlansRange();
 
-    const handleRemoveVlansRange = (async (vlansRangeId: string | undefined) => {
-        if (typeof vlansRangeId === "string") {
+    const handleRemoveVlansRange = (async (vlansRangeId?: string) => {
+        if (vlansRangeId) {
             await removeVlansRangeAsync(vlansRangeId);
         }
     });
@@ -46,22 +47,23 @@ const VlanRangesPage: React.FC = () => {
             </div>
 
             <div className="flex flex-wrap gap-5 w-full">
-                {(vlansRanges?.length == 0 ? [] : vlansRanges)?.map((vlansRange) => (
-                    <Card key={vlansRange.id} className="w-80">
-                        <CardHeader>
-                            <CardTitle>Range</CardTitle>
-                            <CardDescription>{vlansRange.from}-{vlansRange.to}</CardDescription>
-                        </CardHeader>
-                        <CardFooter>
-                            <Button
-                                onClick={() => {
-                                    handleRemoveVlansRange(vlansRange.id)
-                                }}>
-                                Remove
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
+                {
+                    (vlansRanges ?? [])?.map((vlansRange) => (
+                        <Card key={vlansRange.id} className="w-80">
+                            <CardHeader>
+                                <CardTitle>Range</CardTitle>
+                                <CardDescription>{vlansRange.from}-{vlansRange.to}</CardDescription>
+                            </CardHeader>
+                            <CardFooter>
+                                <Button
+                                    onClick={() => handleRemoveVlansRange(vlansRange.id)}
+                                >
+                                    Remove
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    ))
+                }
             </div>
         </>
     );
