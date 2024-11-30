@@ -48,7 +48,7 @@ const VlanRangesPage: React.FC = () => {
 
             <div className="flex flex-wrap gap-5 w-full">
                 {
-                    (vlansRanges ?? [])?.map((vlansRange) => (
+                    (vlansRanges?.length ? vlansRanges : [])?.map((vlansRange) => (
                         <Card key={vlansRange.id} className="w-80">
                             <CardHeader>
                                 <CardTitle>Range</CardTitle>
