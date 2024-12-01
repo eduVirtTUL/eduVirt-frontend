@@ -4,4 +4,6 @@ export const keys = {
   COURSE: "course",
   METRICS: "metrics",
   RESOURCE_GROUP: "resourceGroup",
+  VNIC_PROFILE: "vnicProfile",
+  VLANS_RANGE: "vlansRange",
 };
