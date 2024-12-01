@@ -7,6 +7,8 @@ import CoursesPage from "./pages/Courses";
 import CoursePage from "./pages/Course";
 import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
+import ClustersPage from "@/pages/Clusters";
+import ClusterLimitsPage from "@/pages/ClusterLimits";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -32,6 +34,13 @@ export const routes: RouteObject[] = [
             path: "/pools",
             children: [{ index: true, Component: ResourceGroupPoolsPage }],
           },
+          {
+            path: "/limits",
+            children: [
+              { index: true, Component: ClustersPage },
+              { path: ":id", Component: ClusterLimitsPage }
+            ]
+          }
         ],
       },
     ],

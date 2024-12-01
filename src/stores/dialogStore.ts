@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Dialog = "createCourse" | "createPool";
+type Dialog = "createCourse" | "createPool" | "createClusterMetricValue" | "updateClusterMetricValue";
 
 type DialogStore = {
   opened?: Dialog;
