@@ -1,7 +1,7 @@
 import {VlansRangeControllerApi, VlansRangeDto} from "@/api";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {toast} from "sonner";
-import {keys} from "../keys";
+import {keys} from "../../keys.ts";
 
 export const useCreateVlansRange = () => {
     const queryClient = useQueryClient();

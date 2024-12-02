@@ -21,6 +21,8 @@ import {Popover, PopoverContent} from "@/components/ui/popover.tsx";
 import {PopoverTrigger} from "@radix-ui/react-popover";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDetailsModal.tsx";
+import {useDialog} from "@/stores/dialogStore.ts";
 
 const VnicProfilesPage: React.FC = () => {
     const {vnicProfiles, isLoading} = useVnicProfiles();
@@ -28,6 +30,7 @@ const VnicProfilesPage: React.FC = () => {
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
 
     const [selectedFiltering, setSelectedFiltering] = React.useState<string>("allItems");
+    const {open} = useDialog();
 
 
     const handleAddVnicProfile = (async (vnicProfileId?: string) => {
@@ -232,6 +235,14 @@ const VnicProfilesPage: React.FC = () => {
                                     Remove from pool
                                 </Button>
                             </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Button className={"h-full w-full"}
+                                        variant="ghost"
+                                        onClick={() => open("showVnicProfileDetails")}
+                                >
+                                    Show info
+                                </Button>
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
@@ -240,16 +251,17 @@ const VnicProfilesPage: React.FC = () => {
     ];
 
     if (isLoading) {
-        return <LoaderIcon className="animate-spin" />
+        return <LoaderIcon className="animate-spin size-10" />
     }
 
     /// TODO pagination
     /// TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)
     return (
         <>
+            <ShowVnicProfileDetailsModal/>
             <PageHeader title="Vnic profiles"/>
 
-            <div className="pb-5 inline-flex space-x-2">
+            <div className="pb-5">
                 <Button asChild>
                     <Link to={'/networks/vlans'}>VLAN ranges</Link>
                 </Button>

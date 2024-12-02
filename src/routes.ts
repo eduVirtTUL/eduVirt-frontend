@@ -40,7 +40,7 @@ export const routes: RouteObject[] = [
             path: "/networks",
             children: [
                 { index: true, Component: VnicProfilesPage },
-                { path: "vlans", Component: VlanRangesPage}
+                { path: "vlans", Component: VlanRangesPage }
             ],
           }
         ],

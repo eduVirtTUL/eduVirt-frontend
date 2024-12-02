@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Dialog = "createCourse" | "createPool" | "createVlansRange";
+type Dialog = "createCourse" | "createPool" | "createVlansRange" | "showVnicProfileDetails";
 
 type DialogStore = {
   opened?: Dialog;

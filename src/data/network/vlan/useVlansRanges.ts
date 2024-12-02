@@ -1,6 +1,6 @@
 import {VlansRangeControllerApi} from "@/api";
 import {useQuery} from "@tanstack/react-query";
-import {keys} from "../keys";
+import {keys} from "../../keys.ts";
 
 export const useVlansRanges = () => {
     const {data, isLoading} = useQuery({
