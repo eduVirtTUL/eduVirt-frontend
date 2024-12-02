@@ -1,7 +1,7 @@
 import PageHeader from "@/components/PageHeader.tsx";
 import {useDialog} from "@/stores/dialogStore.ts";
 import {Button} from "@/components/ui/button.tsx";
-import {PlusIcon, Undo2} from "lucide-react";
+import {LoaderIcon, PlusIcon, Undo2} from "lucide-react";
 import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal.tsx";
 import {useVlansRanges} from "@/data/network/useVlansRanges.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
@@ -21,7 +21,7 @@ const VlanRangesPage: React.FC = () => {
     });
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoaderIcon className="animate-spin" />
     }
 
     return (

@@ -11,7 +11,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, MoreHorizontal} from "lucide-react";
+import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, LoaderIcon, MoreHorizontal} from "lucide-react";
 import DataTable from "@/pages/Courses/DataTable.tsx";
 import {Column, ColumnDef, SortDirection} from "@tanstack/react-table";
 import {VnicProfileDto} from "@/api";
@@ -76,6 +76,13 @@ const VnicProfilesPage: React.FC = () => {
                     </Button>
                 );
             },
+            cell: ({row}) => {
+                return (
+                    <div className="ml-8">
+                        {row.original.name}
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "networkName",
@@ -90,6 +97,13 @@ const VnicProfilesPage: React.FC = () => {
                     </Button>
                 );
             },
+            cell: ({row}) => {
+                return (
+                    <div className="ml-8">
+                        {row.original.networkName}
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "networkVlanId",
@@ -102,6 +116,13 @@ const VnicProfilesPage: React.FC = () => {
                         Network VLAN ID
                         {chooseSortingArrow(column.getIsSorted())}
                     </Button>
+                );
+            },
+            cell: ({row}) => {
+                return (
+                    <div className="ml-14">
+                        {row.original.networkVlanId}
+                    </div>
                 );
             },
         },
@@ -160,7 +181,11 @@ const VnicProfilesPage: React.FC = () => {
                 const vnicProfile = row.original;
 
                 return (
-                    <Checkbox disabled={true} checked={vnicProfile.inPool}/>
+                    <Checkbox
+                        disabled={true}
+                        checked={vnicProfile.inPool}
+                        className="ml-10"
+                    />
                 );
             },
             enableGlobalFilter: false
@@ -182,9 +207,10 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
+                            {/*TODO fix className in scaling*/}
+                            <Button variant="ghost" className="h-8 w-8 p-0 ml-40">
                                 <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4"/>
+                                <MoreHorizontal />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -214,7 +240,7 @@ const VnicProfilesPage: React.FC = () => {
     ];
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoaderIcon className="animate-spin" />
     }
 
     /// TODO pagination
