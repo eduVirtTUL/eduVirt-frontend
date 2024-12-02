@@ -1,6 +1,5 @@
-import { DetailedResourceGroupPoolDto } from "@/api";
+import { ResourceGroupDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,25 +8,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
-import { useDialog } from "@/stores/dialogStore";
+import { useResourceGroups } from "@/data/resourceGroup/useResourceGroups";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
-const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
+const columns: ColumnDef<ResourceGroupDto>[] = [
   { accessorKey: "name", header: "Name" },
-  { accessorKey: "course.name", header: "Course" },
-  {
-    accessorFn: () => 0,
-    header: "Resource Groups",
-  },
+  { accessorKey: "stateless", header: "Stateless" },
   {
     id: "actions",
     cell: ({ row }) => {
-      const rgPool = row.original;
+      const rg = row.original;
 
       return (
         <DropdownMenu>
@@ -38,9 +31,9 @@ const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit pool</DropdownMenuItem>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`/pools/${rgPool.id}`}>Pool Details</Link>
+              <Link to={`/rg/${rg.id}`}>Details</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -49,20 +42,16 @@ const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
   },
 ];
 
-const ResourceGroupPoolsPage: React.FC = () => {
-  const { open } = useDialog();
+const ResourceGroupsPage: React.FC = () => {
   const { t } = useTranslation();
-  const { resourceGroupPools } = useResourceGroupPools();
+  const { resourceGroups } = useResourceGroups();
+
   return (
     <>
-      <CreatePoolModal />
-      <PageHeader title={t("resourceGroupPools.title")} />
-      <div className="flex flex-row gap-2 pb-5">
-        <Button onClick={() => open("createPool")}>Create pool</Button>
-      </div>
-      <DataTable data={resourceGroupPools ?? []} columns={columns} />
+      <PageHeader title={t("menu.resourceGroups")} />
+      <DataTable columns={columns} data={resourceGroups ?? []} />
     </>
   );
 };
 
-export default ResourceGroupPoolsPage;
+export default ResourceGroupsPage;

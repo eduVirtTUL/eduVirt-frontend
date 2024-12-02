@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router";
 import AuthGuard from "./AuthGuard";
 import RootLayout from "./layout/RootLayout";
 import App from "./App";
@@ -7,6 +7,8 @@ import CoursesPage from "./pages/Courses";
 import CoursePage from "./pages/Course";
 import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
+import ResourceGroupPoolPage from "./pages/ResourceGroupPool";
+import ResourceGroupsPage from "./pages/ResourceGroups";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -26,11 +28,21 @@ export const routes: RouteObject[] = [
           },
           {
             path: "/rg",
-            children: [{ path: ":id", Component: ResourceGroupEditor }],
+            children: [
+              { index: true, Component: ResourceGroupsPage },
+              {
+                path: ":id",
+                Component: ResourceGroupEditor,
+                handle: { noScroll: true },
+              },
+            ],
           },
           {
             path: "/pools",
-            children: [{ index: true, Component: ResourceGroupPoolsPage }],
+            children: [
+              { index: true, Component: ResourceGroupPoolsPage },
+              { path: ":id", Component: ResourceGroupPoolPage },
+            ],
           },
         ],
       },

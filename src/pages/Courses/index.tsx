@@ -7,14 +7,14 @@ import { ArrowUpDown, MoreHorizontal, PlusIcon } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CourseDto } from "@/api";
-import DataTable from "./DataTable";
+import DataTable from "../../components/DataTable";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const columns: ColumnDef<CourseDto>[] = [
   {

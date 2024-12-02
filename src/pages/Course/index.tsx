@@ -5,7 +5,7 @@ import { useCourse } from "@/data/course/useCourse";
 import { useCourseResourceGroupPools } from "@/data/rgPool/useCourseResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 const CoursePage: React.FC = () => {
   const { id } = useParams();

@@ -1,23 +1,4 @@
-import { useDialog } from "@/stores/dialogStore";
-import React from "react";
-import { Dialog, DialogHeader, DialogTitle, DialogContent } from "../ui/dialog";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { useCreatePool } from "@/data/rgPool/useCreatePool";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
-import { ChevronsUpDownIcon, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -25,67 +6,79 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../ui/command";
-import { useCourses } from "@/data/course/useCourses";
+} from "@/components/ui/command";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useAttachVmToNetwork } from "@/data/resourceGroup/useAttachVmToNetwork";
+import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupNetworks";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Check, ChevronsUpDownIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-type CreatePoolModalProps = {
-  courseId?: string;
+type AttachVmToSegmentModalProps = {
+  id: string;
+  vmId: string;
 };
 
-const createPoolSchema = z.object({
-  name: z.string().min(1),
-  courseId: z.string().min(1),
+const attachVmToNetworkSchema = z.object({
+  vmId: z.string().min(1),
+  networkId: z.string().min(1),
 });
 
-type CreatePoolSchema = z.infer<typeof createPoolSchema>;
+type AttachVmToNetworkSchema = z.infer<typeof attachVmToNetworkSchema>;
 
-const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
-  const { createPoolAsync } = useCreatePool();
-  const { courses } = useCourses();
-  const form = useForm<CreatePoolSchema>({
-    resolver: zodResolver(createPoolSchema),
+const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
+  id,
+  vmId,
+}) => {
+  const { networks } = useResourceGroupNetworks(id);
+  const { attachVmToNetwork } = useAttachVmToNetwork();
+  const form = useForm<AttachVmToNetworkSchema>({
+    resolver: zodResolver(attachVmToNetworkSchema),
     defaultValues: {
-      name: "",
-      courseId: courseId ?? "",
+      vmId: vmId,
+      networkId: "",
     },
   });
-  const { isOpen, close } = useDialog();
 
-  const handleSubmit = form.handleSubmit(async (values) => {
-    await createPoolAsync(values);
-    close();
-    form.reset();
+  const handleSubmit = form.handleSubmit((data) => {
+    attachVmToNetwork(data);
   });
 
   return (
-    <Dialog
-      open={isOpen("createPool")}
-      onOpenChange={() => {
-        close();
-      }}
-    >
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Add vm to segment</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create resource group pool</DialogTitle>
+          <DialogTitle>Attach vm to network</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit}>
             <FormField
               control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="courseId"
+              name="networkId"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Course</FormLabel>
@@ -93,7 +86,6 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
-                          disabled={!!courseId}
                           variant="outline"
                           role="combobox"
                           className={cn(
@@ -102,7 +94,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
                           )}
                         >
                           {field.value
-                            ? courses?.find((c) => c.id === field.value)?.name
+                            ? networks?.find((c) => c.id === field.value)?.name
                             : "Select Course"}
                           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -114,12 +106,12 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
                         <CommandList>
                           <CommandEmpty>No courses found</CommandEmpty>
                           <CommandGroup>
-                            {courses?.map((c) => (
+                            {networks?.map((c) => (
                               <CommandItem
                                 value={c.name}
                                 key={c.id}
                                 onSelect={() => {
-                                  form.setValue("courseId", c.id ?? "");
+                                  form.setValue("networkId", c.id ?? "");
                                 }}
                               >
                                 {c.name}
@@ -142,7 +134,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Create</Button>
+            <Button type="submit">Save</Button>
           </form>
         </Form>
       </DialogContent>
@@ -150,4 +142,4 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
   );
 };
 
-export default CreatePoolModal;
+export default AttachVmToSegmentModal;

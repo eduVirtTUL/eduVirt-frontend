@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import logo from "@/assets/edu_2.png";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 const LoginPage: React.FC = () => {
   if (localStorage.getItem("token")) {
