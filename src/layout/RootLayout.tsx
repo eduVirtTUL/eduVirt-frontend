@@ -38,11 +38,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, Outlet, useMatches } from "react-router-dom";
+import { Link, Outlet, useMatches } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/ThemeProvider";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
   { to: "/", label: (t) => t("menu.home"), icon: <Home /> },
@@ -79,6 +80,11 @@ const RootLayout: React.FC = () => {
       .slice()
       .reverse()
       .find((item) => lastMatch?.pathname.startsWith(item.to))?.to ?? "/";
+
+  const disableScroll =
+    lastMatch?.handle instanceof Object && "noScroll" in lastMatch.handle;
+
+  console.log(disableScroll);
 
   return (
     <SidebarProvider>
@@ -150,7 +156,12 @@ const RootLayout: React.FC = () => {
                   <DropdownMenuItem>
                     <span>Billing</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      window.location.href = "/login";
+                    }}
+                  >
                     <span>Sign out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -159,8 +170,15 @@ const RootLayout: React.FC = () => {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      <main className="flex-1 h-screen">
-        <div className="flex flex-col w-full px-10 py-8 h-screen">
+      <main
+        className={cn("flex-1", disableScroll ? "h-screen" : "min-h-screen")}
+      >
+        <div
+          className={cn(
+            "flex flex-col w-full px-10 py-8",
+            disableScroll ? "h-screen" : "min-h-screen"
+          )}
+        >
           <Outlet />
         </div>
         <Toaster />

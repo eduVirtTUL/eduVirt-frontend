@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router";
 import AuthGuard from "./AuthGuard";
 import RootLayout from "./layout/RootLayout";
 import App from "./App";
@@ -9,6 +9,8 @@ import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
 import VnicProfilesPage from "./pages/VnicProfiles";
 import VlanRangesPage from "@/pages/VlanRanges";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
+import ResourceGroupPoolPage from "./pages/ResourceGroupPool";
+import ResourceGroupsPage from "./pages/ResourceGroups";
 import ClustersPage from "@/pages/Clusters";
 import ClusterLimitsPage from "@/pages/ClusterLimits";
 
@@ -30,11 +32,21 @@ export const routes: RouteObject[] = [
           },
           {
             path: "/rg",
-            children: [{ path: ":id", Component: ResourceGroupEditor }],
+            children: [
+              { index: true, Component: ResourceGroupsPage },
+              {
+                path: ":id",
+                Component: ResourceGroupEditor,
+                handle: { noScroll: true },
+              },
+            ],
           },
           {
             path: "/pools",
-            children: [{ index: true, Component: ResourceGroupPoolsPage }],
+            children: [
+              { index: true, Component: ResourceGroupPoolsPage },
+              { path: ":id", Component: ResourceGroupPoolPage },
+            ],
           },
           {
             path: "/limits",

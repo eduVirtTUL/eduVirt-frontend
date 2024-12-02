@@ -1,15 +1,15 @@
 import PageHeader from "@/components/PageHeader.tsx";
-import {useVnicProfiles} from "@/data/network/useVnicProfiles.ts";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool.ts";
-import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool.ts";
-import {Link} from "react-router-dom";
+import { useVnicProfiles } from "@/data/network/useVnicProfiles.ts";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useAddVnicProfileToPool } from "@/data/network/useAddVnicProfileToPool.ts";
+import { useRemoveVnicProfileFromPool } from "@/data/network/useRemoveVnicProfileFromPool.ts";
+import { Link } from "react-router";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, LoaderIcon, MoreHorizontal} from "lucide-react";
 import DataTable from "@/pages/Courses/DataTable.tsx";
@@ -25,9 +25,9 @@ import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDeta
 import {useDialog} from "@/stores/dialogStore.ts";
 
 const VnicProfilesPage: React.FC = () => {
-    const {vnicProfiles, isLoading} = useVnicProfiles();
-    const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
-    const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
+  const { vnicProfiles, isLoading } = useVnicProfiles();
+  const { addVnicProfileToPoolAsync } = useAddVnicProfileToPool();
+  const { removeVnicProfileFromPoolAsync } = useRemoveVnicProfileFromPool();
 
     const [selectedFiltering, setSelectedFiltering] = React.useState<string>("allItems");
     const {open} = useDialog();
@@ -39,11 +39,11 @@ const VnicProfilesPage: React.FC = () => {
         }
     });
 
-    const handleRemoveVnicProfileFromPool = (async (vnicProfileId?: string) => {
-        if (vnicProfileId) {
-            await removeVnicProfileFromPoolAsync(vnicProfileId);
-        }
-    });
+  const handleRemoveVnicProfileFromPool = async (vnicProfileId?: string) => {
+    if (vnicProfileId) {
+      await removeVnicProfileFromPoolAsync(vnicProfileId);
+    }
+  };
 
     const chooseSortingArrow = (param: false | SortDirection) => {
         if (param === "asc") {
@@ -261,15 +261,15 @@ const VnicProfilesPage: React.FC = () => {
             <ShowVnicProfileDetailsModal/>
             <PageHeader title="Vnic profiles"/>
 
-            <div className="pb-5">
-                <Button asChild>
-                    <Link to={'/networks/vlans'}>VLAN ranges</Link>
-                </Button>
-            </div>
+      <div className="pb-5">
+        <Button asChild>
+          <Link to={"/networks/vlans"}>VLAN ranges</Link>
+        </Button>
+      </div>
 
-            <DataTable data={vnicProfiles ?? []} columns={columns}/>
-        </>
-    );
+      <DataTable data={vnicProfiles ?? []} columns={columns} />
+    </>
+  );
 };
 
 export default VnicProfilesPage;
