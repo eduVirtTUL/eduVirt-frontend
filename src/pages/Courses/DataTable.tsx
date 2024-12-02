@@ -7,14 +7,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  ColumnDef,
+  ColumnDef, ColumnFiltersState, FilterFn,
   flexRender,
-  getCoreRowModel,
+  getCoreRowModel, getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import React, {useState} from "react";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -26,6 +26,23 @@ const DataTable = <TData, TValue>({
   columns,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  const customGlobalFilterFn: FilterFn<TData> = (row, columnId: string, filterValue: string) => {
+    const search = filterValue.toLowerCase();
+
+    const value = row.getValue(columnId);
+    if (typeof value === 'number') {
+      return String(value).toLowerCase().includes(search);
+    }
+    if (typeof value === 'string') {
+      return value.toLowerCase().includes(search);
+    }
+
+    return false;
+  };
 
   const table = useReactTable({
     data,
@@ -33,9 +50,15 @@ const DataTable = <TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
+      columnFilters,
+      globalFilter
     },
+    globalFilterFn: customGlobalFilterFn,
   });
 
   return (
@@ -46,7 +69,7 @@ const DataTable = <TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -67,7 +90,7 @@ const DataTable = <TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

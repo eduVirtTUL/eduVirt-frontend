@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Dialog = "createCourse" | "createPool" | "createClusterMetricValue" | "createVlansRange";
+type Dialog = "createCourse" | "createPool" | "createVlansRange" | "showVnicProfileDetails" | "createClusterMetricValue" | "createVlansRange";
 
 type DialogStore = {
   opened?: Dialog;
