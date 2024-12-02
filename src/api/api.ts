@@ -39,6 +39,116 @@ export interface AddVmDto {
 /**
  * 
  * @export
+ * @interface ClusterDetailsDto
+ */
+export interface ClusterDetailsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'comment'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'clusterCpuType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'compatibilityVersion'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ClusterDetailsDto
+     */
+    'useThreadsAsCpus'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterDetailsDto
+     */
+    'maxMemoryOverCommit'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ClusterGeneralDto
+ */
+export interface ClusterGeneralDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'comment'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'clusterCpuType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClusterGeneralDto
+     */
+    'compatibilityVersion'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ClusterGeneralDto
+     */
+    'hostCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ClusterGeneralDto
+     */
+    'vmCount'?: number;
+}
+/**
+ * 
+ * @export
  * @interface CourseDto
  */
 export interface CourseDto {
@@ -234,6 +344,37 @@ export interface DetailedResourceGroupPoolDto {
 /**
  * 
  * @export
+ * @interface EventGeneralDTO
+ */
+export interface EventGeneralDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof EventGeneralDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EventGeneralDTO
+     */
+    'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EventGeneralDTO
+     */
+    'severity'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EventGeneralDTO
+     */
+    'registeredAt'?: string;
+}
+/**
+ * 
+ * @export
  * @interface ExceptionResponse
  */
 export interface ExceptionResponse {
@@ -243,6 +384,49 @@ export interface ExceptionResponse {
      * @memberof ExceptionResponse
      */
     'message'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface HostDto
+ */
+export interface HostDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof HostDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HostDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HostDto
+     */
+    'address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HostDto
+     */
+    'comment'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof HostDto
+     */
+    'cpus'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof HostDto
+     */
+    'memory'?: number;
 }
 /**
  * 
@@ -385,6 +569,43 @@ export interface MetricValueDto {
      * @memberof MetricValueDto
      */
     'value'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface NetworkDto
+ */
+export interface NetworkDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkDto
+     */
+    'comment'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkDto
+     */
+    'status'?: string;
 }
 /**
  * 
@@ -593,6 +814,55 @@ export interface VmDto {
      * @memberof VmDto
      */
     'name'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface VmGeneralDto
+ */
+export interface VmGeneralDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'status'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'uptimeSeconds'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'cpuUsagePercentage'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'memoryUsagePercentage'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VmGeneralDto
+     */
+    'networkUsagePercentage'?: string;
 }
 /**
  * 
@@ -1236,7 +1506,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findAllClusters(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findAllClusters(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ClusterGeneralDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findAllClusters(pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findAllClusters']?.[localVarOperationServerIndex]?.url;
@@ -1248,7 +1518,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findClusterById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findClusterById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ClusterDetailsDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findClusterById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findClusterById']?.[localVarOperationServerIndex]?.url;
@@ -1262,7 +1532,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findCpuInfoByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findCpuInfoByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<HostDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findCpuInfoByClusterId(id, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findCpuInfoByClusterId']?.[localVarOperationServerIndex]?.url;
@@ -1276,7 +1546,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDTO>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findEventsByClusterId(id, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findEventsByClusterId']?.[localVarOperationServerIndex]?.url;
@@ -1290,7 +1560,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findNetworksByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findNetworksByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<NetworkDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findNetworksByClusterId(id, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findNetworksByClusterId']?.[localVarOperationServerIndex]?.url;
@@ -1304,7 +1574,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findVirtualMachinesByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findVirtualMachinesByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VmGeneralDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findVirtualMachinesByClusterId(id, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findVirtualMachinesByClusterId']?.[localVarOperationServerIndex]?.url;
@@ -1327,7 +1597,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findAllClusters(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findAllClusters(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<ClusterGeneralDto>> {
             return localVarFp.findAllClusters(pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1336,7 +1606,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findClusterById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findClusterById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<ClusterDetailsDto> {
             return localVarFp.findClusterById(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1347,7 +1617,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findCpuInfoByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findCpuInfoByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<HostDto>> {
             return localVarFp.findCpuInfoByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1358,7 +1628,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDTO>> {
             return localVarFp.findEventsByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1369,7 +1639,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findNetworksByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findNetworksByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<NetworkDto>> {
             return localVarFp.findNetworksByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1380,7 +1650,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findVirtualMachinesByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findVirtualMachinesByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<VmGeneralDto>> {
             return localVarFp.findVirtualMachinesByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
     };
