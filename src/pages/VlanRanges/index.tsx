@@ -1,12 +1,18 @@
 import PageHeader from "@/components/PageHeader.tsx";
-import {useDialog} from "@/stores/dialogStore.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {LoaderIcon, PlusIcon, Undo2} from "lucide-react";
+import { useDialog } from "@/stores/dialogStore.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { LoaderIcon, PlusIcon, Undo2 } from "lucide-react";
 import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal.tsx";
-import {useVlansRanges} from "@/data/network/vlan/useVlansRanges.ts";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {useRemoveVlansRange} from "@/data/network/vlan/useRemoveVlansRange.ts";
-import {Link} from "react-router-dom";
+import { useVlansRanges } from "@/data/network/vlan/useVlansRanges.ts";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card.tsx";
+import { useRemoveVlansRange } from "@/data/network/vlan/useRemoveVlansRange.ts";
+import { Link } from "react-router";
 import React from "react";
 
 const VlanRangesPage: React.FC = () => {
@@ -14,16 +20,15 @@ const VlanRangesPage: React.FC = () => {
   const { open } = useDialog();
   const { removeVlansRangeAsync } = useRemoveVlansRange();
 
-    const handleRemoveVlansRange = (async (vlansRangeId?: string) => {
-        if (vlansRangeId) {
-            await removeVlansRangeAsync(vlansRangeId);
-        }
-    });
-
-    if (isLoading) {
-        return <LoaderIcon className="animate-spin size-10" />
+  const handleRemoveVlansRange = async (vlansRangeId?: string) => {
+    if (vlansRangeId) {
+      await removeVlansRangeAsync(vlansRangeId);
     }
   };
+
+  if (isLoading) {
+    return <LoaderIcon className="animate-spin size-10" />;
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
