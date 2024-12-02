@@ -11,15 +11,16 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {ArrowUpDown, FilterIcon, MoreHorizontal} from "lucide-react";
+import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, MoreHorizontal} from "lucide-react";
 import DataTable from "@/pages/Courses/DataTable.tsx";
-import {ColumnDef} from "@tanstack/react-table";
+import {Column, ColumnDef, SortDirection} from "@tanstack/react-table";
 import {VnicProfileDto} from "@/api";
 import React from "react";
 import {Label} from "@/components/ui/label.tsx";
 import {Popover, PopoverContent} from "@/components/ui/popover.tsx";
 import {PopoverTrigger} from "@radix-ui/react-popover";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
+import {Input} from "@/components/ui/input.tsx";
 
 const VnicProfilesPage: React.FC = () => {
     const {vnicProfiles, isLoading} = useVnicProfiles();
@@ -41,7 +42,25 @@ const VnicProfilesPage: React.FC = () => {
         }
     });
 
-    //TODO multisort???
+    const chooseSortingArrow = (param: false | SortDirection) => {
+        if (param === "asc") {
+            return <ArrowDown className="ml-2 h-4 w-4"/>
+        }
+        if (param === "desc") {
+            return <ArrowUp className="ml-2 h-4 w-4"/>
+        }
+        return <ArrowUpDown className="ml-2 h-4 w-4"/>
+    };
+
+    const handleSortingToggling = (column : Column<VnicProfileDto>) => {
+        if ((column.getIsSorted() === false)) {
+            column.toggleSorting(false);
+        } else if (column.getIsSorted() === "asc") {
+            column.toggleSorting(true);
+        } else {
+            column.clearSorting();
+        }
+    }
 
     const columns: ColumnDef<VnicProfileDto>[] = [
         {
@@ -50,10 +69,10 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() => handleSortingToggling(column)}
                     >
                         Vnic profile name
-                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                        {chooseSortingArrow(column.getIsSorted())}
                     </Button>
                 );
             },
@@ -64,10 +83,10 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() => handleSortingToggling(column)}
                     >
                         Network name
-                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                        {chooseSortingArrow(column.getIsSorted())}
                     </Button>
                 );
             },
@@ -78,54 +97,17 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <Button
                         variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        onClick={() => handleSortingToggling(column)}
                     >
                         Network VLAN ID
-                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                        {chooseSortingArrow(column.getIsSorted())}
                     </Button>
                 );
             },
         },
-        //TODO add filtering for flag values
         {
-            id: "inPoolFlag",
+            accessorKey: "inPool",
             header: ({column}) => {
-/*                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                {/!*<span className="sr-only">Open menu</span>*!/}
-                                In pool
-                                <FilterIcon className="ml-2 h-4 w-4"/>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                                <div>
-                                    <Checkbox
-                                        id="inPoolFilteringFlag"
-                                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                                    />
-                                    <Label
-                                        htmlFor="inPoolFilteringFlag"
-                                    >
-                                        In pool
-                                    </Label>
-                                </div>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <div>
-                                    <Checkbox id="notInPoolFilteringFlag"/>
-                                    <Label
-                                        htmlFor="notInPoolFilteringFlag"
-                                    >
-                                        Not in pool
-                                    </Label>
-                                </div>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                );*/
                 return (
                     <Popover>
                         <PopoverTrigger asChild>
@@ -133,21 +115,28 @@ const VnicProfilesPage: React.FC = () => {
                                 variant="ghost"
                             >
                                 In pool
-                                <FilterIcon className="ml-2 h-4 w-4"/>
+                                {column.getFilterValue() == null ? <FilterIcon className="ml-2 h-4 w-4"/> :
+                                    <FilterX className="ml-2 h-4 w-4"/>}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <RadioGroup value={selectedFiltering}>
                                 <div
                                     className="flex items-center space-x-2"
-                                    onClick={() => setSelectedFiltering("allItems")}
+                                    onClick={() => {
+                                        setSelectedFiltering("allItems");
+                                        column.setFilterValue(null)
+                                    }}
                                 >
                                     <RadioGroupItem value="allItems" id="r1"/>
                                     <Label htmlFor="r1">All</Label>
                                 </div>
                                 <div
                                     className="flex items-center space-x-2"
-                                    onClick={() => setSelectedFiltering("inPoolItem")}
+                                    onClick={() => {
+                                        setSelectedFiltering("inPoolItem");
+                                        column.setFilterValue(true)
+                                    }}
                                 >
                                     <RadioGroupItem value="inPoolItem" id="r2"/>
                                     <Label htmlFor="r2">In pool</Label>
@@ -156,8 +145,7 @@ const VnicProfilesPage: React.FC = () => {
                                     className="flex items-center space-x-2"
                                     onClick={() => {
                                         setSelectedFiltering("notInPoolItem");
-                                        //TODO merge main into this branch
-                                        // column.tog("inPoolItem");
+                                        column.setFilterValue(false)
                                     }}
                                 >
                                     <RadioGroupItem value="notInPoolItem" id="r3"/>
@@ -175,10 +163,19 @@ const VnicProfilesPage: React.FC = () => {
                     <Checkbox disabled={true} checked={vnicProfile.inPool}/>
                 );
             },
-            
+            enableGlobalFilter: false
         },
         {
             id: "actions",
+            header: ({table}) => {
+                return (
+                    <Input
+                        className="w-full"
+                        placeholder="Search by value"
+                        onChange={(e) => table.setGlobalFilter(e.target.value)}
+                    />
+                );
+            },
             cell: ({row}) => {
                 const vnicProfile = row.original;
 
@@ -226,7 +223,7 @@ const VnicProfilesPage: React.FC = () => {
         <>
             <PageHeader title="Vnic profiles"/>
 
-            <div className="pb-5">
+            <div className="pb-5 inline-flex space-x-2">
                 <Button asChild>
                     <Link to={'/networks/vlans'}>VLAN ranges</Link>
                 </Button>
