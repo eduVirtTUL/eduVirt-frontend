@@ -6,6 +6,7 @@ const menu = {
   resourceGroups: "Grupy zasobów",
   resourceGroupPools: "Pule grup zasobów",
   home: "Strona główna",
+  limits: "Ograniczenia"
 };
 
 const resourceGroupPools = {

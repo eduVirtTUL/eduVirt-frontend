@@ -11,6 +11,8 @@ import VlanRangesPage from "@/pages/VlanRanges";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
 import ResourceGroupPoolPage from "./pages/ResourceGroupPool";
 import ResourceGroupsPage from "./pages/ResourceGroups";
+import ClustersPage from "@/pages/Clusters";
+import ClusterLimitsPage from "@/pages/ClusterLimits";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -47,12 +49,19 @@ export const routes: RouteObject[] = [
             ],
           },
           {
+            path: "/limits",
+            children: [
+              { index: true, Component: ClustersPage },
+              { path: ":id", Component: ClusterLimitsPage }
+            ]
+          },
+          {
             // TODO maybe change to /networking or /vnic-profiles,
             //  actually we operating on vnic profiles and /networks may cause miss understanding
             path: "/networks",
             children: [
                 { index: true, Component: VnicProfilesPage },
-                { path: "vlans", Component: VlanRangesPage}
+                { path: "vlans", Component: VlanRangesPage }
             ],
           }
         ],

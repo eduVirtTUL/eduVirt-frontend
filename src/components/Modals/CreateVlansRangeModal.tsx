@@ -7,7 +7,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {useCreateVlansRange} from "@/data/network/useCreateVlansRange.ts";
+import {useCreateVlansRange} from "@/data/network/vlan/useCreateVlansRange.ts";
 
 const createVlansRangeSchema = z.object({
     from: z.coerce.number()
