@@ -24,6 +24,7 @@ import {
   SunIcon,
   User2,
   Users,
+  ChartLine
 } from "lucide-react";
 import React from "react";
 import logo from "@/assets/edu_2.png";
@@ -55,6 +56,11 @@ const menuItems = [
     label: (t) => t("menu.reservations"),
     icon: <CalendarDays />,
   },
+  {
+    to: "/limits",
+    label: (t) => t("menu.limits"),
+    icon: <ChartLine />
+  }
 ] satisfies {
   to: string;
   label: (t: TFunction) => string;

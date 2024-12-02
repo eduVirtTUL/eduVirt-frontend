@@ -9,6 +9,8 @@ import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
 import VnicProfilesPage from "./pages/VnicProfiles";
 import VlanRangesPage from "@/pages/VlanRanges";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
+import ClustersPage from "@/pages/Clusters";
+import ClusterLimitsPage from "@/pages/ClusterLimits";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -33,6 +35,13 @@ export const routes: RouteObject[] = [
           {
             path: "/pools",
             children: [{ index: true, Component: ResourceGroupPoolsPage }],
+          },
+          {
+            path: "/limits",
+            children: [
+              { index: true, Component: ClustersPage },
+              { path: ":id", Component: ClusterLimitsPage }
+            ]
           },
           {
             // TODO maybe change to /networking or /vnic-profiles,
