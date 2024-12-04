@@ -21,7 +21,7 @@ import {
     data: TData[];
   };
   
-  const DataTable = <TData, TValue>({
+  const DataTable = <TData extends { active: boolean; }, TValue>({
     data,
     columns,
   }: DataTableProps<TData, TValue>) => {

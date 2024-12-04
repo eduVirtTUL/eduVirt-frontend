@@ -1,19 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CourseControllerApi } from "@/api";
-import { keys } from "../keys";
-import { toast } from "sonner";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {CourseControllerApi} from "@/api";
+import {keys} from "../keys";
+import {toast} from "sonner";
 
 export const useAddKeyToCourse = () => {
     const queryClient = useQueryClient();
 
-    const { mutate: addKeyToCourse, isLoading } = useMutation({
-        mutationFn: async ({ courseId, key }: { courseId: string, key: string }) => {
+    const {mutate: addKeyToCourse} = useMutation({
+        mutationFn: async ({courseId, key}: { courseId: string, key: string }) => {
             const courseController = new CourseControllerApi();
-            const response = await courseController.setCourseKey(courseId, { key });
+            const response = await courseController.setCourseKey(courseId, {key});
             return response.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
+            queryClient.invalidateQueries({queryKey: [keys.COURSE]});
             toast.success("Course key added successfully!");
         },
         onError: (error: Error) => {
@@ -21,5 +21,5 @@ export const useAddKeyToCourse = () => {
         },
     });
 
-    return { addKeyToCourse, isLoading };
+    return {addKeyToCourse};
 };
