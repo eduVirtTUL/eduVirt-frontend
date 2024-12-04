@@ -11,7 +11,7 @@ interface JwtPayload {
 export const useJoinTeam = () => {
     const queryClient = useQueryClient();
 
-    const { mutate: joinTeam, isLoading } = useMutation({
+    const { mutate: joinTeam } = useMutation({
         mutationFn: async (key: string) => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -34,5 +34,5 @@ export const useJoinTeam = () => {
         },
     });
 
-    return { joinTeam, isLoading };
+    return { joinTeam };
 };
