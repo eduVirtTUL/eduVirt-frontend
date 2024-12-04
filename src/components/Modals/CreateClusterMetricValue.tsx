@@ -9,8 +9,9 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import React from "react";
 import {useMetrics} from "@/data/metrics/useMetrics.tsx";
-import Select from "@/components/ui/select.tsx";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import {CreateMetricValueDto} from "@/api";
+import {LoaderIcon} from "lucide-react";
 
 type CreateClusterMetricValueProps = {
     clusterId: string
@@ -26,13 +27,13 @@ type CreateClusterMetricValueSchema = z.infer<typeof createClusterMetricValueSch
 const CreateClusterMetricValueModal: React.FC<CreateClusterMetricValueProps> = ({clusterId}) => {
     const {isOpen, close} = useDialog();
     const {createClusterMetricValueAsync} = useCreateClusterMetricValue(clusterId!);
-    const {metrics} = useMetrics();
+    const {metrics, isLoading} = useMetrics();
 
     const form = useForm<CreateClusterMetricValueSchema>({
         resolver: zodResolver(createClusterMetricValueSchema),
         defaultValues: {
             metricId: "",
-            value: 0,
+            value: 0
         }
     });
 
@@ -41,6 +42,14 @@ const CreateClusterMetricValueModal: React.FC<CreateClusterMetricValueProps> = (
         close();
         form.reset();
     });
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col my-auto items-center justify-center">
+                <LoaderIcon className="animate-spin size-10"/>
+            </div>
+        );
+    }
 
     return (
         <Dialog
@@ -61,16 +70,15 @@ const CreateClusterMetricValueModal: React.FC<CreateClusterMetricValueProps> = (
                             render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
-                                    <Select {...field}>
-                                        {metrics?.items?.map((metric, index) => (
-                                            <option
-                                                key={metric.id}
-                                                value={metric.id}
-                                                selected={index === 0}
-                                            >
-                                                {metric.name}
-                                            </option>
-                                        ))}
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select metric"/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {metrics?.items?.map(metric => (
+                                                <SelectItem value={metric.id!}>{metric.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
                                     </Select>
                                     <FormMessage/>
                                 </FormItem>

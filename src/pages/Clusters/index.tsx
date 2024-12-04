@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { MoreHorizontal } from "lucide-react";
+import {LoaderIcon, MoreHorizontal} from "lucide-react";
 import { Link } from "react-router";
 
 const columns: ColumnDef<ClusterGeneralDto>[] = [
@@ -65,7 +65,11 @@ const ClustersPage: React.FC = () => {
   const { clusters, isLoading } = useClusters();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col my-auto items-center justify-center">
+        <LoaderIcon className="animate-spin size-10" />
+      </div>
+    );
   }
 
   return (
