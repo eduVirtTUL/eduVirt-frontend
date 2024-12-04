@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import InterfaceList from "./InterfacesList";
 import VirtualMachinesList from "./VirtualMachinesList";
 import VirtualMachineDetails from "./VirtualMachineDetails";
+import PrivateSegmentDrawer from "./PrivateSegmentDrawer";
 
 const ResourceGroupEditor: React.FC = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const ResourceGroupEditor: React.FC = () => {
       <div className="flex flex-row justify-end gap-2 pb-5">
         <AddVmModal id={id!} />
         <Button variant={"secondary"}>Edit</Button>
+        <PrivateSegmentDrawer id={id!} />
       </div>
 
       <div className="grid grid-cols-4 grid-rows-1 gap-x-5 flex-1 h-full overflow-hidden">
