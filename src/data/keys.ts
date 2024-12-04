@@ -6,4 +6,5 @@ export const keys = {
   RESOURCE_GROUP: "resourceGroup",
   VNIC_PROFILE: "vnicProfile",
   VLANS_RANGE: "vlansRange",
+  TEAM: "team"
 };

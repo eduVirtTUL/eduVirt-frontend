@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router";
+import { RouteObject } from "react-router-dom";
 import AuthGuard from "./AuthGuard";
 import RootLayout from "./layout/RootLayout";
 import App from "./App";
@@ -9,6 +9,8 @@ import ResourceGroupPoolsPage from "./pages/ResourceGroupPools";
 import VnicProfilesPage from "./pages/VnicProfiles";
 import VlanRangesPage from "@/pages/VlanRanges";
 import ResourceGroupEditor from "./pages/ResourceGroupEditor";
+import TeamsPage from "./pages/Team";
+import TeamDetailsPage from "./pages/Team/TeamDetailsPage";
 import ResourceGroupPoolPage from "./pages/ResourceGroupPool";
 import ResourceGroupsPage from "./pages/ResourceGroups";
 import ClustersPage from "@/pages/Clusters";
@@ -46,6 +48,13 @@ export const routes: RouteObject[] = [
             children: [
               { index: true, Component: ResourceGroupPoolsPage },
               { path: ":id", Component: ResourceGroupPoolPage },
+            ],
+          },
+          {
+            path: "/teams",
+            children: [
+              { index: true, Component: TeamsPage },
+              { path: ":id", Component: TeamDetailsPage },
             ],
           },
           {
