@@ -58,7 +58,7 @@ const CreateCourseModal: React.FC = () => {
           <DialogTitle>Create a new course</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <FormField
               control={form.control}
               name="name"

@@ -23,6 +23,8 @@ const StatusDot = ({ active }: { active: boolean }) => (
     active ? "bg-green-500" : "bg-red-500"
   )} />
 );
+import React from "react";
+import { useParams } from "react-router";
 
 const CoursePage: React.FC = () => {
   const { id } = useParams();
