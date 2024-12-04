@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { keys } from "../keys";
 import { TeamControllerApi } from "@/api";
-
-export const useTeam = () => {
+import { keys } from "../keys";
+export const useTeam = (id: string) => {
     const { data, isLoading } = useQuery({
-        queryKey: [keys.TEAM],
+        queryKey: [keys.TEAM, id],
         queryFn: async () => {
-            const teamController = new TeamControllerApi
-            const response = await teamController.getTeams();
+            const controller = new TeamControllerApi();
+            const response = await controller.getTeam(id);
+
             return response.data;
         },
     });
 
-    return { teams: data, isLoading };
-}
+    return { team: data, isLoading };
+};

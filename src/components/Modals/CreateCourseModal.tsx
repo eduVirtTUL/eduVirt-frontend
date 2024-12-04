@@ -11,15 +11,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { Switch } from "../ui/switch";
 import { useCreateCourse } from "@/data/course/useCreateCourse";
 import { useDialog } from "@/stores/dialogStore";
 
 const createCourseSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
+  teamBased: z.boolean().default(false),
 });
 
 type CreateCourseSchema = z.infer<typeof createCourseSchema>;
@@ -33,6 +36,7 @@ const CreateCourseModal: React.FC = () => {
     defaultValues: {
       name: "",
       description: "",
+      teamBased: false,
     },
   });
 
@@ -54,7 +58,7 @@ const CreateCourseModal: React.FC = () => {
           <DialogTitle>Create a new course</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -78,6 +82,26 @@ const CreateCourseModal: React.FC = () => {
                     <Textarea {...field} />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="teamBased"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Team Based</FormLabel>
+                    <FormDescription>
+                      Enable team-based features for this course
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
