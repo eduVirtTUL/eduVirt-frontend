@@ -1,10 +1,13 @@
-import {useParams} from "react-router";
 import {LoaderIcon} from "lucide-react";
 import React from "react";
 import DataTable from "@/components/DataTable.tsx";
 import {ColumnDef} from "@tanstack/react-table";
 import {useHosts} from "@/data/cluster/useHosts.ts";
 import {HostDto} from "@/api";
+
+type ClusterDetailsProps = {
+    clusterId: string,
+}
 
 const columns: ColumnDef<HostDto>[] = [
     {accessorKey: "name", header: "Name"},
@@ -13,8 +16,7 @@ const columns: ColumnDef<HostDto>[] = [
     {accessorKey: "memory", header: "Memory size"}
 ]
 
-const HostList: React.FC = () => {
-    const {clusterId} = useParams();
+const HostList: React.FC<ClusterDetailsProps> = ({clusterId}) => {
     const {hosts, isLoading} = useHosts(clusterId!);
 
     if (isLoading) {
