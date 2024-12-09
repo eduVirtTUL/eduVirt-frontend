@@ -13,6 +13,10 @@ import ResourceGroupPoolPage from "./pages/ResourceGroupPool";
 import ResourceGroupsPage from "./pages/ResourceGroups";
 import ClustersPage from "@/pages/Clusters";
 import ClusterLimitsPage from "@/pages/ClusterLimits";
+import ReservationCalendar from "@/pages/Reservations";
+import MaintenancePage from "@/pages/Maintenance";
+import ClusterIntervalList from "@/pages/Maintenance/ClusterIntervalList.tsx";
+import MaintenanceCalendar from "@/pages/Maintenance/MaintenanceCalendar.tsx";
 
 export const routes: RouteObject[] = [
   { path: "/login", Component: LoginPage },
@@ -49,6 +53,21 @@ export const routes: RouteObject[] = [
             ],
           },
           {
+            // TODO maybe change to /networking or /vnic-profiles,
+            //  actually we operating on vnic profiles and /networks may cause miss understanding
+            path: "/networks",
+            children: [
+              { index: true, Component: VnicProfilesPage },
+              { path: "vlans", Component: VlanRangesPage }
+            ],
+          },
+          {
+            path: "/reservation",
+            children: [
+              { index: true, Component: ReservationCalendar }
+            ]
+          },
+          {
             path: "/limits",
             children: [
               { index: true, Component: ClustersPage },
@@ -56,13 +75,18 @@ export const routes: RouteObject[] = [
             ]
           },
           {
-            // TODO maybe change to /networking or /vnic-profiles,
-            //  actually we operating on vnic profiles and /networks may cause miss understanding
-            path: "/networks",
+            path: "/maintenance",
             children: [
-                { index: true, Component: VnicProfilesPage },
-                { path: "vlans", Component: VlanRangesPage }
-            ],
+              { index: true, Component: MaintenancePage },
+              { path: ":id", Component: ClusterIntervalList },
+              {
+                path: "calendar",
+                children: [
+                  { index: true, Component: MaintenanceCalendar },
+                  { path: ":id", Component: MaintenanceCalendar },
+                ],
+              }
+            ]
           }
         ],
       },

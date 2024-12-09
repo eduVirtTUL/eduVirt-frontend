@@ -13,7 +13,7 @@ type ClusterDetailsProps = {
 }
 
 const ClusterDetails: React.FC<ClusterDetailsProps> = ({
-  clusterId
+    clusterId
 }) => {
     const {cluster, isLoading} = useClusterDetails(clusterId);
 
@@ -40,7 +40,7 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({
             <CardContent className="flex flex-col items-start gap-y-4">
                 <Tabs defaultValue="cluster-details" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="cluster-detials">Details</TabsTrigger>
+                        <TabsTrigger value="cluster-details">Details</TabsTrigger>
                         <TabsTrigger value="host-list">Hosts</TabsTrigger>
                     </TabsList>
                     <TabsContent value="cluster-details">

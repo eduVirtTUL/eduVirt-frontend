@@ -63,7 +63,7 @@ const CreateClusterMetricValueModal: React.FC<CreateClusterMetricValueProps> = (
                     <DialogTitle>Create a metric value</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className={"space-y-4"}>
                         <FormField
                             control={form.control}
                             name="metricId"

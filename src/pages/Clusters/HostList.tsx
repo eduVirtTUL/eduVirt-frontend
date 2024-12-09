@@ -12,7 +12,7 @@ type ClusterDetailsProps = {
 const columns: ColumnDef<HostDto>[] = [
     {accessorKey: "name", header: "Name"},
     {accessorKey: "address", header: "Domain name"},
-    {accessorKey: "cpu", header: "CPU count"},
+    {accessorKey: "cpus", header: "CPU count"},
     {accessorKey: "memory", header: "Memory size"}
 ]
 
