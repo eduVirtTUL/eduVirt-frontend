@@ -6,7 +6,6 @@ import AddVmModal from "./AddVmModal";
 import { Button } from "@/components/ui/button";
 import InterfaceList from "./InterfacesList";
 import VirtualMachinesList from "./VirtualMachinesList";
-import VirtualMachineDetails from "./VirtualMachineDetails";
 import PrivateSegmentDrawer from "./PrivateSegmentDrawer";
 
 const ResourceGroupEditor: React.FC = () => {
@@ -24,13 +23,12 @@ const ResourceGroupEditor: React.FC = () => {
         <PrivateSegmentDrawer id={id!} />
       </div>
 
-      <div className="grid grid-cols-4 grid-rows-1 gap-x-5 flex-1 h-full overflow-hidden">
+      <div className="grid grid-cols-2 grid-rows-1 gap-x-5 flex-1 h-full overflow-hidden">
         <VirtualMachinesList
           id={id!}
           selectedVm={selectedVm}
           setSelectedVm={setSelectedVm}
         />
-        <VirtualMachineDetails vmId={selectedVm} />
         <InterfaceList id={selectedVm} />
       </div>
     </>

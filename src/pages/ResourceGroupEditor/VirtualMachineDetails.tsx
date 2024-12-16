@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useVm } from "@/data/resources/useVm";
 import { MousePointer2Icon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { Link, useParams } from "react-router";
-import AddPrivateSegmentModal from "./AddPrivateSegmentModal";
 import AttachVmToSegmentModal from "./AttachVmToSegmentModal";
 
 type VirtualMachineDetailsProps = {
@@ -90,7 +89,6 @@ const VirtualMachineDetails: React.FC<VirtualMachineDetailsProps> = ({
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col flex-1 h-full overflow-hidden">
-                <AddPrivateSegmentModal id={id!} />
                 <AttachVmToSegmentModal id={id!} vmId={vmId!} />
               </CardContent>
             </Card>

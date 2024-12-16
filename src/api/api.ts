@@ -1059,6 +1059,18 @@ export interface VmDto {
     'name'?: string;
     /**
      * 
+     * @type {number}
+     * @memberof VmDto
+     */
+    'cpuCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof VmDto
+     */
+    'memory'?: number;
+    /**
+     * 
      * @type {Array<NicDto>}
      * @memberof VmDto
      */
