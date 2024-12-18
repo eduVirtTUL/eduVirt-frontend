@@ -252,7 +252,7 @@ const ReservationCalendar: React.FC = () => {
     const {open} = useDialog();
 
     const resourceGroupId = uuid();
-    const calendarRef = useRef(null);
+    const calendarRef = useRef<FullCalendar | null>(null);
     const [events] = useState<EventInput[]>([]);
 
     const [eventStart, setEventStart] = useState<Date | null>(null);
@@ -295,7 +295,7 @@ const ReservationCalendar: React.FC = () => {
     }, []);
 
     const handleSelect = (arg: DateSelectArg) => {
-        const calendarApi = calendarRef.current.getApi()
+        const calendarApi = calendarRef.current?.getApi()
         const {start, end} = arg;
 
         const viewType = arg.view.type;
@@ -304,7 +304,7 @@ const ReservationCalendar: React.FC = () => {
         const currentDate = new Date();
         if (start < currentDate || end < currentDate) return;
 
-        calendarApi.unselect();
+        calendarApi?.unselect();
         setEventStart(start);
         setEventEnd(end);
         open("createReservation");
@@ -313,8 +313,8 @@ const ReservationCalendar: React.FC = () => {
     const allowSelect = (arg: DateSpanApi) => {
         const {start, end} = arg;
 
-        const calendarApi = calendarRef.current.getApi();
-        const currentView = calendarApi.view.type;
+        const calendarApi = calendarRef.current?.getApi();
+        const currentView = calendarApi?.view.type;
 
         if (currentView == 'dayGridMonth') return true;
 
@@ -343,7 +343,7 @@ const ReservationCalendar: React.FC = () => {
 
     const handleDateClick = (info: DateClickArg) => {
         const clickedDate = info.date;
-        calendarRef.current.getApi().changeView("timeGridWeek", clickedDate);
+        calendarRef.current?.getApi().changeView("timeGridWeek", clickedDate);
     }
 
     const closeCreateReservationDialog = () => {

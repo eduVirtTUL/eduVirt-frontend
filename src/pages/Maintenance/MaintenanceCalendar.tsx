@@ -18,16 +18,16 @@ const headerToolbar: ToolbarInput = {
 }
 
 const MaintenanceCalendar: React.FC = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const {open} = useDialog();
 
-    const calendarRef = useRef(null);
+    const calendarRef = useRef<FullCalendar | null>(null);
 
-    const [events, setEvents] = useState<EventInput[]>([]);
+    const [events, setEvents] = useState<EventInput[] | undefined>([]);
     const [eventStart, setEventStart] = useState<Date | null>(null);
     const [eventEnd, setEventEnd] = useState<Date | null>(null);
 
-    const { intervals, isLoading } = useMaintenanceIntervals(id, true);
+    const {intervals, isLoading} = useMaintenanceIntervals(id, true);
 
     const {theme} = useTheme();
 
@@ -52,13 +52,13 @@ const MaintenanceCalendar: React.FC = () => {
     }, [intervals, isLoading]);
 
     const handleSelect = (arg: DateSelectArg) => {
-        const calendarApi = calendarRef.current.getApi()
+        const calendarApi = calendarRef.current?.getApi();
         const {start, end} = arg;
 
         const currentDate = new Date();
         if (start < currentDate || end < currentDate) return;
 
-        calendarApi.unselect();
+        calendarApi?.unselect();
         setEventStart(start);
         setEventEnd(end);
         open("createInterval");
@@ -83,7 +83,7 @@ const MaintenanceCalendar: React.FC = () => {
 
     const handleDateClick = (info: DateClickArg) => {
         const clickedDate = info.date;
-        calendarRef.current.getApi().changeView("timeGridWeek", clickedDate);
+        calendarRef.current?.getApi().changeView("timeGridWeek", clickedDate);
     }
 
     const closeCreateReservationDialog = () => {

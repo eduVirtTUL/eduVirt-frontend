@@ -7,7 +7,7 @@ export const useHosts = (id: string) => {
         queryKey: [keys.HOSTS, id],
         queryFn: async () => {
             const controller = new ClusterControllerApi();
-            const response = await controller.findCpuInfoByClusterId(id);
+            const response = await controller.findHostInfoByClusterId(id);
             return response.data;
         }
     });

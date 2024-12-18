@@ -9,7 +9,7 @@ export const useRemoveMaintenanceInterval = () => {
         mutationKey: ["removeMaintenanceInterval"],
         mutationFn: async (maintenanceIntervalId: string) => {
             const controller = new MaintenanceIntervalControllerApi();
-            const response = await controller.cancelMaintenanceInterval(maintenanceIntervalId);
+            const response = await controller.finishMaintenanceInterval(maintenanceIntervalId);
             return response.data;
         },
         onSuccess: () => {
