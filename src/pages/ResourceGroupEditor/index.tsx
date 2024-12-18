@@ -1,17 +1,28 @@
 import PageHeader from "@/components/PageHeader";
 import { useResourceGroup } from "@/data/resourceGroup/useResourceGroup";
 import React from "react";
-import { useParams } from "react-router";
 import AddVmModal from "./AddVmModal";
 import { Button } from "@/components/ui/button";
-import InterfaceList from "./InterfacesList";
+import InterfaceList from "./components/InterfacesList";
 import VirtualMachinesList from "./VirtualMachinesList";
 import PrivateSegmentDrawer from "./PrivateSegmentDrawer";
+import type { Route } from ".react-router/types/src/pages/ResourceGroupEditor/+types/index";
+import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 
-const ResourceGroupEditor: React.FC = () => {
-  const { id } = useParams();
+export const handle = {
+  noScroll: true,
+};
+
+const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
+  params: { id },
+}) => {
   const { resourceGroup } = useResourceGroup(id!);
   const [selectedVm, setSelectedVm] = React.useState<string>();
+  const { setId } = useResourceGroupEditorStore();
+
+  React.useEffect(() => {
+    setId(id!);
+  }, [id, setId]);
 
   return (
     <>

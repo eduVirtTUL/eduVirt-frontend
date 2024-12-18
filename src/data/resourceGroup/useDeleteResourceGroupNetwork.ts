@@ -13,8 +13,6 @@ export const useDeleteResourceGroupNetwork = () => {
       await controller.deleteNetwork(id);
     },
     onSuccess: () => {
-      console.log(rgId);
-
       toast.success("Network deleted");
       return queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.networks(rgId!),

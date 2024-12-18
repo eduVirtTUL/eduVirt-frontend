@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useVm } from "@/data/resources/useVm";
+import { useVm } from "@/data/resourceGroup/useResourceGroupVm";
 import { MousePointer2Icon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { Link, useParams } from "react-router";
-import AttachVmToSegmentModal from "./AttachVmToSegmentModal";
+import AttachVmToSegmentModal from "./modals/AttachVmToSegmentModal";
 
 type VirtualMachineDetailsProps = {
   vmId?: string;
@@ -15,8 +15,6 @@ const VirtualMachineDetails: React.FC<VirtualMachineDetailsProps> = ({
 }) => {
   const { id } = useParams();
   const { vm, isLoading } = useVm(vmId);
-
-  console.log(vm, isLoading);
 
   if (!vm && !isLoading) {
     return (

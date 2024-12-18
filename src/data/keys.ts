@@ -13,4 +13,5 @@ export const resourceGroupKeys = {
   all: ["resourceGroup"] as const,
   detail: (id: string) => ["resourceGroup", id] as const,
   networks: (id: string) => ["resourceGroup", id, "network"] as const,
+  vm: (id: string, vmId: string) => ["resourceGroup", id, "vm", vmId] as const,
 };

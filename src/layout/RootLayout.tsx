@@ -24,9 +24,9 @@ import {
   SunIcon,
   User2,
   Users,
-  ChartLine
+  ChartLine,
 } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import logo from "@/assets/edu_2.png";
 import {
   DropdownMenu,
@@ -60,8 +60,8 @@ const menuItems = [
   {
     to: "/limits",
     label: (t) => t("menu.limits"),
-    icon: <ChartLine />
-  }
+    icon: <ChartLine />,
+  },
 ] satisfies {
   to: string;
   label: (t: TFunction) => string;
@@ -83,8 +83,6 @@ const RootLayout: React.FC = () => {
 
   const disableScroll =
     lastMatch?.handle instanceof Object && "noScroll" in lastMatch.handle;
-
-  console.log(disableScroll);
 
   return (
     <SidebarProvider>
@@ -179,7 +177,9 @@ const RootLayout: React.FC = () => {
             disableScroll ? "h-screen" : "min-h-screen"
           )}
         >
-          <Outlet />
+          <Suspense>
+            <Outlet />
+          </Suspense>
         </div>
         <Toaster />
       </main>

@@ -1,6 +1,6 @@
-import { ResourceGroupNetworkControllerApi } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { resourceGroupKeys } from "../keys";
+import { ResourceGroupNetworkControllerApi } from "@/api";
 
 export const useResourceGroupNetworks = (id: string) => {
   const { data, isLoading } = useQuery({
