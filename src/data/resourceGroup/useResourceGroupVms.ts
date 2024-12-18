@@ -5,7 +5,7 @@ export const useResourceGroupVms = (id: string) => {
     queryKey: ["resourceGroup", id],
     queryFn: async () => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.getVms1(id);
+      const response = await controller.getVms(id);
       return response.data;
     },
   });

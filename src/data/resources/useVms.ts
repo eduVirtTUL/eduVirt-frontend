@@ -6,7 +6,7 @@ export const useVms = () => {
     queryKey: ["vm"],
     queryFn: async () => {
       const controller = new VmControllerApi();
-      const response = await controller.getVms();
+      const response = await controller.getVms1();
       return response.data;
     },
   });

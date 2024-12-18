@@ -1,9 +1,7 @@
 import React from "react";
-import { useClusters } from "@/data/cluster/useClusters.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import { ClusterGeneralDto } from "@/api";
 import PageHeader from "@/components/PageHeader.tsx";
-import DataTable from "@/pages/Courses/DataTable.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { MoreHorizontal } from "lucide-react";
+import {MoreHorizontal} from "lucide-react";
 import { Link } from "react-router";
+import ClusterList from "@/pages/Clusters/ClusterList.tsx";
 
 const columns: ColumnDef<ClusterGeneralDto>[] = [
   {
@@ -62,16 +61,10 @@ const columns: ColumnDef<ClusterGeneralDto>[] = [
 ];
 
 const ClustersPage: React.FC = () => {
-  const { clusters, isLoading } = useClusters();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <PageHeader title="Clusters" />
-      <DataTable data={clusters ?? []} columns={columns} />
+      <ClusterList columns={columns} />
     </>
   );
 };
