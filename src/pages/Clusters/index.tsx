@@ -1,16 +1,16 @@
 import React from "react";
-import { useClusters } from "@/data/cluster/useClusters.ts";
+import { useClusters } from "@/data/cluster/useClusters";
 import { ColumnDef } from "@tanstack/react-table";
 import { ClusterGeneralDto } from "@/api";
-import PageHeader from "@/components/PageHeader.tsx";
-import DataTable from "@/pages/Courses/DataTable.tsx";
+import PageHeader from "@/components/PageHeader";
+import DataTable from "@/pages/Courses/DataTable";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Link } from "react-router";
 

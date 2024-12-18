@@ -81,10 +81,6 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
 
   const [tab, setTab] = React.useState("first");
 
-  const values = form.watch();
-
-  console.log(values);
-
   const handleSubmit = form.handleSubmit((value) => {
     addVm(value);
   });

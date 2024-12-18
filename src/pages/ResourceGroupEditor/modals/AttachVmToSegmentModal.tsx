@@ -27,48 +27,55 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAttachVmToNetwork } from "@/data/resourceGroup/useAttachVmToNetwork";
+import { useAttachNicToNetwork } from "@/data/resourceGroup/useAttachNicToNetwork";
 import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupNetworks";
 import { cn } from "@/lib/utils";
+import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDownIcon } from "lucide-react";
+import { Check, ChevronsUpDownIcon, ClipboardPenLineIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 type AttachVmToSegmentModalProps = {
-  id: string;
   vmId: string;
+  nicId: string;
 };
 
 const attachVmToNetworkSchema = z.object({
   vmId: z.string().min(1),
   networkId: z.string().min(1),
+  nicId: z.string().min(1),
 });
 
 type AttachVmToNetworkSchema = z.infer<typeof attachVmToNetworkSchema>;
 
 const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
-  id,
   vmId,
+  nicId,
 }) => {
-  const { networks } = useResourceGroupNetworks(id);
-  const { attachVmToNetwork } = useAttachVmToNetwork();
+  const { id } = useResourceGroupEditorStore();
+  const { networks } = useResourceGroupNetworks(id ?? "");
+  const { attachNicToNetwork } = useAttachNicToNetwork();
   const form = useForm<AttachVmToNetworkSchema>({
     resolver: zodResolver(attachVmToNetworkSchema),
     defaultValues: {
       vmId: vmId,
       networkId: "",
+      nicId: nicId,
     },
   });
 
   const handleSubmit = form.handleSubmit((data) => {
-    attachVmToNetwork(data);
+    attachNicToNetwork(data);
   });
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add vm to segment</Button>
+        <Button>
+          <ClipboardPenLineIcon />
+          Attach
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

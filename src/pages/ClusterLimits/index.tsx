@@ -1,22 +1,22 @@
-import { useCluster } from "@/data/cluster/useCluster.ts";
+import { useCluster } from "@/data/cluster/useCluster";
 import { useParams } from "react-router";
-import { useClusterMetrics } from "@/data/cluster-metrics/useClusterMetrics.ts";
-import PageHeader from "@/components/PageHeader.tsx";
+import { useClusterMetrics } from "@/data/cluster-metrics/useClusterMetrics";
+import PageHeader from "@/components/PageHeader";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricValueDto } from "@/api";
-import DataTable from "@/pages/Courses/DataTable.tsx";
+import DataTable from "@/pages/Courses/DataTable";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { MoreHorizontal, PlusIcon } from "lucide-react";
 import React from "react";
-import { useDialog } from "@/stores/dialogStore.ts";
-import CreateClusterMetricValue from "@/components/Modals/CreateClusterMetricValue.tsx";
-import { useRemoveClusterMetricValue } from "@/data/cluster-metrics/useRemoveClusterMetricValue.ts";
+import { useDialog } from "@/stores/dialogStore";
+import CreateClusterMetricValue from "@/components/Modals/CreateClusterMetricValue";
+import { useRemoveClusterMetricValue } from "@/data/cluster-metrics/useRemoveClusterMetricValue";
 
 const ClusterLimitsPage: React.FC = () => {
   const { id } = useParams();

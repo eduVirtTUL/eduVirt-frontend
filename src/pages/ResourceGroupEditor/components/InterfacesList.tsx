@@ -1,14 +1,22 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useVm } from "@/data/resources/useVm";
+import { useVm } from "@/data/resourceGroup/useResourceGroupVm";
 import { MousePointer2Icon } from "lucide-react";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
+import Interface from "./Interface";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { useDetachNicFromNetwork } from "@/data/resourceGroup/useDetachNicFromNetwork";
+import React from "react";
+import { useDialog } from "@/stores/dialogStore";
 
 type InterfaceListProps = {
   id?: string;
 };
 
 const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
+  const { close, open } = useDialog();
   const { vm, isLoading } = useVm(id);
+  const { detachNicFromNetwork } = useDetachNicFromNetwork();
+  const nicId = React.useRef<string>();
 
   if (!vm && !isLoading) {
     return (
@@ -43,23 +51,29 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
 
   return (
     <>
-      <Card>
+      <ConfirmationDialog
+        onConfirm={() => {
+          detachNicFromNetwork({ vmId: vm?.id, nicId: nicId.current });
+          close();
+        }}
+      />
+      <Card className="flex flex-col">
         <CardHeader>
           <CardTitle>Interfaces</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 h-full overflow-hidden">
-          <div className="max-h-full overflow-y-auto">
-            <div className="flex flex-col gap-2">
-              {vm?.nics?.map((nic) => (
-                <div
-                  key={nic.id}
-                  className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col p-6"
-                >
-                  <span className="font-semibold text-xl">{nic.name}</span>
-                  <span>Profile: {nic.profileName}</span>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-col h-full gap-2 overflow-y-scroll">
+            {vm?.nics?.map((nic) => (
+              <Interface
+                key={nic.id}
+                nic={nic}
+                vmId={vm.id ?? ""}
+                onDetach={() => {
+                  nicId.current = nic.id;
+                  open("confirmation");
+                }}
+              />
+            ))}
           </div>
         </CardContent>
       </Card>
