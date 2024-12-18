@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ClusterMetricControllerApi } from "@/api";
-import { keys } from "@/data/keys.ts";
+import { keys } from "@/data/keys";
 import { toast } from "sonner";
 
 export const useRemoveClusterMetricValue = (id: string) => {
