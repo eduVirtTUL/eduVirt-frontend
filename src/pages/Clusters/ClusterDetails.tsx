@@ -44,7 +44,7 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({
                         <TabsTrigger value="host-list">Hosts</TabsTrigger>
                     </TabsList>
                     <TabsContent value="cluster-details">
-                        <ClusterInfo clusterId={clusterId} />
+                        <ClusterInfo cluster={cluster!} />
                     </TabsContent>
                     <TabsContent value="host-list">
                         <HostList clusterId={clusterId} />

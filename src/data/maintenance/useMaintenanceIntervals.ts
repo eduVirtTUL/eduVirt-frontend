@@ -7,7 +7,7 @@ export const useMaintenanceIntervals = (
     active: boolean
 ) => {
     const {data, isLoading} = useQuery({
-        queryKey: [keys.MAINTENANCE_INTERVALS],
+        queryKey: [keys.MAINTENANCE_INTERVALS, active],
         queryFn: async() => {
             const controller = new MaintenanceIntervalControllerApi();
             const response = await controller

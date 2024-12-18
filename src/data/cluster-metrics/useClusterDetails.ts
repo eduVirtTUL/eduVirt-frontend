@@ -4,7 +4,7 @@ import {ClusterControllerApi} from "@/api";
 
 export const useClusterDetails = (id: string) => {
     const {data, isLoading} = useQuery({
-        queryKey: [keys.CLUSTER],
+        queryKey: [keys.CLUSTER, id],
         queryFn: async() => {
             const controller = new ClusterControllerApi();
             const response = await controller.findClusterById(id);

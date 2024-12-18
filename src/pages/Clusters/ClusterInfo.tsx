@@ -1,27 +1,16 @@
-import {useClusterDetails} from "@/data/cluster-metrics/useClusterDetails.ts";
-import {LoaderIcon} from "lucide-react";
 import React from "react";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {ClusterDetailsDto} from "@/api";
 
 type ClusterDetailsProps = {
-    clusterId: string,
+    cluster: ClusterDetailsDto,
 }
 
-const ClusterInfo: React.FC<ClusterDetailsProps> = ({clusterId}) => {
-    const {cluster, isLoading} = useClusterDetails(clusterId!);
-
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-screen my-auto">
-                <LoaderIcon className="animate-spin size-10"/>
-            </div>
-        )
-    }
-
+const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
     return (
         <>
-            <div>
+            <div className="flex flex-col space-y-2">
                 {[
                     { label: "Identifier", value: cluster?.id },
                     { label: "Description", value: cluster?.description },
