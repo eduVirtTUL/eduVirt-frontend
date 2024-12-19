@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useVm } from "@/data/resourceGroup/useResourceGroupVm";
-import { MousePointer2Icon } from "lucide-react";
+import { CircleSlashIcon, MousePointerClickIcon } from "lucide-react";
 import BounceLoader from "react-spinners/BounceLoader";
 import Interface from "./Interface";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
@@ -26,7 +26,7 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
         </CardHeader>
         <CardContent className="flex flex-col flex-1 h-full overflow-hidden">
           <div className="flex justify-center items-center gap-2">
-            <MousePointer2Icon />
+            <MousePointerClickIcon />
             <span className="text-2xl">Select virtual machine</span>
           </div>
         </CardContent>
@@ -62,18 +62,27 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
           <CardTitle>Interfaces</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 h-full overflow-hidden">
-          <div className="flex flex-col h-full gap-2 overflow-y-scroll">
-            {vm?.nics?.map((nic) => (
-              <Interface
-                key={nic.id}
-                nic={nic}
-                vmId={vm.id ?? ""}
-                onDetach={() => {
-                  nicId.current = nic.id;
-                  open("confirmation");
-                }}
-              />
-            ))}
+          <div className="flex flex-col h-full gap-2 overflow-y-auto">
+            {vm?.nics?.length === 0 ? (
+              <div className="flex items-center h-full flex-col gap-4">
+                <CircleSlashIcon className="w-12 h-12" />
+                No interfaces found
+              </div>
+            ) : (
+              <>
+                {vm?.nics?.map((nic) => (
+                  <Interface
+                    key={nic.id}
+                    nic={nic}
+                    vmId={vm.id ?? ""}
+                    onDetach={() => {
+                      nicId.current = nic.id;
+                      open("confirmation");
+                    }}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 type Dialog =
+  | "addVmToResourceGroup"
   | "createCourse"
   | "createPool"
   | "createVlansRange"

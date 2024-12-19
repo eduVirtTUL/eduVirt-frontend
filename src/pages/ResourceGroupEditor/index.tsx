@@ -1,13 +1,14 @@
 import PageHeader from "@/components/PageHeader";
 import { useResourceGroup } from "@/data/resourceGroup/useResourceGroup";
 import React from "react";
-import AddVmModal from "./AddVmModal";
+import AddVmModal from "./modals/AddVmModal";
 import { Button } from "@/components/ui/button";
 import InterfaceList from "./components/InterfacesList";
 import VirtualMachinesList from "./VirtualMachinesList";
 import PrivateSegmentDrawer from "./PrivateSegmentDrawer";
 import type { Route } from ".react-router/types/src/pages/ResourceGroupEditor/+types/index";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
+import { useDialog } from "@/stores/dialogStore";
 
 export const handle = {
   noScroll: true,
@@ -16,6 +17,7 @@ export const handle = {
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
 }) => {
+  const { open } = useDialog();
   const { resourceGroup } = useResourceGroup(id!);
   const [selectedVm, setSelectedVm] = React.useState<string>();
   const { setId } = useResourceGroupEditorStore();
@@ -26,10 +28,17 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 
   return (
     <>
+      <AddVmModal id={id!} />
       <PageHeader title="Create resorce group" />
       <p>{resourceGroup?.name}</p>
       <div className="flex flex-row justify-end gap-2 pb-5">
-        <AddVmModal id={id!} />
+        <Button
+          onClick={() => {
+            open("addVmToResourceGroup");
+          }}
+        >
+          Add Virtual Machine
+        </Button>
         <Button variant={"secondary"}>Edit</Button>
         <PrivateSegmentDrawer id={id!} />
       </div>
