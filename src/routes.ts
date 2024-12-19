@@ -50,7 +50,9 @@ export default [
         route(":id", "./pages/Maintenance/ClusterIntervalList.tsx"),
         ...prefix("calendar", [
           index("./pages/Maintenance/MaintenanceCalendar.tsx"),
-          route(":id", "./pages/Maintenance/MaintenanceCalendar.tsx"),
+          route(":id", "./pages/Maintenance/MaintenanceCalendar.tsx", {
+            id: "id",
+          }),
         ]),
       ]),
     ]),
