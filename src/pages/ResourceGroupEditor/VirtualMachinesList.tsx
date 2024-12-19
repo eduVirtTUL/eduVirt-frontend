@@ -46,7 +46,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                         }}
                       >
                         <RadioGroupItem value={vm.id ?? ""} />
-                        <div className="flex flex-row items-center justify-between w-full">
+                        <div className="flex flex-row items-center justify-between w-full flex-wrap gap-4">
                           <div className="flex flex-col gap-2">
                             <div className="flex flex-row items-center gap-2">
                               <span className="font-semibold">{vm.name}</span>
@@ -59,8 +59,9 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                               <Badge>{vm.nics?.length} NICs</Badge>
                             </div>
                           </div>
-                          <div className="flex flex-row gap-2 flex-wrap items-center justify-end">
+                          <div className="flex flex-row gap-2 items-center flex-wrap">
                             <Button onClick={(e) => e.stopPropagation()}>
+                              Edit
                               <SquarePenIcon />
                             </Button>
                             <Button
@@ -72,6 +73,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 target="_blank"
                                 to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
                               >
+                                oVirt
                                 <ExternalLinkIcon />
                               </Link>
                             </Button>
