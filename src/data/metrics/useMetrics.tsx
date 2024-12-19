@@ -12,5 +12,5 @@ export const useMetrics = () => {
     },
   });
 
-  return { metrics: data, defaultMetric: data?.items?.[0], isLoading };
-};
+    return {metrics: data, isLoading};
+}
