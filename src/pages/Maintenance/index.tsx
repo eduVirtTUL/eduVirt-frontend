@@ -1,7 +1,9 @@
-import React from "react";
+import PageHeader from "@/components/PageHeader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SystemIntervalList from "@/pages/Maintenance/SystemIntervalList";
+import ClusterList from "@/pages/Clusters/ClusterList";
 import { ColumnDef } from "@tanstack/react-table";
 import { ClusterGeneralDto } from "@/api";
-import PageHeader from "@/components/PageHeader";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Link } from "react-router";
-import ClusterList from "@/pages/Clusters/ClusterList";
+import React from "react";
 
 const columns: ColumnDef<ClusterGeneralDto>[] = [
   {
@@ -25,14 +27,6 @@ const columns: ColumnDef<ClusterGeneralDto>[] = [
   {
     accessorKey: "comment",
     header: "Comment",
-  },
-  {
-    accessorKey: "hostCount",
-    header: "Hosts",
-  },
-  {
-    accessorKey: "vmCount",
-    header: "VMs",
   },
   {
     id: "action",
@@ -50,7 +44,9 @@ const columns: ColumnDef<ClusterGeneralDto>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link to={`/limits/${cluster.id}`}>View cluster limits</Link>
+                <Link to={`/maintenance/${cluster.id}`}>
+                  Show cluster intervals
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -60,13 +56,24 @@ const columns: ColumnDef<ClusterGeneralDto>[] = [
   },
 ];
 
-const ClustersPage: React.FC = () => {
+const MaintenancePage: React.FC = () => {
   return (
     <>
-      <PageHeader title="Clusters" />
-      <ClusterList columns={columns} />
+      <PageHeader title={"Maintenance"} />
+      <Tabs defaultValue="system">
+        <TabsList>
+          <TabsTrigger value="system">System</TabsTrigger>
+          <TabsTrigger value="cluster">Cluster</TabsTrigger>
+        </TabsList>
+        <TabsContent value="system">
+          <SystemIntervalList active={true} />
+        </TabsContent>
+        <TabsContent value="cluster">
+          <ClusterList columns={columns} />
+        </TabsContent>
+      </Tabs>
     </>
   );
 };
 
-export default ClustersPage;
+export default MaintenancePage;

@@ -7,8 +7,8 @@ type Dialog =
   | "createVlansRange"
   | "showVnicProfileDetails"
   | "createClusterMetricValue"
-  | "createVlansRange"
-  | "confirmation";
+  | "confirmation"
+  | "createReservation" | "createInterval";
 
 type DialogStore = {
   opened?: Dialog;

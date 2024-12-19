@@ -42,6 +42,19 @@ export default [
         index("./pages/VnicProfiles/index.tsx"),
         route("vlans", "./pages/VlanRanges/index.tsx"),
       ]),
+
+      ...prefix("reservation", [index("./pages/Reservations/index.tsx")]),
+
+      ...prefix("maintenance", [
+        index("./pages/Maintenance/index.tsx"),
+        route(":id", "./pages/Maintenance/ClusterIntervalList.tsx"),
+        ...prefix("calendar", [
+          index("./pages/Maintenance/MaintenanceCalendar.tsx"),
+          route(":id", "./pages/Maintenance/MaintenanceCalendar.tsx", {
+            id: "id",
+          }),
+        ]),
+      ]),
     ]),
   ]),
 ] satisfies RouteConfig;
