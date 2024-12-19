@@ -1,14 +1,25 @@
 import { useDialog } from "@/stores/dialogStore";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 import { Button } from "./ui/button";
+import { CheckIcon, CircleXIcon } from "lucide-react";
 
 type ConfirmationDialogProps = {
+  header: string;
+  text: React.ReactNode;
   onClose?: () => void;
   onConfirm: () => void;
 };
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
+  text,
+  header,
 }) => {
   const { isOpen, close } = useDialog();
 
@@ -16,18 +27,24 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     <Dialog open={isOpen("confirmation")} onOpenChange={() => close()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure you want to delete this item?</DialogTitle>
+          <DialogTitle>{header}</DialogTitle>
+          <DialogDescription>{text}</DialogDescription>
         </DialogHeader>
-        <div>
+        <div className="flex flex-row justify-between">
+          <Button onClick={close} variant="secondary">
+            <CircleXIcon />
+            No
+          </Button>
           <Button
+            variant="destructive"
             onClick={() => {
               onConfirm();
               close();
             }}
           >
             Yes
+            <CheckIcon />
           </Button>
-          <Button onClick={close}>No</Button>
         </div>
       </DialogContent>
     </Dialog>
