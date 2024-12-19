@@ -27,7 +27,7 @@ import {
   ChartLine,
   Wrench
 } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import logo from "@/assets/edu_2.png";
 import {
   DropdownMenu,
@@ -77,8 +77,6 @@ const RootLayout: React.FC = () => {
 
   const disableScroll =
     lastMatch?.handle instanceof Object && "noScroll" in lastMatch.handle;
-
-  console.log(disableScroll);
 
   return (
     <SidebarProvider>
@@ -173,7 +171,9 @@ const RootLayout: React.FC = () => {
             disableScroll ? "h-screen" : "min-h-screen"
           )}
         >
-          <Outlet />
+          <Suspense>
+            <Outlet />
+          </Suspense>
         </div>
         <Toaster />
       </main>

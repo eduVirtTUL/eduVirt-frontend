@@ -1,6 +1,13 @@
 import { create } from "zustand";
 
-type Dialog = "createCourse" | "createPool" | "createVlansRange" | "showVnicProfileDetails" | "createClusterMetricValue" | "createReservation" | "createInterval";
+type Dialog =
+  | "createCourse"
+  | "createPool"
+  | "createVlansRange"
+  | "showVnicProfileDetails"
+  | "createClusterMetricValue"
+  | "confirmation"
+  | "createReservation" | "createInterval";
 
 type DialogStore = {
   opened?: Dialog;

@@ -1,7 +1,7 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {ClusterMetricControllerApi, CreateMetricValueDto} from "@/api";
-import {keys} from "@/data/keys.ts";
-import {toast} from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ClusterMetricControllerApi, CreateMetricValueDto } from "@/api";
+import { keys } from "@/data/keys";
+import { toast } from "sonner";
 
 export const useCreateClusterMetricValue = (id: string) => {
     const queryClient = useQueryClient();
@@ -21,5 +21,8 @@ export const useCreateClusterMetricValue = (id: string) => {
         },
     });
 
-    return {createClusterMetricValue: mutate, createClusterMetricValueAsync: mutateAsync };
-}
+  return {
+    createClusterMetricValue: mutate,
+    createClusterMetricValueAsync: mutateAsync,
+  };
+};

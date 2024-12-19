@@ -1,17 +1,17 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { ClusterGeneralDto } from "@/api";
-import PageHeader from "@/components/PageHeader.tsx";
+import PageHeader from "@/components/PageHeader";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import {MoreHorizontal} from "lucide-react";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
 import { Link } from "react-router";
-import ClusterList from "@/pages/Clusters/ClusterList.tsx";
+import ClusterList from "@/pages/Clusters/ClusterList";
 
 const columns: ColumnDef<ClusterGeneralDto>[] = [
   {

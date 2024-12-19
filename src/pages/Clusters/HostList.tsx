@@ -1,37 +1,37 @@
-import {LoaderIcon} from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 import React from "react";
-import DataTable from "@/components/DataTable.tsx";
-import {ColumnDef} from "@tanstack/react-table";
-import {useHosts} from "@/data/cluster/useHosts.ts";
-import {HostDto} from "@/api";
+import DataTable from "@/components/DataTable";
+import { ColumnDef } from "@tanstack/react-table";
+import { useHosts } from "@/data/cluster/useHosts";
+import { HostDto } from "@/api";
 
 type ClusterDetailsProps = {
-    clusterId: string,
-}
+  clusterId: string;
+};
 
 const columns: ColumnDef<HostDto>[] = [
-    {accessorKey: "name", header: "Name"},
-    {accessorKey: "address", header: "Domain name"},
-    {accessorKey: "cpus", header: "CPU count"},
-    {accessorKey: "memory", header: "Memory size"}
-]
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "address", header: "Domain name" },
+  { accessorKey: "cpus", header: "CPU count" },
+  { accessorKey: "memory", header: "Memory size" },
+];
 
-const HostList: React.FC<ClusterDetailsProps> = ({clusterId}) => {
-    const {hosts, isLoading} = useHosts(clusterId!);
+const HostList: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
+  const { hosts, isLoading } = useHosts(clusterId!);
 
-    if (isLoading) {
-        return (
-            <div className="flex flex-col my-auto items-center justify-center">
-                <LoaderIcon className="animate-spin size-10" />
-            </div>
-        );
-    }
-
+  if (isLoading) {
     return (
-        <>
-            <DataTable data={hosts ?? []} columns={columns}/>
-        </>
+      <div className="flex flex-col my-auto items-center justify-center">
+        <LoaderIcon className="animate-spin size-10" />
+      </div>
     );
-}
+  }
+
+  return (
+    <>
+      <DataTable data={hosts ?? []} columns={columns} />
+    </>
+  );
+};
 
 export default HostList;

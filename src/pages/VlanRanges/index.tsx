@@ -1,17 +1,17 @@
-import PageHeader from "@/components/PageHeader.tsx";
-import { useDialog } from "@/stores/dialogStore.ts";
-import { Button } from "@/components/ui/button.tsx";
+import PageHeader from "@/components/PageHeader";
+import { useDialog } from "@/stores/dialogStore";
+import { Button } from "@/components/ui/button";
 import { LoaderIcon, PlusIcon, Undo2 } from "lucide-react";
-import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal.tsx";
-import { useVlansRanges } from "@/data/network/vlan/useVlansRanges.ts";
+import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal";
+import { useVlansRanges } from "@/data/network/vlan/useVlansRanges";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
-import { useRemoveVlansRange } from "@/data/network/vlan/useRemoveVlansRange.ts";
+} from "@/components/ui/card";
+import { useRemoveVlansRange } from "@/data/network/vlan/useRemoveVlansRange";
 import { Link } from "react-router";
 import React from "react";
 
