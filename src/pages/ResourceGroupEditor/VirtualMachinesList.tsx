@@ -1,7 +1,11 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
-import { BounceLoader } from "react-spinners";
+import { ExternalLinkIcon, SquarePenIcon, Trash2Icon } from "lucide-react";
+import { Link } from "react-router";
+import BounceLoader from "react-spinners/BounceLoader";
 
 type VirtualMachinesListProps = {
   id: string;
@@ -36,13 +40,49 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                       className="rounded-lg border bg-card text-card-foreground shadow-sm"
                     >
                       <div
-                        className="flex flex-row w-full items-center p-6 gap-2 cursor-pointer"
+                        className="flex flex-row w-full items-center p-6 gap-4 cursor-pointer"
                         onClick={() => {
                           setSelectedVm(vm.id ?? "");
                         }}
                       >
                         <RadioGroupItem value={vm.id ?? ""} />
-                        <p>{vm.name}</p>
+                        <div className="flex flex-row items-center justify-between w-full">
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-row items-center gap-2">
+                              <span className="font-semibold">{vm.name}</span>
+                              <Badge variant="outline">Hidden</Badge>
+                            </div>
+
+                            <div className="flex flex-row flex-wrap gap-2">
+                              <Badge>{vm.cpuCount} vCPU</Badge>
+                              <Badge>{vm.memory ?? 0} MiB</Badge>
+                              <Badge>{vm.nics?.length} NICs</Badge>
+                            </div>
+                          </div>
+                          <div className="flex flex-row gap-2 flex-wrap items-center justify-end">
+                            <Button onClick={(e) => e.stopPropagation()}>
+                              <SquarePenIcon />
+                            </Button>
+                            <Button
+                              variant="secondary"
+                              onClick={(e) => e.stopPropagation()}
+                              asChild
+                            >
+                              <Link
+                                target="_blank"
+                                to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
+                              >
+                                <ExternalLinkIcon />
+                              </Link>
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Trash2Icon />
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
