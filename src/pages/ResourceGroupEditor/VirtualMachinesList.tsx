@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useDeleteResourceGroupVm } from "@/data/resourceGroup/useDeleteResourceGroupVm";
 import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
 import { ExternalLinkIcon, SquarePenIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
@@ -10,7 +11,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 type VirtualMachinesListProps = {
   id: string;
   selectedVm?: string;
-  setSelectedVm: (id: string) => void;
+  setSelectedVm: (id?: string) => void;
 };
 
 const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
@@ -19,6 +20,8 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
   setSelectedVm,
 }) => {
   const { vms, isLoading } = useResourceGroupVms(id);
+  const { deleteVmAsync } = useDeleteResourceGroupVm();
+
   return (
     <>
       <Card className="flex flex-col">
@@ -81,7 +84,11 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                             </Button>
                             <Button
                               variant="destructive"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await deleteVmAsync(vm.id!);
+                                setSelectedVm(undefined);
+                              }}
                             >
                               <Trash2Icon />
                             </Button>
