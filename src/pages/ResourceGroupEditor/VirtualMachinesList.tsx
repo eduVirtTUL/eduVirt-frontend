@@ -50,7 +50,9 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                           <div className="flex flex-col gap-2">
                             <div className="flex flex-row items-center gap-2">
                               <span className="font-semibold">{vm.name}</span>
-                              <Badge variant="outline">Hidden</Badge>
+                              {vm.hidden && (
+                                <Badge variant="outline">Hidden</Badge>
+                              )}
                             </div>
 
                             <div className="flex flex-row flex-wrap gap-2">
