@@ -1,12 +1,5 @@
+import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -23,16 +16,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAttachNicToNetwork } from "@/data/resourceGroup/useAttachNicToNetwork";
 import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupNetworks";
-import { cn } from "@/lib/utils";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDownIcon, ClipboardPenLineIcon } from "lucide-react";
+import { ClipboardPenLineIcon } from "lucide-react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -55,7 +50,7 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
 }) => {
   const { id } = useResourceGroupEditorStore();
   const { networks } = useResourceGroupNetworks(id ?? "");
-  const { attachNicToNetwork } = useAttachNicToNetwork();
+  const { attachNicToNetworkAsync, isPending } = useAttachNicToNetwork();
   const form = useForm<AttachVmToNetworkSchema>({
     resolver: zodResolver(attachVmToNetworkSchema),
     defaultValues: {
@@ -64,14 +59,16 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
       nicId: nicId,
     },
   });
+  const [open, setOpen] = React.useState(false);
 
-  const handleSubmit = form.handleSubmit((data) => {
-    attachNicToNetwork(data);
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await attachNicToNetworkAsync(data);
+    setOpen(false);
   });
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger onClick={() => setOpen(true)}>
         <Button>
           <ClipboardPenLineIcon />
           Attach
@@ -79,69 +76,48 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Attach vm to network</DialogTitle>
+          <DialogTitle>Attach interface to private segment</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="networkId"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Course</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
+                <FormItem>
+                  <FormLabel>Segment</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select private segment"></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {networks?.map((net) => (
+                        <SelectItem
+                          key={net.id}
+                          value={(net.id ?? "").toString()}
                         >
-                          {field.value
-                            ? networks?.find((c) => c.id === field.value)?.name
-                            : "Select Course"}
-                          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-0">
-                      <Command>
-                        <CommandInput placeholder="Search courses..." />
-                        <CommandList>
-                          <CommandEmpty>No courses found</CommandEmpty>
-                          <CommandGroup>
-                            {networks?.map((c) => (
-                              <CommandItem
-                                value={c.name}
-                                key={c.id}
-                                onSelect={() => {
-                                  form.setValue("networkId", c.id ?? "");
-                                }}
-                              >
-                                {c.name}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    c.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                          {net.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Save</Button>
+            <LoadingButton
+              loading={isPending}
+              type="submit"
+              className="self-end"
+            >
+              Save
+            </LoadingButton>
           </form>
         </Form>
       </DialogContent>

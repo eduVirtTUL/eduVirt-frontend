@@ -14,6 +14,7 @@ export const useAddResourceGroupVm = (id: string) => {
     onSuccess: () => {
       // Invalidate the resourceGroupVms query to refetch the data
       queryClient.invalidateQueries({ queryKey: ["resourceGroup", id] });
+      queryClient.invalidateQueries({ queryKey: ["vm"] });
       toast.success("VM added successfully!");
     },
     onError: () => [toast.error("Failed to add VM")],
