@@ -76,10 +76,12 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
     },
   });
 
-  const [tab, setTab] = React.useState("first");
+  const [tab, setTab] = React.useState<"first" | "second">("first");
 
   const handleSubmit = form.handleSubmit((value) => {
     addVm(value);
+    form.reset();
+    setTab("first");
     close();
   });
 
