@@ -101,6 +101,8 @@ const PrivateSegmentDrawer: React.FC<PrivateSegmentDrawerProps> = ({ id }) => {
     <>
       <ConfirmationDialog
         onConfirm={() => deleteNetwork(networkToDelete.current!)}
+        header="Delete network"
+        text="Are you sure you want to delete this network?"
       />
       <Sheet>
         <SheetTrigger asChild>

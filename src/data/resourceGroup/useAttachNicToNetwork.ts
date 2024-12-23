@@ -11,7 +11,7 @@ type Data = {
 export const useAttachNicToNetwork = () => {
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
-  const { mutate, mutateAsync } = useMutation({
+  const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ networkId, ...original }: Data) => {
       const controller = new PrivateNetworkControllerApi();
       const response = await controller.attachNicToNetwork(networkId, original);
@@ -28,5 +28,9 @@ export const useAttachNicToNetwork = () => {
     },
   });
 
-  return { attachNicToNetwork: mutate, attachNicToNetworkAsync: mutateAsync };
+  return {
+    attachNicToNetwork: mutate,
+    attachNicToNetworkAsync: mutateAsync,
+    isPending,
+  };
 };

@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useDeleteResourceGroupVm } from "@/data/resourceGroup/useDeleteResourceGroupVm";
 import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
 import { ExternalLinkIcon, SquarePenIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
@@ -10,7 +11,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 type VirtualMachinesListProps = {
   id: string;
   selectedVm?: string;
-  setSelectedVm: (id: string) => void;
+  setSelectedVm: (id?: string) => void;
 };
 
 const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
@@ -19,6 +20,8 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
   setSelectedVm,
 }) => {
   const { vms, isLoading } = useResourceGroupVms(id);
+  const { deleteVmAsync } = useDeleteResourceGroupVm();
+
   return (
     <>
       <Card className="flex flex-col">
@@ -46,11 +49,13 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                         }}
                       >
                         <RadioGroupItem value={vm.id ?? ""} />
-                        <div className="flex flex-row items-center justify-between w-full">
+                        <div className="flex flex-row items-center justify-between w-full flex-wrap gap-4">
                           <div className="flex flex-col gap-2">
                             <div className="flex flex-row items-center gap-2">
                               <span className="font-semibold">{vm.name}</span>
-                              <Badge variant="outline">Hidden</Badge>
+                              {vm.hidden && (
+                                <Badge variant="outline">Hidden</Badge>
+                              )}
                             </div>
 
                             <div className="flex flex-row flex-wrap gap-2">
@@ -59,8 +64,9 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                               <Badge>{vm.nics?.length} NICs</Badge>
                             </div>
                           </div>
-                          <div className="flex flex-row gap-2 flex-wrap items-center justify-end">
+                          <div className="flex flex-row gap-2 items-center flex-wrap">
                             <Button onClick={(e) => e.stopPropagation()}>
+                              Edit
                               <SquarePenIcon />
                             </Button>
                             <Button
@@ -72,12 +78,17 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 target="_blank"
                                 to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
                               >
+                                oVirt
                                 <ExternalLinkIcon />
                               </Link>
                             </Button>
                             <Button
                               variant="destructive"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await deleteVmAsync(vm.id!);
+                                setSelectedVm(undefined);
+                              }}
                             >
                               <Trash2Icon />
                             </Button>
