@@ -213,6 +213,12 @@ export interface CreateCourseDto {
      * @memberof CreateCourseDto
      */
     'teamBased'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCourseDto
+     */
+    'clusterId'?: string;
 }
 /**
  * 
