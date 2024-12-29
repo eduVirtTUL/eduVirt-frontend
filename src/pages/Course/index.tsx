@@ -22,6 +22,7 @@ import React, { useState } from "react";
 import AssignResourcesDialog from "./assign-resources-dialog";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import { Route } from "./+types/index";
+import { Link } from "react-router";
 
 const StatusDot = ({ active }: { active: boolean }) => (
   <div
@@ -113,6 +114,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
             <CardTitle>Course Settings</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div>
+              <Button asChild>
+                <Link to={`limits`}>Limits</Link>
+              </Button>
+            </div>
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div>
                 <h3 className="font-medium">Team-Based Course</h3>
