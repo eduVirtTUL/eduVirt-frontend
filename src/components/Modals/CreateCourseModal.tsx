@@ -18,11 +18,20 @@ import { Textarea } from "../ui/textarea";
 import { Switch } from "../ui/switch";
 import { useCreateCourse } from "@/data/course/useCreateCourse";
 import { useDialog } from "@/stores/dialogStore";
+import { useClusters } from "@/data/cluster/useClusters";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const createCourseSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
   teamBased: z.boolean().default(false),
+  clusterId: z.string().min(1),
 });
 
 type CreateCourseSchema = z.infer<typeof createCourseSchema>;
@@ -30,6 +39,7 @@ type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 const CreateCourseModal: React.FC = () => {
   const { isOpen, close } = useDialog();
   const { createCourseAsync } = useCreateCourse();
+  const { clusters } = useClusters();
 
   const form = useForm<CreateCourseSchema>({
     resolver: zodResolver(createCourseSchema),
@@ -37,6 +47,7 @@ const CreateCourseModal: React.FC = () => {
       name: "",
       description: "",
       teamBased: false,
+      clusterId: "",
     },
   });
 
@@ -81,6 +92,34 @@ const CreateCourseModal: React.FC = () => {
                   <FormControl>
                     <Textarea {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="clusterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cluster</FormLabel>
+                  <Select
+                    value={field.value}
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select cluster"></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {clusters?.map((cluster) => (
+                        <SelectItem key={cluster.id} value={cluster.id ?? ""}>
+                          {cluster.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 type Dialog =
+  | "editCourseMetric"
+  | "createCourseMetricValue"
   | "addVmToResourceGroup"
   | "createCourse"
   | "createPool"
@@ -8,7 +10,8 @@ type Dialog =
   | "showVnicProfileDetails"
   | "createClusterMetricValue"
   | "confirmation"
-  | "createReservation" | "createInterval";
+  | "createReservation"
+  | "createInterval";
 
 type DialogStore = {
   opened?: Dialog;
