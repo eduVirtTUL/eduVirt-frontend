@@ -19,13 +19,16 @@ import {
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteCourseMetric } from "@/data/course/metrics/useDeleteCourseMetric";
 import EditCourseMetricValue from "@/components/Modals/EditCourseMetricValue";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
 const columns = (
+  t: TFunction,
   onEdit: (id: string) => void,
   onDelete: (id: string) => void
 ): ColumnDef<MetricValueDto>[] => [
-  { header: "Name", accessorKey: "name" },
-  { header: "Value", accessorKey: "value" },
+  { header: t("courseLimits.table.columns.name"), accessorKey: "name" },
+  { header: t("courseLimits.table.columns.value"), accessorKey: "value" },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -34,7 +37,9 @@ const columns = (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">
+                {t("courseLimits.table.openMenu")}
+              </span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -44,14 +49,14 @@ const columns = (
                 onEdit(course.id ?? "");
               }}
             >
-              Edit
+              {t("courseLimits.table.edit")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
                 onDelete(course.id ?? "");
               }}
             >
-              Delete
+              {t("courseLimits.table.delete")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -61,6 +66,7 @@ const columns = (
 ];
 
 const CourseLimits: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
+  const { t } = useTranslation();
   const { open } = useDialog();
   const { course } = useCourse(id);
   const { courseMetrics } = useCourseMetrics(id);
@@ -82,8 +88,8 @@ const CourseLimits: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
     <>
       {editId && <EditCourseMetricValue courseId={id} metricId={editId} />}
       <ConfirmationDialog
-        header="Delete course metric"
-        text="Are you sure?"
+        header={t("courseLimits.deleteCourseMetric.title")}
+        text={t("courseLimits.deleteCourseMetric.description")}
         onConfirm={async () => {
           await deleteCourseMetricAsync({
             courseId: id,
@@ -93,15 +99,15 @@ const CourseLimits: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
         }}
       />
       <CreateCourseMetricValueModal courseId={id} />
-      <PageHeader title={course?.name ?? ""} />
+      <PageHeader title={`${t("courseLimits.title")} ${course?.name}`} />
       <div className="flex flex-row items-start pb-6">
         <Button onClick={() => open("createCourseMetricValue")}>
-          Create
+          {t("courseLimits.add")}
           <PlusIcon />
         </Button>
       </div>
       <DataTable
-        columns={columns(handleEdit, handleDelete)}
+        columns={columns(t, handleEdit, handleDelete)}
         data={courseMetrics ?? []}
       />
     </>

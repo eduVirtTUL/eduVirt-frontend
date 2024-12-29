@@ -16,6 +16,8 @@ import { Input } from "../ui/input";
 import { useCourseMetric } from "@/data/course/metrics/useCourseMetric";
 import { useUpdateCourseMetric } from "@/data/course/metrics/useUpdateCourseMetric";
 import { Button } from "../ui/button";
+import { useTranslation } from "react-i18next";
+import { CircleXIcon, SaveIcon } from "lucide-react";
 
 type EditCourseMetricValueProps = {
   courseId: string;
@@ -32,6 +34,7 @@ const EditCourseMetricValue: React.FC<EditCourseMetricValueProps> = ({
   courseId,
   metricId,
 }) => {
+  const { t } = useTranslation();
   const { courseMetric } = useCourseMetric(courseId, metricId);
   const { updateCourseMetricAsync } = useUpdateCourseMetric();
   const form = useForm<EditCourseMetricValueSchema>({
@@ -55,16 +58,20 @@ const EditCourseMetricValue: React.FC<EditCourseMetricValueProps> = ({
     <Dialog open={isOpen("editCourseMetric")} onOpenChange={() => close()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Course Metric Value</DialogTitle>
+          <DialogTitle>
+            {t("courseLimits.editCourseMetricValue.title")}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Value</FormLabel>
+                  <FormLabel>
+                    {t("courseLimits.editCourseMetricValue.value")}
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
@@ -72,7 +79,23 @@ const EditCourseMetricValue: React.FC<EditCourseMetricValueProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">Save</Button>
+            <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                onClick={() => {
+                  close();
+                  form.reset();
+                }}
+                variant="secondary"
+              >
+                <CircleXIcon />
+                {t("cancel")}
+              </Button>
+              <Button type="submit">
+                <SaveIcon />
+                {t("courseLimits.editCourseMetricValue.save")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

@@ -1,6 +1,7 @@
 import { CourseMetricControllerApi } from "@/api";
 import { courseKeys } from "@/data/keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 type DeleteCourseMetric = {
@@ -9,6 +10,7 @@ type DeleteCourseMetric = {
 };
 
 export const useDeleteCourseMetric = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ courseId, metricId }: DeleteCourseMetric) => {
@@ -20,11 +22,12 @@ export const useDeleteCourseMetric = () => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.metrics(data.courseId),
       });
-      toast.success("Metric deleted successfully");
+
+      toast.success(t("courseLimits.deleteCourseMetric.success"));
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to delete metric");
+      toast.error(t("courseLimits.deleteCourseMetric.error"));
     },
   });
 

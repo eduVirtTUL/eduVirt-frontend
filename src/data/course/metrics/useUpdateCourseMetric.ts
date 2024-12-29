@@ -1,6 +1,7 @@
 import { CourseMetricControllerApi, UpdateMetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 type UpdateCourseMetric = {
@@ -9,6 +10,7 @@ type UpdateCourseMetric = {
 } & Required<UpdateMetricValueDto>;
 
 export const useUpdateCourseMetric = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({
@@ -28,11 +30,11 @@ export const useUpdateCourseMetric = () => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.metrics(courseId),
       });
-      toast.success("Metric updated successfully");
+      toast.success(t("courseLimits.editCourseMetricValue.success"));
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to update metric");
+      toast.error(t("courseLimits.editCourseMetricValue.error"));
     },
   });
 

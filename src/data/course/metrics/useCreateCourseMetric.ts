@@ -1,6 +1,7 @@
 import { CourseMetricControllerApi, CreateMetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 type CreateCourseMetric = {
@@ -8,6 +9,7 @@ type CreateCourseMetric = {
 } & Required<CreateMetricValueDto>;
 
 export const useCreateCourseMetric = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ courseId, ...original }: CreateCourseMetric) => {
@@ -19,11 +21,11 @@ export const useCreateCourseMetric = () => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.metrics(variables.courseId),
       });
-      toast.success("Metric created successfully");
+      toast.success(t("courseLimits.createCourseMetricValue.success"));
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to create metric");
+      toast.error(t("courseLimits.createCourseMetricValue.error"));
     },
   });
 

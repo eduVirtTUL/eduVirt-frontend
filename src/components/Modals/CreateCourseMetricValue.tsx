@@ -27,31 +27,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LoaderIcon } from "lucide-react";
+import { CircleXIcon, LoaderIcon, PlusIcon } from "lucide-react";
 import { useCreateCourseMetric } from "@/data/course/metrics/useCreateCourseMetric";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
 type CreateCourseMetricValueProps = {
   courseId: string;
 };
 
-const createCourseMetricValueSchema = z.object({
-  metricId: z.string(),
-  value: z.coerce.number().min(0),
-});
+const createCourseMetricValueSchema = (t: TFunction) =>
+  z.object({
+    metricId: z.string().min(1, t("courseLimits.validation.metricRequired")),
+    value: z.coerce
+      .number()
+      .min(0, t("courseLimits.validation.valueMustBeGraterOrEqualZero")),
+  });
 
 type CreateCourseMetricValueSchema = z.infer<
-  typeof createCourseMetricValueSchema
+  ReturnType<typeof createCourseMetricValueSchema>
 >;
 
 const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
   courseId,
 }) => {
+  const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { createCourseMetricAsync } = useCreateCourseMetric();
   const { metrics, isLoading } = useMetrics();
 
   const form = useForm<CreateCourseMetricValueSchema>({
-    resolver: zodResolver(createCourseMetricValueSchema),
+    resolver: zodResolver(createCourseMetricValueSchema(t)),
     defaultValues: {
       metricId: "",
       value: 0,
@@ -81,7 +87,9 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a metric value</DialogTitle>
+          <DialogTitle>
+            {t("courseLimits.createCourseMetricValue.title")}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className={"space-y-4"}>
@@ -90,13 +98,19 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
               name="metricId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>
+                    {t("courseLimits.createCourseMetricValue.metric")}
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select metric" />
+                      <SelectValue
+                        placeholder={t(
+                          "courseLimits.createCourseMetricValue.select"
+                        )}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {metrics?.items?.map((metric) => (
@@ -115,7 +129,9 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
               name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Value</FormLabel>
+                  <FormLabel>
+                    {t("courseLimits.createCourseMetricValue.value")}
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
@@ -123,7 +139,23 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">Create metric value</Button>
+            <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                onClick={() => {
+                  close();
+                  form.reset();
+                }}
+                variant="secondary"
+              >
+                <CircleXIcon />
+                {t("cancel")}
+              </Button>
+              <Button type="submit">
+                <PlusIcon />
+                {t("courseLimits.createCourseMetricValue.create")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
