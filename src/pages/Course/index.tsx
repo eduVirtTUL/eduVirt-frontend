@@ -23,6 +23,7 @@ import AssignResourcesDialog from "./assign-resources-dialog";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import { Route } from "./+types/index";
 import { Link } from "react-router";
+import ResourceGroupPoolCard from "./ResourceGroupPoolCard";
 
 const StatusDot = ({ active }: { active: boolean }) => (
   <div
@@ -149,11 +150,9 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
             <Button onClick={() => open("createPool")} className="mb-4">
               Add pool
             </Button>
-            <div className="space-y-4">
+            <div className="grid grid-cols-4 gap-4">
               {courseResourceGroupPools?.map((pool) => (
-                <div key={pool.id} className="p-4 border rounded-lg">
-                  {pool.name}
-                </div>
+                <ResourceGroupPoolCard key={pool.id} pool={pool} />
               ))}
             </div>
           </CardContent>

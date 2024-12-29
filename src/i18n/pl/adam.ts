@@ -38,6 +38,33 @@ const courseLimits = {
   },
 };
 
+const createResourceGroupPoolModal = {
+  title: "Utwórz pulę grup zasobów",
+  name: "Nazwa",
+  maxRent: "Maksymalna ilość wypożyczeń",
+  maxRentDescription:
+    "Określa ile razy grupa zasobów z puli może zostać wypożyczona przez jeden zespół. Ustaw na 0, aby nie ograniczać ilości wypożyczeń.",
+  gracePeriod: "Okres karencji (godziny)",
+  gracePeriodDescription:
+    "Określa ile godzin po zakończeniu wypożyczenia grupa zasobów z puli jest niedostępna dla innych zespołów. Ustaw na 0, aby grupa zasobów była dostępna natychmiast po zakończeniu wypożyczenia.",
+  course: "Przedmiot",
+  create: "Utwórz",
+  success: "Pula grup zasobów została utworzona",
+  error: "Nie udało się utworzyć puli grup zasobów",
+  validation: {
+    nameRequired: "Nazwa jest wymagana",
+    maxRentGreaterOrEqualZero:
+      "Maksymalna ilość wypożyczeń musi być większa lub równa zero",
+    gracePeriodGreaterOrEqualZero:
+      "Okres karencji musi być większy lub równy zero",
+    courseRequired: "Przedmiot jest wymagany",
+  },
+  selectCourse: "Wybierz przedmiot",
+  noCourses: "Brak przedmiotów",
+  searchCourses: "Szukaj przedmiotów",
+};
+
 export default {
   courseLimits,
+  createResourceGroupPoolModal,
 };

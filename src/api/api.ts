@@ -325,13 +325,25 @@ export interface CreateRGPoolDto {
      * @type {string}
      * @memberof CreateRGPoolDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof CreateRGPoolDto
      */
-    'courseId'?: string;
+    'courseId': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateRGPoolDto
+     */
+    'maxRent'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateRGPoolDto
+     */
+    'gracePeriod'?: number;
 }
 /**
  * 
