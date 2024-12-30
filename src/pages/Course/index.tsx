@@ -6,7 +6,7 @@ import {useCourseResourceGroupPools} from "@/data/rgPool/useCourseResourceGroupP
 import {useDialog} from "@/stores/dialogStore";
 import {ColumnDef} from "@tanstack/react-table";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
-import DataTable from "@/pages/Team/data-table";
+import DataTable from "@/components/DataTable";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
 import CreateTeamDialog from "../Team/create-team-dialog";

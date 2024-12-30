@@ -5,7 +5,6 @@ import { useCourse } from "@/data/course/useCourse";
 import { useResourceGroups } from "@/data/resourceGroup/useResourceGroups";
 import { useCourseResourceGroupPools } from "@/data/rgPool/useCourseResourceGroupPools";
 import PageHeader from "@/components/PageHeader";
-import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -19,13 +18,9 @@ import {
 } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react"; 
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { StatusDot } from "@/components/StatusDot";
 
-const StatusDot = ({ active }: { active: boolean }) => (
-  <div className={cn(
-    "h-3 w-3 rounded-full",
-    active ? "bg-green-500" : "bg-red-500"
-  )} />
-);
 
 const TeamDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,8 +52,30 @@ const TeamDetailsPage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-[200px]" />
+        <div className="grid gap-6">
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-6 w-[150px]" />
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-3">
+                {[1,2,3].map(i => (
+                  <Skeleton key={i} className="h-[100px]" />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
   }
+
+  const teamMembers = team?.users?.map(userId => 
+    users?.find(u => u.id === userId)
+  ).filter(Boolean) ?? [];
 
   return (
     <div className="space-y-6">
@@ -84,16 +101,16 @@ const TeamDetailsPage: React.FC = () => {
             <CollapsibleContent>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-3">
-                  {team?.users?.map(userId => (
+                  {teamMembers.map(user => (
                     <div 
-                      key={userId}
+                      key={user.id}
                       className="flex items-center space-x-4 rounded-lg border p-4"
                     >
                       <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                         <span className="text-lg">U</span>
                       </div>
                       <div>
-                        <p className="font-medium text-sm break-all">{userId}</p>
+                        <p className="font-medium text-sm break-all">{user.id}</p>
                         <p className="text-sm text-muted-foreground">User ID</p>
                       </div>
                     </div>

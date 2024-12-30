@@ -34,14 +34,14 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (key.length < 4 || key.length > 16) {
+    if (key.length < 5 || key.length > 50) {
       return; // Prevent submission if key length is invalid
     }
     createTeam({
       name: teamName,
       courseId: courseId,
       maxSize: maxSize,
-      key: key,
+      keyValue: key,
     });
     setOpen(false);
     setTeamName("");

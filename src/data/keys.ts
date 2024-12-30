@@ -10,6 +10,7 @@ export const keys = {
   VNIC_PROFILE: "vnicProfile",
   VLANS_RANGE: "vlansRange",
   TEAM: "team",
+  ACCESS_KEY: "accessKey",
 };
 
 export const resourceGroupKeys = {

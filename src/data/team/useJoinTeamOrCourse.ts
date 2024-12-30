@@ -8,7 +8,7 @@ interface JwtPayload {
     sub: string;
 }
 
-export const useJoinTeam = () => {
+export const useJoinTeamOrCourse = () => {
     const queryClient = useQueryClient();
 
     const { mutate: joinTeam } = useMutation({
@@ -22,7 +22,7 @@ export const useJoinTeam = () => {
             const userId = decoded.sub;
 
             const teamController = new TeamControllerApi();
-            const response = await teamController.joinTeam(key, userId);
+            const response = await teamController.joinUsingKey(key, userId);
             return response.data;
         },
         onSuccess: () => {
