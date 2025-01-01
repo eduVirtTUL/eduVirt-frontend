@@ -30,31 +30,34 @@ import {
 } from "@/components/ui/select";
 import { CreateMetricValueDto } from "@/api";
 import { LoaderIcon } from "lucide-react";
+import {useTranslation} from "react-i18next";
+import {TFunction} from "i18next";
 
 type CreateClusterMetricValueProps = {
   clusterId: string;
 };
 
-const createClusterMetricValueSchema = z.object({
-  metricId: z.string(),
-  value: z.coerce.number().min(0),
-});
+const createClusterMetricValueSchema = (t: TFunction) =>
+    z.object({
+      metricId: z.string().min(1, t("clusterMetricValues.validation.metricId.required")),
+      value: z.coerce.number()
+        .min(0, t("clusterMetricValues.validation.value.negative"))
+    });
 
 type CreateClusterMetricValueSchema = z.infer<
-  typeof createClusterMetricValueSchema
+  ReturnType<typeof createClusterMetricValueSchema>
 >;
 
 const CreateClusterMetricValueModal: React.FC<
   CreateClusterMetricValueProps
 > = ({ clusterId }) => {
+  const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { createClusterMetricValueAsync } = useCreateClusterMetricValue(
-    clusterId!
-  );
+  const { createClusterMetricValueAsync } = useCreateClusterMetricValue(clusterId!);
   const { metrics, isLoading } = useMetrics();
 
   const form = useForm<CreateClusterMetricValueSchema>({
-    resolver: zodResolver(createClusterMetricValueSchema),
+    resolver: zodResolver(createClusterMetricValueSchema(t)),
     defaultValues: {
       metricId: "",
       value: 0,
@@ -86,7 +89,7 @@ const CreateClusterMetricValueModal: React.FC<
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a metric value</DialogTitle>
+          <DialogTitle>{t("clusterMetricValues.createClusterMetricValue.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className={"space-y-4"}>
@@ -95,13 +98,13 @@ const CreateClusterMetricValueModal: React.FC<
               name="metricId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("clusterMetricValues.createClusterMetricValue.name")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select metric" />
+                      <SelectValue placeholder={t("clusterMetricValues.createClusterMetricValue.select")} />
                     </SelectTrigger>
                     <SelectContent>
                       {metrics?.items?.map((metric) => (
@@ -120,7 +123,7 @@ const CreateClusterMetricValueModal: React.FC<
               name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Value</FormLabel>
+                  <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
@@ -128,7 +131,7 @@ const CreateClusterMetricValueModal: React.FC<
                 </FormItem>
               )}
             />
-            <Button type="submit">Create metric value</Button>
+            <Button type="submit">{t("clusterMetricValues.createClusterMetricValue.submit")}</Button>
           </form>
         </Form>
       </DialogContent>

@@ -21,6 +21,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect } from "react";
+import {useTranslation} from "react-i18next";
+import {TFunction} from "i18next";
 
 type ResourceGroupProps = {
   resourceGroupId: string;
@@ -29,12 +31,17 @@ type ResourceGroupProps = {
   resetSelection: () => void;
 };
 
-const createReservationSchema = z.object({
-  reservationDuration: z.coerce.number().min(1).max(12),
-  automaticStartup: z.boolean(),
-});
+const createReservationSchema = (t: TFunction) =>
+    z.object({
+      reservationDuration: z.coerce.number()
+        .min(1, t("reservations.validation.duration.too.short"))
+        .max(24, t("reservations.validation.duration.too.long")),
+      automaticStartup: z.boolean(),
+    });
 
-type CreateReservationSchema = z.infer<typeof createReservationSchema>;
+type CreateReservationSchema = z.infer<
+    ReturnType<typeof createReservationSchema>
+>;
 
 const CreateReservationModal: React.FC<ResourceGroupProps> = ({
   resourceGroupId,
@@ -42,11 +49,12 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
   end,
   resetSelection,
 }) => {
+  const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { createReservationAsync } = useCreateReservation();
 
   const form = useForm<CreateReservationSchema>({
-    resolver: zodResolver(createReservationSchema),
+    resolver: zodResolver(createReservationSchema(t)),
     defaultValues: {
       reservationDuration: 1,
       automaticStartup: true,
@@ -72,9 +80,6 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
         tempDate.setHours(tempDate.getHours() + values.reservationDuration)
       );
 
-      console.log(start);
-      console.log(end);
-
       const createDto = {
         resourceGroupId: resourceGroupId,
         start: startTime.toISOString(),
@@ -99,7 +104,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create new reservation</DialogTitle>
+          <DialogTitle>{t("reservations.createReservation.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -108,7 +113,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
               name="reservationDuration"
               render={({ field }) => (
                 <FormItem className="space-y-4">
-                  <FormLabel>Reservation duration (h)</FormLabel>
+                  <FormLabel>{t("reservations.createReservation.duration")}</FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
@@ -125,12 +130,12 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                     <Checkbox defaultChecked={true} onChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Start pod's resources automatically</FormLabel>
+                    <FormLabel>{t("reservations.createReservation.automaticStartup")}</FormLabel>
                   </div>
                 </FormItem>
               )}
             />
-            <Button type="submit">Create reservation</Button>
+            <Button type="submit">{t("reservations.createReservation.submit")}</Button>
           </form>
         </Form>
       </DialogContent>
