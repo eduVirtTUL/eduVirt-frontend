@@ -999,10 +999,10 @@ export interface PodDetailsDto {
     'course'?: CourseBasicDto;
     /**
      * 
-     * @type {object}
+     * @type {TeamDto}
      * @memberof PodDetailsDto
      */
-    'team'?: object;
+    'team'?: TeamDto;
 }
 /**
  * 
@@ -1222,6 +1222,43 @@ export interface TeamAccessKeyDto {
      * @memberof TeamAccessKeyDto
      */
     'teamId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TeamDto
+ */
+export interface TeamDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TeamDto
+     */
+    'active'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamDto
+     */
+    'maxSize'?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TeamDto
+     */
+    'users'?: Array<string>;
 }
 /**
  * 
@@ -4756,7 +4793,7 @@ export const PodControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDto>>> {
+        async getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodDetailsDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByTeam(teamId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatefulPodsByTeam']?.[localVarOperationServerIndex]?.url;
@@ -4854,7 +4891,7 @@ export const PodControllerApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDto>> {
+        getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodDetailsDto>> {
             return localVarFp.getStatefulPodsByTeam(teamId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6957,7 +6994,7 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTeamsByCourse(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+        async getTeamsByCourse(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TeamDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByCourse(courseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.getTeamsByCourse']?.[localVarOperationServerIndex]?.url;
@@ -7043,7 +7080,7 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<object>> {
+        getTeamsByCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<TeamDto>> {
             return localVarFp.getTeamsByCourse(courseId, options).then((request) => request(axios, basePath));
         },
         /**

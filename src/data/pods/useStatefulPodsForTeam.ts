@@ -8,6 +8,7 @@ export const useStatefulPodsForTeam = (teamId: string) => {
         queryFn: async () => {
             const podController = new PodControllerApi();
             const response = await podController.getStatefulPodsByTeam(teamId);
+            console.log(response.data);
             return response.data;
         },
     });

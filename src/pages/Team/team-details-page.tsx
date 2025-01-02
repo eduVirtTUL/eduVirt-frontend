@@ -16,7 +16,8 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import {jwtDecode} from "jwt-decode";
 import {useDialog} from "@/stores/dialogStore";
 import {toast} from "sonner";
-import {Carousel, CarouselContent} from "@/components/ui/carousel";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import {PodCard} from "@/components/PodCard";
 
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -25,7 +26,6 @@ const TeamDetailsPage: React.FC = () => {
     const {pods: statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
     const {pods: statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
     const [isMembersOpen, setIsMembersOpen] = useState(true);
-    const [isPodsOpen, setIsPodsOpen] = useState(true);
     const {leaveTeam} = useLeaveTeamOrCourse();
     const navigate = useNavigate();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -165,66 +165,52 @@ const TeamDetailsPage: React.FC = () => {
                         </CollapsibleContent>
                     </Card>
                 </Collapsible>
-                <Collapsible open={isPodsOpen} onOpenChange={setIsPodsOpen}>
-                    <Card>
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <CardTitle>Assigned Pods</CardTitle>
-                                <CollapsibleTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                        {isPodsOpen ? (
-                                            <ChevronUp className="h-4 w-4"/>
-                                        ) : (
-                                            <ChevronDown className="h-4 w-4"/>
-                                        )}
-                                    </Button>
-                                </CollapsibleTrigger>
-                            </div>
-                        </CardHeader>
-                        <CollapsibleContent>
-                            <CardContent>
-                                <div className="grid gap-6">
-                                    <div>
-                                        <h3 className="text-sm font-medium mb-3">Stateful Pods</h3>
-                                        <Carousel>
-                                            {isLoadingStatefulPods ? (
-                                                <Skeleton className="h-6 w-full"/>
-                                            ) : (
-                                                statefulPods?.map(pod => (
-                                                    <CarouselContent
-                                                        <div
-                                                            key={pod.id}
-                                                            className="p-3 rounded-lg border cursor-pointer"
-                                                            >
-                                                        {pod.resourceGroupId}
-                                                </div>
-                                                </CarouselContent>
-                                                ))
-                                                )}
-                                        </Carousel>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-sm font-medium mb-3">Stateless Pods</h3>
-                                        <Carousel>
-                                            {isLoadingStatelessPods ? (
-                                                <Skeleton className="h-6 w-full"/>
-                                            ) : (
-                                                statelessPods?.map(pod => (
-                                                    <div
-                                                        key={pod.id}
-                                                        className="p-3 rounded-lg border cursor-pointer"
-                                                    >
-                                                        {pod.resourceGroupPoolId}
-                                                    </div>
-                                                ))
-                                            )}
-                                        </Carousel>
-                                    </div>
+                <div className="space-y-4">
+                    <h2 className="text-2xl font-semibold tracking-tight">Assigned Pods</h2>
+                    {isLoadingStatefulPods || isLoadingStatelessPods ? (
+                        <div className="flex gap-4 px-8">
+                            {[1, 2, 3].map((i) => (
+                                <Skeleton key={i} className="h-[280px] w-full"/>
+                            ))}
+                        </div>
+                    ) : (statefulPods?.length === 0 && statelessPods?.length === 0) ? (
+                        <p className="text-center text-muted-foreground py-8">No pods assigned to this team</p>
+                    ) : (
+                        <div className="px-8">
+                            <Carousel
+                                opts={{
+                                    align: "start",
+                                    loop: true,
+                                }}
+                                className="w-full"
+                            >
+                                <CarouselContent>
+                                    {[...(statefulPods || []), ...(statelessPods || [])]
+                                        .filter((pod, index, self) =>
+                                                index === self.findIndex(p =>
+                                                    p.resourceGroup.id === pod.resourceGroup.id
+                                                )
+                                        )
+                                        .map((pod) => (
+                                            <CarouselItem key={pod.id}
+                                                          className="basis-full md:basis-1/3 lg:basis-1/3"
+                                            >
+                                                <PodCard
+                                                    id={pod.id}
+                                                    resourceGroup={pod.resourceGroup}
+                                                    course={pod.course}
+                                                />
+                                            </CarouselItem>
+                                        ))}
+                                </CarouselContent>
+                                <div className="flex justify-end gap-2 mt-4">
+                                    <CarouselPrevious variant="outline" className="h-8 w-8"/>
+                                    <CarouselNext variant="outline" className="h-8 w-8"/>
                                 </div>
-                            </CardContent>
-                        </CollapsibleContent>
-                    </Card>
-                </Collapsible>
+                            </Carousel>
+                        </div>
+                    )}
+                </div>
             </div>
             <ConfirmationDialog
                 header="Leave Team"
