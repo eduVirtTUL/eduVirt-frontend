@@ -1,3 +1,5 @@
+import adam from "./adam";
+
 const menu = {
   courses: "Przedmioty",
   networks: "Sieci",
@@ -7,7 +9,7 @@ const menu = {
   resourceGroupPools: "Pule grup zasobów",
   home: "Strona główna",
   limits: "Ograniczenia",
-  maintenance: "Zarządzanie"
+  maintenance: "Zarządzanie",
 };
 
 const resourceGroupPools = {
@@ -15,6 +17,8 @@ const resourceGroupPools = {
 };
 
 export default {
+  cancel: "Anuluj",
   menu,
   resourceGroupPools,
+  ...adam,
 };
