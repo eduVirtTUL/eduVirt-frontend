@@ -35,7 +35,7 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (key.length < 5 || key.length > 50) {
-      return; // Prevent submission if key length is invalid
+      return;
     }
     createTeam({
       name: teamName,
@@ -58,11 +58,10 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Team</DialogTitle>
+          <DialogTitle>Enter Team Key</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="teamName">Team Name</Label>
             <Input
               id="teamName"
               value={teamName}
@@ -72,7 +71,6 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
             />
           </div>
           <div>
-            <Label htmlFor="key">Team Key (4-16 characters)</Label>
             <Input
               id="key"
               value={key}
@@ -85,7 +83,6 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
             />
           </div>
           <div>
-            <Label htmlFor="maxSize">Maximum Team Size</Label>
             <Input
               id="maxSize"
               type="number"

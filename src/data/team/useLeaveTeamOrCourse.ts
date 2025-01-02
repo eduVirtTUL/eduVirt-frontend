@@ -12,7 +12,7 @@ export const useLeaveTeamOrCourse = () => {
     const queryClient = useQueryClient();
 
     const { mutate: leaveTeam } = useMutation({
-        mutationFn: async (key: string) => {
+        mutationFn: async (teamId: string) => {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error('No authentication token found');
@@ -22,7 +22,7 @@ export const useLeaveTeamOrCourse = () => {
             const userId = decoded.sub;
 
             const teamController = new TeamControllerApi();
-            const response = await teamController.leaveTeam(key, userId);
+            const response = await teamController.leaveTeam(teamId, userId);
             return response.data;
         },
         onSuccess: () => {

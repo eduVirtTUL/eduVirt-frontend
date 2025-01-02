@@ -89,7 +89,7 @@ const TeamsPage = () => {
         </div>
       </div>
       <div className="[&_.inactive-row]:opacity-60">
-        {/* @ts-expect-error I see no issue here */}
+        {/* @ts-expect-error this doesn't impact the page */}
         <DataTable columns={columns} data={teams ?? []} />
       </div>
     </div>

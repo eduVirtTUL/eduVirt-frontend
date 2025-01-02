@@ -11,6 +11,7 @@ export const keys = {
   VLANS_RANGE: "vlansRange",
   TEAM: "team",
   ACCESS_KEY: "accessKey",
+  POD: "pod",
 };
 
 export const resourceGroupKeys = {
