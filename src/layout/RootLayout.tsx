@@ -25,7 +25,7 @@ import {
   User2,
   Users,
   ChartLine,
-  Wrench
+  Wrench, ThermometerIcon
 } from "lucide-react";
 import React, { Suspense } from "react";
 import logo from "@/assets/edu_2.png";
@@ -53,7 +53,8 @@ const menuItems = [
   { to: "/pools", label: (t) => t("menu.resourceGroupPools"), icon: <Group /> },
   { to: "/courses", label: (t) => t("menu.courses"), icon: <Book /> },
   { to: "/networks", label: (t) => t("menu.networks"), icon: <Network /> },
-  { to: "/reservation", label: (t) => t("menu.reservations"), icon: <CalendarDays /> },
+  { to: "/metrics", label: (t) => t("menu.metrics"), icon: <ThermometerIcon /> },
+  { to: "/reservations", label: (t) => t("menu.reservations"), icon: <CalendarDays /> },
   { to: "/limits", label: (t) => t("menu.limits"), icon: <ChartLine />},
   { to: "/maintenance", label: (t) => t("menu.maintenance"), icon: <Wrench /> }
 ] satisfies {

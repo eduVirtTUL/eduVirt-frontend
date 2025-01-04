@@ -8,10 +8,13 @@ type Dialog =
   | "createPool"
   | "createVlansRange"
   | "showVnicProfileDetails"
+  | "createMetric"
   | "createClusterMetricValue"
+  | "updateClusterMetricValue"
   | "confirmation"
   | "createReservation"
-  | "createInterval";
+  | "createInterval"
+  | "showMaintenanceInterval";
 
 type DialogStore = {
   opened?: Dialog;

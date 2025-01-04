@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {useTranslation} from "react-i18next";
+import {TFunction} from "i18next";
 
 type CreateMaintenanceIntervalModalProps = {
   clusterId: string | undefined;
@@ -28,25 +30,30 @@ type CreateMaintenanceIntervalModalProps = {
   resetSelection: () => void;
 };
 
-const createMaintenanceIntervalSchema = z.object({
-  cause: z.string(),
-  description: z.string().optional(),
-  duration: z.coerce.number().min(1).max(48),
-});
+const createMaintenanceIntervalSchema = (t: TFunction) =>
+  z.object({
+    cause: z.string()
+      .min(4, t("maintenanceIntervals.validation.cause.too.short"))
+      .max(128, t("maintenanceIntervals.validation.cause.too.long")),
+    description: z.string()
+      .max(256, "maintenanceIntervals.validation.description.too.long")
+      .optional(),
+    duration: z.coerce.number()
+      .min(1, "maintenanceIntervals.validation.duration.too.short")
+      .max(48, "maintenanceIntervals.validation.duration.too.long"),
+  });
 
 type CreateMaintenanceIntervalSchema = z.infer<
-  typeof createMaintenanceIntervalSchema
+  ReturnType<typeof createMaintenanceIntervalSchema>
 >;
 
-const CreateMaintenanceIntervalModal: React.FC<
-  CreateMaintenanceIntervalModalProps
-> = ({ clusterId, start, end, resetSelection }) => {
+const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalProps> = ({ clusterId, start, end, resetSelection }) => {
+  const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { createMaintenanceIntervalAsync } =
-    useCreateMaintenanceInterval(clusterId);
+  const { createMaintenanceIntervalAsync } = useCreateMaintenanceInterval(clusterId);
 
   const form = useForm<CreateMaintenanceIntervalSchema>({
-    resolver: zodResolver(createMaintenanceIntervalSchema),
+    resolver: zodResolver(createMaintenanceIntervalSchema(t)),
     defaultValues: {
       cause: "",
       description: "",
@@ -56,8 +63,7 @@ const CreateMaintenanceIntervalModal: React.FC<
 
   useEffect(() => {
     if (start && end) {
-      const calculatedDuration =
-        (end.valueOf() - start.valueOf()) / (1000 * 60 * 60);
+      const calculatedDuration = (end.valueOf() - start.valueOf()) / (1000 * 60 * 60);
       form.reset({
         cause: "",
         description: "",
@@ -101,7 +107,7 @@ const CreateMaintenanceIntervalModal: React.FC<
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create new maintenance interval</DialogTitle>
+            <DialogTitle>{t("maintenanceIntervals.createMaintenanceInterval.title")}</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -110,7 +116,7 @@ const CreateMaintenanceIntervalModal: React.FC<
                 name="cause"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
-                    <FormLabel>Cause</FormLabel>
+                    <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.cause")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -123,7 +129,7 @@ const CreateMaintenanceIntervalModal: React.FC<
                 name="description"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.description")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -136,7 +142,7 @@ const CreateMaintenanceIntervalModal: React.FC<
                 name="duration"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
-                    <FormLabel>Interval duration (h)</FormLabel>
+                    <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.duration")}</FormLabel>
                     <FormControl>
                       <Input {...field} type={"number"} />
                     </FormControl>
@@ -144,7 +150,9 @@ const CreateMaintenanceIntervalModal: React.FC<
                   </FormItem>
                 )}
               />
-              <Button type="submit">Create interval</Button>
+              <Button type="submit">
+                {t("maintenanceIntervals.createMaintenanceInterval.submit")}
+              </Button>
             </form>
           </Form>
         </DialogContent>
