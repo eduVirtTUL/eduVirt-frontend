@@ -22,3 +22,11 @@ export const resourceGroupKeys = {
   networks: (id: string) => ["resourceGroup", id, "network"] as const,
   vm: (id: string, vmId: string) => ["resourceGroup", id, "vm", vmId] as const,
 };
+
+export const courseKeys = {
+  all: ["course"] as const,
+  detail: (id: string) => ["course", id] as const,
+  metrics: (id: string) => ["course", id, "metrics"] as const,
+  metric: (id: string, metricId: string) =>
+    ["course", id, "metrics", metricId] as const,
+};

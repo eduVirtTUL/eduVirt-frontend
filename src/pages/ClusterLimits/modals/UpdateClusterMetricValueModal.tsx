@@ -3,7 +3,7 @@ import {useDialog} from "@/stores/dialogStore";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {CreateMetricValueDto} from "@/api";
+import {ValueDto} from "@/api";
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -13,15 +13,15 @@ import {useUpdateClusterMetricValue} from "@/data/cluster-metrics/useUpdateClust
 import {TFunction} from "i18next";
 
 type UpdateClusterMetricValueProps = {
-    clusterId: string;
-    metricId: string;
+  clusterId: string;
+  metricId: string;
 };
 
 const updateClusterMetricValueSchema = (t: TFunction) =>
-    z.object({
-      value: z.coerce.number()
-        .min(0, t("clusterMetricValues.validation.value.negative")),
-    });
+  z.object({
+    value: z.coerce.number()
+      .min(0, t("clusterMetricValues.validation.value.negative")),
+  });
 
 type UpdateClusterMetricValueSchema = z.infer<
     ReturnType<typeof updateClusterMetricValueSchema>
@@ -42,7 +42,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
   });
 
   const handleSubmit = form.handleSubmit(
-    async (values: CreateMetricValueDto) => {
+    async (values: ValueDto) => {
       await updateClusterMetricValueAsync(values);
       close();
       form.reset();

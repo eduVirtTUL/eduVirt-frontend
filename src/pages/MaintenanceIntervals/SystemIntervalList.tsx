@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import {CalendarIcon, LoaderIcon, MoreHorizontal, PlusIcon} from "lucide-react";
+import {CalendarIcon, LoaderIcon, MoreHorizontal} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Switch } from "@/components/ui/switch";

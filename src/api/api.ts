@@ -231,7 +231,7 @@ export interface CreateMaintenanceIntervalDto {
      * @type {string}
      * @memberof CreateMaintenanceIntervalDto
      */
-    'cause'?: string;
+    'cause': string;
     /**
      * 
      * @type {string}
@@ -243,13 +243,13 @@ export interface CreateMaintenanceIntervalDto {
      * @type {string}
      * @memberof CreateMaintenanceIntervalDto
      */
-    'beginAt'?: string;
+    'beginAt': string;
     /**
      * 
      * @type {string}
      * @memberof CreateMaintenanceIntervalDto
      */
-    'endAt'?: string;
+    'endAt': string;
 }
 /**
  * 
@@ -262,7 +262,7 @@ export interface CreateMetricDto {
      * @type {string}
      * @memberof CreateMetricDto
      */
-    'name'?: string;
+    'name': string;
 }
 /**
  * 
@@ -275,7 +275,7 @@ export interface CreateMetricValueDto {
      * @type {string}
      * @memberof CreateMetricValueDto
      */
-    'metricId'?: string;
+    'metricId': string;
     /**
      * 
      * @type {number}
@@ -344,19 +344,19 @@ export interface CreateReservationDto {
      * @type {string}
      * @memberof CreateReservationDto
      */
-    'resourceGroupId'?: string;
+    'resourceGroupId': string;
     /**
      * 
      * @type {string}
      * @memberof CreateReservationDto
      */
-    'start'?: string;
+    'start': string;
     /**
      * 
      * @type {string}
      * @memberof CreateReservationDto
      */
-    'end'?: string;
+    'end': string;
     /**
      * 
      * @type {boolean}
@@ -480,31 +480,31 @@ export interface DetailedResourceGroupPoolDto {
 /**
  * 
  * @export
- * @interface EventGeneralDTO
+ * @interface EventGeneralDto
  */
-export interface EventGeneralDTO {
+export interface EventGeneralDto {
     /**
      * 
      * @type {string}
-     * @memberof EventGeneralDTO
+     * @memberof EventGeneralDto
      */
     'id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof EventGeneralDTO
+     * @memberof EventGeneralDto
      */
     'message'?: string;
     /**
      * 
      * @type {string}
-     * @memberof EventGeneralDTO
+     * @memberof EventGeneralDto
      */
     'severity'?: string;
     /**
      * 
      * @type {string}
-     * @memberof EventGeneralDTO
+     * @memberof EventGeneralDto
      */
     'registeredAt'?: string;
 }
@@ -520,6 +520,12 @@ export interface ExceptionResponse {
      * @memberof ExceptionResponse
      */
     'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionResponse
+     */
+    'key'?: string;
 }
 /**
  * 
@@ -1171,6 +1177,19 @@ export interface TeamDto {
 /**
  * 
  * @export
+ * @interface UpdateMetricValueDto
+ */
+export interface UpdateMetricValueDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateMetricValueDto
+     */
+    'value'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ValueDto
  */
 export interface ValueDto {
@@ -1781,13 +1800,13 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
 
             if (start !== undefined) {
                 localVarQueryParameter['start'] = (start as any instanceof Date) ?
-                    (start as any).toISOString().substring(0,10) :
+                    (start as any).toISOString() :
                     start;
             }
 
             if (end !== undefined) {
                 localVarQueryParameter['end'] = (end as any instanceof Date) ?
-                    (end as any).toISOString().substring(0,10) :
+                    (end as any).toISOString() :
                     end;
             }
 
@@ -2017,7 +2036,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findClusterResourcesAvailability(id: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async findClusterResourcesAvailability(id: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findClusterResourcesAvailability(id, start, end, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findClusterResourcesAvailability']?.[localVarOperationServerIndex]?.url;
@@ -2031,7 +2050,7 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDTO>>> {
+        async findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.findEventsByClusterId(id, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findEventsByClusterId']?.[localVarOperationServerIndex]?.url;
@@ -2116,7 +2135,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findClusterResourcesAvailability(id: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        findClusterResourcesAvailability(id: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
             return localVarFp.findClusterResourcesAvailability(id, start, end, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2127,7 +2146,7 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDTO>> {
+        findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDto>> {
             return localVarFp.findEventsByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2316,11 +2335,11 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMetric: async (clusterId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteMetric1: async (clusterId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clusterId' is not null or undefined
-            assertParamExists('deleteMetric', 'clusterId', clusterId)
+            assertParamExists('deleteMetric1', 'clusterId', clusterId)
             // verify required parameter 'metricId' is not null or undefined
-            assertParamExists('deleteMetric', 'metricId', metricId)
+            assertParamExists('deleteMetric1', 'metricId', metricId)
             const localVarPath = `/clusters/{clusterId}/metrics/{metricId}`
                 .replace(`{${"clusterId"}}`, encodeURIComponent(String(clusterId)))
                 .replace(`{${"metricId"}}`, encodeURIComponent(String(metricId)));
@@ -2462,10 +2481,10 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMetric(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMetric(clusterId, metricId, options);
+        async deleteMetric1(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMetric1(clusterId, metricId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.deleteMetric']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.deleteMetric1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2523,8 +2542,8 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMetric(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteMetric(clusterId, metricId, options).then((request) => request(axios, basePath));
+        deleteMetric1(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteMetric1(clusterId, metricId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2578,8 +2597,8 @@ export class ClusterMetricControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
      */
-    public deleteMetric(clusterId: string, metricId: string, options?: RawAxiosRequestConfig) {
-        return ClusterMetricControllerApiFp(this.configuration).deleteMetric(clusterId, metricId, options).then((request) => request(this.axios, this.basePath));
+    public deleteMetric1(clusterId: string, metricId: string, options?: RawAxiosRequestConfig) {
+        return ClusterMetricControllerApiFp(this.configuration).deleteMetric1(clusterId, metricId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3120,11 +3139,11 @@ export const CourseMetricControllerApiAxiosParamCreator = function (configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMetric1: async (courseId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteMetric: async (courseId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
-            assertParamExists('deleteMetric1', 'courseId', courseId)
+            assertParamExists('deleteMetric', 'courseId', courseId)
             // verify required parameter 'metricId' is not null or undefined
-            assertParamExists('deleteMetric1', 'metricId', metricId)
+            assertParamExists('deleteMetric', 'metricId', metricId)
             const localVarPath = `/course/{courseId}/metric/{metricId}`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
                 .replace(`{${"metricId"}}`, encodeURIComponent(String(metricId)));
@@ -3220,6 +3239,49 @@ export const CourseMetricControllerApiAxiosParamCreator = function (configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} metricId 
+         * @param {UpdateMetricValueDto} updateMetricValueDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMetric: async (courseId: string, metricId: string, updateMetricValueDto: UpdateMetricValueDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('updateMetric', 'courseId', courseId)
+            // verify required parameter 'metricId' is not null or undefined
+            assertParamExists('updateMetric', 'metricId', metricId)
+            // verify required parameter 'updateMetricValueDto' is not null or undefined
+            assertParamExists('updateMetric', 'updateMetricValueDto', updateMetricValueDto)
+            const localVarPath = `/course/{courseId}/metric/{metricId}`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"metricId"}}`, encodeURIComponent(String(metricId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateMetricValueDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3250,10 +3312,10 @@ export const CourseMetricControllerApiFp = function(configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMetric1(courseId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMetric1(courseId, metricId, options);
+        async deleteMetric(courseId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMetric(courseId, metricId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CourseMetricControllerApi.deleteMetric1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CourseMetricControllerApi.deleteMetric']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3279,6 +3341,20 @@ export const CourseMetricControllerApiFp = function(configuration?: Configuratio
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMetrics(courseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseMetricControllerApi.getMetrics']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} metricId 
+         * @param {UpdateMetricValueDto} updateMetricValueDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateMetric(courseId: string, metricId: string, updateMetricValueDto: UpdateMetricValueDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMetric(courseId, metricId, updateMetricValueDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseMetricControllerApi.updateMetric']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -3308,8 +3384,8 @@ export const CourseMetricControllerApiFactory = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMetric1(courseId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteMetric1(courseId, metricId, options).then((request) => request(axios, basePath));
+        deleteMetric(courseId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteMetric(courseId, metricId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3329,6 +3405,17 @@ export const CourseMetricControllerApiFactory = function (configuration?: Config
          */
         getMetrics(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<MetricValueDto>> {
             return localVarFp.getMetrics(courseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} metricId 
+         * @param {UpdateMetricValueDto} updateMetricValueDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMetric(courseId: string, metricId: string, updateMetricValueDto: UpdateMetricValueDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateMetric(courseId, metricId, updateMetricValueDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3360,8 +3447,8 @@ export class CourseMetricControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CourseMetricControllerApi
      */
-    public deleteMetric1(courseId: string, metricId: string, options?: RawAxiosRequestConfig) {
-        return CourseMetricControllerApiFp(this.configuration).deleteMetric1(courseId, metricId, options).then((request) => request(this.axios, this.basePath));
+    public deleteMetric(courseId: string, metricId: string, options?: RawAxiosRequestConfig) {
+        return CourseMetricControllerApiFp(this.configuration).deleteMetric(courseId, metricId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3385,6 +3472,19 @@ export class CourseMetricControllerApi extends BaseAPI {
      */
     public getMetrics(courseId: string, options?: RawAxiosRequestConfig) {
         return CourseMetricControllerApiFp(this.configuration).getMetrics(courseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {string} metricId 
+     * @param {UpdateMetricValueDto} updateMetricValueDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseMetricControllerApi
+     */
+    public updateMetric(courseId: string, metricId: string, updateMetricValueDto: UpdateMetricValueDto, options?: RawAxiosRequestConfig) {
+        return CourseMetricControllerApiFp(this.configuration).updateMetric(courseId, metricId, updateMetricValueDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4974,13 +5074,17 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * 
+         * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getActiveReservations: async (pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/reservations/active`;
+        getActiveReservations: async (courseId: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getActiveReservations', 'courseId', courseId)
+            const localVarPath = `/reservations/active/courses/{courseId}`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5013,13 +5117,103 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * 
+         * @param {string} teamId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getHistoricReservations: async (pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/reservations/historic`;
+        getActiveReservationsForTeam: async (teamId: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'teamId' is not null or undefined
+            assertParamExists('getActiveReservationsForTeam', 'teamId', teamId)
+            const localVarPath = `/reservations/active/teams/{teamId}`
+                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['pageNumber'] = pageNumber;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHistoricReservations: async (courseId: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getHistoricReservations', 'courseId', courseId)
+            const localVarPath = `/reservations/historic/courses/{courseId}`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['pageNumber'] = pageNumber;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHistoricReservationsForTeam: async (teamId: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'teamId' is not null or undefined
+            assertParamExists('getHistoricReservationsForTeam', 'teamId', teamId)
+            const localVarPath = `/reservations/historic/teams/{teamId}`
+                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5170,28 +5364,58 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
         },
         /**
          * 
+         * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getActiveReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getActiveReservations(pageNumber, pageSize, options);
+        async getActiveReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getActiveReservations(courseId, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getActiveReservations']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
+         * @param {string} teamId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getHistoricReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getHistoricReservations(pageNumber, pageSize, options);
+        async getActiveReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getActiveReservationsForTeam(teamId, pageNumber, pageSize, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getActiveReservationsForTeam']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getHistoricReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getHistoricReservations(courseId, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getHistoricReservations']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getHistoricReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getHistoricReservationsForTeam(teamId, pageNumber, pageSize, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getHistoricReservationsForTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5250,23 +5474,47 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
         },
         /**
          * 
+         * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getActiveReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
-            return localVarFp.getActiveReservations(pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        getActiveReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getActiveReservations(courseId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * 
+         * @param {string} teamId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getHistoricReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
-            return localVarFp.getHistoricReservations(pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        getActiveReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getActiveReservationsForTeam(teamId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHistoricReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getHistoricReservations(courseId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHistoricReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getHistoricReservationsForTeam(teamId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5322,26 +5570,54 @@ export class ReservationControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} courseId 
      * @param {number} [pageNumber] 
      * @param {number} [pageSize] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
      */
-    public getActiveReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return ReservationControllerApiFp(this.configuration).getActiveReservations(pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public getActiveReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getActiveReservations(courseId, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
+     * @param {string} teamId 
      * @param {number} [pageNumber] 
      * @param {number} [pageSize] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
      */
-    public getHistoricReservations(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return ReservationControllerApiFp(this.configuration).getHistoricReservations(pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public getActiveReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getActiveReservationsForTeam(teamId, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {number} [pageNumber] 
+     * @param {number} [pageSize] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getHistoricReservations(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getHistoricReservations(courseId, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} teamId 
+     * @param {number} [pageNumber] 
+     * @param {number} [pageSize] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getHistoricReservationsForTeam(teamId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getHistoricReservationsForTeam(teamId, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7239,6 +7515,49 @@ export const VmControllerApiAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @param {string} id 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findEventsForVm: async (id: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('findEventsForVm', 'id', id)
+            const localVarPath = `/resource/vm/{id}/events`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['pageNumber'] = pageNumber;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7344,6 +7663,20 @@ export const VmControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findEventsForVm(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findEventsForVm(id, pageNumber, pageSize, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VmControllerApi.findEventsForVm']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7389,6 +7722,17 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
         /**
          * 
          * @param {string} id 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findEventsForVm(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDto>> {
+            return localVarFp.findEventsForVm(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7422,6 +7766,19 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
  * @extends {BaseAPI}
  */
 export class VmControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} id 
+     * @param {number} [pageNumber] 
+     * @param {number} [pageSize] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VmControllerApi
+     */
+    public findEventsForVm(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+        return VmControllerApiFp(this.configuration).findEventsForVm(id, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} id 

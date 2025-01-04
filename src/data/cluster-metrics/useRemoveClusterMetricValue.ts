@@ -11,7 +11,7 @@ export const useRemoveClusterMetricValue = (id: string) => {
     mutationKey: ["removeClusterMetricValue"],
     mutationFn: async (metricId: string) => {
       const controller = new ClusterMetricControllerApi();
-      const response = await controller.deleteMetric(id, metricId);
+      const response = await controller.deleteMetric1(id, metricId);
       return response.data;
     },
     onSuccess: () => {

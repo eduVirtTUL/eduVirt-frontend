@@ -33,16 +33,16 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         <div className="flex flex-row justify-between">
           <Button onClick={close} variant="secondary">
             <CircleXIcon />
-              No
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => {
-                onConfirm();
-                close();
-              }}
-            >
-              Yes
+            No
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              onConfirm();
+              close();
+            }}
+          >
+            Yes
             <CheckIcon />
           </Button>
         </div>

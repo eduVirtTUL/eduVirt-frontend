@@ -19,9 +19,7 @@ import EventCalendar from "@/components/EventCalendar";
 import {Button} from "@/components/ui/button";
 import {Link, useNavigate} from "react-router";
 import {Undo2} from "lucide-react";
-import PageHeader from "@/components/PageHeader";
 import {useTranslation} from "react-i18next";
-import MaintenanceIntervalDetailsModal from "@/pages/MaintenanceInterval";
 import MaintenanceIntervalModal from "@/pages/MaintenanceInterval/MaintenanceIntervalModal";
 
 const headerToolbar: ToolbarInput = {
