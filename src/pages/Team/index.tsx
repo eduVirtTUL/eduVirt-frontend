@@ -25,7 +25,6 @@ interface TeamWithCourseDto {
 
 const TeamsPage = () => {
   const { teams, isLoading } = useUsersTeams();
-  console.log(teams);
 
   if (isLoading) {
     return (

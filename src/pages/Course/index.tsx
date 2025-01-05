@@ -8,7 +8,6 @@ import {ColumnDef} from "@tanstack/react-table";
 import {ArrowUpDown, Copy, Info, MoreHorizontal} from "lucide-react";
 import DataTable from "@/components/DataTable";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {cn} from "@/lib/utils";
 import CreateTeamModal from "../../components/Modals/CreateTeamModal";
 import {useCourseTeams} from "@/data/team/useCoursesTeams";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
@@ -24,15 +23,8 @@ import {Skeleton} from "@/components/ui/skeleton";
 import AddCourseKeyDialog from "../../components/Modals/AddCourseKeyModal";
 import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
-
-const StatusDot = ({active}: { active: boolean }) => (
-    <div
-        className={cn(
-            "h-3 w-3 rounded-full",
-            active ? "bg-green-500" : "bg-red-500"
-        )}
-    />
-);
+import {useTeamsInCourseAccessKeys} from "@/data/access-key/useTeamsInCourseAccessKeys";
+import {StatusDot} from "@/components/StatusDot";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {course} = useCourse(id);
@@ -43,7 +35,14 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
     const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
     const isTeamBased = course?.courseType === "TEAM_BASED";
-    const {course: accessKey, isLoading: isAccessKeyLoading} = useCourseAccessKey(id);
+    const {course: courseAccessKey, isLoading: isCourseAccessKeyLoading} = useCourseAccessKey(id, {
+        enabled: !isTeamBased
+    });
+
+    const teamQueries = useTeamsInCourseAccessKeys(
+        teams?.map(team => team.id!) ?? [],
+        isTeamBased
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columns: ColumnDef<any, any>[] = [
@@ -100,6 +99,34 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 </div>
             ),
         },
+        ...(isTeamBased ? [{
+            accessorKey: "keyValue",
+            header: "Team Key",
+            //@ts-expect-error this doesn't impact the page
+            cell: ({row}) => {
+                const teamId = row.original.id;
+                const query = teamQueries.find(q => q.data?.id === teamId);
+
+                if (query?.isLoading) {
+                    return <Skeleton className="h-4 w-20"/>;
+                }
+
+                return (
+                    <div className="flex items-center gap-2">
+                        <Badge variant="secondary">
+                            {query?.data?.key?.keyValue}
+                        </Badge>
+                        <Copy
+                            className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                            onClick={() => {
+                                navigator.clipboard.writeText(query?.data?.key?.keyValue || "");
+                                toast.success("Team key copied to clipboard");
+                            }}
+                        />
+                    </div>
+                );
+            },
+        }] : []),
         {
             accessorKey: "active",
             header: "Status",
@@ -196,15 +223,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 <CardTitle>Course Access Key</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
-                                {isAccessKeyLoading ? (
+                                {isCourseAccessKeyLoading ? (
                                     <Skeleton className="h-8 w-full"/>
-                                ) : accessKey?.keyValue ? (
+                                ) : courseAccessKey?.keyValue ? (
                                     <div className="flex items-center gap-2">
-                                        <Badge variant="destructive">{accessKey.keyValue}</Badge>
+                                        <Badge variant="destructive">{courseAccessKey.keyValue}</Badge>
                                         <Copy
                                             className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                                             onClick={() => {
-                                                navigator.clipboard.writeText(accessKey.keyValue || "");
+                                                navigator.clipboard.writeText(courseAccessKey.keyValue || "");
                                                 toast.success("Access key has been copied to clipboard");
                                             }}
                                         />
@@ -253,18 +280,16 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         </div>
                     </CardContent>
                 </Card>
-                {selectedTeamId && (
+                {(selectedTeamId && manageStatefulPodsOpen) && (
                     <StatefulPodDrawer
-                        open={manageStatefulPodsOpen
-                        }
+                        open={manageStatefulPodsOpen}
                         onOpenChange={setManageStatefulPodsOpen}
                         teamId={selectedTeamId}
                     />
                 )}
-                {selectedTeamId && (
+                {(selectedTeamId && manageStatelessPodsOpen) && (
                     <StatelessPodDrawer
-                        open={manageStatelessPodsOpen
-                        }
+                        open={manageStatelessPodsOpen}
                         onOpenChange={setManageStatelessPodsOpen}
                         teamId={selectedTeamId}
                         courseId={id}

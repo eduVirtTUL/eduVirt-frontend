@@ -113,12 +113,20 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
     }
 
     const handleClickPodDelete = (podId: string) => {
+        console.log("POD ID")
+        console.log(podId)
         setPodToDelete(podId);
+        console.log("POD TO DELETE")
+        console.log(podToDelete)
         openDialog("confirmation");
     };
 
     const handleConfirmPodDelete = () => {
+        console.log("POD TO DELETE2")
+        console.log(podToDelete)
         if (podToDelete) {
+            console.log("POD TO DELETE")
+            console.log(podToDelete)
             deleteStatefulPod(podToDelete);
             setPodToDelete(null);
         }

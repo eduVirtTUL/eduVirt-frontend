@@ -23,21 +23,20 @@ interface StatelessPodDrawerProps {
     courseId: string
 }
 
-interface StatelessPod {
-    poolId: string;
-    teamId: string;
-    poolName?: string;
-}
+// interface StatelessPod {
+//     poolId: string;
+//     teamId: string;
+//     poolName?: string;
+// }
 
 const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPodDrawerProps) => {
     const [selectedPool, setSelectedPool] = useState<string | null>(null)
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const {courseResourceGroupPools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId)
-    const {pods: statelessPods, isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId) as { pods: string[], isLoading: boolean }
-    console.log(statelessPods)
+    // const {pods: statelessPods, isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId) as { pods: string[], isLoading: boolean }
     const {createStatelessPod} = useCreateStatelessPod()
-    const { deleteStatelessPod, isPending: isDeleting } = useDeleteStatelessPod()
-    const {open: openDialog} = useDialog()
+    // const { deleteStatelessPod, isPending: isDeleting } = useDeleteStatelessPod()
+    // const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null)
 
     const handleSubmit = () => {
@@ -45,10 +44,10 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
         onOpenChange(false)
     }
 
-    const handleClickPodDelete = (podId: string) => {
-        setPodToDelete(podId)
-        openDialog("confirmation")
-    }
+    // const handleClickPodDelete = (podId: string) => {
+    //     setPodToDelete(podId)
+    //     openDialog("confirmation")
+    // }
 
     const handleConfirmPodDelete = () => {
         if (podToDelete) {
@@ -124,7 +123,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                             </CardContent>
                         </Card>
 
-                        <Card>
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle>Team's Pods</CardTitle>
                             </CardHeader>
@@ -176,7 +175,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                     )}
                                 </ScrollArea>
                             </CardContent>
-                        </Card>
+                        </Card> */}
                     </div>
                 </div>
             </DrawerContent>

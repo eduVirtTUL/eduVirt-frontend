@@ -12,6 +12,5 @@ export const useResourceGroupsWithPods = () => {
         },
     });
 
-    console.log(data)
     return { resourceGroupsWithPods: data, isLoading };
 };
