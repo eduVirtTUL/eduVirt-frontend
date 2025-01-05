@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useStatelessPodsForTeam = (teamId: string) => {
     const { data, isLoading } = useQuery({
-        queryKey: [keys.POD],
+        queryKey: [keys.STATELESS_POD],
         queryFn: async () => {
             const podController = new PodControllerApi();
             const response = await podController.getStatelessPodsByTeam(teamId);

@@ -23,6 +23,7 @@ import {toast} from "sonner";
 import {Skeleton} from "@/components/ui/skeleton";
 import AddCourseKeyDialog from "../../components/Modals/AddCourseKeyModal";
 import StatefulPodDrawer from "./StatefulPodDrawer";
+import StatelessPodDrawer from "./StatelessPodDrawer";
 
 const StatusDot = ({active}: { active: boolean }) => (
     <div
@@ -39,7 +40,8 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
     const {teams, isLoading} = useCourseTeams(id!);
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
-    const [assignResourcesOpen, setAssignResourcesOpen] = useState(false);
+    const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
+    const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
     const isTeamBased = course?.courseType === "TEAM_BASED";
     const {course: accessKey, isLoading: isAccessKeyLoading} = useCourseAccessKey(id);
 
@@ -123,10 +125,18 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         <DropdownMenuItem
                             onClick={() => {
                                 setSelectedTeamId(row.original.id);
-                                setAssignResourcesOpen(true);
+                                setManageStatefulPodsOpen(true);
                             }}
                         >
                             Manage Stateful Pods
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => {
+                                setSelectedTeamId(row.original.id);
+                                setManageStatelessPodsOpen(true);
+                            }}
+                        >
+                            Manage Stateless Pods
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -200,11 +210,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                         />
                                     </div>
                                 ) : (
-                                  <>
-                                  {/* @ts-expect-error this doesn't impact the page */}
-                                    <Button onClick={() => open("createCourseKey")}>
-                                        Create Key
-                                    </Button>
+                                    <>
+                                        {/* @ts-expect-error this doesn't impact the page */}
+                                        <Button onClick={() => open("createCourseKey")}>
+                                            Create Key
+                                        </Button>
                                     </>
                                 )}
                             </CardContent>
@@ -244,12 +254,22 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     </CardContent>
                 </Card>
                 {selectedTeamId && (
-  <StatefulPodDrawer
-    open={assignResourcesOpen}
-    onOpenChange={setAssignResourcesOpen}
-    teamId={selectedTeamId}
-  />
-)}
+                    <StatefulPodDrawer
+                        open={manageStatefulPodsOpen
+                        }
+                        onOpenChange={setManageStatefulPodsOpen}
+                        teamId={selectedTeamId}
+                    />
+                )}
+                {selectedTeamId && (
+                    <StatelessPodDrawer
+                        open={manageStatelessPodsOpen
+                        }
+                        onOpenChange={setManageStatelessPodsOpen}
+                        teamId={selectedTeamId}
+                        courseId={id}
+                    />
+                )}
             </div>
         </>
     );
