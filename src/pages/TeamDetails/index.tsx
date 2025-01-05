@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTeam} from "@/data/team/useTeam";
 import {useCourse} from "@/data/course/useCourse";
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam";
-import {useStatelessPodsForTeam} from "@/data/pods/useStatelessPodsForTeam";
+
 import PageHeader from "@/components/PageHeader";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
@@ -24,7 +24,6 @@ const TeamDetailsPage: React.FC = () => {
     const {team, isLoading} = useTeam(id ?? "");
     const {course} = useCourse(team?.course?.id ?? "");
     const {statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
-    // const {pods: statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
     const [isMembersOpen, setIsMembersOpen] = useState(true);
     const {leaveTeam} = useLeaveTeamOrCourse();
     const navigate = useNavigate();
@@ -124,6 +123,7 @@ const TeamDetailsPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+            
             <div className="grid gap-6">
                 <Collapsible open={isMembersOpen} onOpenChange={setIsMembersOpen}>
                     <Card>
@@ -171,14 +171,12 @@ const TeamDetailsPage: React.FC = () => {
                 <div className="space-y-4">
                     <h2 className="text-2xl font-semibold tracking-tight">Assigned Pods</h2>
                     {isLoadingStatefulPods ? (
-                    // {isLoadingStatefulPods || isLoadingStatelessPods ? (
                         <div className="flex gap-4 px-8">
                             {[1, 2, 3].map((i) => (
                                 <Skeleton key={i} className="h-[280px] w-full"/>
                             ))}
                         </div>
                     ) : (statefulPods?.length === 0) ? (
-                    // ) : (statefulPods?.length === 0 && statelessPods?.length === 0) ? (
                         <p className="text-center text-muted-foreground py-8">No pods assigned to this team</p>
                     ) : (
                         <div className="px-8">
@@ -191,21 +189,31 @@ const TeamDetailsPage: React.FC = () => {
                             >
                                 <CarouselContent>
                                     {[...(statefulPods || [])]
-                                    // {[...(statefulPods || []), ...(statelessPods || [])]
                                         .filter((pod, index, self) =>
                                                 index === self.findIndex(p =>
                                                     p.resourceGroup?.id === pod.resourceGroup?.id
                                                 )
                                         )
                                         .map((pod) => (
-                                            <CarouselItem key={pod.id}
-                                                          className="basis-full md:basis-1/3 lg:basis-1/3"
+                                            <CarouselItem
+                                                key={pod.id}
+                                                className="basis-full md:basis-1/3 lg:basis-1/3"
                                             >
-                                                <PodCard
-                                                    id={pod.id || ''}
-                                                    resourceGroup={pod.resourceGroup}
-                                                    course={pod.course}
-                                                />
+                                                {pod.resourceGroup && pod.course && (
+                                                    <PodCard
+                                                        id={pod.id || ''}
+                                                        resourceGroup={{
+                                                            id: pod.resourceGroup.id || '',
+                                                            name: pod.resourceGroup.name || '',
+                                                            isStateless: pod.resourceGroup.stateless || false
+                                                        }}
+                                                        course={{
+                                                            name: pod.course.name || '',
+                                                            description: pod.course.description || '',
+                                                            courseType: pod.course.courseType || ''
+                                                        }}
+                                                    />
+                                                )}
                                             </CarouselItem>
                                         ))}
                                 </CarouselContent>

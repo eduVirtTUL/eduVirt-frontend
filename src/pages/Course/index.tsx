@@ -79,11 +79,17 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         </PopoverTrigger>
                         <PopoverContent>
                             <div className="space-y-2">
-                                {users.map((user: string) => (
-                                    <div key={user}>
-                                        <Badge variant="outline">{user}</Badge>
+                                {users.length === 0 ? (
+                                    <div className="text-muted-foreground text-center">
+                                        No members
                                     </div>
-                                ))}
+                                ) : (
+                                    users.map((user: string) => (
+                                        <div key={user}>
+                                            <Badge variant="outline">{user}</Badge>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </PopoverContent>
                     </Popover>
@@ -101,7 +107,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         },
         ...(isTeamBased ? [{
             accessorKey: "keyValue",
-            header: "Team Key",
+            header: "Team Access Key",
             //@ts-expect-error this doesn't impact the page
             cell: ({row}) => {
                 const teamId = row.original.id;
