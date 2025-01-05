@@ -33,28 +33,31 @@ const TeamDetailsPage: React.FC = () => {
     const {open} = useDialog();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/teams');
-            return;
-        }
+        const checkAuthorization = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/teams');
+                return;
+            }
 
-        const decoded = jwtDecode<{ sub: string }>(token);
-        const userId = decoded.sub;
+            const decoded = jwtDecode<{ sub: string }>(token);
+            const userId = decoded.sub;
 
-        if (!team) {
-            toast.error("Team not found");
-            navigate('/teams');
-            return;
-        }
+            if (!isLoading && team) {
+                if (!team.users?.includes(userId)) {
+                    toast.error("You need to be a member of this team to view its details");
+                    navigate('/teams');
+                } else {
+                    setIsAuthorized(true);
+                }
+            } else if (!isLoading && !team) {
+                toast.error("Team not found");
+                navigate('/teams');
+            }
+        };
 
-        if (!team.users?.includes(userId)) {
-            toast.error("You need to be a member of this team to view its details");
-            navigate('/teams');
-        } else {
-            setIsAuthorized(true);
-        }
-    }, [team, navigate]);
+        checkAuthorization();
+    }, [team, isLoading, navigate]);
 
     if (isLoading || isAuthorized === null || !isAuthorized) {
         return (
