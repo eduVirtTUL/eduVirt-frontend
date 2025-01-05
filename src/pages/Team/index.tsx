@@ -1,12 +1,13 @@
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ExternalLink, LoaderIcon } from "lucide-react"
+import { ArrowUpDown, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useUsersTeams } from "@/data/team/useUsersTeams";
 import { StatusDot } from "@/components/StatusDot";
 import JoinTeamDialog from "@/pages/Team/join-team-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TeamWithCourseDto {
   id: string;
@@ -28,8 +29,29 @@ const TeamsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="space-y-6">
+        <div className="flex justify-between items-center mb-6">
+          <Skeleton className="h-8 w-[200px]" />
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-4 p-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]" />
+              ))}
+            </div>
+          </div>
+          <div>
+            {[1, 2, 3, 4, 5].map((row) => (
+              <div key={row} className="grid grid-cols-4 p-4 border-b">
+                {[1, 2, 3, 4].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

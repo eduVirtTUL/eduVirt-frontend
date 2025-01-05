@@ -2,15 +2,16 @@ import { PodControllerApi } from "@/api";
 import { keys } from "../keys";
 import { useQuery } from "@tanstack/react-query";
 
-export const useStatefulPodsForTeam = (teamId: string) => {
+export const useStatefulPods = () => {
     const { data, isLoading } = useQuery({
         queryKey: [keys.POD],
         queryFn: async () => {
             const podController = new PodControllerApi();
-            const response = await podController.getStatefulPodsByTeam(teamId);
+            const response = await podController.get();
+            console.log(response.data);
             return response.data;
         },
     });
 
-    return { statefulPods: data, isLoading };
+    return { pods: data, isLoading };
 }

@@ -14,6 +14,7 @@ export const useCreateStatefulPod = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [keys.POD] });
+            queryClient.invalidateQueries({ queryKey: [keys.RESOURCE_GROUP, 'withPods'] })
             toast.success("Stateful pod created successfully!");
         },
         onError: () => {

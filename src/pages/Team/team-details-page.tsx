@@ -23,8 +23,8 @@ const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
     const {team, isLoading} = useTeam(id ?? "");
     const {course} = useCourse(team?.course?.id ?? "");
-    const {pods: statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
-    const {pods: statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
+    const {statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
+    // const {pods: statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
     const [isMembersOpen, setIsMembersOpen] = useState(true);
     const {leaveTeam} = useLeaveTeamOrCourse();
     const navigate = useNavigate();
@@ -167,13 +167,15 @@ const TeamDetailsPage: React.FC = () => {
                 </Collapsible>
                 <div className="space-y-4">
                     <h2 className="text-2xl font-semibold tracking-tight">Assigned Pods</h2>
-                    {isLoadingStatefulPods || isLoadingStatelessPods ? (
+                    {isLoadingStatefulPods ? (
+                    // {isLoadingStatefulPods || isLoadingStatelessPods ? (
                         <div className="flex gap-4 px-8">
                             {[1, 2, 3].map((i) => (
                                 <Skeleton key={i} className="h-[280px] w-full"/>
                             ))}
                         </div>
-                    ) : (statefulPods?.length === 0 && statelessPods?.length === 0) ? (
+                    ) : (statefulPods?.length === 0) ? (
+                    // ) : (statefulPods?.length === 0 && statelessPods?.length === 0) ? (
                         <p className="text-center text-muted-foreground py-8">No pods assigned to this team</p>
                     ) : (
                         <div className="px-8">
@@ -185,10 +187,11 @@ const TeamDetailsPage: React.FC = () => {
                                 className="w-full"
                             >
                                 <CarouselContent>
-                                    {[...(statefulPods || []), ...(statelessPods || [])]
+                                    {[...(statefulPods || [])]
+                                    // {[...(statefulPods || []), ...(statelessPods || [])]
                                         .filter((pod, index, self) =>
                                                 index === self.findIndex(p =>
-                                                    p.resourceGroup.id === pod.resourceGroup.id
+                                                    p.resourceGroup?.id === pod.resourceGroup?.id
                                                 )
                                         )
                                         .map((pod) => (
@@ -196,7 +199,7 @@ const TeamDetailsPage: React.FC = () => {
                                                           className="basis-full md:basis-1/3 lg:basis-1/3"
                                             >
                                                 <PodCard
-                                                    id={pod.id}
+                                                    id={pod.id || ''}
                                                     resourceGroup={pod.resourceGroup}
                                                     course={pod.course}
                                                 />

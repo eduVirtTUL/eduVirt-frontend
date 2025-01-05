@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { create } from "zustand";
 
 type Dialog =
@@ -11,7 +12,8 @@ type Dialog =
   | "createClusterMetricValue"
   | "confirmation"
   | "createReservation"
-  | "createInterval";
+  | "createInterval"
+    "createCourseKey"
 
 type DialogStore = {
   opened?: Dialog;
