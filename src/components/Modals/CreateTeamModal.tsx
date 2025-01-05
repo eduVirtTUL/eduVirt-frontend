@@ -7,16 +7,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useCreateTeam } from "@/data/team/useCreateTeam";
 
-interface CreateTeamDialogProps {
+interface CreateTeamModalProps {
   courseId: string;
 }
 
-const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
+const CreateTeamModal = ({ courseId }: CreateTeamModalProps) => {
   const [open, setOpen] = useState(false);
   const [teamName, setTeamName] = useState("");
   const [maxSize, setMaxSize] = useState<number>(3);
@@ -101,4 +100,4 @@ const CreateTeamDialog = ({ courseId }: CreateTeamDialogProps) => {
   );
 };
 
-export default CreateTeamDialog;
+export default CreateTeamModal;

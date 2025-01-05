@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useUsersTeams } from "@/data/team/useUsersTeams";
 import { StatusDot } from "@/components/StatusDot";
-import JoinTeamDialog from "@/pages/Team/join-team-dialog";
+import JoinTeamModal from "@/components/Modals/JoinTeamModal";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface TeamWithCourseDto {
@@ -107,7 +107,7 @@ const TeamsPage = () => {
       <div className="flex justify-between items-center mb-6">
         <PageHeader title="Your Teams" />
         <div className="pb-10">
-          <JoinTeamDialog />
+          <JoinTeamModal />
         </div>
       </div>
       <div className="[&_.inactive-row]:opacity-60">

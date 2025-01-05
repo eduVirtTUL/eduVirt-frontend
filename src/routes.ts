@@ -31,7 +31,7 @@ export default [
 
       ...prefix("teams", [
         index("./pages/Team/index.tsx"),
-        route(":id", "./pages/Team/team-details-page.tsx"),
+        route(":id", "./pages/TeamDetails/index.tsx"),
       ]),
 
       ...prefix("limits", [

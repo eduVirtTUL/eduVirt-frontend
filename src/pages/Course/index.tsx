@@ -9,7 +9,7 @@ import {ArrowUpDown, Copy, Info, MoreHorizontal} from "lucide-react";
 import DataTable from "@/components/DataTable";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
-import CreateTeamDialog from "../Team/create-team-dialog";
+import CreateTeamModal from "../../components/Modals/CreateTeamModal";
 import {useCourseTeams} from "@/data/team/useCoursesTeams";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
 import React, {useState} from "react";
@@ -21,8 +21,8 @@ import {Badge} from "@/components/ui/badge";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {toast} from "sonner";
 import {Skeleton} from "@/components/ui/skeleton";
-import AddCourseKeyDialog from "./add-course-key-dialog";
-import AssignResourcesDrawer from "./assign-resources-drawer";
+import AddCourseKeyDialog from "../../components/Modals/AddCourseKeyModal";
+import StatefulPodDrawer from "./StatefulPodDrawer";
 
 const StatusDot = ({active}: { active: boolean }) => (
     <div
@@ -232,7 +232,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle>Teams</CardTitle>
-                            {isTeamBased && <CreateTeamDialog courseId={id!}/>}
+                            {isTeamBased && <CreateTeamModal courseId={id!}/>}
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -244,7 +244,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     </CardContent>
                 </Card>
                 {selectedTeamId && (
-  <AssignResourcesDrawer
+  <StatefulPodDrawer
     open={assignResourcesOpen}
     onOpenChange={setAssignResourcesOpen}
     teamId={selectedTeamId}

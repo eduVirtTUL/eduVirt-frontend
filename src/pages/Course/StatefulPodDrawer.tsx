@@ -20,7 +20,7 @@ import {useDeleteStatefulPod} from "@/data/pods/useDeleteStatefulPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 
-interface AssignResourcesDrawerProps {
+interface StatefulPodDrawerProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     teamId: string
@@ -96,7 +96,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
     )
 }
 
-const AssignResourcesDrawer = ({open, onOpenChange, teamId}: AssignResourcesDrawerProps) => {
+const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps) => {
     const [selectedResource, setSelectedResource] = useState<string | null>(null)
     const {resourceGroups, isLoading: isLoadingRG} = useResourceGroups()
     const {createStatefulPod} = useCreateStatefulPod()
@@ -256,4 +256,4 @@ const AssignResourcesDrawer = ({open, onOpenChange, teamId}: AssignResourcesDraw
     )
 }
 
-export default AssignResourcesDrawer
+export default StatefulPodDrawer

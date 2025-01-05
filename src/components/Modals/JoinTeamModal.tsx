@@ -11,7 +11,7 @@ import { useState } from "react";
 
 import { useJoinTeamOrCourse } from "@/data/team/useJoinTeamOrCourse";
 
-const JoinTeamDialog = () => {
+const JoinTeamModal = () => {
   const [open, setOpen] = useState(false);
   const [teamKey, setTeamKey] = useState("");
   const { joinTeam } = useJoinTeamOrCourse();
@@ -51,4 +51,4 @@ const JoinTeamDialog = () => {
   );
 };
 
-export default JoinTeamDialog;
+export default JoinTeamModal;
