@@ -3,7 +3,7 @@ import { useDialog } from "@/stores/dialogStore";
 import { CardContent } from "@/components/ui/card";
 import CreateClusterMetricValue from "@/pages/ClusterLimits/modals/CreateClusterMetricValueModal";
 import { Button } from "@/components/ui/button";
-import DataTable from "@/pages/Courses/DataTable";
+import DataTable from "@/pages/VnicProfiles/DataTable";
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricValueDto } from "@/api";
