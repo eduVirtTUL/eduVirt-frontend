@@ -17,10 +17,9 @@ import {
   ArrowUpDown,
   FilterIcon,
   FilterX,
-  LoaderIcon,
   MoreHorizontal,
 } from "lucide-react";
-import DataTable from "@/pages/Courses/DataTable";
+import DataTable from "@/pages/VnicProfiles/DataTable";
 import { Column, ColumnDef, SortDirection } from "@tanstack/react-table";
 import { VnicProfileDto } from "@/api";
 import React from "react";
@@ -31,6 +30,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDetailsModal";
 import { useDialog } from "@/stores/dialogStore";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const VnicProfilesPage: React.FC = () => {
   const { vnicProfiles, isLoading } = useVnicProfiles();
@@ -198,7 +198,6 @@ const VnicProfilesPage: React.FC = () => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              {/*TODO fix className in scaling*/}
               <Button variant="ghost" className="h-8 w-8 p-0 ml-40">
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal />
@@ -227,6 +226,7 @@ const VnicProfilesPage: React.FC = () => {
                   Remove from pool
                 </Button>
               </DropdownMenuItem>
+               {/*TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)*/}
               <DropdownMenuItem asChild>
                 <Button
                   className={"h-full w-full"}
@@ -244,23 +244,41 @@ const VnicProfilesPage: React.FC = () => {
   ];
 
   if (isLoading) {
-    return <LoaderIcon className="animate-spin size-10" />;
+    // return <LoaderIcon className="animate-spin size-10" />;
+    return (
+        <>
+          <ShowVnicProfileDetailsModal/>
+          <PageHeader title="Vnic profiles"/>
+
+          <div className="pb-5">
+            <Button asChild>
+              <Link to={"/networks/vlans"}>VLAN ranges</Link>
+            </Button>
+          </div>
+
+          <div className="flex justify-center items-center min-h-hull">
+            <BounceLoader color="#1e1e1e"/>
+          </div>
+        </>
+    );
   }
 
-  /// TODO pagination
-  /// TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)
   return (
-    <>
-      <ShowVnicProfileDetailsModal />
-      <PageHeader title="Vnic profiles" />
+      <>
+        <ShowVnicProfileDetailsModal/>
+        <PageHeader title="Vnic profiles"/>
 
-      <div className="pb-5">
+        <div className="pb-5">
         <Button asChild>
           <Link to={"/networks/vlans"}>VLAN ranges</Link>
         </Button>
       </div>
 
-      <DataTable data={vnicProfiles ?? []} columns={columns} />
+      <DataTable
+          data={vnicProfiles ?? []}
+          columns={columns}
+          paginationEnabled={true}
+      />
     </>
   );
 };
