@@ -11,6 +11,7 @@ i18next.use(initReactI18next).init({
   resources: {
     pl: {
       common: pl,
+      keys: pl,
     },
   },
 });

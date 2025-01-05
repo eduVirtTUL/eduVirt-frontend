@@ -1,35 +1,32 @@
-import { LoaderIcon } from "lucide-react";
 import React from "react";
 import DataTable from "@/components/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { useHosts } from "@/data/cluster/useHosts";
 import { HostDto } from "@/api";
+import {useTranslation} from "react-i18next";
+import {TFunction} from "i18next";
+import {CardContent} from "@/components/ui/card";
 
 type ClusterDetailsProps = {
-  clusterId: string;
+  hosts: HostDto[];
 };
 
-const columns: ColumnDef<HostDto>[] = [
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "address", header: "Domain name" },
-  { accessorKey: "cpus", header: "CPU count" },
-  { accessorKey: "memory", header: "Memory size" },
+const columns = (
+    t: TFunction
+): ColumnDef<HostDto>[] => [
+  { accessorKey: "name", header: t("hosts.table.columns.name") },
+  { accessorKey: "address", header: t("hosts.table.columns.domainName") },
+  { accessorKey: "cpus", header: t("hosts.table.columns.cpuCount") },
+  { accessorKey: "memory", header: t("hosts.table.columns.memorySize") },
 ];
 
-const HostList: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
-  const { hosts, isLoading } = useHosts(clusterId!);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col my-auto items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
-      </div>
-    );
-  }
+const HostList: React.FC<ClusterDetailsProps> = ({ hosts }) => {
+  const { t } = useTranslation();
 
   return (
     <>
-      <DataTable data={hosts ?? []} columns={columns} />
+      <CardContent className={"p-4"}>
+        <DataTable data={hosts ?? []} columns={columns(t)} />
+      </CardContent>
     </>
   );
 };

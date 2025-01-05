@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { create } from "zustand";
 
 type Dialog =
@@ -9,11 +8,15 @@ type Dialog =
   | "createPool"
   | "createVlansRange"
   | "showVnicProfileDetails"
+  | "createMetric"
   | "createClusterMetricValue"
+  | "updateClusterMetricValue"
   | "confirmation"
   | "createReservation"
   | "createInterval"
     "createCourseKey"
+  | "createInterval"
+  | "showMaintenanceInterval";
 
 type DialogStore = {
   opened?: Dialog;

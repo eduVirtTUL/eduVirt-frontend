@@ -8,7 +8,6 @@ export const useCluster = (id: string) => {
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findClusterById(id);
-
       return response.data;
     },
   });

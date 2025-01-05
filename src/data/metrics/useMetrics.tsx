@@ -12,5 +12,5 @@ export const useMetrics = () => {
     },
   });
 
-    return {metrics: data, isLoading};
+  return {metrics: data, isLoading};
 }
