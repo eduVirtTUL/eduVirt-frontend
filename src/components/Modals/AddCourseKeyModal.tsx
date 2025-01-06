@@ -25,7 +25,6 @@ const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
 
   return (
     <>
-    {/* @ts-expect-error this doesn't impact the page */}
     <Dialog open={isOpen("createCourseKey")} onOpenChange={close}>
       <DialogContent>
         <DialogHeader className="flex flex-row items-center gap-2">

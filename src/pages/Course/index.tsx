@@ -253,7 +253,6 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* @ts-expect-error this doesn't impact the page */}
                                         <Button onClick={() => open("createCourseKey")}>
                                             Create Key
                                         </Button>
