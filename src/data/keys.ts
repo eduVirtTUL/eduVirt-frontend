@@ -26,3 +26,8 @@ export const courseKeys = {
   metric: (id: string, metricId: string) =>
     ["course", id, "metrics", metricId] as const,
 };
+
+export const resourceGroupPoolKeys = {
+  all: ["resourceGroupPool"] as const,
+  detail: (id: string) => ["resourceGroupPool", id] as const,
+};

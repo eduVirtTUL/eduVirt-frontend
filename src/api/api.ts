@@ -344,6 +344,18 @@ export interface CreateRGPoolDto {
      * @memberof CreateRGPoolDto
      */
     'gracePeriod'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateRGPoolDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateRGPoolDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -396,10 +408,10 @@ export interface CreateResourceGroupDto {
     'description'?: string;
     /**
      * 
-     * @type {boolean}
+     * @type {number}
      * @memberof CreateResourceGroupDto
      */
-    'stateless'?: boolean;
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -488,6 +500,36 @@ export interface DetailedResourceGroupPoolDto {
      * @memberof DetailedResourceGroupPoolDto
      */
     'course'?: CourseDto;
+    /**
+     * 
+     * @type {Array<ResourceGroupDto>}
+     * @memberof DetailedResourceGroupPoolDto
+     */
+    'resourceGroups'?: Array<ResourceGroupDto>;
+    /**
+     * 
+     * @type {number}
+     * @memberof DetailedResourceGroupPoolDto
+     */
+    'maxRent'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DetailedResourceGroupPoolDto
+     */
+    'gracePeriod'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DetailedResourceGroupPoolDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof DetailedResourceGroupPoolDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -1079,6 +1121,12 @@ export interface ResourceGroupPoolDto {
      * @memberof ResourceGroupPoolDto
      */
     'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceGroupPoolDto
+     */
+    'description'?: string;
 }
 /**
  * 
@@ -1186,6 +1234,37 @@ export interface UpdateMetricValueDto {
      * @memberof UpdateMetricValueDto
      */
     'value'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateResourceGroupPoolDto
+ */
+export interface UpdateResourceGroupPoolDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateResourceGroupPoolDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateResourceGroupPoolDto
+     */
+    'maxRent'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateResourceGroupPoolDto
+     */
+    'gracePeriod'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateResourceGroupPoolDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -5450,41 +5529,6 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
     return {
         /**
          * 
-         * @param {CreateResourceGroupDto} createResourceGroupDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createResourceGroup: async (createResourceGroupDto: CreateResourceGroupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'createResourceGroupDto' is not null or undefined
-            assertParamExists('createResourceGroup', 'createResourceGroupDto', createResourceGroupDto)
-            const localVarPath = `/resource-group`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createResourceGroupDto, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5557,18 +5601,6 @@ export const ResourceGroupControllerApiFp = function(configuration?: Configurati
     return {
         /**
          * 
-         * @param {CreateResourceGroupDto} createResourceGroupDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createResourceGroup(createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceGroupDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createResourceGroup(createResourceGroupDto, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.createResourceGroup']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5602,15 +5634,6 @@ export const ResourceGroupControllerApiFactory = function (configuration?: Confi
     return {
         /**
          * 
-         * @param {CreateResourceGroupDto} createResourceGroupDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createResourceGroup(createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): AxiosPromise<ResourceGroupDto> {
-            return localVarFp.createResourceGroup(createResourceGroupDto, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5636,17 +5659,6 @@ export const ResourceGroupControllerApiFactory = function (configuration?: Confi
  * @extends {BaseAPI}
  */
 export class ResourceGroupControllerApi extends BaseAPI {
-    /**
-     * 
-     * @param {CreateResourceGroupDto} createResourceGroupDto 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ResourceGroupControllerApi
-     */
-    public createResourceGroup(createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig) {
-        return ResourceGroupControllerApiFp(this.configuration).createResourceGroup(createResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @param {string} id 
@@ -5860,6 +5872,45 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addResourceGroupToPool: async (id: string, createResourceGroupDto: CreateResourceGroupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('addResourceGroupToPool', 'id', id)
+            // verify required parameter 'createResourceGroupDto' is not null or undefined
+            assertParamExists('addResourceGroupToPool', 'createResourceGroupDto', createResourceGroupDto)
+            const localVarPath = `/resource-group-pool/{id}/resourceGroup`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createResourceGroupDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CreateRGPoolDto} createRGPoolDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5887,6 +5938,39 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createRGPoolDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteResourceGroupPool: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteResourceGroupPool', 'id', id)
+            const localVarPath = `/resource-group-pool/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5955,6 +6039,45 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupPoolDto} updateResourceGroupPoolDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateResourceGroupPool: async (id: string, updateResourceGroupPoolDto: UpdateResourceGroupPoolDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateResourceGroupPool', 'id', id)
+            // verify required parameter 'updateResourceGroupPoolDto' is not null or undefined
+            assertParamExists('updateResourceGroupPool', 'updateResourceGroupPoolDto', updateResourceGroupPoolDto)
+            const localVarPath = `/resource-group-pool/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateResourceGroupPoolDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -5967,6 +6090,19 @@ export const ResourceGroupPoolControllerApiFp = function(configuration?: Configu
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addResourceGroupToPool(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addResourceGroupToPool(id, createResourceGroupDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.addResourceGroupToPool']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CreateRGPoolDto} createRGPoolDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5975,6 +6111,18 @@ export const ResourceGroupPoolControllerApiFp = function(configuration?: Configu
             const localVarAxiosArgs = await localVarAxiosParamCreator.createResourceGroupPool(createRGPoolDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.createResourceGroupPool']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteResourceGroupPool(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteResourceGroupPool(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.deleteResourceGroupPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6000,6 +6148,19 @@ export const ResourceGroupPoolControllerApiFp = function(configuration?: Configu
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.getResourceGroupPools']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupPoolDto} updateResourceGroupPoolDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateResourceGroupPool(id: string, updateResourceGroupPoolDto: UpdateResourceGroupPoolDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceGroupPoolDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateResourceGroupPool(id, updateResourceGroupPoolDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.updateResourceGroupPool']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -6012,12 +6173,31 @@ export const ResourceGroupPoolControllerApiFactory = function (configuration?: C
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addResourceGroupToPool(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addResourceGroupToPool(id, createResourceGroupDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CreateRGPoolDto} createRGPoolDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         createResourceGroupPool(createRGPoolDto: CreateRGPoolDto, options?: RawAxiosRequestConfig): AxiosPromise<ResourceGroupPoolDto> {
             return localVarFp.createResourceGroupPool(createRGPoolDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteResourceGroupPool(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteResourceGroupPool(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6036,6 +6216,16 @@ export const ResourceGroupPoolControllerApiFactory = function (configuration?: C
         getResourceGroupPools(options?: RawAxiosRequestConfig): AxiosPromise<Array<DetailedResourceGroupPoolDto>> {
             return localVarFp.getResourceGroupPools(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupPoolDto} updateResourceGroupPoolDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateResourceGroupPool(id: string, updateResourceGroupPoolDto: UpdateResourceGroupPoolDto, options?: RawAxiosRequestConfig): AxiosPromise<ResourceGroupPoolDto> {
+            return localVarFp.updateResourceGroupPool(id, updateResourceGroupPoolDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -6048,6 +6238,18 @@ export const ResourceGroupPoolControllerApiFactory = function (configuration?: C
 export class ResourceGroupPoolControllerApi extends BaseAPI {
     /**
      * 
+     * @param {string} id 
+     * @param {CreateResourceGroupDto} createResourceGroupDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupPoolControllerApi
+     */
+    public addResourceGroupToPool(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig) {
+        return ResourceGroupPoolControllerApiFp(this.configuration).addResourceGroupToPool(id, createResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {CreateRGPoolDto} createRGPoolDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6055,6 +6257,17 @@ export class ResourceGroupPoolControllerApi extends BaseAPI {
      */
     public createResourceGroupPool(createRGPoolDto: CreateRGPoolDto, options?: RawAxiosRequestConfig) {
         return ResourceGroupPoolControllerApiFp(this.configuration).createResourceGroupPool(createRGPoolDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupPoolControllerApi
+     */
+    public deleteResourceGroupPool(id: string, options?: RawAxiosRequestConfig) {
+        return ResourceGroupPoolControllerApiFp(this.configuration).deleteResourceGroupPool(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6076,6 +6289,18 @@ export class ResourceGroupPoolControllerApi extends BaseAPI {
      */
     public getResourceGroupPools(options?: RawAxiosRequestConfig) {
         return ResourceGroupPoolControllerApiFp(this.configuration).getResourceGroupPools(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {UpdateResourceGroupPoolDto} updateResourceGroupPoolDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupPoolControllerApi
+     */
+    public updateResourceGroupPool(id: string, updateResourceGroupPoolDto: UpdateResourceGroupPoolDto, options?: RawAxiosRequestConfig) {
+        return ResourceGroupPoolControllerApiFp(this.configuration).updateResourceGroupPool(id, updateResourceGroupPoolDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -17,7 +17,11 @@ const resourceGroupPools = {
 };
 
 export default {
+  save: "Zapisz",
   cancel: "Anuluj",
+  next: "Dalej",
+  previous: "Wstecz",
+  create: "Utwórz",
   menu,
   resourceGroupPools,
   ...adam,

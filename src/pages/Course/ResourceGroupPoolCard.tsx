@@ -17,6 +17,7 @@ const ResourceGroupPoolCard: React.FC<ResourceGroupPoolCardProps> = ({
         <CardTitle className="truncate">{pool.name}</CardTitle>
       </CardHeader>
       <CardContent>
+        <p>{pool.description}</p>
         <div className="flex justify-start">
           <Button asChild>
             <Link to={`/pools/${pool.id}`}>Details</Link>
