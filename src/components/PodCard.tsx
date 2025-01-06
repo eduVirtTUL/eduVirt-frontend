@@ -12,6 +12,7 @@ interface PodCardProps {
     name: string;
     description: string;
     courseType: string;
+    clusterId: string;
   };
 }
 
@@ -31,6 +32,8 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
               <p className="font-medium">{course.name}</p>
               <p className="text-sm text-muted-foreground">Description</p>
               <p className="font-medium">{course.description}</p>
+              {/* <p className="text-sm text-muted-foreground">Cluster</p>
+              <p className="font-medium">{course.clusterId}</p> */}
           </div>
         </div>
       </CardContent>

@@ -210,7 +210,8 @@ const TeamDetailsPage: React.FC = () => {
                                                         course={{
                                                             name: pod.course.name || '',
                                                             description: pod.course.description || '',
-                                                            courseType: pod.course.courseType || ''
+                                                            courseType: pod.course.courseType || '',
+                                                            clusterId: pod.course.clusterId || ''
                                                         }}
                                                     />
                                                 )}
