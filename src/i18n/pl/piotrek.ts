@@ -31,6 +31,7 @@ const clusters = {
             hosts: 'Hosty',
             network: 'Sieci',
             metric: 'Metryki',
+            event: 'Dziennik zdarzeń',
         }
     },
     error: {
@@ -56,6 +57,16 @@ const networks = {
             description: 'Opis',
             comment: 'Komentarz',
             status: 'Stan'
+        }
+    }
+}
+
+const events = {
+    table: {
+        columns: {
+            message: 'Treść',
+            severity: 'Poziom istotności',
+            registeredAt: 'Czas wystąpienia'
         }
     }
 }
@@ -234,6 +245,10 @@ const reservations = {
         success: 'Rezerwacja została utworzona pomyślnie',
         error: 'Rezerwacja nie mogła zostałać utworzona',
     },
+    finishReservation: {
+        success: 'Rezerwacja została zakończona pomyślnie',
+        error: 'Rezerwacja nie mogła zostałać zakończona',
+    },
     error: {
         "end.before.start": "Koniec rezerwacji musi następić po jej rozpoczęciu",
         "start.in.past": "Rezerwacja nie może rozpoczynać się w przeszłości",
@@ -253,7 +268,7 @@ const reservations = {
 
 export default {
     clusters, hosts, networks,
-    metrics,
+    metrics, events,
     clusterMetricValues,
     maintenanceIntervals,
     reservations,

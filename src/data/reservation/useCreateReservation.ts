@@ -2,16 +2,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateReservationDto, ReservationControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export const useCreateReservation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["createReservation"],
+    mutationKey: [ "createReservation" ],
     mutationFn: async (createDto: CreateReservationDto) => {
       const controller = new ReservationControllerApi();
-      const response = await controller.createNewReservation(createDto);
+      const response = await controller.createNewReservation(
+        createDto, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {

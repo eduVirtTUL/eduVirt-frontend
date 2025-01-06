@@ -915,6 +915,31 @@ export interface PageInfoDto {
 /**
  * 
  * @export
+ * @interface Pageable
+ */
+export interface Pageable {
+    /**
+     * 
+     * @type {number}
+     * @memberof Pageable
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Pageable
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Pageable
+     */
+    'sort'?: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface PodStatefulDto
  */
 export interface PodStatefulDto {
@@ -1823,13 +1848,14 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {string} id 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findEventsByClusterId: async (id: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        findEventsByClusterId: async (pageable: Pageable, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('findEventsByClusterId', 'pageable', pageable)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('findEventsByClusterId', 'id', id)
             const localVarPath = `/clusters/{id}/events`
@@ -1845,12 +1871,10 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (pageNumber !== undefined) {
-                localVarQueryParameter['pageNumber'] = pageNumber;
-            }
-
-            if (pageSize !== undefined) {
-                localVarQueryParameter['pageSize'] = pageSize;
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
             }
 
 
@@ -2044,14 +2068,13 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {string} id 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findEventsByClusterId(id, pageNumber, pageSize, options);
+        async findEventsByClusterId(pageable: Pageable, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EventGeneralDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findEventsByClusterId(pageable, id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterControllerApi.findEventsByClusterId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2140,14 +2163,13 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {string} id 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDto>> {
-            return localVarFp.findEventsByClusterId(id, pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        findEventsByClusterId(pageable: Pageable, id: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<EventGeneralDto>> {
+            return localVarFp.findEventsByClusterId(pageable, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2230,15 +2252,14 @@ export class ClusterControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {Pageable} pageable 
      * @param {string} id 
-     * @param {number} [pageNumber] 
-     * @param {number} [pageSize] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterControllerApi
      */
-    public findEventsByClusterId(id: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return ClusterControllerApiFp(this.configuration).findEventsByClusterId(id, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public findEventsByClusterId(pageable: Pageable, id: string, options?: RawAxiosRequestConfig) {
+        return ClusterControllerApiFp(this.configuration).findEventsByClusterId(pageable, id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5005,7 +5026,8 @@ export class PrivateNetworkControllerApi extends BaseAPI {
 export const ReservationControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * This endpoint can be used to create a new reservation for the team they are a part of.
+         * @summary Create new reservation
          * @param {CreateReservationDto} createReservationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5339,7 +5361,8 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
     const localVarAxiosParamCreator = ReservationControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * This endpoint can be used to create a new reservation for the team they are a part of.
+         * @summary Create new reservation
          * @param {CreateReservationDto} createReservationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5455,7 +5478,8 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
     const localVarFp = ReservationControllerApiFp(configuration)
     return {
         /**
-         * 
+         * This endpoint can be used to create a new reservation for the team they are a part of.
+         * @summary Create new reservation
          * @param {CreateReservationDto} createReservationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5547,7 +5571,8 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
  */
 export class ReservationControllerApi extends BaseAPI {
     /**
-     * 
+     * This endpoint can be used to create a new reservation for the team they are a part of.
+     * @summary Create new reservation
      * @param {CreateReservationDto} createReservationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

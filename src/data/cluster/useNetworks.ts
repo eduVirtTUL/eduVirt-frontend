@@ -1,14 +1,23 @@
-import {useQuery} from "@tanstack/react-query";
-import {keys} from "@/data/keys";
-import {ClusterControllerApi} from "@/api";
+import { useQuery } from "@tanstack/react-query";
+import { keys } from "@/data/keys";
+import { ClusterControllerApi } from "@/api";
 
-export const useNetworks = (id: string) => {
+type UseNetworksParams = {
+  id: string,
+  page: number,
+  size: number
+}
+
+export const useNetworks = ({id, page, size}: UseNetworksParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [keys.NETWORKS, id],
+    queryKey: [ keys.NETWORKS, id, page, size ],
     queryFn: async () => {
       const controller = new ClusterControllerApi();
-      const response = await controller.findNetworksByClusterId(id);
-      return response.data;
+      const response = await controller.findNetworksByClusterId(
+        id, page, size,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      return response.data ?? [];
     },
   });
 
