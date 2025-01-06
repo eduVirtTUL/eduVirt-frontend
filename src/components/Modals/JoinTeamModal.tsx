@@ -7,49 +7,43 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import React, { useState } from "react";
-import { useAddKeyToCourse } from "@/data/course/useAddKeyToCourse";
+import { useState } from "react";
 
-interface AddCourseKeyDialogProps {
-  courseId: string;
-}
+import { useJoinTeamOrCourse } from "@/data/team/useJoinTeamOrCourse";
 
-const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
+const JoinTeamModal = () => {
   const [open, setOpen] = useState(false);
-  const [key, setKey] = useState("");
-  const { addKeyToCourse } = useAddKeyToCourse();
+  const [teamKey, setTeamKey] = useState("");
+  const { joinTeam } = useJoinTeamOrCourse();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addKeyToCourse({ courseId, key });
+    joinTeam(teamKey);
     setOpen(false);
-    setKey("");
+    setTeamKey("");
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Course Key</Button>
+        <Button>Join a Team</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Course Key</DialogTitle>
+          <DialogTitle>Enter Team Key</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="key">Course Key</Label>
             <Input
-              id="key"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder="Enter course key..."
+              id="teamKey"
+              value={teamKey}
+              onChange={(e) => setTeamKey(e.target.value)}
+              placeholder="Team Key"
               className="mt-2"
-              required
             />
           </div>
           <Button type="submit" className="w-full">
-            Add Key
+            Join
           </Button>
         </form>
       </DialogContent>
@@ -57,4 +51,4 @@ const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
   );
 };
 
-export default AddCourseKeyDialog;
+export default JoinTeamModal;

@@ -1,73 +1,89 @@
 import PageHeader from "@/components/PageHeader";
-import DataTable from "@/pages/Team/data-table";
+import DataTable from "@/components/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import EnrollTeamDialog from "./enroll-team-dialog";
-import { useCourse } from "@/data/course/useCourse";
 import { useUsersTeams } from "@/data/team/useUsersTeams";
+import { StatusDot } from "@/components/StatusDot";
+import JoinTeamModal from "@/components/Modals/JoinTeamModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const StatusDot = ({ active }: { active: boolean }) => (
-  <div className={cn(
-    "h-3 w-3 rounded-full",
-    active ? "bg-green-500" : "bg-red-500"
-  )} />
-);
-
-const CourseNameCell = ({ courseId }: { courseId: string }) => {
-  const { course } = useCourse(courseId);
-  return <span>{course?.name ?? "Loading..."}</span>;
-};
+interface TeamWithCourseDto {
+  id: string;
+  name: string;
+  active: boolean;
+  maxSize: number;
+  users: string[];
+  course: {
+    id: string;
+    name: string;
+    description: string;
+    courseType: string;
+  };
+}
 
 const TeamsPage = () => {
   const { teams, isLoading } = useUsersTeams();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center mb-6">
+          <Skeleton className="h-8 w-[200px]" />
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-4 p-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]" />
+              ))}
+            </div>
+          </div>
+          <div>
+            {[1, 2, 3, 4, 5].map((row) => (
+              <div key={row} className="grid grid-cols-4 p-4 border-b">
+                {[1, 2, 3, 4].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const columns: ColumnDef<any, any>[] = [
-
+  const columns: ColumnDef<TeamWithCourseDto>[] = [
     {
       accessorKey: "active",
       header: "Status",
       cell: ({ row }) => (
         <div className="flex items-center">
           <StatusDot active={row.original.active} />
-          <span className="ml-2">{row.original.active ? "Active" : "Inactive"}</span>
+          <span className="ml-2">
+            {row.original.active ? "Active" : "Inactive"}
+          </span>
         </div>
       ),
     },
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="w-full justify-start pl-2"
-          >
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
-      cell: ({ row }) => (
-        <div className="flex items-center">
-          <span>{row.original.name}</span>
-        </div>
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-full justify-start pl-2"
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       ),
     },
     {
-      accessorKey: "course",
+      accessorKey: "course.name",
       header: "Course",
-      cell: ({ row }) => {
-        const courseId = row.original.course;
-        return courseId ? <CourseNameCell courseId={courseId} /> : "No course";
-      },
     },
     {
       id: "actions",
@@ -89,12 +105,13 @@ const TeamsPage = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <PageHeader title="Your Teams" />
-        <div className="pb-10"> 
-          <EnrollTeamDialog />
+        <div className="pb-10">
+          <JoinTeamModal />
         </div>
       </div>
       <div className="[&_.inactive-row]:opacity-60">
-        {teams && <DataTable columns={columns} data={teams} />}
+        {/* @ts-expect-error this doesn't impact the page */}
+        <DataTable columns={columns} data={teams ?? []} />
       </div>
     </div>
   );
