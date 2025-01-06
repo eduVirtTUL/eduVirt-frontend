@@ -19,22 +19,26 @@ const resourceGroupPools = {
 };
 
 const general = {
-  yes: 'Tak',
-  no: 'Nie',
+  yes: "Tak",
+  no: "Nie",
 
-  page: 'Strona',
-  next: 'Następna',
-  previous: 'Poprzednia',
+  page: "Strona",
+  next: "Następna",
+  previous: "Poprzednia",
 
   error: {
-    "not.authorized": 'Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.',
-    "operation.not.implemented": 'Wybrana operacja nie jest jeszcze dostępna.',
-    "connection.open.error": 'Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.',
-    "constraint.violation.exception": 'Podane dane nie spełniają wymogów składniowych',
-    "optimistic.lock.exception": 'Wystąpił błąd. Spróbuj ponownie!',
-    "internal.server.error": 'W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.',
-  }
-}
+    "not.authorized":
+      "Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.",
+    "operation.not.implemented": "Wybrana operacja nie jest jeszcze dostępna.",
+    "connection.open.error":
+      "Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.",
+    "constraint.violation.exception":
+      "Podane dane nie spełniają wymogów składniowych",
+    "optimistic.lock.exception": "Wystąpił błąd. Spróbuj ponownie!",
+    "internal.server.error":
+      "W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.",
+  },
+};
 
 export default {
   save: "Zapisz",
@@ -43,9 +47,8 @@ export default {
   previous: "Wstecz",
   create: "Utwórz",
   menu,
-  menu, general,
+  general,
   resourceGroupPools,
-  cancel: "Anuluj",
   ...adam,
-  ...piotrek
+  ...piotrek,
 };
