@@ -25,6 +25,9 @@ import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
 import {useTeamsInCourseAccessKeys} from "@/data/access-key/useTeamsInCourseAccessKeys";
 import {StatusDot} from "@/components/StatusDot";
+import {EditTeamModal} from "@/components/Modals/EditTeamModal";
+import {TeamDto} from "@/api";
+import {SoloTeamEditModal} from "@/components/Modals/SoloTeamEditModal";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {course} = useCourse(id);
@@ -32,6 +35,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
     const {teams, isLoading} = useCourseTeams(id!);
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+    const [editingTeam, setEditingTeam] = useState<TeamDto | null>(null);
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
     const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
     const isTeamBased = course?.courseType === "TEAM_BASED";
@@ -155,6 +159,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
+                        <DropdownMenuItem
+                            onClick={() => setEditingTeam(row.original)}
+                        >
+                            Edit Team
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => {
                                 setSelectedTeamId(row.original.id);
@@ -300,6 +309,31 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         teamId={selectedTeamId}
                         courseId={id}
                     />
+                )}
+                {editingTeam && editingTeam.id && (
+                    isTeamBased ? (
+                        <EditTeamModal
+                            open={!!editingTeam}
+                            onOpenChange={(open) => !open && setEditingTeam(null)}
+                            team={{
+                                id: editingTeam.id,
+                                name: editingTeam.name ?? '',
+                                maxSize: editingTeam.maxSize ?? 0,
+                                active: editingTeam.active ?? false,
+                                users: editingTeam.users ?? []
+                            }}
+                            existingNames={teams?.filter(t => t.id !== editingTeam.id).map(t => t.name).filter((name): name is string => name !== undefined) ?? []}
+                        />
+                    ) : (
+                        <SoloTeamEditModal
+                            open={!!editingTeam}
+                            onOpenChange={(open) => !open && setEditingTeam(null)}
+                            team={{
+                                id: editingTeam.id,
+                                active: editingTeam.active ?? false
+                            }}
+                        />
+                    )
                 )}
             </div>
         </>

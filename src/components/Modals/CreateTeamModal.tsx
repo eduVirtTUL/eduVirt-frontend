@@ -215,7 +215,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                   )}
                 />
                 <div className="text-sm text-muted-foreground">
-                  Teams will be created as: "{bulkForm.watch("baseTeamName")}1", "{bulkForm.watch("baseTeamName")}2", etc.
+                  Teams will be created as: "{bulkForm.watch("baseTeamName")} 1", "{bulkForm.watch("baseTeamName")} 2", etc.
                 </div>
                 <Button type="submit" className="w-full">Create Teams</Button>
               </form>

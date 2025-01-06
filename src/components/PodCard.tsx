@@ -17,7 +17,7 @@ interface PodCardProps {
 
 export function PodCard({ resourceGroup, course }: PodCardProps) {
   return (
-    <Card className="h-[280px] mx-auto">
+    <Card className="h-[280px] mx-auto w-[280px]">
       <CardContent className="p-6 flex flex-col gap-4">
         <div>
           <Badge variant={resourceGroup.isStateless ? "outline" : "default"} className="mb-2">
@@ -25,11 +25,12 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
           </Badge>
           <h3 className="font-semibold text-xl">{resourceGroup.name}</h3>
         </div>
-
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-muted-foreground">Course</p>
-            <p className="font-medium">{course.name}</p>
+              <p className="text-sm text-muted-foreground">Course</p>
+              <p className="font-medium">{course.name}</p>
+              <p className="text-sm text-muted-foreground">Description</p>
+              <p className="font-medium">{course.description}</p>
           </div>
         </div>
       </CardContent>
