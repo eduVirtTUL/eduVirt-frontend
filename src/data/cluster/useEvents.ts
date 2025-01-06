@@ -2,23 +2,25 @@ import { useQuery } from "@tanstack/react-query";
 import { ClusterControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 
-type UseClustersParams = {
-  page: number;
-  size: number;
+type UseEventsParams = {
+  id: string,
+  page: number,
+  size: number,
+  sort: string[]
 }
 
-export const useClusters = ({ page, size }: UseClustersParams) => {
+export const useEvents = ({ id, page, size, sort}: UseEventsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.CLUSTER, page, size ],
+    queryKey: [ keys.EVENTS, id, page, size, sort ],
     queryFn: async () => {
       const controller = new ClusterControllerApi();
-      const response = await controller.findAllClusters(
-        page, size,
+      const response = await controller.findEventsByClusterId(
+        { page, size, sort } , id,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       return response.data;
     },
   });
 
-  return { clusters: data, isLoading };
-};
+  return { events: data, isLoading };
+}

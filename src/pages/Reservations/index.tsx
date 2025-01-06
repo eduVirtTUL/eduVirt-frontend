@@ -35,7 +35,7 @@ type TimeRange = {
 
 const ReservationCalendar: React.FC = () => {
   /* Sample data */
-  const clusterId = 'a5097950-d0c6-4d65-8b2e-4768809ad37a';
+  const clusterId = 'c282a57c-624e-448b-823e-a68352d10914';
   const courseId = 'e485ded6-c166-45f6-a924-13ce44666f7a';
   const resourceGroupId = '50c319f6-d29d-4193-bfef-5e33b4e26353';
 
@@ -50,7 +50,11 @@ const ReservationCalendar: React.FC = () => {
   const [currentRange, setCurrentRange] = useState<TimeRange>({start: null, end: null});
   const {resources, isLoading: resourcesLoading} = useCourseResourcesAvailability(courseId, currentRange.start!, currentRange.end!);
   const {intervals, isLoading: intervalsLoading} = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
-  const {reservations, isLoading: reservationsLoading} = useReservations(resourceGroupId, currentRange.start, currentRange.end);
+  const {reservations, isLoading: reservationsLoading} = useReservations({
+    id: resourceGroupId,
+    start: currentRange.start,
+    end: currentRange.end
+  });
 
   const [eventStart, setEventStart] = useState<Date | null>(null);
   const [eventEnd, setEventEnd] = useState<Date | null>(null);

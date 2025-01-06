@@ -22,7 +22,12 @@ const general = {
   yes: 'Tak',
   no: 'Nie',
 
+  page: 'Strona',
+  next: 'Następna',
+  previous: 'Poprzednia',
+
   error: {
+    "not.authorized": 'Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.',
     "operation.not.implemented": 'Wybrana operacja nie jest jeszcze dostępna.',
     "connection.open.error": 'Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.',
     "constraint.violation.exception": 'Podane dane nie spełniają wymogów składniowych',

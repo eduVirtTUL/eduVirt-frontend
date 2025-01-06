@@ -7,11 +7,14 @@ import {useTranslation} from "react-i18next";
 export const useRemoveClusterMetricValue = (id: string) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const {mutate, mutateAsync} = useMutation({
-    mutationKey: ["removeClusterMetricValue"],
+  const { mutate, mutateAsync } = useMutation({
+    mutationKey: [ "removeClusterMetricValue" ],
     mutationFn: async (metricId: string) => {
       const controller = new ClusterMetricControllerApi();
-      const response = await controller.deleteMetric1(id, metricId);
+      const response = await controller.deleteMetric1(
+        id, metricId,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {

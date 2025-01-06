@@ -2,18 +2,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MaintenanceIntervalControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export const useRemoveMaintenanceInterval = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["removeMaintenanceInterval"],
+    mutationKey: [ "removeMaintenanceInterval" ],
     mutationFn: async (maintenanceIntervalId: string) => {
       const controller = new MaintenanceIntervalControllerApi();
       const response = await controller.finishMaintenanceInterval(
-        maintenanceIntervalId
+        maintenanceIntervalId,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
+
       return response.data;
     },
     onSuccess: () => {

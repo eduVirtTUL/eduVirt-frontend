@@ -4,6 +4,7 @@ export const keys = {
   CLUSTER_RESOURCES: "clusterResources",
   COURSE: "course",
   COURSE_RESOURCES: "courseResources",
+  EVENTS: "events",
   HOSTS: "hosts",
   MAINTENANCE_INTERVALS: "maintenanceIntervals",
   MAINTENANCE_INTERVAL: "maintenanceInterval",

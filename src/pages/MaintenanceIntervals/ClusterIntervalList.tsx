@@ -1,11 +1,10 @@
-import { Link, useParams } from "react-router";
+import {Link, useNavigate, useParams} from "react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import {CalendarIcon, LoaderIcon, MoreHorizontal, Undo2} from "lucide-react";
-import React, { useState } from "react";
+import { CalendarIcon, MoreHorizontal, Undo2 } from "lucide-react";
+import React, {useEffect, useState} from "react";
 import PageHeader from "@/components/PageHeader";
-import { useCluster } from "@/data/cluster/useCluster";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -16,9 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
-import {useMaintenanceIntervals} from "@/data/maintenance/useMaintenanceIntervals";
-import {useTranslation} from "react-i18next";
-import {TFunction} from "i18next";
+import { useMaintenanceIntervals } from "@/data/maintenance/useMaintenanceIntervals";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import { Skeleton } from "@/components/ui/skeleton";
+import SimplePagination from "@/components/SimplePagination";
+import {jwtDecode} from "jwt-decode";
+import {toast} from "sonner";
 
 const columns= (
     t: TFunction,
@@ -75,10 +78,28 @@ const columns= (
 
 const ClusterIntervalList: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const [ pageNumber, setPageNumber ] = useState<number>(0);
+  const [ pageSize ] = useState<number>(10);
+
   const { id } = useParams();
   const [ active, setActive ] = useState<boolean>(true);
-  const { cluster, isLoading: clusterLoading } = useCluster(id!);
-  const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervals(id, active);
+
+  const { intervals, isLoading } = useMaintenanceIntervals({
+    clusterId: id,
+    active: active,
+    page: pageNumber,
+    size: pageSize
+  });
+
+  const { intervals: nextIntervals, isLoading: nextLoading } = useMaintenanceIntervals({
+    clusterId: id,
+    active: active,
+    page: pageNumber,
+    size: pageSize
+  });
+
   const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
 
   const handleRemoveMaintenanceInterval = async (
@@ -87,10 +108,52 @@ const ClusterIntervalList: React.FC = () => {
     await removeMaintenanceIntervalAsync(maintenanceInterval);
   };
 
-  if (clusterLoading || intervalsLoading) {
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate(-1);
+        return;
+      }
+
+      const decoded = jwtDecode<{ groups: string[] }>(token);
+      const userGroups = decoded.groups;
+
+      if (!userGroups.includes("/ovirt-administrator")) {
+        toast.error(t("general.error.not.authorized"));
+        navigate(-1);
+      }
+    }
+
+    checkAuthorization();
+  }, [navigate, t]);
+
+  if (isLoading || nextLoading) {
     return (
-      <div className="flex items-center justify-center h-screen my-auto">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="space-y-6">
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-4 p-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]" />
+              ))}
+            </div>
+          </div>
+          <div>
+            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+              <div key={row} className="grid grid-cols-4 p-4 border-b">
+                {[1, 2, 3, 4].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-center space-x-3 mt-4">
+          <Skeleton className="h-8 w-[100px]"/>
+          <Skeleton className="h-8 w-[40px]"/>
+          <Skeleton className="h-8 w-[100px]"/>
+        </div>
       </div>
     );
   }
@@ -104,7 +167,7 @@ const ClusterIntervalList: React.FC = () => {
           </Button>
         </Link>
         <PageHeader
-          title={t("maintenanceIntervals.cluster.title") + `${cluster != null ? cluster.name : ""}`}
+          title={t("maintenanceIntervals.cluster.title")}
         />
       </div>
 
@@ -125,7 +188,13 @@ const ClusterIntervalList: React.FC = () => {
 
       <DataTable
         columns={columns(t, handleRemoveMaintenanceInterval)}
-        data={intervals?.items ?? []}
+        data={intervals ?? []}
+      />
+
+      <SimplePagination
+          page={pageNumber}
+          setPage={setPageNumber}
+          hasMore={nextIntervals !== undefined && nextIntervals.length === 0}
       />
     </>
   );
