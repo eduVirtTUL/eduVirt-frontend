@@ -1,35 +1,77 @@
-import { LoaderIcon } from "lucide-react";
-import React from "react";
-import DataTable from "@/components/DataTable";
+import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useHosts } from "@/data/cluster/useHosts";
 import { HostDto } from "@/api";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import { CardContent } from "@/components/ui/card";
+import { useHosts } from "@/data/cluster/useHosts";
+import { Skeleton } from "@/components/ui/skeleton";
+import SimpleDataTable from "@/components/SimpleDataTable";
+import SimplePagination from "@/components/SimplePagination";
 
-type ClusterDetailsProps = {
+type HostListProps = {
   clusterId: string;
 };
 
-const columns: ColumnDef<HostDto>[] = [
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "address", header: "Domain name" },
-  { accessorKey: "cpus", header: "CPU count" },
-  { accessorKey: "memory", header: "Memory size" },
+const columns = (
+  t: TFunction
+): ColumnDef<HostDto>[] => [
+  { accessorKey: "name", header: t("hosts.table.columns.name") },
+  { accessorKey: "address", header: t("hosts.table.columns.domainName") },
+  { accessorKey: "cpus", header: t("hosts.table.columns.cpuCount") },
+  { accessorKey: "memory", header: t("hosts.table.columns.memorySize") },
 ];
 
-const HostList: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
-  const { hosts, isLoading } = useHosts(clusterId!);
+const HostList: React.FC<HostListProps> = ({ clusterId }) => {
+  const { t } = useTranslation();
 
-  if (isLoading) {
+  const [ pageNumber, setPageNumber ] = useState<number>(0);
+  const [ pageSize ] = useState<number>(10);
+
+  const { hosts, isLoading } = useHosts({id: clusterId, page: pageNumber, size: pageSize});
+  const { hosts: nextHosts, isLoading: nextLoading } = useHosts({id: clusterId, page: pageNumber + 1, size: pageSize});
+
+  if (isLoading || nextLoading) {
     return (
-      <div className="flex flex-col my-auto items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="space-y-6">
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-4 p-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]" />
+              ))}
+            </div>
+          </div>
+          <div>
+            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+              <div key={row} className="grid grid-cols-4 p-4 border-b">
+                {[1, 2, 3, 4].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-center space-x-3 mt-4">
+          <Skeleton className="h-8 w-[100px]"/>
+          <Skeleton className="h-8 w-[40px]"/>
+          <Skeleton className="h-8 w-[100px]"/>
+        </div>
       </div>
     );
   }
 
   return (
     <>
-      <DataTable data={hosts ?? []} columns={columns} />
+      <CardContent className={"p-4"}>
+        <SimpleDataTable data={hosts ?? []} columns={columns(t)}/>
+
+        <SimplePagination
+          page={pageNumber}
+          setPage={setPageNumber}
+          hasMore={nextHosts !== undefined && nextHosts.length === 0}
+        />
+      </CardContent>
     </>
   );
 };

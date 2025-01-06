@@ -30,10 +30,6 @@ const VlanRangesPage: React.FC = () => {
     return <LoaderIcon className="animate-spin size-10" />;
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <CreateVlansRangeModal />

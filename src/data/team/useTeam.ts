@@ -6,7 +6,7 @@ export const useTeam = (id: string) => {
         queryKey: [keys.TEAM, id],
         queryFn: async () => {
             const controller = new TeamControllerApi();
-            const response = await controller.getTeam(id);
+            const response = await controller.getTeamDetails(id);
 
             return response.data;
         },

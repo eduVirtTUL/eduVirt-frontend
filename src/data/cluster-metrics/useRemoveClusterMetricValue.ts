@@ -2,22 +2,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ClusterMetricControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
+import {useTranslation} from "react-i18next";
 
 export const useRemoveClusterMetricValue = (id: string) => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["removeClusterMetricValue"],
+    mutationKey: [ "removeClusterMetricValue" ],
     mutationFn: async (metricId: string) => {
       const controller = new ClusterMetricControllerApi();
-      const response = await controller.deleteMetric1(id, metricId);
+      const response = await controller.deleteMetric1(
+        id, metricId,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [keys.CLUSTER_METRIC_VALUES] });
-      toast.success("Cluster metric value removed successfully!");
+      queryClient.invalidateQueries({queryKey: [keys.CLUSTER_METRIC_VALUES, id]});
+      toast.success(t("clusterMetricValues.removeClusterMetricValue.success"));
     },
     onError: () => {
-      toast.error("Failed to remove metric value for given cluster.");
+      toast.error(t("clusterMetricValues.removeClusterMetricValue.error"));
     },
   });
 

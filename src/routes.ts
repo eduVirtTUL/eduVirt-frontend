@@ -31,7 +31,11 @@ export default [
 
       ...prefix("teams", [
         index("./pages/Team/index.tsx"),
-        route(":id", "./pages/Team/TeamDetailsPage.tsx"),
+        route(":id", "./pages/TeamDetails/index.tsx"),
+      ]),
+
+      ...prefix("metrics", [
+        index("./pages/Metrics/index.tsx"),
       ]),
 
       ...prefix("limits", [
@@ -44,14 +48,17 @@ export default [
         route("vlans", "./pages/VlanRanges/index.tsx"),
       ]),
 
-      ...prefix("reservation", [index("./pages/Reservations/index.tsx")]),
+      ...prefix("reservations", [
+        index("./pages/Reservations/index.tsx"),
+        route(":id", "./pages/Reservation/index.tsx"),
+      ]),
 
       ...prefix("maintenance", [
-        index("./pages/Maintenance/index.tsx"),
-        route(":id", "./pages/Maintenance/ClusterIntervalList.tsx"),
+        index("./pages/MaintenanceIntervals/index.tsx"),
+        route("/clusters/:id", "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"),
         ...prefix("calendar", [
-          index("./pages/Maintenance/MaintenanceCalendar.tsx"),
-          route(":id", "./pages/Maintenance/MaintenanceCalendar.tsx", {
+          index("./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
+          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", {
             id: "id",
           }),
         ]),

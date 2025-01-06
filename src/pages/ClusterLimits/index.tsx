@@ -1,22 +1,38 @@
-import { useParams } from "react-router";
-import React from "react";
+import { useNavigate, useParams } from "react-router";
+import React, { useEffect } from "react";
 import ClusterDetails from "@/pages/Clusters/ClusterDetails";
-import ClusterMetricsList from "@/pages/ClusterLimits/ClusterMetricsList";
-import { Card } from "@/components/ui/card";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const ClusterLimitsPage: React.FC = () => {
   const { id } = useParams();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate(-1);
+        return;
+      }
+
+      const decoded = jwtDecode<{ groups: string[] }>(token);
+      const userGroups = decoded.groups;
+
+      if (!userGroups.includes("/ovirt-administrator")) {
+        toast.error("You don't have required privileges to see this page.");
+        navigate(-1);
+      }
+    }
+
+    checkAuthorization();
+  }, [navigate, t]);
 
   return (
     <>
-      <div className="flex justify-between">
-        <Card className="w-1/2 p-4 h-screen my-auto">
-          <ClusterDetails clusterId={id!} />
-        </Card>
-        <Card className="w-1/2 p-4 h-screen my-auto">
-          <ClusterMetricsList />
-        </Card>
-      </div>
+      <ClusterDetails clusterId={id!} />
     </>
   );
 };
