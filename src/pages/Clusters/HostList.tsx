@@ -6,7 +6,7 @@ import { TFunction } from "i18next";
 import { CardContent } from "@/components/ui/card";
 import { useHosts } from "@/data/cluster/useHosts";
 import { Skeleton } from "@/components/ui/skeleton";
-import DataTable from "@/pages/Courses/DataTable";
+import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 
 type HostListProps = {
@@ -64,7 +64,7 @@ const HostList: React.FC<HostListProps> = ({ clusterId }) => {
   return (
     <>
       <CardContent className={"p-4"}>
-        <DataTable data={hosts ?? []} columns={columns(t)}/>
+        <SimpleDataTable data={hosts ?? []} columns={columns(t)}/>
 
         <SimplePagination
           page={pageNumber}

@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEvents } from "@/data/cluster/useEvents";
 import { Button } from "@/components/ui/button";
 import {ArrowDown, ArrowUp, ArrowUpDown} from "lucide-react";
-import DataTable from "@/pages/Courses/DataTable";
+import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 import {jwtDecode} from "jwt-decode";
 import {toast} from "sonner";
@@ -151,7 +151,7 @@ const EventList: React.FC<EventListProps> = ({
   return (
     <>
       <CardContent className={"p-4"}>
-        <DataTable
+        <SimpleDataTable
           data={events ?? []}
           columns={columns(t, handleSort, chooseSortingArrow)}
         />

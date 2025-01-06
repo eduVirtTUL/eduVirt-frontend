@@ -14,11 +14,11 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
 };
 
 const DataTable = <TData, TValue>({
@@ -72,7 +72,7 @@ const DataTable = <TData, TValue>({
                   <TableHead key={header.id} >
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
+                        : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}

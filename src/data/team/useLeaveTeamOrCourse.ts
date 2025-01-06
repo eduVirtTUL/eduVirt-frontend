@@ -8,11 +8,11 @@ interface JwtPayload {
     sub: string;
 }
 
-export const useJoinTeam = () => {
+export const useLeaveTeamOrCourse = () => {
     const queryClient = useQueryClient();
 
-    const { mutate: joinTeam } = useMutation({
-        mutationFn: async (key: string) => {
+    const { mutate: leaveTeam } = useMutation({
+        mutationFn: async (teamId: string) => {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error('No authentication token found');
@@ -22,17 +22,17 @@ export const useJoinTeam = () => {
             const userId = decoded.sub;
 
             const teamController = new TeamControllerApi();
-            const response = await teamController.joinTeam(key, userId);
+            const response = await teamController.leaveTeam(teamId, userId);
             return response.data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-            toast.success("Team joined successfully!");
+            toast.success("Team left successfully!");
         },
         onError: (error: Error) => {
             toast.error(error.message);
         },
     });
 
-    return { joinTeam };
+    return { leaveTeam };
 };

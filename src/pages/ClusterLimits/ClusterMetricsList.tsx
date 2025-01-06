@@ -18,8 +18,8 @@ import { TFunction } from "i18next";
 import UpdateClusterMetricValueModal from "@/pages/ClusterLimits/modals/UpdateClusterMetricValueModal";
 import { useClusterMetrics } from "@/data/cluster-metrics/useClusterMetrics";
 import { Skeleton } from "@/components/ui/skeleton";
-import DataTable from "@/pages/Courses/DataTable";
 import SimplePagination from "@/components/SimplePagination";
+import SimpleDataTable from "@/components/SimpleDataTable";
 
 type ClusterMetricListProps = {
   clusterId: string,
@@ -82,7 +82,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
 
   const { metrics: nextMetrics, isLoading: nextLoading } = useClusterMetrics({
     id: clusterId,
-    page: pageNumber,
+    page: pageNumber + 1,
     size: pageSize
   });
 
@@ -145,7 +145,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
           </Button>
         </div>
 
-        <DataTable columns={
+        <SimpleDataTable columns={
           columns(t, handleUpdateClusterMetricValue, handleRemoveClusterMetricValue)}
                    data={metrics ?? []}
         />

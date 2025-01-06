@@ -3,7 +3,7 @@ import { ClusterGeneralDto } from "@/api";
 import { useClusters } from "@/data/cluster/useClusters";
 import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import DataTable from "../Courses/DataTable";
+import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 
 type ClusterListProps = {
@@ -49,7 +49,7 @@ const ClusterList: React.FC<ClusterListProps> = ({ columns }) => {
 
   return (
     <>
-      <DataTable
+      <SimpleDataTable
         columns={columns}
         data={clusters ?? []}
       />

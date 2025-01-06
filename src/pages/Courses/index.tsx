@@ -81,22 +81,6 @@ const CoursesPage: React.FC = () => {
       </div>
 
       <DataTable data={courses ?? []} columns={columns} />
-
-      {/* <div className="flex flex-wrap gap-5 w-full">
-        {courses?.map((course) => (
-          <Card key={course.id} className="w-80">
-            <CardHeader>
-              <CardTitle>{course.name}</CardTitle>
-              <CardDescription>{course.description}</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button asChild>
-                <Link to={`/courses/${course.id}`}>View Course</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div> */}
     </>
   );
 };

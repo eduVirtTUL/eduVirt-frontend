@@ -30,7 +30,7 @@ import {
 const createCourseSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
-  teamBased: z.boolean().default(false),
+  courseType: z.enum(["SOLO", "TEAM_BASED"]),
   clusterId: z.string().min(1),
 });
 
@@ -46,12 +46,13 @@ const CreateCourseModal: React.FC = () => {
     defaultValues: {
       name: "",
       description: "",
-      teamBased: false,
+      courseType:"SOLO",
       clusterId: "",
     },
   });
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    console.table(values)
     await createCourseAsync(values);
     close();
     form.reset();
@@ -125,25 +126,27 @@ const CreateCourseModal: React.FC = () => {
               )}
             />
             <FormField
-              control={form.control}
-              name="teamBased"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Team Based</FormLabel>
-                    <FormDescription>
-                      Enable team-based features for this course
-                    </FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+  control={form.control}
+  name="courseType"
+  render={({ field }) => (
+    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+      <div className="space-y-0.5">
+        <FormLabel className="text-base">Team Based</FormLabel>
+        <FormDescription>
+          Enable team-based features for this course
+        </FormDescription>
+      </div>
+      <FormControl>
+        <Switch
+          checked={field.value === "TEAM_BASED"}
+          onCheckedChange={(checked) => {
+            field.onChange(checked ? "TEAM_BASED" : "SOLO");
+          }}
+        />
+      </FormControl>
+    </FormItem>
+  )}
+/>
             <Button type="submit">Create Course</Button>
           </form>
         </Form>

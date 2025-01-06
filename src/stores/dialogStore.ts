@@ -14,7 +14,9 @@ type Dialog =
   | "confirmation"
   | "createReservation"
   | "createInterval"
-  | "showMaintenanceInterval";
+  | "createCourseKey"
+  | "createInterval"
+  | "showMaintenanceInterval"
 
 type DialogStore = {
   opened?: Dialog;

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { HostDto } from "@/api";
-import DataTable from "@/pages/Courses/DataTable";
+import SimpleDataTable from "@/components/SimpleDataTable";
 import { CardContent } from "@/components/ui/card";
 import { useNetworks } from "@/data/cluster/useNetworks";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,7 +64,7 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId }) => {
   return (
     <>
       <CardContent className={"p-4"}>
-        <DataTable data={networks ?? []} columns={columns(t)}/>
+        <SimpleDataTable data={networks ?? []} columns={columns(t)}/>
 
         <SimplePagination
           page={pageNumber}
