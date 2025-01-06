@@ -208,6 +208,7 @@ const TeamDetailsPage: React.FC = () => {
                                                             isStateless: pod.resourceGroup.stateless || false
                                                         }}
                                                         course={{
+                                                            id: pod.course.id || '',
                                                             name: pod.course.name || '',
                                                             description: pod.course.description || '',
                                                             courseType: pod.course.courseType || '',
