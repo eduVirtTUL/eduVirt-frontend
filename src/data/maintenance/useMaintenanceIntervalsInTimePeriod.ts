@@ -8,15 +8,13 @@ export const useMaintenanceIntervalsInTimePeriod = (
   end: string | null
 ) => {
   const { data, isLoading } = useQuery({
-    queryKey: [keys.MAINTENANCE_INTERVALS, clusterId, start, end],
+    queryKey: [ keys.MAINTENANCE_INTERVALS, clusterId, start, end ],
     queryFn: async () => {
       if (start == null || end == null) return [];
 
       const controller = new MaintenanceIntervalControllerApi();
       const response = await controller.getMaintenanceIntervalsWithinTimePeriod(
-          start,
-          end,
-          clusterId
+        start, end, clusterId, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
       if (response.status === 204) return [];

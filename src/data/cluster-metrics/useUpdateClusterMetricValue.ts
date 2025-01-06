@@ -1,17 +1,21 @@
-import {useTranslation} from "react-i18next";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {ClusterMetricControllerApi, ValueDto} from "@/api";
-import {keys} from "@/data/keys";
-import {toast} from "sonner";
+import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ClusterMetricControllerApi, ValueDto } from "@/api";
+import { keys } from "@/data/keys";
+import { toast } from "sonner";
 
 export const useUpdateClusterMetricValue = (clusterId: string, metricId: string) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["updateClusterMetricValue"],
+    meta: { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` } },
+    mutationKey: [ "updateClusterMetricValue" ],
     mutationFn: async (updateDto: ValueDto) => {
       const controller = new ClusterMetricControllerApi();
-      const response = await controller.updateMetricValue(clusterId, metricId, updateDto);
+      const response = await controller.updateMetricValue(
+        clusterId, metricId, updateDto,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {

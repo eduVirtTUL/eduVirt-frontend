@@ -1,17 +1,19 @@
-import {useTranslation} from "react-i18next";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {MetricControllerApi} from "@/api";
-import {keys} from "@/data/keys";
-import {toast} from "sonner";
+import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MetricControllerApi } from "@/api";
+import { keys } from "@/data/keys";
+import { toast } from "sonner";
 
 export const useRemoveMetric = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const {mutate, mutateAsync} = useMutation({
-    mutationKey: ["removeMetric"],
+  const { mutate, mutateAsync } = useMutation({
+    mutationKey: [ "removeMetric" ],
     mutationFn: async (metricId: string) => {
       const controller = new MetricControllerApi();
-      const response = await controller.deleteMetric2(metricId);
+      const response = await controller.deleteMetric2(
+        metricId, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {

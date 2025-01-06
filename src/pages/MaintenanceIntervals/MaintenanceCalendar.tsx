@@ -10,7 +10,7 @@ import {
   ToolbarInput,
 } from "@fullcalendar/core";
 import CreateMaintenanceIntervalModal from "@/pages/MaintenanceIntervals/modals/CreateMaintenanceIntervalModal";
-import {Link, useParams} from "react-router";
+import {Link, useNavigate, useParams} from "react-router";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import "../../styles/fullcalendar-shadcn.css";
 import EventCalendar from "@/components/EventCalendar";
@@ -18,6 +18,8 @@ import MaintenanceIntervalDetailsModal from "@/pages/MaintenanceInterval";
 import {Button} from "@/components/ui/button";
 import {Undo2} from "lucide-react";
 import {useTranslation} from "react-i18next";
+import {jwtDecode} from "jwt-decode";
+import {toast} from "sonner";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -34,6 +36,7 @@ const MaintenanceCalendar: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const { open } = useDialog();
+  const navigate = useNavigate();
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -45,6 +48,26 @@ const MaintenanceCalendar: React.FC = () => {
   const { intervals, isLoading } = useMaintenanceIntervalsInTimePeriod(id, currentRange.start, currentRange.end);
 
   const [ clickedEvent, setClickedEvent ] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate(-1);
+        return;
+      }
+
+      const decoded = jwtDecode<{ groups: string[] }>(token);
+      const userGroups = decoded.groups;
+
+      if (!userGroups.includes("/ovirt-administrator")) {
+        toast.error(t("general.error.not.authorized"));
+        navigate(-1);
+      }
+    }
+
+    checkAuthorization();
+  }, [navigate, t]);
 
   useEffect(() => {
     if (!isLoading && intervals) {
@@ -120,7 +143,7 @@ const MaintenanceCalendar: React.FC = () => {
   return (
     <>
       <div className={"flex flex-row items-center justify-items-center"}>
-        <Link to={id === undefined ? "/maintenance" : `/maintenance/${id}`}>
+        <Link to={id === undefined ? "/maintenance" : `/maintenance/clusters/${id}`}>
           <Button variant="outline" size="icon" className="mr-5">
             <Undo2/>
           </Button>

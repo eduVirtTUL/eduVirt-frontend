@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import {CalendarIcon, LoaderIcon, MoreHorizontal} from "lucide-react";
+import {CalendarIcon, MoreHorizontal} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Switch } from "@/components/ui/switch";
@@ -17,6 +17,8 @@ import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMainte
 import {useMaintenanceIntervals} from "@/data/maintenance/useMaintenanceIntervals";
 import {useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
+import {Skeleton} from "@/components/ui/skeleton";
+import SimplePagination from "@/components/SimplePagination";
 
 type SystemIntervalListProps = {
   active: boolean;
@@ -76,8 +78,26 @@ const columns = (
 
 const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
   const { t } = useTranslation();
+
+  const [ pageNumber, setPageNumber ] = useState<number>(0);
+  const [ pageSize ] = useState<number>(10);
+
   const [ active, setActive ] = useState<boolean>(true);
-  const { intervals, isLoading } = useMaintenanceIntervals(undefined, active);
+
+  const { intervals, isLoading } = useMaintenanceIntervals({
+    clusterId: undefined,
+    active: active,
+    page: pageNumber,
+    size: pageSize
+  });
+
+  const { intervals: nextIntervals, isLoading: nextLoading } = useMaintenanceIntervals({
+    clusterId: undefined,
+    active: active,
+    page: pageNumber + 1,
+    size: pageSize
+  });
+
   const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
 
   const handleRemoveMaintenanceInterval = async (
@@ -86,10 +106,32 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
     await removeMaintenanceIntervalAsync(maintenanceInterval);
   };
 
-  if (isLoading) {
+  if (isLoading || nextLoading) {
     return (
-      <div className="flex items-center justify-center h-screen my-auto">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="space-y-6">
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-4 p-4">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]" />
+              ))}
+            </div>
+          </div>
+          <div>
+            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+              <div key={row} className="grid grid-cols-4 p-4 border-b">
+                {[1, 2, 3, 4].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-center space-x-3 mt-4">
+          <Skeleton className="h-8 w-[100px]"/>
+          <Skeleton className="h-8 w-[40px]"/>
+          <Skeleton className="h-8 w-[100px]"/>
+        </div>
       </div>
     );
   }
@@ -113,8 +155,14 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
 
       <DataTable
         columns={columns(t, handleRemoveMaintenanceInterval)}
-        data={intervals?.items ?? []}
+        data={intervals ?? []}
         paginationEnabled={true}
+      />
+
+      <SimplePagination
+        page={pageNumber}
+        setPage={setPageNumber}
+        hasMore={nextIntervals !== undefined && nextIntervals.length === 0}
       />
     </>
   );

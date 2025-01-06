@@ -1,8 +1,8 @@
-import {useTranslation} from "react-i18next";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {CreateMetricDto, MetricControllerApi} from "@/api";
-import {keys} from "@/data/keys";
-import {toast} from "sonner";
+import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateMetricDto, MetricControllerApi } from "@/api";
+import { keys } from "@/data/keys";
+import { toast } from "sonner";
 
 export const useCreateMetric = () => {
   const { t } = useTranslation();
@@ -11,7 +11,9 @@ export const useCreateMetric = () => {
     mutationKey: ["createMetric"],
     mutationFn: async (createDto: CreateMetricDto) => {
       const controller = new MetricControllerApi();
-      const response = await controller.createNewMetric(createDto);
+      const response = await controller.createNewMetric(
+        createDto, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
       return response.data;
     },
     onSuccess: () => {

@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useMetrics } from "@/data/metrics/useMetrics";
 import {
   Select,
@@ -28,10 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateMetricValueDto } from "@/api";
-import { LoaderIcon } from "lucide-react";
+import { CreateMetricValueDto, MetricDto } from "@/api";
 import {useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
+import {Loader2} from "lucide-react";
 
 type CreateClusterMetricValueProps = {
   clusterId: string;
@@ -52,9 +53,33 @@ const CreateClusterMetricValueModal: React.FC<
   CreateClusterMetricValueProps
 > = ({ clusterId }) => {
   const { t } = useTranslation();
+
+  const [ pageNumber, setPageNumber ] = useState<number>(0);
+  const [ pageSize ] = useState<number>(8);
+  const [ hasMore, setHasMore ] = useState<boolean>(true);
+  const [ loading, setLoading ] = useState<boolean>(false);
+
   const { isOpen, close } = useDialog();
   const { createClusterMetricValueAsync } = useCreateClusterMetricValue(clusterId!);
-  const { metrics, isLoading } = useMetrics();
+
+  const { metrics } = useMetrics({ page: pageNumber, size: pageSize});
+  const { metrics: nextMetrics } = useMetrics({ page: pageNumber + 1, size: pageSize});
+
+  const [ allMetrics, setAllMetrics ] = useState<MetricDto[]>([]);
+
+  const fetchNextMetrics = async () => {
+    setLoading(true);
+    setAllMetrics((prev) => [...prev, ...metrics ?? []]);
+
+    if (nextMetrics && nextMetrics.length === 0) {
+      setHasMore(false);
+      setLoading(false);
+      return;
+    }
+
+    setPageNumber((prev) => prev + 1);
+    setLoading(false);
+  };
 
   const form = useForm<CreateClusterMetricValueSchema>({
     resolver: zodResolver(createClusterMetricValueSchema(t)),
@@ -71,14 +96,6 @@ const CreateClusterMetricValueModal: React.FC<
       form.reset();
     }
   );
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col my-auto items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
-      </div>
-    );
-  }
 
   return (
     <Dialog
@@ -106,24 +123,29 @@ const CreateClusterMetricValueModal: React.FC<
                     <SelectTrigger>
                       <SelectValue placeholder={t("clusterMetricValues.createClusterMetricValue.select")} />
                     </SelectTrigger>
-                    <SelectContent>
-                      {metrics?.items?.map((metric) => (
-                        <SelectItem value={metric.id!}>
-                          {metric.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
+                      <SelectContent>
+                        <div className="flex w-full flex-col items-center  gap-3">
+                          {allMetrics.map((metric) => (
+                            <SelectItem key={metric.id!} value={metric.id!}>
+                              {metric.name}
+                            </SelectItem>
+                          ))}
+                          <InfiniteScroll hasMore={hasMore} isLoading={loading} next={fetchNextMetrics} threshold={1}>
+                            {hasMore && <Loader2 className="my-2 h-6 w-6 animate-spin"/>}
+                          </InfiniteScroll>
+                          </div>
+                      </SelectContent>
                   </Select>
-                  <FormMessage />
+                    <FormMessage/>
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
+              <FormField
+                  control={form.control}
+                  name="value"
+                  render={({field}) => (
+                      <FormItem>
+                          <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
