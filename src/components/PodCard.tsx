@@ -9,6 +9,7 @@ interface PodCardProps {
     isStateless: boolean;
   };
   course: {
+    id: string;
     name: string;
     description: string;
     courseType: string;
