@@ -21,7 +21,7 @@ const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
   { accessorKey: "name", header: "Name" },
   { accessorKey: "course.name", header: "Course" },
   {
-    accessorFn: () => 0,
+    accessorFn: (row) => row.resourceGroups?.length ?? 0,
     header: "Resource Groups",
   },
   {
