@@ -121,6 +121,9 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
                     <RentTimeSelector
                       value={field.value.toString()}
                       onChange={field.onChange}
+                      start={0}
+                      stop={4 * 60}
+                      step={20}
                     />
                   </FormControl>
                   <FormDescription>

@@ -124,6 +124,9 @@ const CreateResourceGroupModal: React.FC<CreateResourceGroupModalProps> = ({
                       value={field.value?.toString() ?? ""}
                       onChange={field.onChange}
                       disabled={isPool}
+                      start={0}
+                      stop={4 * 60}
+                      step={20}
                     />
                   </FormControl>
                   <FormDescription>

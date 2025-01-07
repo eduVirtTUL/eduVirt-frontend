@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import { Textarea } from "../ui/textarea";
 import { Tabs, TabsContent } from "../ui/tabs";
+import RentTimeSelector from "../RentTimeSelector";
 
 type CreatePoolModalProps = {
   courseId?: string;
@@ -101,6 +102,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
       onOpenChange={() => {
         close();
         form.reset();
+        setActiveTab("general");
       }}
     >
       <DialogContent>
@@ -255,8 +257,8 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
         <Button
           disabled={
             !(
-              form.getFieldState("name").isTouched &&
-              form.getFieldState("description").isTouched
+              form.getFieldState("name").isDirty &&
+              form.getFieldState("description").isDirty
             )
           }
           onClick={async () => {
@@ -296,7 +298,13 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               {t("createResourceGroupPoolModal.maxRentTime")}
             </FormLabel>
             <FormControl>
-              <Input {...field} type="number" />
+              <RentTimeSelector
+                value={field.value.toString()}
+                onChange={field.onChange}
+                start={0}
+                stop={5 * 60}
+                step={20}
+              />
             </FormControl>
             <FormDescription>
               {t("createResourceGroupPoolModal.maxRentTimeDescription")}
@@ -330,7 +338,13 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               {t("createResourceGroupPoolModal.gracePeriod")}
             </FormLabel>
             <FormControl>
-              <Input {...field} type="number" />
+              <RentTimeSelector
+                value={field.value.toString()}
+                onChange={field.onChange}
+                start={0}
+                stop={4 * 60}
+                step={30}
+              />
             </FormControl>
             <FormDescription>
               {t("createResourceGroupPoolModal.gracePeriodDescription")}
