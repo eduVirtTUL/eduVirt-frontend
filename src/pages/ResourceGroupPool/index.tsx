@@ -31,8 +31,8 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
   return (
     <>
       <ConfirmationDialog
-        text="test"
-        header="test"
+        text={t("resourceGroupPoolPage.deleteConfirmationText")}
+        header={t("resourceGroupPoolPage.deleteConfirmation")}
         onConfirm={async () => {
           await deleteResourceGroupPoolAsync(id);
           nav("/pools");

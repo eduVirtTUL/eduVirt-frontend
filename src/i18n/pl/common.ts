@@ -46,6 +46,8 @@ export default {
   next: "Dalej",
   previous: "Wstecz",
   create: "Utwórz",
+  yes: "Tak",
+  no: "Nie",
   menu,
   general,
   resourceGroupPools,

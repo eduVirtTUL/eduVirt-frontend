@@ -48,7 +48,8 @@ const createPoolSchema = (t: TFunction) =>
   z.object({
     name: z
       .string()
-      .min(1, t("createResourceGroupPoolModal.validation.nameRequired")),
+      .min(1, t("createResourceGroupPoolModal.validation.nameRequired"))
+      .max(50, t("createResourceGroupPoolModal.validation.nameMaxLength")),
     courseId: z
       .string()
       .min(1, t("createResourceGroupPoolModal.validation.courseRequired")),
@@ -66,8 +67,21 @@ const createPoolSchema = (t: TFunction) =>
           "createResourceGroupPoolModal.validation.gracePeriodGreaterOrEqualZero"
         )
       ),
-    description: z.string().min(1).max(1000),
-    maxRentTime: z.coerce.number().min(0),
+    description: z
+      .string()
+      .min(1, t("createResourceGroupPoolModal.validation.descriptionRequired"))
+      .max(
+        1000,
+        t("createResourceGroupPoolModal.validation.descriptionMaxLength")
+      ),
+    maxRentTime: z.coerce
+      .number()
+      .min(
+        0,
+        t(
+          "createResourceGroupPoolModal.validation.maxRentTimeGreaterOrEqualZero"
+        )
+      ),
   });
 
 type CreatePoolSchema = z.infer<ReturnType<typeof createPoolSchema>>;
