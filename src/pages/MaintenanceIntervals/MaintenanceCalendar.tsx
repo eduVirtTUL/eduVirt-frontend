@@ -9,7 +9,7 @@ import {
   EventInput,
   ToolbarInput,
 } from "@fullcalendar/core";
-import CreateMaintenanceIntervalModal from "@/pages/MaintenanceIntervals/modals/CreateMaintenanceIntervalModal";
+import CreateMaintenanceIntervalModal from "@/components/Modals/CreateMaintenanceIntervalModal";
 import {Link, useNavigate, useParams} from "react-router";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import "../../styles/fullcalendar-shadcn.css";

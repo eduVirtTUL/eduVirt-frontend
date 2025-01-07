@@ -1,22 +1,15 @@
-import React, {useCallback, useEffect, useState} from "react";
+import { useTranslation } from "react-i18next";
+import React, { useCallback, useState } from "react";
+import { useVmEvents } from "@/data/vm/useVmEvents";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CardContent } from "@/components/ui/card";
+import SimpleDataTable from "@/components/SimpleDataTable";
+import SimplePagination from "@/components/SimplePagination";
 import { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { EventGeneralDto } from "@/api";
-import { CardContent } from "@/components/ui/card";
-import { useTranslation } from "react-i18next";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useEvents } from "@/data/cluster/useEvents";
 import { Button } from "@/components/ui/button";
-import {ArrowDown, ArrowUp, ArrowUpDown} from "lucide-react";
-import SimpleDataTable from "@/components/SimpleDataTable";
-import SimplePagination from "@/components/SimplePagination";
-import {jwtDecode} from "jwt-decode";
-import {toast} from "sonner";
-import {useNavigate} from "react-router";
-
-type EventListProps = {
-  clusterId: string
-}
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 
 const columns = (
   t: TFunction,
@@ -56,28 +49,32 @@ const columns = (
   },
 ];
 
-const EventList: React.FC<EventListProps> = ({
-  clusterId
+type VmEventListProps = {
+  id: string;
+}
+
+const VmEventList: React.FC<VmEventListProps> = ({
+  id
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
+
   const [ sortColumn, setSortColumn ] = useState<string | null>(null);
   const [ sortDirection, setSortDirection ] = useState<"asc" | "desc" | null>(null);
 
-  const { events, isLoading } = useEvents({
-    id: clusterId,
-    size: pageSize,
+  const { events, isLoading } = useVmEvents({
+    id: id,
     page: pageNumber,
+    size: pageSize,
     sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
   });
 
-  const { events: nextEvents, isLoading: nextLoading } = useEvents({
-    id: clusterId,
-    size: pageSize,
+  const { events: nextEvents, isLoading: nextLoading } = useVmEvents({
+    id: id,
     page: pageNumber + 1,
+    size: pageSize,
     sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
   });
 
@@ -98,53 +95,31 @@ const EventList: React.FC<EventListProps> = ({
     return <ArrowUpDown className="ml-2 h-4 w-4" />;
   };
 
-  useEffect(() => {
-    const checkAuthorization = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate(-1);
-        return;
-      }
-
-      const decoded = jwtDecode<{ groups: string[] }>(token);
-      const userGroups = decoded.groups;
-
-      if (!userGroups.includes("/ovirt-administrator")) {
-        toast.error("You don't have required privileges to see this page.");
-        navigate(-1);
-      }
-    }
-
-    checkAuthorization();
-  }, [navigate, t]);
-
   if (isLoading || nextLoading) {
     return (
-      <div className="p-4">
-        <div className="space-y-6">
-          <div className="rounded-md border">
-            <div className="border-b">
-              <div className="grid grid-cols-3 p-4">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-4 w-[100px]"/>
-                ))}
-              </div>
-            </div>
-            <div>
-              {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
-                <div key={row} className="grid grid-cols-3 p-4 border-b">
-                  {[1, 2, 3].map((col) => (
-                    <Skeleton key={col} className="h-4 w-[100px]"/>
-                  ))}
-                </div>
+      <div className="space-y-6">
+        <div className="rounded-md border">
+          <div className="border-b">
+            <div className="grid grid-cols-3 p-4">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-4 w-[100px]"/>
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-center space-x-3 mt-4">
-            <Skeleton className="h-8 w-[100px]"/>
-            <Skeleton className="h-8 w-[40px]"/>
-            <Skeleton className="h-8 w-[100px]"/>
+          <div>
+            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+              <div key={row} className="grid grid-cols-3 p-4 border-b">
+                {[1, 2, 3].map((col) => (
+                  <Skeleton key={col} className="h-4 w-[100px]"/>
+                ))}
+              </div>
+            ))}
           </div>
+        </div>
+        <div className="flex items-center justify-center space-x-3 mt-4">
+          <Skeleton className="h-8 w-[100px]"/>
+          <Skeleton className="h-8 w-[40px]"/>
+          <Skeleton className="h-8 w-[100px]"/>
         </div>
       </div>
     );
@@ -152,7 +127,7 @@ const EventList: React.FC<EventListProps> = ({
 
   return (
     <>
-      <CardContent className={"p-4"}>
+      <CardContent>
         <SimpleDataTable
           data={events ?? []}
           columns={columns(t, handleSort, chooseSortingArrow)}
@@ -168,4 +143,4 @@ const EventList: React.FC<EventListProps> = ({
   );
 };
 
-export default EventList;
+export default VmEventList;

@@ -1,7 +1,7 @@
 import { useRemoveClusterMetricValue } from "@/data/cluster-metrics/useRemoveClusterMetricValue";
 import { useDialog } from "@/stores/dialogStore";
 import { CardContent } from "@/components/ui/card";
-import CreateClusterMetricValue from "@/pages/ClusterLimits/modals/CreateClusterMetricValueModal";
+import CreateClusterMetricValue from "@/components/Modals/CreateClusterMetricValueModal";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -15,7 +15,7 @@ import {
 import { MoreHorizontal, PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
-import UpdateClusterMetricValueModal from "@/pages/ClusterLimits/modals/UpdateClusterMetricValueModal";
+import UpdateClusterMetricValueModal from "@/components/Modals/UpdateClusterMetricValueModal";
 import { useClusterMetrics } from "@/data/cluster-metrics/useClusterMetrics";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
@@ -111,7 +111,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
             </div>
           </div>
           <div>
-            {[1, 2, 3, 4, 5].map((row) => (
+            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
               <div key={row} className="grid grid-cols-2 p-4 border-b">
                 {[1, 2].map((col) => (
                   <Skeleton key={col} className="h-4 w-[100px]" />
@@ -153,7 +153,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
         <SimplePagination
           page={pageNumber}
           setPage={setPageNumber}
-          hasMore={nextMetrics !== undefined && nextMetrics.length === 0}
+          hasMore={nextMetrics !== undefined && nextMetrics.length !== 0}
         />
       </CardContent>
     </>

@@ -1,5 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Link} from "react-router";
+import {CalendarIcon} from "lucide-react";
+import React from "react";
 
 interface PodCardProps {
   id: string;
@@ -9,6 +13,7 @@ interface PodCardProps {
     isStateless: boolean;
   };
   course: {
+    id: string;
     name: string;
     description: string;
     courseType: string;
@@ -18,7 +23,7 @@ interface PodCardProps {
 
 export function PodCard({ resourceGroup, course }: PodCardProps) {
   return (
-    <Card className="h-[280px] mx-auto w-[280px]">
+    <Card className="h-[320px] mx-auto w-[280px]">
       <CardContent className="p-6 flex flex-col gap-4">
         <div>
           <Badge variant={resourceGroup.isStateless ? "outline" : "default"} className="mb-2">
@@ -34,6 +39,19 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
               <p className="font-medium">{course.description}</p>
               {/* <p className="text-sm text-muted-foreground">Cluster</p>
               <p className="font-medium">{course.clusterId}</p> */}
+          </div>
+          <div className={"grid grid-cols-1"}>
+            <Link to={`/reservations/calendar`}
+                  state={{
+                    clusterId: course.clusterId,
+                    courseId: course.id,
+                    resourceGroupId: resourceGroup.id
+                  }}>
+              <Button className={"w-full"}>
+                <CalendarIcon />
+                Make a reservation
+              </Button>
+            </Link>
           </div>
         </div>
       </CardContent>

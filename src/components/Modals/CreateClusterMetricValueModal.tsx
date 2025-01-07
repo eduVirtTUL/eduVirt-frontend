@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import { useMetrics } from "@/data/metrics/useMetrics";
 import {
   Select,

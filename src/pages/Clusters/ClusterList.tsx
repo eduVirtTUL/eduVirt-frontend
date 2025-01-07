@@ -57,7 +57,7 @@ const ClusterList: React.FC<ClusterListProps> = ({ columns }) => {
       <SimplePagination
         page={pageNumber}
         setPage={setPageNumber}
-        hasMore={nextClusters !== undefined && nextClusters.length === 0}
+        hasMore={nextClusters !== undefined && nextClusters.length !== 0}
       />
     </>
   );
