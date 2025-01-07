@@ -69,7 +69,7 @@ const HostList: React.FC<HostListProps> = ({ clusterId }) => {
         <SimplePagination
           page={pageNumber}
           setPage={setPageNumber}
-          hasMore={nextHosts !== undefined && nextHosts.length === 0}
+          hasMore={nextHosts !== undefined && nextHosts.length !== 0}
         />
       </CardContent>
     </>

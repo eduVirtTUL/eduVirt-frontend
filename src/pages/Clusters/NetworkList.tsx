@@ -69,7 +69,7 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId }) => {
         <SimplePagination
           page={pageNumber}
           setPage={setPageNumber}
-          hasMore={nextNetworks !== undefined && nextNetworks.length === 0}
+          hasMore={nextNetworks !== undefined && nextNetworks.length !== 0}
         />
       </CardContent>
     </>

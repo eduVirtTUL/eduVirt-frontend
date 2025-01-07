@@ -8,7 +8,7 @@ import {
   ToolbarInput,
 } from "@fullcalendar/core";
 import React, { useEffect, useRef, useState } from "react";
-import CreateReservationModal from "@/pages/Reservations/modals/CreateReservationModal";
+import CreateReservationModal from "@/components/Modals/CreateReservationModal";
 import { useDialog } from "@/stores/dialogStore";
 import "../../styles/fullcalendar-shadcn.css";
 import { useCourseResourcesAvailability } from "@/data/reservation/useCourseResourcesAvailability";
@@ -17,11 +17,10 @@ import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaint
 import { useReservations } from "@/data/reservation/useReservations";
 import EventCalendar from "@/components/EventCalendar";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import MaintenanceIntervalModal from "@/pages/MaintenanceInterval/MaintenanceIntervalModal";
-import {Route} from "../../../.react-router/types/src/pages/Course/+types";
+import MaintenanceIntervalModal from "@/components/Modals/MaintenanceIntervalModal";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -34,8 +33,12 @@ type TimeRange = {
   end: string | null,
 }
 
-const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId, courseId, resourceGroupId}}) => {
+const ReservationCalendar: React.FC = () => {
   const { t } = useTranslation();
+
+  const location = useLocation();
+  const { clusterId, courseId, resourceGroupId } = location.state || {};
+
   const calendarRef = useRef<FullCalendar | null>(null);
   const navigate = useNavigate();
 
@@ -44,7 +47,7 @@ const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId
   const [events, setEvents] = useState<EventInput[]>([]);
 
   const [currentRange, setCurrentRange] = useState<TimeRange>({start: null, end: null});
-  const {resources, isLoading: resourcesLoading} = useCourseResourcesAvailability(courseId!, currentRange.start!, currentRange.end!);
+  const {resources, isLoading: resourcesLoading} = useCourseResourcesAvailability(courseId!, resourceGroupId!, currentRange.start!, currentRange.end!);
   const {intervals, isLoading: intervalsLoading} = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
   const {reservations, isLoading: reservationsLoading} = useReservations({
     id: resourceGroupId!,
@@ -65,7 +68,7 @@ const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId
     resources?.forEach((resource: ResourcesAvailabilityDto) => {
       const resourceTime = resource.time! + 'Z';
       const startTime = new Date(resourceTime);
-      const timeVar = new Date(startTime);
+      const timeVar = new Date(resourceTime);
       const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + 30));
 
       newEvents.push({
@@ -95,7 +98,7 @@ const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId
         groupId: 'RESERVATION',
         start: new Date(reservation.start! + "Z"),
         end: new Date(reservation.end! + "Z"),
-        title: `Reservation ${reservation.id}`,
+        title: `Team ${reservation.team?.name}`,
         id: reservation.id,
       });
     });
@@ -150,7 +153,8 @@ const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId
   };
 
   const handleEventClick = (arg: EventClickArg) => {
-    if (arg.event.groupId === 'MAINTENANCE_INTERVAL') {
+    if (arg.event.groupId === '') return;
+    else if (arg.event.groupId === 'MAINTENANCE_INTERVAL') {
       setClickedInterval(arg.event.id);
       open("showMaintenanceInterval");
     } else {
@@ -188,11 +192,9 @@ const ReservationCalendar: React.FC<Route.ComponentProps> = ({params: {clusterId
   return (
     <>
       <div className="flex justify-start">
-        <Link to={"/"}>
-          <Button variant="outline" size="icon" className="mr-5">
-            <Undo2/>
-          </Button>
-        </Link>
+        <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
+          <Undo2/>
+        </Button>
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
           {t("reservations.altName")}
         </h3>

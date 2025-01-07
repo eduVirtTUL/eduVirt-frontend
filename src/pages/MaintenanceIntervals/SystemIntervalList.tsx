@@ -171,7 +171,7 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
       <SimplePagination
         page={pageNumber}
         setPage={setPageNumber}
-        hasMore={nextIntervals !== undefined && nextIntervals.length === 0}
+        hasMore={nextIntervals !== undefined && nextIntervals.length !== 0}
       />
     </>
   );

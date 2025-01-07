@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query";
-import {keys} from "@/data/keys";
-import {ReservationControllerApi} from "@/api";
+import { useQuery } from "@tanstack/react-query";
+import { keys } from "@/data/keys";
+import { ReservationControllerApi } from "@/api";
 
 type UseCourseReservationsParams = {
   id: string,
@@ -13,7 +13,7 @@ export const useCourseReservations = ({
   id, active, page, size
 }: UseCourseReservationsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.RESERVATIONS, id, page, size ],
+    queryKey: [ keys.RESERVATIONS, id, active, page, size ],
     queryFn: async() => {
       const controller = new ReservationControllerApi();
       let response;
@@ -29,8 +29,10 @@ export const useCourseReservations = ({
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
 
+      console.log(response.data);
+
       if (response.status === 204) return [];
-      return response.data;
+      return response.data.items ?? [];
     }
   });
 
