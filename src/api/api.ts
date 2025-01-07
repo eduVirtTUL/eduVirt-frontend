@@ -264,19 +264,25 @@ export interface CreateCourseDto {
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'description'?: string;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'courseType'?: CreateCourseDtoCourseTypeEnum;
+    'courseType': CreateCourseDtoCourseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCourseDto
+     */
+    'clusterId': string;
 }
 
 export const CreateCourseDtoCourseTypeEnum = {
