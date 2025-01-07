@@ -3,11 +3,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 
+type CreateRgPool = Required<CreateRGPoolDto>;
+
 export const useCreatePool = () => {
   const client = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationKey: ["createPool"],
-    mutationFn: async (pool: CreateRGPoolDto) => {
+    mutationFn: async (pool: CreateRgPool) => {
       const controller = new ResourceGroupPoolControllerApi();
       const response = await controller.createResourceGroupPool(pool);
       return response.data;

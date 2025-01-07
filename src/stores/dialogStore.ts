@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 type Dialog =
+  | "createResourceGroup"
   | "editCourseMetric"
   | "createCourseMetricValue"
   | "addVmToResourceGroup"
