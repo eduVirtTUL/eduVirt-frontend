@@ -46,13 +46,14 @@ const CreateCourseModal: React.FC = () => {
     defaultValues: {
       name: "",
       description: "",
-      courseType:"SOLO",
+      courseType: "SOLO",
       clusterId: "",
     },
   });
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.table(values)
+    console.log(values);
+    console.table(values);
     await createCourseAsync(values);
     close();
     form.reset();
@@ -126,27 +127,27 @@ const CreateCourseModal: React.FC = () => {
               )}
             />
             <FormField
-  control={form.control}
-  name="courseType"
-  render={({ field }) => (
-    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-      <div className="space-y-0.5">
-        <FormLabel className="text-base">Team Based</FormLabel>
-        <FormDescription>
-          Enable team-based features for this course
-        </FormDescription>
-      </div>
-      <FormControl>
-        <Switch
-          checked={field.value === "TEAM_BASED"}
-          onCheckedChange={(checked) => {
-            field.onChange(checked ? "TEAM_BASED" : "SOLO");
-          }}
-        />
-      </FormControl>
-    </FormItem>
-  )}
-/>
+              control={form.control}
+              name="courseType"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Team Based</FormLabel>
+                    <FormDescription>
+                      Enable team-based features for this course
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value === "TEAM_BASED"}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked ? "TEAM_BASED" : "SOLO");
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <Button type="submit">Create Course</Button>
           </form>
         </Form>

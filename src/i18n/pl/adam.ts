@@ -53,11 +53,16 @@ const createResourceGroupPoolModal = {
   error: "Nie udało się utworzyć puli grup zasobów",
   validation: {
     nameRequired: "Nazwa jest wymagana",
+    nameMaxLength: "Nazwa nie może być dłuższa niż 50 znaków",
     maxRentGreaterOrEqualZero:
       "Maksymalna ilość wypożyczeń musi być większa lub równa zero",
     gracePeriodGreaterOrEqualZero:
       "Okres karencji musi być większy lub równy zero",
     courseRequired: "Przedmiot jest wymagany",
+    descriptionRequired: "Opis jest wymagany",
+    descriptionMaxLength: "Opis nie może być dłuższy niż 1000 znaków",
+    maxRentTimeGreaterOrEqualZero:
+      "Maksymalny czas wypożyczenia musi być większy lub równy zero",
   },
   selectCourse: "Wybierz przedmiot",
   noCourses: "Brak przedmiotów",
@@ -79,6 +84,8 @@ const resourceGroupPoolPage = {
   createResourceGroup: "Utwórz grupę zasobów",
   delete: "Usuń",
   deleteConfirmation: "Czy na pewno chcesz usunąć tę pulę grup zasobów?",
+  deleteConfirmationText:
+    "Pula grup zasobów zostanie usunięta. Wraz z nią zostaną usunięte wszystkie grupy zasobów przypisane do tej puli. Tej operacji nie można cofnąć.",
   deleteSuccess: "Pula grup zasobów została usunięta",
   deleteError: "Nie udało się usunąć puli grup zasobów",
   fields: {
@@ -108,10 +115,16 @@ const createResourceGroupModal = {
   },
 };
 
+const editResourceGroupPoolModal = {
+  title: "Edytuj pulę grup zasobów",
+  button: "Edytuj",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
   rentTimeSelector,
   resourceGroupPoolPage,
   createResourceGroupModal,
+  editResourceGroupPoolModal,
 };

@@ -9,13 +9,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
   { accessorKey: "name", header: "Name" },
@@ -52,7 +60,11 @@ const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
 const ResourceGroupPoolsPage: React.FC = () => {
   const { open } = useDialog();
   const { t } = useTranslation();
-  const { resourceGroupPools } = useResourceGroupPools();
+  const [searchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") ?? "0");
+  const size = parseInt(searchParams.get("size") ?? "10");
+  const { resourceGroupPools } = useResourceGroupPools(page, size);
+
   return (
     <>
       <CreatePoolModal />
@@ -60,7 +72,43 @@ const ResourceGroupPoolsPage: React.FC = () => {
       <div className="flex flex-row gap-2 pb-5">
         <Button onClick={() => open("createPool")}>Create pool</Button>
       </div>
-      <DataTable data={resourceGroupPools ?? []} columns={columns} />
+      <DataTable data={resourceGroupPools?.items ?? []} columns={columns} />
+      <Pagination>
+        <PaginationContent>
+          {page > 0 && (
+            <PaginationItem>
+              <PaginationPrevious
+                href={`/pools?page=${page - 1}&size=${size}`}
+              />
+            </PaginationItem>
+          )}
+
+          {page > 0 && (
+            <PaginationItem>
+              <PaginationLink href={`/pools?page=${page - 1}&size=${size}`}>
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          )}
+          <PaginationItem>
+            <PaginationLink href={`/pools?page=${page}&size=${size}`} isActive>
+              {page + 1}
+            </PaginationLink>
+          </PaginationItem>
+          {(resourceGroupPools?.page?.totalPages ?? 0) > page + 1 && (
+            <PaginationItem>
+              <PaginationLink href={`/pools?page=${page + 1}&size=${size}`}>
+                {page + 2}
+              </PaginationLink>
+            </PaginationItem>
+          )}
+          {resourceGroupPools?.page?.totalPages !== page + 1 && (
+            <PaginationItem>
+              <PaginationNext href={`/pools?page=${page + 1}&size=${size}`} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
     </>
   );
 };

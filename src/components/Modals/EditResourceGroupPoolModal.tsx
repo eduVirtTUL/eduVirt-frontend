@@ -31,8 +31,21 @@ import { useUpdateResourceGroupPool } from "@/data/rgPool/useUpdateResourceGroup
 
 const editResourceGroupPoolSchema = (t: TFunction) =>
   z.object({
-    description: z.string().min(1).max(1000),
-    maxRentTime: z.coerce.number().min(0),
+    description: z
+      .string()
+      .min(1, t("createResourceGroupPoolModal.validation.descriptionRequired"))
+      .max(
+        1000,
+        t("createResourceGroupPoolModal.validation.descriptionMaxLength")
+      ),
+    maxRentTime: z.coerce
+      .number()
+      .min(
+        0,
+        t(
+          "createResourceGroupPoolModal.validation.maxRentTimeGreaterOrEqualZero"
+        )
+      ),
     maxRent: z.coerce
       .number()
       .min(
@@ -85,12 +98,12 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
       <DialogTrigger asChild>
         <Button variant="secondary">
           <PencilIcon />
-          Edytuj
+          {t("editResourceGroupPoolModal.button")}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edytuj pulę grup zasobów</DialogTitle>
+          <DialogTitle>{t("editResourceGroupPoolModal.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -121,6 +134,9 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
                     <RentTimeSelector
                       value={field.value.toString()}
                       onChange={field.onChange}
+                      start={0}
+                      stop={4 * 60}
+                      step={20}
                     />
                   </FormControl>
                   <FormDescription>
