@@ -1,5 +1,6 @@
 import adam from "./adam";
 import piotrek from "./piotrek";
+import bartek from "./bartek";
 
 const menu = {
   courses: "Przedmioty",
@@ -51,4 +52,5 @@ export default {
   resourceGroupPools,
   ...adam,
   ...piotrek,
+  ...bartek,
 };

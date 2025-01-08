@@ -497,7 +497,7 @@ export interface CreateStatelessPodDto {
      * @type {string}
      * @memberof CreateStatelessPodDto
      */
-    'resourceGroupPoolId'?: string;
+    'resourceGroupId'?: string;
 }
 /**
  * 
@@ -5086,18 +5086,18 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
+         * @param {string} resourceGroupId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteStatelessPod: async (teamId: string, resourceGroupPoolId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteStatelessPod: async (teamId: string, resourceGroupId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'teamId' is not null or undefined
             assertParamExists('deleteStatelessPod', 'teamId', teamId)
-            // verify required parameter 'resourceGroupPoolId' is not null or undefined
-            assertParamExists('deleteStatelessPod', 'resourceGroupPoolId', resourceGroupPoolId)
-            const localVarPath = `/pods/stateless/{teamId}/{resourceGroupPoolId}`
+            // verify required parameter 'resourceGroupId' is not null or undefined
+            assertParamExists('deleteStatelessPod', 'resourceGroupId', resourceGroupId)
+            const localVarPath = `/pods/stateless/{teamId}/{resourceGroupId}`
                 .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
-                .replace(`{${"resourceGroupPoolId"}}`, encodeURIComponent(String(resourceGroupPoolId)));
+                .replace(`{${"resourceGroupId"}}`, encodeURIComponent(String(resourceGroupId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5334,12 +5334,12 @@ export const PodControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
+         * @param {string} resourceGroupId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPod(teamId, resourceGroupPoolId, options);
+        async deleteStatelessPod(teamId: string, resourceGroupId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPod(teamId, resourceGroupId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PodControllerApi.deleteStatelessPod']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5444,12 +5444,12 @@ export const PodControllerApiFactory = function (configuration?: Configuration, 
         /**
          * 
          * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
+         * @param {string} resourceGroupId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteStatelessPod(teamId, resourceGroupPoolId, options).then((request) => request(axios, basePath));
+        deleteStatelessPod(teamId: string, resourceGroupId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteStatelessPod(teamId, resourceGroupId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5542,13 +5542,13 @@ export class PodControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} teamId 
-     * @param {string} resourceGroupPoolId 
+     * @param {string} resourceGroupId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PodControllerApi
      */
-    public deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).deleteStatelessPod(teamId, resourceGroupPoolId, options).then((request) => request(this.axios, this.basePath));
+    public deleteStatelessPod(teamId: string, resourceGroupId: string, options?: RawAxiosRequestConfig) {
+        return PodControllerApiFp(this.configuration).deleteStatelessPod(teamId, resourceGroupId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
