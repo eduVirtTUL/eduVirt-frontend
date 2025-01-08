@@ -2,7 +2,7 @@ import { CourseControllerApi } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "../keys";
 
-export const useCourses = (pageNumber: number, pageSize: number) => {
+export const useCourses = (pageNumber?: number, pageSize?: number) => {
   const { data, isLoading } = useQuery({
     queryKey: [keys.COURSE, pageNumber, pageSize],
     queryFn: async () => {

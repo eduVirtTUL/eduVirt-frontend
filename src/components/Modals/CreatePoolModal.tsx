@@ -213,7 +213,7 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
                     )}
                   >
                     {field.value
-                      ? courses?.find((c) => c.id === field.value)?.name
+                      ? courses?.items?.find((c) => c.id === field.value)?.name
                       : t("createResourceGroupPoolModal.selectCourse")}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -231,7 +231,7 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
                       {t("createResourceGroupPoolModal.noCourses")}
                     </CommandEmpty>
                     <CommandGroup>
-                      {courses?.map((c) => (
+                      {courses?.items?.map((c) => (
                         <CommandItem
                           value={c.name}
                           key={c.id}
