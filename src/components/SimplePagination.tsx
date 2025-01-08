@@ -41,10 +41,10 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
           <PaginationItem>
             <PaginationNext
               onClick={() => setPage((prev) => prev + 1)}
-              aria-disabled={hasMore}
-              tabIndex={hasMore ? -1 : undefined}
+              aria-disabled={!hasMore}
+              tabIndex={!hasMore ? -1 : undefined}
               className={
-                  hasMore ? "pointer-events-none opacity-50" : undefined
+                  !hasMore ? "pointer-events-none opacity-50" : undefined
               }
             >
                 {t("general.next")}

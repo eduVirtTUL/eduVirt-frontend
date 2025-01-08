@@ -231,16 +231,73 @@ const maintenanceIntervals = {
     },
 }
 
+const courses = {
+    title: 'Kursy',
+    table: {
+        openMenu: 'Otwórz menu',
+        columns: {
+            name: 'Nazwa',
+            description: 'Opis',
+        },
+        showReservations: 'Wyświetl rezerwacje'
+    }
+}
+
 const reservations = {
+    title: 'Rezerwacje',
     altName: 'Rezerwacje',
     calendar: 'Kalendarz',
+    active: 'Aktywne rezerwacje',
+    table: {
+        openMenu: 'Otwórz menu',
+        columns: {
+            rgName: 'Nazwa grupy zasobów',
+            rgType: 'Typ grupy zasobów',
+            teamName: 'Nazwa zespołu',
+            start: 'Początek rezerwacji',
+            end: 'Koniec rezerwacji',
+        },
+        stateless: 'Bezstanowa',
+        stateful: 'Stanowa',
+        showDetails: 'Więcej informacji',
+    },
     details: {
         title: 'Rezerwacja ',
+        tabs: {
+            general: 'Ogólne informacje',
+            rg: 'Grupa zasobów',
+            events: 'Dziennik zdarzeń',
+        },
+        general: {
+            id: 'Identyfikator rezerwacji',
+            teamId: 'Identyfikator zespołu',
+            teamName: 'Nazwa zespołu',
+            rgId: 'Identyfikator grupy zasobów',
+            rgName: 'Nazwa grupy zasobów',
+            rgState: 'Stan grupy zasobów',
+            start: 'Początek',
+            end: 'Koniec',
+            finishReservation: 'Zakończ rezerwację',
+            removeReservation: 'Usuń rezerwację'
+        },
+        rg: {
+            vmId: 'Identyfikator maszyny wirtualnej',
+            vmName: 'Nazwa maszyny wirtualnej',
+            vmCpuCount: 'Liczba CPU',
+            vmMemory: 'Pamięć operacyjna',
+            hidden: 'Ukryta',
+            ovirt: 'Zobacz maszynę wirtualną w systemie oVirt'
+        },
+        events: {
+            chosenVm: 'Maszyna wirtualna',
+            chooseVm: 'Wybierz'
+        }
     },
     createReservation: {
         title: 'Utwórz nową rezerwację',
         duration: 'Długość rezerwacji (h)',
         automaticStartup: 'Uruchom zasoby w ramach PODa automatycznie',
+        notificationTime: 'Czas wysłania powiadomienia przed końcem rezerwacji (min)',
         submit: 'Utwórz',
         success: 'Rezerwacja została utworzona pomyślnie',
         error: 'Rezerwacja nie mogła zostałać utworzona',
@@ -259,16 +316,19 @@ const reservations = {
         "grace.period.could.not.finish": "Okres karencji planowanej rezerwacji przeciągnąłby się na kolejną rezerwację",
         "grace.period.not.finished": "Okres karencji od ostatniej rezerwacji musi upłynąć",
         "resource.group.already.reserved": "Podana grupa zasobów jest już zarezerwowana",
+        "too.short": 'Minimalna długość rezerwacji w systemie eduVirt wynosi 1 godzinę',
     },
     validation: {
         "duration.too.short": 'Wybrana długość rezerwacji jest za króta',
-        "duration.too.long": 'Wybrana długość rezerwacji przekracza maksymalny czas rezerwacji'
+        "duration.too.long": 'Wybrana długość rezerwacji przekracza maksymalny czas rezerwacji',
+        "notificationTime.negative": 'Wskazny czas wysłania powiadomienia jest nieprawidłowy',
+        "notificationTime.too.long": 'Wskazany czas wysłania powiadomienia przekracza połowę długości rezerwacji',
     },
 }
 
 export default {
     clusters, hosts, networks,
-    metrics, events,
+    metrics, events, courses,
     clusterMetricValues,
     maintenanceIntervals,
     reservations,

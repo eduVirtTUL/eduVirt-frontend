@@ -21,8 +21,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect } from "react";
-import {useTranslation} from "react-i18next";
-import {TFunction} from "i18next";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
 type ResourceGroupProps = {
   resourceGroupId: string;
@@ -31,12 +31,15 @@ type ResourceGroupProps = {
   resetSelection: () => void;
 };
 
-const createReservationSchema = (t: TFunction) =>
+const createReservationSchema = (t: TFunction, start: Date, end: Date) =>
     z.object({
       reservationDuration: z.coerce.number()
         .min(1, t("reservations.validation.duration.too.short"))
         .max(24, t("reservations.validation.duration.too.long")),
       automaticStartup: z.boolean(),
+      notificationTime: z.coerce.number()
+          .min(0, t("reservations.validation.notificationTime.negative"))
+          .max((end && start) ? (end.valueOf() - start.valueOf()) / (1000 * 60 * 2) : 30, t("reservations.validation.notificationTime.too.long"))
     });
 
 type CreateReservationSchema = z.infer<
@@ -50,14 +53,16 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
   resetSelection,
 }) => {
   const { t } = useTranslation();
+
   const { isOpen, close } = useDialog();
   const { createReservationAsync } = useCreateReservation();
 
   const form = useForm<CreateReservationSchema>({
-    resolver: zodResolver(createReservationSchema(t)),
+    resolver: zodResolver(createReservationSchema(t, start, end)),
     defaultValues: {
       reservationDuration: 1,
       automaticStartup: true,
+      notificationTime: 10
     },
   });
 
@@ -68,6 +73,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
       form.reset({
         reservationDuration: calculatedDuration >= 1 ? calculatedDuration : 1,
         automaticStartup: true,
+        notificationTime: 10
       });
     }
   }, [start, end, form]);
@@ -86,6 +92,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
         end: endTime.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         automaticStartup: values.automaticStartup,
+        notificationTIme: values.notificationTime
       };
 
       await createReservationAsync(createDto);
@@ -114,6 +121,19 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
               render={({ field }) => (
                 <FormItem className="space-y-4">
                   <FormLabel>{t("reservations.createReservation.duration")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} type={"number"} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="notificationTime"
+              render={({ field }) => (
+                <FormItem className="space-y-4">
+                  <FormLabel>{t("reservations.createReservation.notificationTime")}</FormLabel>
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>

@@ -130,31 +130,40 @@ const ClusterIntervalList: React.FC = () => {
 
   if (isLoading || nextLoading) {
     return (
-      <div className="space-y-6">
-        <div className="rounded-md border">
-          <div className="border-b">
-            <div className="grid grid-cols-4 p-4">
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="h-4 w-[100px]" />
+      <>
+        <div className="p-3 flex flex-row items-center justify-between">
+          <Skeleton className="h-8 w-[100px]" />
+          <div className={"flex flex-row space-x-3"}>
+            <Skeleton className="h-8 w-[300px]" />
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="rounded-md border">
+            <div className="border-b">
+              <div className="grid grid-cols-4 p-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-4 w-[100px]" />
+                ))}
+              </div>
+            </div>
+            <div>
+              {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+                <div key={row} className="grid grid-cols-4 p-4 border-b">
+                  {[1, 2, 3, 4].map((col) => (
+                    <Skeleton key={col} className="h-4 w-[100px]" />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
-          <div>
-            {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
-              <div key={row} className="grid grid-cols-4 p-4 border-b">
-                {[1, 2, 3, 4].map((col) => (
-                  <Skeleton key={col} className="h-4 w-[100px]" />
-                ))}
-              </div>
-            ))}
+          <div className="flex items-center justify-center space-x-3 mt-4">
+            <Skeleton className="h-8 w-[100px]"/>
+            <Skeleton className="h-8 w-[40px]"/>
+            <Skeleton className="h-8 w-[100px]"/>
           </div>
         </div>
-        <div className="flex items-center justify-center space-x-3 mt-4">
-          <Skeleton className="h-8 w-[100px]"/>
-          <Skeleton className="h-8 w-[40px]"/>
-          <Skeleton className="h-8 w-[100px]"/>
-        </div>
-      </div>
+      </>
     );
   }
 
@@ -194,7 +203,7 @@ const ClusterIntervalList: React.FC = () => {
       <SimplePagination
           page={pageNumber}
           setPage={setPageNumber}
-          hasMore={nextIntervals !== undefined && nextIntervals.length === 0}
+          hasMore={nextIntervals !== undefined && nextIntervals.length !== 0}
       />
     </>
   );

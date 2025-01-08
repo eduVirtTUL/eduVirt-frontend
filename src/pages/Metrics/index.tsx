@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button} from "@/components/ui/button";
 import { MoreHorizontal, PlusIcon } from "lucide-react";
 import React, {useEffect, useState} from "react";
-import CreateMetricModal from "@/pages/Metrics/modals/CreateMetricModal";
+import CreateMetricModal from "@/components/Modals/CreateMetricModal";
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -149,7 +149,7 @@ const MetricsPage: React.FC = () => {
       <SimplePagination
         page={pageNumber}
         setPage={setPageNumber}
-        hasMore={nextMetrics !== undefined && nextMetrics.length === 0}
+        hasMore={nextMetrics !== undefined && nextMetrics.length !== 0}
       />
     </>
   );

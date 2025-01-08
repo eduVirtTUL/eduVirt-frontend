@@ -1,234 +1,127 @@
-import FullCalendar from "@fullcalendar/react";
-import { DateClickArg } from "@fullcalendar/interaction";
+import { useTranslation } from "react-i18next";
+import { useStudentCourses } from "@/data/course/useStudentCourses";
+import { useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { TFunction } from "i18next";
+import { CourseDto } from "@/api";
+import { Button } from "@/components/ui/button";
 import {
-  DateSelectArg,
-  DateSpanApi, DatesSetArg,
-  EventClickArg,
-  EventInput,
-  ToolbarInput,
-} from "@fullcalendar/core";
-import React, {useEffect, useRef, useState} from "react";
-import CreateReservationModal from "@/pages/Reservations/modals/CreateReservationModal";
-import { useDialog } from "@/stores/dialogStore";
-import "../../styles/fullcalendar-shadcn.css";
-import {useCourseResourcesAvailability} from "@/data/reservation/useCourseResourcesAvailability";
-import {ReservationDto, ResourcesAvailabilityDto} from "@/api";
-import {useMaintenanceIntervalsInTimePeriod} from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
-import {useReservations} from "@/data/reservation/useReservations";
-import EventCalendar from "@/components/EventCalendar";
-import {Button} from "@/components/ui/button";
-import {Link, useNavigate} from "react-router";
-import {Undo2} from "lucide-react";
-import {useTranslation} from "react-i18next";
-import MaintenanceIntervalModal from "@/pages/MaintenanceInterval/MaintenanceIntervalModal";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
+import { Link } from "react-router";
+import SimpleDataTable from "@/components/SimpleDataTable";
+import SimplePagination from "@/components/SimplePagination";
+import { Skeleton } from "@/components/ui/skeleton";
+import PageHeader from "@/components/PageHeader";
 
-const headerToolbar: ToolbarInput = {
-  center: "title",
-  left: "prev,next",
-  right: "timeGridWeek,dayGridMonth,today",
-};
+const columns = (
+  t: TFunction
+): ColumnDef<CourseDto>[] => [
+  {
+    accessorKey: "name",
+    header: t("courses.table.columns.name"),
+  },
+  {
+    accessorKey: "description",
+    header: t("courses.table.columns.description")
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const course = row.original;
 
-type TimeRange = {
-  start: string | null,
-  end: string | null,
-}
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">
+                {t("courses.table.openMenu")}
+              </span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link to={`/reservations/courses/${course.id}`}>
+                {t("courses.table.showReservations")}
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
 
-const ReservationCalendar: React.FC = () => {
-  /* Sample data */
-  const clusterId = 'c282a57c-624e-448b-823e-a68352d10914';
-  const courseId = 'e485ded6-c166-45f6-a924-13ce44666f7a';
-  const resourceGroupId = '50c319f6-d29d-4193-bfef-5e33b4e26353';
-
+const ReservationPage: React.FC = () => {
   const { t } = useTranslation();
-  const calendarRef = useRef<FullCalendar | null>(null);
-  const navigate = useNavigate();
 
-  const {open} = useDialog();
+  const [ pageNumber, setPageNumber ] = useState<number>(0);
+  const [ pageSize ] = useState<number>(10);
 
-  const [events, setEvents] = useState<EventInput[]>([]);
-
-  const [currentRange, setCurrentRange] = useState<TimeRange>({start: null, end: null});
-  const {resources, isLoading: resourcesLoading} = useCourseResourcesAvailability(courseId, currentRange.start!, currentRange.end!);
-  const {intervals, isLoading: intervalsLoading} = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
-  const {reservations, isLoading: reservationsLoading} = useReservations({
-    id: resourceGroupId,
-    start: currentRange.start,
-    end: currentRange.end
+  const { courses, isLoading } = useStudentCourses({
+    page: pageNumber,
+    size: pageSize,
   });
 
-  const [eventStart, setEventStart] = useState<Date | null>(null);
-  const [eventEnd, setEventEnd] = useState<Date | null>(null);
+  const { courses: nextCourses, isLoading: nextLoading } = useStudentCourses({
+    page: pageNumber + 1,
+    size: pageSize,
+  });
 
-  const [ clickedInterval, setClickedInterval ] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!currentRange.start || !currentRange.end) return;
-    if (resourcesLoading || intervalsLoading || reservationsLoading) return;
-
-    const newEvents: EventInput[] = [];
-    resources?.forEach((resource: ResourcesAvailabilityDto) => {
-      const resourceTime = resource.time! + 'Z';
-      const startTime = new Date(resourceTime);
-      const timeVar = new Date(startTime);
-      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + 30));
-
-      newEvents.push({
-        start: startTime,
-        end: endTime,
-        overlap: resource.available,
-        selectable: resource.available,
-        display: "background",
-        color: resource.available ? "lightgreen" : "red",
-        disabled: true,
-      });
-    });
-
-    intervals?.forEach((interval) => {
-      newEvents.push({
-        id: interval.id,
-        groupId: 'MAINTENANCE_INTERVAL',
-        title: interval.type === "SYSTEM" ? "System maintenance interval" : "Cluster maintenance interval",
-        start: new Date(interval.beginAt! + "Z"),
-        end: new Date(interval.endAt! + "Z"),
-        color: interval.type === "SYSTEM" ? "#2A9D8F" : "#E63946",
-      });
-    });
-
-    reservations?.forEach((reservation: ReservationDto) => {
-      newEvents.push({
-        groupId: 'RESERVATION',
-        start: new Date(reservation.start! + "Z"),
-        end: new Date(reservation.end! + "Z"),
-        title: `Reservation ${reservation.id}`,
-        id: reservation.id,
-      });
-    });
-
-    setEvents(newEvents);
-  }, [currentRange, reservations, resources, intervals, resourceGroupId, courseId, clusterId]);
-
-  /* Calendar methods */
-
-  const handleSelect = (arg: DateSelectArg) => {
-    const calendarApi = calendarRef.current?.getApi();
-    const { start, end } = arg;
-
-    const viewType = arg.view.type;
-    if (viewType == "dayGridMonth") return false;
-
-    const currentDate = new Date();
-    if (start < currentDate || end < currentDate) return;
-
-    calendarApi?.unselect();
-    setEventStart(start);
-    setEventEnd(end);
-    open("createReservation");
-  };
-
-  const handleAllowSelect = (arg: DateSpanApi) => {
-    const { start, end } = arg;
-
-    const calendarApi = calendarRef.current?.getApi();
-    const currentView = calendarApi?.view.type;
-
-    if (currentView == "dayGridMonth") return true;
-
-    const currentDate = new Date();
-    if (start < currentDate || end < currentDate) return false;
-
-    const overlappingBackgroundEvents: EventInput[] = events.filter(
-      (event) =>
-        event.end! > start && event.start! < end && event.selectable !== null
+  if (isLoading || nextLoading) {
+    return (
+      <>
+        <PageHeader title={t("courses.title")} />
+          <div className="space-y-6">
+            <div className="rounded-md border">
+              <div className="border-b">
+                <div className="grid grid-cols-2 p-4">
+                  {[1, 2].map((i) => (
+                    <Skeleton key={i} className="h-4 w-[100px]" />
+                  ))}
+                </div>
+              </div>
+              <div>
+                {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+                  <div key={row} className="grid grid-cols-2 p-4 border-b">
+                    {[1, 2].map((col) => (
+                      <Skeleton key={col} className="h-4 w-[100px]" />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-center space-x-3 mt-4">
+              <Skeleton className="h-8 w-[100px]"/>
+              <Skeleton className="h-8 w-[40px]"/>
+              <Skeleton className="h-8 w-[100px]"/>
+            </div>
+          </div>
+      </>
     );
-
-    for (const foundEvent of overlappingBackgroundEvents) {
-      if (foundEvent.selectable === false) return false;
-    }
-
-    return true;
-  };
-
-  const handleEventAllow = (arg: DateSpanApi) => {
-    const { start } = arg;
-    const currentDate = new Date();
-    return !(start < currentDate);
-  };
-
-  const handleEventClick = (arg: EventClickArg) => {
-    console.log(`Event clicked: ${arg.event.id}`);
-    if (arg.event.groupId === 'MAINTENANCE_INTERVAL') {
-      setClickedInterval(arg.event.id);
-      open("showMaintenanceInterval");
-    } else {
-      navigate(`/reservations/${arg.event.id}`);
-    }
-  };
-
-  const handleDateClick = (info: DateClickArg) => {
-    const clickedDate = info.date;
-    calendarRef.current?.getApi().changeView("timeGridWeek", clickedDate);
-  };
-
-  const handleDatesSet = (dateInfo: DatesSetArg) => {
-    const start = dateInfo.start.toISOString() ?? null;
-    const end = dateInfo.end.toISOString() ?? null;
-
-    const calendarApi = calendarRef.current?.getApi();
-    const currentView = calendarApi?.view.type;
-
-    if (currentView == "dayGridMonth") return;
-
-    setCurrentRange({
-      start: start,
-      end: end,
-    });
   }
-
-  /* Other methods */
-
-  const closeCreateReservationDialog = () => {
-    setEventStart(null);
-    setEventEnd(null);
-  };
 
   return (
     <>
-      <div className="flex justify-start">
-        <Link to={"/"}>
-          <Button variant="outline" size="icon" className="mr-5">
-            <Undo2/>
-          </Button>
-        </Link>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          {t("reservations.altName")}
-        </h3>
-      </div>
+      <PageHeader title={t("courses.title")} />
 
-      <CreateReservationModal
-          resourceGroupId={resourceGroupId}
-          start={eventStart!}
-          end={eventEnd!}
-          resetSelection={closeCreateReservationDialog}
+      <SimpleDataTable
+          columns={columns(t)}
+          data={courses ?? []}
       />
 
-      {clickedInterval && <MaintenanceIntervalModal intervalId={clickedInterval} />}
-
-      <EventCalendar
-        calendarRef={calendarRef}
-        loading={resourcesLoading || intervalsLoading || reservationsLoading}
-        toolbar={headerToolbar}
-        initialView={"timeGridWeek"}
-        select={handleSelect}
-        allowSelect={handleAllowSelect}
-        eventClick={handleEventClick}
-        eventAllow={handleEventAllow}
-        dateClick={handleDateClick}
-        datesSet={handleDatesSet}
-        events={events}
-        initialDate={currentRange.start ? new Date(currentRange.start) : new Date()}
+      <SimplePagination
+          page={pageNumber}
+          setPage={setPageNumber}
+          hasMore={nextCourses !== undefined && nextCourses.length !== 0}
       />
     </>
   );
 };
 
-export default ReservationCalendar;
+export default ReservationPage;

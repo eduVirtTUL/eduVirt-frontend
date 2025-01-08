@@ -4,18 +4,20 @@ import { CourseControllerApi } from "@/api";
 
 export const useCourseResourcesAvailability = (
   id: string,
+  rgId: string,
   start: string,
   end: string
 ) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.COURSE_RESOURCES, id, start, end ],
+    queryKey: [ keys.COURSE_RESOURCES, id, rgId, start, end ],
     queryFn: async () => {
       const controller = new CourseControllerApi();
       const response = await controller.findCourseResourcesAvailability(
-        id, start, end,
+        id, rgId, start, end,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
+      console.log(response.data);
       return response.data;
     },
     refetchInterval: 60000,

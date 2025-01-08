@@ -59,7 +59,7 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
           ) : (
             <>
               <CardContent className="flex flex-col items-center space-y-4 p-6 w-3/4 mx-auto">
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 8 }).map((_, index) => (
                   <div key={index} className="flex w-full items-center space-x-4">
                     <Label className="w-1/3 text-left">
                       <Skeleton className="h-5 w-24" />
@@ -67,10 +67,6 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
                     <Skeleton className="h-10 w-2/3" />
                   </div>
                 ))}
-
-                <div className="mt-4 flex w-full justify-center">
-                  <Skeleton className="h-10 w-48" />
-                </div>
               </CardContent>
             </>
           )}
