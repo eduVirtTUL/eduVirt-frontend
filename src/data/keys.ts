@@ -35,6 +35,7 @@ export const courseKeys = {
   metrics: (id: string) => ["course", id, "metrics"] as const,
   metric: (id: string, metricId: string) =>
     ["course", id, "metrics", metricId] as const,
+  resourceGroups: (id: string) => ["course", id, "resourceGroups"] as const,
 };
 
 export const resourceGroupPoolKeys = {

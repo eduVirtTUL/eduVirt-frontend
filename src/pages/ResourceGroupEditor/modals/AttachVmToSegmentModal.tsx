@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ClipboardPenLineIcon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 type AttachVmToSegmentModalProps = {
@@ -48,6 +49,7 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
   vmId,
   nicId,
 }) => {
+  const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
   const { networks } = useResourceGroupNetworks(id ?? "");
   const { attachNicToNetworkAsync, isPending } = useAttachNicToNetwork();
@@ -71,12 +73,14 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
       <DialogTrigger onClick={() => setOpen(true)}>
         <Button>
           <ClipboardPenLineIcon />
-          Attach
+          {t("resourceGroupEditor.interfaceList.attach")}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Attach interface to private segment</DialogTitle>
+          <DialogTitle>
+            {t("resourceGroupEditor.interfaceList.attachTitle")}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -85,7 +89,9 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
               name="networkId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Segment</FormLabel>
+                  <FormLabel>
+                    {t("resourceGroupEditor.interfaceList.segment")}
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -93,7 +99,11 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select private segment"></SelectValue>
+                        <SelectValue
+                          placeholder={t(
+                            "resourceGroupEditor.interfaceList.selectPrivateSegment"
+                          )}
+                        ></SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -116,7 +126,7 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
               type="submit"
               className="self-end"
             >
-              Save
+              {t("save")}
             </LoadingButton>
           </form>
         </Form>

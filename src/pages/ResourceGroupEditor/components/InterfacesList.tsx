@@ -7,12 +7,14 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDetachNicFromNetwork } from "@/data/resourceGroup/useDetachNicFromNetwork";
 import React from "react";
 import { useDialog } from "@/stores/dialogStore";
+import { useTranslation } from "react-i18next";
 
 type InterfaceListProps = {
   id?: string;
 };
 
 const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
+  const { t } = useTranslation();
   const { close, open } = useDialog();
   const { vm, isLoading } = useVm(id);
   const { detachNicFromNetwork } = useDetachNicFromNetwork();
@@ -22,12 +24,14 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Details</CardTitle>
+          <CardTitle>{t("resourceGroupEditor.interfaceList.title")}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col flex-1 h-full overflow-hidden">
-          <div className="flex justify-center items-center gap-2">
-            <MousePointerClickIcon />
-            <span className="text-2xl">Select virtual machine</span>
+          <div className="flex items-center h-full flex-col gap-4">
+            <MousePointerClickIcon className="w-12 h-12" />
+            <span className="text-xl font-semibold">
+              {t("resourceGroupEditor.interfaceList.selectVirtualMachine")}
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -38,7 +42,7 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Interfaces</CardTitle>
+          <CardTitle>{t("resourceGroupEditor.interfaceList.title")}</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 h-full overflow-hidden">
           <div className="flex justify-center items-center min-h-hull">
@@ -61,14 +65,16 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
       />
       <Card className="flex flex-col">
         <CardHeader>
-          <CardTitle>Interfaces</CardTitle>
+          <CardTitle>{t("resourceGroupEditor.interfaceList.title")}</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 h-full overflow-hidden">
           <div className="flex flex-col h-full gap-2 overflow-y-auto">
             {vm?.nics?.length === 0 ? (
               <div className="flex items-center h-full flex-col gap-4">
                 <CircleSlashIcon className="w-12 h-12" />
-                No interfaces found
+                <span className="text-xl font-semibold">
+                  {t("resourceGroupEditor.interfaceList.noInterfaces")}
+                </span>
               </div>
             ) : (
               <>

@@ -4,7 +4,15 @@ import { useCourseResourceGroupPools } from "@/data/rgPool/useCourseResourceGrou
 
 import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Copy, Info, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  Copy,
+  Info,
+  MoreHorizontal,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCourseTeams } from "@/data/team/useCoursesTeams";
 import {
@@ -38,8 +46,11 @@ import StatefulPodDrawer from "./StatefulPodDrawer";
 import { EditTeamModal } from "@/components/Modals/EditTeamModal";
 import { SoloTeamEditModal } from "@/components/Modals/SoloTeamEditModal";
 import ResourceGroupPoolCard from "./ResourceGroupPoolCard";
+import StatefullResourceGroups from "./StatefullResourceGroups";
+import { useTranslation } from "react-i18next";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
+  const { t } = useTranslation();
   const { course } = useCourse(id);
   const { open } = useDialog();
   const { courseResourceGroupPools } = useCourseResourceGroupPools(id);
@@ -205,17 +216,25 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
     <>
       <CreatePoolModal courseId={id} />
       <AddCourseKeyDialog courseId={id} />
+      <PageHeader title={course?.name ?? ""} type={t("coursePage.title")} />
       <div className="space-y-6">
-        <PageHeader title={course?.name ?? ""} />
         <div className="flex space-x-4">
           <Card className="w-1/2">
-            <CardHeader>
-              <CardTitle>Course Settings</CardTitle>
+            <CardHeader className="flex flex-row justify-between items-center">
+              <CardTitle>{t("coursePage.settings")}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
+            <CardContent>
+              <div className="flex flex-row gap-2">
                 <Button asChild>
-                  <Link to={`limits`}>Limits</Link>
+                  <Link to={`limits`}>{t("coursePage.limits")}</Link>
+                </Button>
+                <Button variant="secondary">
+                  <PencilIcon />
+                  {t("coursePage.edit")}
+                </Button>
+                <Button variant="destructive">
+                  <TrashIcon />
+                  {t("coursePage.delete")}
                 </Button>
               </div>
             </CardContent>
@@ -280,13 +299,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
             </Card>
           )}
         </div>
+        <StatefullResourceGroups courseId={id} />
         <Card>
           <CardHeader>
-            <CardTitle>Resource Group Pools</CardTitle>
+            <CardTitle>{t("coursePools.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Button onClick={() => open("createPool")} className="mb-4">
-              Add pool
+              <PlusIcon />
+              {t("coursePools.createPool")}
             </Button>
             <div className="grid grid-cols-4 gap-6">
               {courseResourceGroupPools?.map((pool) => (
