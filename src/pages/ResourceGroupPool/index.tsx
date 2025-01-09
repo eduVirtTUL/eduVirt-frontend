@@ -44,7 +44,10 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           await createStatelessResourceGroupAsync({ id, ...data });
         }}
       />
-      <PageHeader title={resourceGroupPool?.name ?? ""} />
+      <PageHeader
+        title={resourceGroupPool?.name ?? ""}
+        type={t("resourceGroupPoolPage.type")}
+      />
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>

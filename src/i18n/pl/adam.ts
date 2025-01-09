@@ -96,6 +96,7 @@ const resourceGroupPoolPage = {
     gracePeriod: "Okres karencji",
     maxRentTime: "Maksymalny czas wypożyczenia",
   },
+  type: "Pula grup zasobów",
 };
 
 const createResourceGroupModal = {
@@ -115,9 +116,83 @@ const createResourceGroupModal = {
   },
 };
 
+const coursePage = {
+  title: "Przedmiot",
+  settings: "Ustawienia przedmiotu",
+  edit: "Edytuj",
+  delete: "Usuń",
+  limits: "Metryki",
+};
+
+const courseStatefulResourceGroups = {
+  title: "Stanowe grupy zasobów",
+  createResourceGroup: "Utwórz grupę zasobów",
+  openEditor: "Otwórz edytor",
+};
+
+const coursePools = {
+  title: "Pule grup zasobów",
+  createPool: "Utwórz pulę",
+  openPool: "Otwórz pulę",
+};
+
 const editResourceGroupPoolModal = {
   title: "Edytuj pulę grup zasobów",
   button: "Edytuj",
+};
+
+const resourceGroupEditor = {
+  type: "Grupa zasobów",
+  addVirtualMachine: "Dodaj maszynę wirtualną",
+  edit: "Edytuj",
+  privateSegments: {
+    button: "Segmenty prywatne",
+    title: "Zarządzaj segmentami prywatnymi",
+    description:
+      "Segmenty prywatne pozwalają na tworzenie sieci wewnętrznych w ramach grupy zasobów.",
+    createSegment: "Utwórz segment",
+    name: "Nazwa",
+    placeholder: "Nazwa segmentu...",
+    create: "Utwórz",
+    segments: "Segmenty",
+    interfaces: "NICs",
+    actions: "Akcje",
+    delete: "Usuń",
+    deleteConfirmation: "Czy na pewno chcesz usunąć ten segment?",
+    deleteConfirmationText:
+      "Segment zostanie usunięty. Tej operacji nie można cofnąć. Wszystkie interfejsy sieciowe przypisane do tego segmentu zostaną odłączone.",
+    deleteSuccess: "Segment został usunięty",
+    deleteError: "Nie udało się usunąć segmentu",
+  },
+  virtualMachinesList: {
+    title: "Maszyny wirtualne",
+    hidden: "Ukryte",
+    cpu: "cVPU",
+    memory: "MiB",
+    interfaces: "NICs",
+    edit: "Edytuj",
+    ovirt: "oVirt",
+  },
+  interfaceList: {
+    title: "Interfejsy",
+    selectVirtualMachine: "Wybierz maszynę wirtualną",
+    noInterfaces: "Brak interfejsów",
+    public: "Publiczny",
+    private: "Prywatny",
+    mac: "MAC:",
+    segment: "Segment:",
+    detach: "Odłącz",
+    profile: "Profil:",
+    conflict: "Konflikt",
+    conflictTooltip:
+      "Do tego interfejsu jest przypisany zarówno profil sieciowy, jak i segment prywatny. Ten konflikt musi zostać ręcznie rozwiązany poprzez odłączenie interfejsu od jednego z nich.",
+    detachConfirmationHeader: "Czy na pewno chcesz odłączyć ten interfejs?",
+    detachConfirmationText:
+      "Ta operacja odłączy interfejs od sieci. Maszyna wirtualna straci połączenie z tą siecią. Możesz ponownie podłączyć interfejs później. Czy chcesz kontynuować?",
+    attach: "Przyłącz",
+    attachTitle: "Przyłącz interfejs do segmentu prywatnego",
+    selectPrivateSegment: "Wybierz segment prywatny",
+  },
 };
 
 export default {
@@ -127,4 +202,8 @@ export default {
   resourceGroupPoolPage,
   createResourceGroupModal,
   editResourceGroupPoolModal,
+  courseStatefulResourceGroups,
+  coursePools,
+  coursePage,
+  resourceGroupEditor,
 };
