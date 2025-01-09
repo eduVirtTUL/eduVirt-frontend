@@ -8,6 +8,7 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { CheckIcon, CircleXIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type ConfirmationDialogProps = {
   header: string;
@@ -21,6 +22,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   text,
   header,
 }) => {
+  const { t } = useTranslation();
   const { isOpen, close } = useDialog();
 
   return (
@@ -33,7 +35,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         <div className="flex flex-row justify-between">
           <Button onClick={close} variant="secondary">
             <CircleXIcon />
-            No
+            {t("no")}
           </Button>
           <Button
             variant="destructive"
@@ -42,7 +44,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
               close();
             }}
           >
-            Yes
+            {t("yes")}
             <CheckIcon />
           </Button>
         </div>

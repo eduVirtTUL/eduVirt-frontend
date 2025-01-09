@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import { Textarea } from "../ui/textarea";
 import { Tabs, TabsContent } from "../ui/tabs";
+import RentTimeSelector from "../RentTimeSelector";
 
 type CreatePoolModalProps = {
   courseId?: string;
@@ -47,7 +48,8 @@ const createPoolSchema = (t: TFunction) =>
   z.object({
     name: z
       .string()
-      .min(1, t("createResourceGroupPoolModal.validation.nameRequired")),
+      .min(1, t("createResourceGroupPoolModal.validation.nameRequired"))
+      .max(50, t("createResourceGroupPoolModal.validation.nameMaxLength")),
     courseId: z
       .string()
       .min(1, t("createResourceGroupPoolModal.validation.courseRequired")),
@@ -65,8 +67,21 @@ const createPoolSchema = (t: TFunction) =>
           "createResourceGroupPoolModal.validation.gracePeriodGreaterOrEqualZero"
         )
       ),
-    description: z.string().min(1).max(1000),
-    maxRentTime: z.coerce.number().min(0),
+    description: z
+      .string()
+      .min(1, t("createResourceGroupPoolModal.validation.descriptionRequired"))
+      .max(
+        1000,
+        t("createResourceGroupPoolModal.validation.descriptionMaxLength")
+      ),
+    maxRentTime: z.coerce
+      .number()
+      .min(
+        0,
+        t(
+          "createResourceGroupPoolModal.validation.maxRentTimeGreaterOrEqualZero"
+        )
+      ),
   });
 
 type CreatePoolSchema = z.infer<ReturnType<typeof createPoolSchema>>;
@@ -101,6 +116,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
       onOpenChange={() => {
         close();
         form.reset();
+        setActiveTab("general");
       }}
     >
       <DialogContent>
@@ -197,7 +213,7 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
                     )}
                   >
                     {field.value
-                      ? courses?.find((c) => c.id === field.value)?.name
+                      ? courses?.items?.find((c) => c.id === field.value)?.name
                       : t("createResourceGroupPoolModal.selectCourse")}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -215,7 +231,7 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
                       {t("createResourceGroupPoolModal.noCourses")}
                     </CommandEmpty>
                     <CommandGroup>
-                      {courses?.map((c) => (
+                      {courses?.items?.map((c) => (
                         <CommandItem
                           value={c.name}
                           key={c.id}
@@ -255,8 +271,8 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
         <Button
           disabled={
             !(
-              form.getFieldState("name").isTouched &&
-              form.getFieldState("description").isTouched
+              form.getFieldState("name").isDirty &&
+              form.getFieldState("description").isDirty
             )
           }
           onClick={async () => {
@@ -296,7 +312,13 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               {t("createResourceGroupPoolModal.maxRentTime")}
             </FormLabel>
             <FormControl>
-              <Input {...field} type="number" />
+              <RentTimeSelector
+                value={field.value.toString()}
+                onChange={field.onChange}
+                start={0}
+                stop={5 * 60}
+                step={20}
+              />
             </FormControl>
             <FormDescription>
               {t("createResourceGroupPoolModal.maxRentTimeDescription")}
@@ -330,7 +352,13 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               {t("createResourceGroupPoolModal.gracePeriod")}
             </FormLabel>
             <FormControl>
-              <Input {...field} type="number" />
+              <RentTimeSelector
+                value={field.value.toString()}
+                onChange={field.onChange}
+                start={0}
+                stop={4 * 60}
+                step={30}
+              />
             </FormControl>
             <FormDescription>
               {t("createResourceGroupPoolModal.gracePeriodDescription")}

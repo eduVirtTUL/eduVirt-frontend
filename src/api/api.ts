@@ -264,19 +264,25 @@ export interface CreateCourseDto {
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'description'?: string;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'courseType'?: CreateCourseDtoCourseTypeEnum;
+    'courseType': CreateCourseDtoCourseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCourseDto
+     */
+    'clusterId': string;
 }
 
 export const CreateCourseDtoCourseTypeEnum = {
@@ -931,6 +937,44 @@ export interface NicDto {
      * @memberof NicDto
      */
     'macAddress'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PageDtoCourseDto
+ */
+export interface PageDtoCourseDto {
+    /**
+     * 
+     * @type {Array<CourseDto>}
+     * @memberof PageDtoCourseDto
+     */
+    'items'?: Array<CourseDto>;
+    /**
+     * 
+     * @type {PageInfoDto}
+     * @memberof PageDtoCourseDto
+     */
+    'page'?: PageInfoDto;
+}
+/**
+ * 
+ * @export
+ * @interface PageDtoDetailedResourceGroupPoolDto
+ */
+export interface PageDtoDetailedResourceGroupPoolDto {
+    /**
+     * 
+     * @type {Array<DetailedResourceGroupPoolDto>}
+     * @memberof PageDtoDetailedResourceGroupPoolDto
+     */
+    'items'?: Array<DetailedResourceGroupPoolDto>;
+    /**
+     * 
+     * @type {PageInfoDto}
+     * @memberof PageDtoDetailedResourceGroupPoolDto
+     */
+    'page'?: PageInfoDto;
 }
 /**
  * 
@@ -3014,10 +3058,12 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getCourses: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/course`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3029,6 +3075,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
 
 
     
@@ -3142,11 +3196,13 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCourses(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(options);
+        async getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoCourseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourses']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3214,11 +3270,13 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses(options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseDto>> {
-            return localVarFp.getCourses(options).then((request) => request(axios, basePath));
+        getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoCourseDto> {
+            return localVarFp.getCourses(page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3288,12 +3346,14 @@ export class CourseControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public getCourses(options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).getCourses(options).then((request) => request(this.axios, this.basePath));
+    public getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourses(page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7056,10 +7116,12 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResourceGroupPools: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getResourceGroupPools: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/resource-group-pool`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7071,6 +7133,14 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
 
 
     
@@ -7183,11 +7253,13 @@ export const ResourceGroupPoolControllerApiFp = function(configuration?: Configu
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getResourceGroupPools(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DetailedResourceGroupPoolDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getResourceGroupPools(options);
+        async getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoDetailedResourceGroupPoolDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getResourceGroupPools(page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.getResourceGroupPools']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7254,11 +7326,13 @@ export const ResourceGroupPoolControllerApiFactory = function (configuration?: C
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResourceGroupPools(options?: RawAxiosRequestConfig): AxiosPromise<Array<DetailedResourceGroupPoolDto>> {
-            return localVarFp.getResourceGroupPools(options).then((request) => request(axios, basePath));
+        getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoDetailedResourceGroupPoolDto> {
+            return localVarFp.getResourceGroupPools(page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -7327,12 +7401,14 @@ export class ResourceGroupPoolControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ResourceGroupPoolControllerApi
      */
-    public getResourceGroupPools(options?: RawAxiosRequestConfig) {
-        return ResourceGroupPoolControllerApiFp(this.configuration).getResourceGroupPools(options).then((request) => request(this.axios, this.basePath));
+    public getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return ResourceGroupPoolControllerApiFp(this.configuration).getResourceGroupPools(page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
