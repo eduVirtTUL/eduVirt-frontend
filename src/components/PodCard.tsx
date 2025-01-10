@@ -23,7 +23,7 @@ interface PodCardProps {
 
 export function PodCard({ resourceGroup, course }: PodCardProps) {
   return (
-    <Card className="h-[320px] mx-auto w-[280px] transition-all duration-200 hover:shadow-lg hover:border-primary/50">
+    <Card className="h-auto mx-2 w-auto transition-all duration-200 hover:shadow-lg hover:border-primary/50">
       <CardContent className="p-6 flex flex-col h-full">
         <div className="space-y-2 flex-1">
           <Badge 
@@ -33,14 +33,14 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
               resourceGroup.isStateless ? "hover:bg-primary/10" : "hover:bg-primary/90"
             )}
           >
-            {resourceGroup.isStateless ? "Stateless Pod" : "Stateful Pod"}
+            {resourceGroup.isStateless ? "Stateless" : "Stateful"}
           </Badge>
           <h3 className="font-semibold text-lg line-clamp-2">{resourceGroup.name}</h3>
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Course</p>
-            <p className="font-medium text-sm line-clamp-1">{course.name}</p>
+            <p className="font-medium text-sm">{course.name}</p>
             <p className="text-sm text-muted-foreground mt-2">Description</p>
-            <p className="text-sm line-clamp-2">{course.description}</p>
+            <p className="text-sm">{course.description}</p>
           </div>
         </div>
         <div className="pt-4 mt-auto">
