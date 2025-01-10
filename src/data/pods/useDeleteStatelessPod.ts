@@ -1,4 +1,4 @@
-import { PodControllerApi } from "@/api";
+import { PodStatelessControllerApi } from "@/api";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,9 +6,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export const useDeleteStatelessPod = () => {
     const queryClient = useQueryClient();
     const { mutate, mutateAsync, isPending } = useMutation({
-        mutationFn: async ({ teamId, resourceGroupPoolId }: { teamId: string, resourceGroupPoolId: string }) => {
-            const controller = new PodControllerApi();
-            const response = await controller.deleteStatelessPod(teamId, resourceGroupPoolId);
+        mutationFn: async ({ podId }: { podId: string }) => {
+            const controller = new PodStatelessControllerApi();
+            const response = await controller.deleteStatelessPod(podId);
             return response.data;
         },
         onSuccess: () => {

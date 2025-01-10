@@ -1,4 +1,4 @@
-import { CreateStatelessPodDto, PodControllerApi } from "@/api";
+import { CreatePodStatelessDto, PodStatelessControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
@@ -7,8 +7,8 @@ export const useCreateStatelessPod = () => {
     const queryClient = useQueryClient();
     const { mutate, mutateAsync } = useMutation({
         mutationKey: ["createStatelessPod"],
-        mutationFn: async (pod: CreateStatelessPodDto) => {
-            const controller = new PodControllerApi();
+        mutationFn: async (pod: CreatePodStatelessDto) => {
+            const controller = new PodStatelessControllerApi();
             const response = await controller.createStatelessPod(pod);
             return response.data;
         },

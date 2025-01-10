@@ -99,16 +99,18 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }
 
 const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps) => {
-    const { t } = useTranslation();
+    const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
+    const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const [selectedResource, setSelectedResource] = useState<string | null>(null)
     const {resourceGroups, isLoading: isLoadingRG} = useResourceGroups()
     const {createStatefulPod} = useCreateStatefulPod()
-    const {team, isLoading: isLoadingTeam} = useTeam(teamId)
-    const {statefulPods, isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
     const {resourceGroupsWithPods} = useResourceGroupsWithPods()
     const {deleteStatefulPod, isPending: isDeleting} = useDeleteStatefulPod()
     const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null);
+    const { t } = useTranslation();
+
+    const podsArray = Array.isArray(statefulPods) ? statefulPods : []; // To assure that statefulPods is an array when 204 response is returned
 
     const handleSubmit = () => {
         createStatefulPod({teamId, resourceGroupId: selectedResource!})
@@ -217,7 +219,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {statefulPods?.map((pod, index) => (
+                                                {podsArray?.map((pod, index) => (
                                                     <TableRow key={pod.id}>
                                                         <TableCell>{`${index + 1}.`}</TableCell>
                                                         <TableCell>{pod.resourceGroup?.name}</TableCell>
@@ -233,7 +235,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}
-                                                {!statefulPods?.length && (
+                                                {!podsArray?.length && (
                                                     <TableRow>
                                                         <TableCell colSpan={3}
                                                                    className="text-center text-muted-foreground">
