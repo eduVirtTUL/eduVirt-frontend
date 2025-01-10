@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 type InterfaceProps = {
   nic: NicDto;
@@ -45,47 +46,62 @@ const Interface: React.FC<InterfaceProps> = ({ nic, vmId, onDetach }) => {
 };
 
 const PrivateInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-2 items-center">
           <span className="font-semibold">{nic.name}</span>
-          <Badge variant="outline">Private</Badge>
+          <Badge variant="outline">
+            {t("resourceGroupEditor.interfaceList.private")}
+          </Badge>
         </div>
-        <span>MAC: {nic.macAddress}</span>
-        <span>Segment: {nic.segmentName}</span>
+        <span>
+          {t("resourceGroupEditor.interfaceList.mac")} {nic.macAddress}
+        </span>
+        <span>
+          {t("resourceGroupEditor.interfaceList.segment")} {nic.segmentName}
+        </span>
       </div>
       <Button variant="destructive" onClick={onDetach}>
         <ClipboardXIcon />
-        Detach
+        {t("resourceGroupEditor.interfaceList.detach")}
       </Button>
     </div>
   );
 };
 
 const PublicInterface: React.FC<InterfaceProps> = ({ nic }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-2 items-center">
           <span className="font-semibold">{nic.name}</span>
-          <Badge>Public</Badge>
+          <Badge>{t("resourceGroupEditor.interfaceList.public")}</Badge>
         </div>
-        <span>MAC: {nic.macAddress}</span>
-        <span>Profile: {nic.profileName}</span>
+        <span>
+          {t("resourceGroupEditor.interfaceList.mac")} {nic.macAddress}
+        </span>
+        <span>
+          {t("resourceGroupEditor.interfaceList.profile")} {nic.profileName}
+        </span>
       </div>
     </div>
   );
 };
 
 const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-2 items-center">
           <span className="font-semibold">{nic.name}</span>
         </div>
-        <span>MAC: {nic.macAddress}</span>
+        <span>
+          {t("resourceGroupEditor.interfaceList.mac")} {nic.macAddress}
+        </span>
       </div>
       <AttachVmToSegmentModal nicId={nic.id ?? ""} vmId={vmId} />
     </div>
@@ -93,6 +109,7 @@ const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId }) => {
 };
 
 const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
@@ -100,14 +117,16 @@ const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
           <span className="font-semibold">{nic.name}</span>
           <Badge variant="destructive">
             <TriangleAlertIcon className="w-5 h-5 mr-1" />
-            Conflict
+            {t("resourceGroupEditor.interfaceList.conflict")}
           </Badge>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
                 <CircleHelpIcon />
               </TooltipTrigger>
-              <TooltipContent>Help me</TooltipContent>
+              <TooltipContent>
+                {t("resourceGroupEditor.interfaceList.conflictTooltip")}
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -117,7 +136,7 @@ const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
       </div>
       <Button variant="destructive" onClick={onDetach}>
         <ClipboardXIcon />
-        Detach
+        {t("resourceGroupEditor.interfaceList.detach")}
       </Button>
     </div>
   );

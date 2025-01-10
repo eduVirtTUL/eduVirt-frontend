@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useDeleteResourceGroupVm } from "@/data/resourceGroup/useDeleteResourceGroupVm";
 import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
-import { ExternalLinkIcon, SquarePenIcon, Trash2Icon } from "lucide-react";
+import { ExternalLinkIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import BounceLoader from "react-spinners/BounceLoader";
 
@@ -19,6 +20,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
   selectedVm,
   setSelectedVm,
 }) => {
+  const { t } = useTranslation();
   const { vms, isLoading } = useResourceGroupVms(id);
   const { deleteVmAsync } = useDeleteResourceGroupVm();
 
@@ -26,7 +28,9 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
     <>
       <Card className="flex flex-col">
         <CardHeader>
-          <CardTitle>Virtual machines</CardTitle>
+          <CardTitle>
+            {t("resourceGroupEditor.virtualMachinesList.title")}
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex-1 h-full overflow-hidden">
           {isLoading ? (
@@ -54,20 +58,41 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                             <div className="flex flex-row items-center gap-2">
                               <span className="font-semibold">{vm.name}</span>
                               {vm.hidden && (
-                                <Badge variant="outline">Hidden</Badge>
+                                <Badge variant="outline">
+                                  {t(
+                                    "resourceGroupEditor.virtualMachinesList.hidden"
+                                  )}
+                                </Badge>
                               )}
                             </div>
 
                             <div className="flex flex-row flex-wrap gap-2">
-                              <Badge>{vm.cpuCount} vCPU</Badge>
-                              <Badge>{vm.memory ?? 0} MiB</Badge>
-                              <Badge>{vm.nics?.length} NICs</Badge>
+                              <Badge>
+                                {vm.cpuCount}{" "}
+                                {t(
+                                  "resourceGroupEditor.virtualMachinesList.cpu"
+                                )}
+                              </Badge>
+                              <Badge>
+                                {vm.memory ?? 0}{" "}
+                                {t(
+                                  "resourceGroupEditor.virtualMachinesList.memory"
+                                )}
+                              </Badge>
+                              <Badge>
+                                {vm.nics?.length}{" "}
+                                {t(
+                                  "resourceGroupEditor.virtualMachinesList.interfaces"
+                                )}
+                              </Badge>
                             </div>
                           </div>
                           <div className="flex flex-row gap-2 items-center flex-wrap">
                             <Button onClick={(e) => e.stopPropagation()}>
-                              Edit
-                              <SquarePenIcon />
+                              <PencilIcon />
+                              {t(
+                                "resourceGroupEditor.virtualMachinesList.edit"
+                              )}
                             </Button>
                             <Button
                               variant="secondary"
@@ -78,8 +103,10 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 target="_blank"
                                 to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
                               >
-                                oVirt
                                 <ExternalLinkIcon />
+                                {t(
+                                  "resourceGroupEditor.virtualMachinesList.ovirt"
+                                )}
                               </Link>
                             </Button>
                             <Button
