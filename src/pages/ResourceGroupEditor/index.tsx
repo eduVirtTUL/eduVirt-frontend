@@ -9,6 +9,8 @@ import PrivateSegmentDrawer from "./PrivateSegmentDrawer";
 import type { Route } from ".react-router/types/src/pages/ResourceGroupEditor/+types/index";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useDialog } from "@/stores/dialogStore";
+import { useTranslation } from "react-i18next";
+import { PencilIcon, PlusIcon } from "lucide-react";
 
 export const handle = {
   noScroll: true,
@@ -17,6 +19,7 @@ export const handle = {
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
 }) => {
+  const { t } = useTranslation();
   const { open } = useDialog();
   const { resourceGroup } = useResourceGroup(id!);
   const [selectedVm, setSelectedVm] = React.useState<string>();
@@ -29,18 +32,24 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   return (
     <>
       <AddVmModal id={id!} />
-      <PageHeader title="Create resorce group" />
-      <p>{resourceGroup?.name}</p>
+      <PageHeader
+        title={resourceGroup?.name ?? ""}
+        type={t("resourceGroupEditor.type")}
+      />
       <div className="flex flex-row justify-end gap-2 pb-5">
         <Button
           onClick={() => {
             open("addVmToResourceGroup");
           }}
         >
-          Add Virtual Machine
+          <PlusIcon />
+          {t("resourceGroupEditor.addVirtualMachine")}
         </Button>
-        <Button variant={"secondary"}>Edit</Button>
         <PrivateSegmentDrawer id={id!} />
+        <Button variant={"secondary"}>
+          <PencilIcon />
+          {t("resourceGroupEditor.edit")}
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 grid-rows-1 gap-x-5 flex-1 h-full overflow-hidden">

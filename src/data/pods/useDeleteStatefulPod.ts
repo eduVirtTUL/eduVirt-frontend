@@ -1,4 +1,4 @@
-import { PodControllerApi } from "@/api";
+import { PodStatefulControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { keys } from "../keys";
 import { toast } from "sonner";
@@ -7,7 +7,7 @@ export const useDeleteStatefulPod = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
-      const controller = new PodControllerApi();
+      const controller = new PodStatefulControllerApi();
       const response = await controller.deleteStatefulPod(id);
       return response.data;
     },

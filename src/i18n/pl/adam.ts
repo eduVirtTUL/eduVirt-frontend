@@ -53,11 +53,16 @@ const createResourceGroupPoolModal = {
   error: "Nie udało się utworzyć puli grup zasobów",
   validation: {
     nameRequired: "Nazwa jest wymagana",
+    nameMaxLength: "Nazwa nie może być dłuższa niż 50 znaków",
     maxRentGreaterOrEqualZero:
       "Maksymalna ilość wypożyczeń musi być większa lub równa zero",
     gracePeriodGreaterOrEqualZero:
       "Okres karencji musi być większy lub równy zero",
     courseRequired: "Przedmiot jest wymagany",
+    descriptionRequired: "Opis jest wymagany",
+    descriptionMaxLength: "Opis nie może być dłuższy niż 1000 znaków",
+    maxRentTimeGreaterOrEqualZero:
+      "Maksymalny czas wypożyczenia musi być większy lub równy zero",
   },
   selectCourse: "Wybierz przedmiot",
   noCourses: "Brak przedmiotów",
@@ -79,6 +84,8 @@ const resourceGroupPoolPage = {
   createResourceGroup: "Utwórz grupę zasobów",
   delete: "Usuń",
   deleteConfirmation: "Czy na pewno chcesz usunąć tę pulę grup zasobów?",
+  deleteConfirmationText:
+    "Pula grup zasobów zostanie usunięta. Wraz z nią zostaną usunięte wszystkie grupy zasobów przypisane do tej puli. Tej operacji nie można cofnąć.",
   deleteSuccess: "Pula grup zasobów została usunięta",
   deleteError: "Nie udało się usunąć puli grup zasobów",
   fields: {
@@ -89,6 +96,7 @@ const resourceGroupPoolPage = {
     gracePeriod: "Okres karencji",
     maxRentTime: "Maksymalny czas wypożyczenia",
   },
+  type: "Pula grup zasobów",
 };
 
 const createResourceGroupModal = {
@@ -108,10 +116,94 @@ const createResourceGroupModal = {
   },
 };
 
+const coursePage = {
+  title: "Przedmiot",
+  settings: "Ustawienia przedmiotu",
+  edit: "Edytuj",
+  delete: "Usuń",
+  limits: "Metryki",
+};
+
+const courseStatefulResourceGroups = {
+  title: "Stanowe grupy zasobów",
+  createResourceGroup: "Utwórz grupę zasobów",
+  openEditor: "Otwórz edytor",
+};
+
+const coursePools = {
+  title: "Pule grup zasobów",
+  createPool: "Utwórz pulę",
+  openPool: "Otwórz pulę",
+};
+
+const editResourceGroupPoolModal = {
+  title: "Edytuj pulę grup zasobów",
+  button: "Edytuj",
+};
+
+const resourceGroupEditor = {
+  type: "Grupa zasobów",
+  addVirtualMachine: "Dodaj maszynę wirtualną",
+  edit: "Edytuj",
+  privateSegments: {
+    button: "Segmenty prywatne",
+    title: "Zarządzaj segmentami prywatnymi",
+    description:
+      "Segmenty prywatne pozwalają na tworzenie sieci wewnętrznych w ramach grupy zasobów.",
+    createSegment: "Utwórz segment",
+    name: "Nazwa",
+    placeholder: "Nazwa segmentu...",
+    create: "Utwórz",
+    segments: "Segmenty",
+    interfaces: "NICs",
+    actions: "Akcje",
+    delete: "Usuń",
+    deleteConfirmation: "Czy na pewno chcesz usunąć ten segment?",
+    deleteConfirmationText:
+      "Segment zostanie usunięty. Tej operacji nie można cofnąć. Wszystkie interfejsy sieciowe przypisane do tego segmentu zostaną odłączone.",
+    deleteSuccess: "Segment został usunięty",
+    deleteError: "Nie udało się usunąć segmentu",
+  },
+  virtualMachinesList: {
+    title: "Maszyny wirtualne",
+    hidden: "Ukryte",
+    cpu: "cVPU",
+    memory: "MiB",
+    interfaces: "NICs",
+    edit: "Edytuj",
+    ovirt: "oVirt",
+  },
+  interfaceList: {
+    title: "Interfejsy",
+    selectVirtualMachine: "Wybierz maszynę wirtualną",
+    noInterfaces: "Brak interfejsów",
+    public: "Publiczny",
+    private: "Prywatny",
+    mac: "MAC:",
+    segment: "Segment:",
+    detach: "Odłącz",
+    profile: "Profil:",
+    conflict: "Konflikt",
+    conflictTooltip:
+      "Do tego interfejsu jest przypisany zarówno profil sieciowy, jak i segment prywatny. Ten konflikt musi zostać ręcznie rozwiązany poprzez odłączenie interfejsu od jednego z nich.",
+    detachConfirmationHeader: "Czy na pewno chcesz odłączyć ten interfejs?",
+    detachConfirmationText:
+      "Ta operacja odłączy interfejs od sieci. Maszyna wirtualna straci połączenie z tą siecią. Możesz ponownie podłączyć interfejs później. Czy chcesz kontynuować?",
+    attach: "Przyłącz",
+    attachTitle: "Przyłącz interfejs do segmentu prywatnego",
+    selectPrivateSegment: "Wybierz segment prywatny",
+  },
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
   rentTimeSelector,
   resourceGroupPoolPage,
   createResourceGroupModal,
+  editResourceGroupPoolModal,
+  courseStatefulResourceGroups,
+  coursePools,
+  coursePage,
+  resourceGroupEditor,
 };

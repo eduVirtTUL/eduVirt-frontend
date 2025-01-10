@@ -31,9 +31,11 @@ import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupN
 import { useDialog } from "@/stores/dialogStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash2Icon } from "lucide-react";
+import { TFunction } from "i18next";
+import { EthernetPortIcon, MoreHorizontal, Trash2Icon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 type PrivateSegmentDrawerProps = {
@@ -41,13 +43,21 @@ type PrivateSegmentDrawerProps = {
 };
 
 const columns = (
+  t: TFunction,
   initDelete: (id: string) => void
 ): ColumnDef<ResourceGroupNetworkDto>[] => [
-  { accessorKey: "name", header: "Name" },
-  { id: "nics", accessorFn: () => 0, header: "NICs" },
+  {
+    accessorKey: "name",
+    header: t("resourceGroupEditor.privateSegments.name"),
+  },
+  {
+    id: "nics",
+    accessorFn: () => 0,
+    header: t("resourceGroupEditor.privateSegments.interfaces"),
+  },
   {
     id: "actions",
-    header: "Actions",
+    header: t("resourceGroupEditor.privateSegments.actions"),
     cell: ({ row }) => {
       const network = row.original;
       return (
@@ -65,7 +75,7 @@ const columns = (
               }}
             >
               <Trash2Icon />
-              Delete
+              {t("resourceGroupEditor.privateSegments.delete")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -81,6 +91,7 @@ const createSegmentSchema = z.object({
 type CreateSegmentSchema = z.infer<typeof createSegmentSchema>;
 
 const PrivateSegmentDrawer: React.FC<PrivateSegmentDrawerProps> = ({ id }) => {
+  const { t } = useTranslation();
   const { deleteNetwork } = useDeleteResourceGroupNetwork();
   const { addNetwork } = useAddResourceGroupNetwork();
   const { networks } = useResourceGroupNetworks(id);
@@ -101,45 +112,61 @@ const PrivateSegmentDrawer: React.FC<PrivateSegmentDrawerProps> = ({ id }) => {
     <>
       <ConfirmationDialog
         onConfirm={() => deleteNetwork(networkToDelete.current!)}
-        header="Delete network"
-        text="Are you sure you want to delete this network?"
+        header={t("resourceGroupEditor.privateSegments.deleteConfirmation")}
+        text={t("resourceGroupEditor.privateSegments.deleteConfirmationText")}
       />
       <Sheet>
         <SheetTrigger asChild>
-          <Button>Private segments</Button>
+          <Button>
+            <EthernetPortIcon />
+            {t("resourceGroupEditor.privateSegments.button")}
+          </Button>
         </SheetTrigger>
-        <SheetContent className="sm:max-w-xl">
+        <SheetContent className="sm:max-w-xl h-screen overflow-auto">
           <SheetHeader>
-            <SheetTitle>Manage private segments</SheetTitle>
+            <SheetTitle>
+              {t("resourceGroupEditor.privateSegments.title")}
+            </SheetTitle>
             <SheetDescription>
-              Here you can manage this resource group private network segments.
+              {t("resourceGroupEditor.privateSegments.description")}
             </SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-6">
             <Form {...form}>
               <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-                <h3>Create new segment</h3>
+                <h3>
+                  {t("resourceGroupEditor.privateSegments.createSegment")}
+                </h3>
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>
+                        {t("resourceGroupEditor.privateSegments.name")}
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Segment name..." />
+                        <Input
+                          {...field}
+                          placeholder={t(
+                            "resourceGroupEditor.privateSegments.placeholder"
+                          )}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <div className="flex flex-row justify-end">
-                  <Button type="submit">Create</Button>
+                  <Button type="submit">
+                    {t("resourceGroupEditor.privateSegments.create")}
+                  </Button>
                 </div>
               </form>
             </Form>
-            <h3>Existing segments</h3>
+            <h3>{t("resourceGroupEditor.privateSegments.segments")}</h3>
             <DataTable
-              columns={columns((id) => {
+              columns={columns(t, (id) => {
                 networkToDelete.current = id;
                 open("confirmation");
               })}

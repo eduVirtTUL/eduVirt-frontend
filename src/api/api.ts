@@ -264,19 +264,25 @@ export interface CreateCourseDto {
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'description'?: string;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof CreateCourseDto
      */
-    'courseType'?: CreateCourseDtoCourseTypeEnum;
+    'courseType': CreateCourseDtoCourseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCourseDto
+     */
+    'clusterId': string;
 }
 
 export const CreateCourseDtoCourseTypeEnum = {
@@ -367,6 +373,25 @@ export interface CreatePodStatefulDto {
      * @memberof CreatePodStatefulDto
      */
     'resourceGroupId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreatePodStatelessDto
+ */
+export interface CreatePodStatelessDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePodStatelessDto
+     */
+    'teamId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePodStatelessDto
+     */
+    'resourceGroupPoolId'?: string;
 }
 /**
  * 
@@ -479,25 +504,6 @@ export interface CreateResourceGroupNetworkDto {
      * @memberof CreateResourceGroupNetworkDto
      */
     'name'?: string;
-}
-/**
- * 
- * @export
- * @interface CreateStatelessPodDto
- */
-export interface CreateStatelessPodDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateStatelessPodDto
-     */
-    'teamId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateStatelessPodDto
-     */
-    'resourceGroupPoolId'?: string;
 }
 /**
  * 
@@ -935,6 +941,44 @@ export interface NicDto {
 /**
  * 
  * @export
+ * @interface PageDtoCourseDto
+ */
+export interface PageDtoCourseDto {
+    /**
+     * 
+     * @type {Array<CourseDto>}
+     * @memberof PageDtoCourseDto
+     */
+    'items'?: Array<CourseDto>;
+    /**
+     * 
+     * @type {PageInfoDto}
+     * @memberof PageDtoCourseDto
+     */
+    'page'?: PageInfoDto;
+}
+/**
+ * 
+ * @export
+ * @interface PageDtoDetailedResourceGroupPoolDto
+ */
+export interface PageDtoDetailedResourceGroupPoolDto {
+    /**
+     * 
+     * @type {Array<DetailedResourceGroupPoolDto>}
+     * @memberof PageDtoDetailedResourceGroupPoolDto
+     */
+    'items'?: Array<DetailedResourceGroupPoolDto>;
+    /**
+     * 
+     * @type {PageInfoDto}
+     * @memberof PageDtoDetailedResourceGroupPoolDto
+     */
+    'page'?: PageInfoDto;
+}
+/**
+ * 
+ * @export
  * @interface PageDtoMaintenanceIntervalDto
  */
 export interface PageDtoMaintenanceIntervalDto {
@@ -1067,31 +1111,31 @@ export interface Pageable {
 /**
  * 
  * @export
- * @interface PodDetailsDto
+ * @interface PodStatefulDetailsDto
  */
-export interface PodDetailsDto {
+export interface PodStatefulDetailsDto {
     /**
      * 
      * @type {string}
-     * @memberof PodDetailsDto
+     * @memberof PodStatefulDetailsDto
      */
     'id'?: string;
     /**
      * 
      * @type {ResourceGroupDto}
-     * @memberof PodDetailsDto
+     * @memberof PodStatefulDetailsDto
      */
     'resourceGroup'?: ResourceGroupDto;
     /**
      * 
      * @type {CourseBasicDto}
-     * @memberof PodDetailsDto
+     * @memberof PodStatefulDetailsDto
      */
     'course'?: CourseBasicDto;
     /**
      * 
      * @type {TeamDto}
-     * @memberof PodDetailsDto
+     * @memberof PodStatefulDetailsDto
      */
     'team'?: TeamDto;
 }
@@ -1112,19 +1156,81 @@ export interface PodStatefulDto {
      * @type {string}
      * @memberof PodStatefulDto
      */
-    'resourceGroupId'?: string;
+    'teamId'?: string;
     /**
      * 
      * @type {string}
      * @memberof PodStatefulDto
      */
-    'teamId'?: string;
+    'courseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatefulDto
+     */
+    'resourceGroupId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PodStatelessDetailsDto
+ */
+export interface PodStatelessDetailsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatelessDetailsDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {ResourceGroupPoolDto}
+     * @memberof PodStatelessDetailsDto
+     */
+    'resourceGroupPool'?: ResourceGroupPoolDto;
     /**
      * 
      * @type {CourseBasicDto}
-     * @memberof PodStatefulDto
+     * @memberof PodStatelessDetailsDto
      */
     'course'?: CourseBasicDto;
+    /**
+     * 
+     * @type {TeamDto}
+     * @memberof PodStatelessDetailsDto
+     */
+    'team'?: TeamDto;
+}
+/**
+ * 
+ * @export
+ * @interface PodStatelessDto
+ */
+export interface PodStatelessDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatelessDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatelessDto
+     */
+    'teamId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatelessDto
+     */
+    'courseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PodStatelessDto
+     */
+    'resourceGroupPoolId'?: string;
 }
 /**
  * 
@@ -2886,6 +2992,78 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createResourceGroup: async (id: string, createResourceGroupDto: CreateResourceGroupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('createResourceGroup', 'id', id)
+            // verify required parameter 'createResourceGroupDto' is not null or undefined
+            assertParamExists('createResourceGroup', 'createResourceGroupDto', createResourceGroupDto)
+            const localVarPath = `/course/{id}/resource-group`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createResourceGroupDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCourse: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteCourse', 'id', id)
+            const localVarPath = `/course/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {string} rgId 
          * @param {number} window 
          * @param {string} start 
@@ -3075,10 +3253,45 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getCourseStatefulResourceGroups: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getCourseStatefulResourceGroups', 'id', id)
+            const localVarPath = `/course/{id}/stateful`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourses: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/course`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3090,6 +3303,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
 
 
     
@@ -3140,6 +3361,45 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateCourseDto} createCourseDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCourse: async (id: string, createCourseDto: CreateCourseDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateCourse', 'id', id)
+            // verify required parameter 'createCourseDto' is not null or undefined
+            assertParamExists('updateCourse', 'createCourseDto', createCourseDto)
+            const localVarPath = `/course/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createCourseDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3160,6 +3420,31 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addCourse(createCourseDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.addCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createResourceGroup(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createResourceGroup(id, createResourceGroupDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.createResourceGroup']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCourse(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCourse(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.deleteCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3220,11 +3505,25 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCourses(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(options);
+        async getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourceGroupDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourseStatefulResourceGroups(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourseStatefulResourceGroups']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoCourseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourses']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3239,6 +3538,19 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCoursesForStudent(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCoursesForStudent']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateCourseDto} createCourseDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCourse(id: string, createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCourse(id, createCourseDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.updateCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -3259,6 +3571,25 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          */
         addCourse(createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig): AxiosPromise<CourseDto> {
             return localVarFp.addCourse(createCourseDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateResourceGroupDto} createResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createResourceGroup(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createResourceGroup(id, createResourceGroupDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCourse(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteCourse(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3306,11 +3637,22 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses(options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseDto>> {
-            return localVarFp.getCourses(options).then((request) => request(axios, basePath));
+        getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourceGroupDto>> {
+            return localVarFp.getCourseStatefulResourceGroups(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoCourseDto> {
+            return localVarFp.getCourses(page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3320,6 +3662,16 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          */
         getCoursesForStudent(pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseDto>> {
             return localVarFp.getCoursesForStudent(pageable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateCourseDto} createCourseDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCourse(id: string, createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateCourse(id, createCourseDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3340,6 +3692,29 @@ export class CourseControllerApi extends BaseAPI {
      */
     public addCourse(createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).addCourse(createCourseDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {CreateResourceGroupDto} createResourceGroupDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public createResourceGroup(id: string, createResourceGroupDto: CreateResourceGroupDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).createResourceGroup(id, createResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public deleteCourse(id: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).deleteCourse(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3396,12 +3771,25 @@ export class CourseControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public getCourses(options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).getCourses(options).then((request) => request(this.axios, this.basePath));
+    public getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourseStatefulResourceGroups(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [page] 
+     * @param {number} [size] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourses(page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3413,6 +3801,18 @@ export class CourseControllerApi extends BaseAPI {
      */
     public getCoursesForStudent(pageable: Pageable, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).getCoursesForStudent(pageable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {CreateCourseDto} createCourseDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public updateCourse(id: string, createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).updateCourse(id, createCourseDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -5083,13 +5483,14 @@ export class PermissionControllerApi extends BaseAPI {
 
 
 /**
- * PodControllerApi - axios parameter creator
+ * PodStatefulControllerApi - axios parameter creator
  * @export
  */
-export const PodControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+export const PodStatefulControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Creates a new stateful pod for the specified team and resource group
+         * @summary Create new stateful pod
          * @param {CreatePodStatefulDto} createPodStatefulDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5124,42 +5525,8 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * 
-         * @param {CreateStatelessPodDto} createStatelessPodDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createStatelessPod: async (createStatelessPodDto: CreateStatelessPodDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'createStatelessPodDto' is not null or undefined
-            assertParamExists('createStatelessPod', 'createStatelessPodDto', createStatelessPodDto)
-            const localVarPath = `/pods/stateless`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createStatelessPodDto, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
+         * Deletes a specific stateful pod
+         * @summary Delete pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5192,44 +5559,8 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * 
-         * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteStatelessPod: async (teamId: string, resourceGroupPoolId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'teamId' is not null or undefined
-            assertParamExists('deleteStatelessPod', 'teamId', teamId)
-            // verify required parameter 'resourceGroupPoolId' is not null or undefined
-            assertParamExists('deleteStatelessPod', 'resourceGroupPoolId', resourceGroupPoolId)
-            const localVarPath = `/pods/stateless/{teamId}/{resourceGroupPoolId}`
-                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
-                .replace(`{${"resourceGroupPoolId"}}`, encodeURIComponent(String(resourceGroupPoolId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
+         * Retrieves detailed information about a specific stateful pod
+         * @summary Get pod details
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5262,7 +5593,8 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * 
+         * Retrieves all stateful pods for a specific course
+         * @summary Get course pods
          * @param {string} courseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5295,7 +5627,8 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * 
+         * Retrieves all stateful pods for a specific resource group
+         * @summary Get resource group pods
          * @param {string} resourceGroupId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5328,7 +5661,8 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * 
+         * Retrieves all stateful pods for a specific team
+         * @summary Get team pods
          * @param {string} teamId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5360,8 +5694,430 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
                 options: localVarRequestOptions,
             };
         },
+    }
+};
+
+/**
+ * PodStatefulControllerApi - functional programming interface
+ * @export
+ */
+export const PodStatefulControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PodStatefulControllerApiAxiosParamCreator(configuration)
+    return {
         /**
-         * 
+         * Creates a new stateful pod for the specified team and resource group
+         * @summary Create new stateful pod
+         * @param {CreatePodStatefulDto} createPodStatefulDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodStatefulDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStatefulPod(createPodStatefulDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.createStatefulPod']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Deletes a specific stateful pod
+         * @summary Delete pod
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatefulPod(podId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.deleteStatefulPod']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves detailed information about a specific stateful pod
+         * @summary Get pod details
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getStatefulPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodStatefulDetailsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPod(podId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.getStatefulPod']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves all stateful pods for a specific course
+         * @summary Get course pods
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByCourse(courseId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.getStatefulPodsByCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves all stateful pods for a specific resource group
+         * @summary Get resource group pods
+         * @param {string} resourceGroupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByResourceGroup(resourceGroupId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.getStatefulPodsByResourceGroup']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves all stateful pods for a specific team
+         * @summary Get team pods
+         * @param {string} teamId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDetailsDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByTeam(teamId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatefulControllerApi.getStatefulPodsByTeam']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * PodStatefulControllerApi - factory interface
+ * @export
+ */
+export const PodStatefulControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PodStatefulControllerApiFp(configuration)
+    return {
+        /**
+         * Creates a new stateful pod for the specified team and resource group
+         * @summary Create new stateful pod
+         * @param {CreatePodStatefulDto} createPodStatefulDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig): AxiosPromise<PodStatefulDto> {
+            return localVarFp.createStatefulPod(createPodStatefulDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Deletes a specific stateful pod
+         * @summary Delete pod
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteStatefulPod(podId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves detailed information about a specific stateful pod
+         * @summary Get pod details
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatefulPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<PodStatefulDetailsDto> {
+            return localVarFp.getStatefulPod(podId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves all stateful pods for a specific course
+         * @summary Get course pods
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDto>> {
+            return localVarFp.getStatefulPodsByCourse(courseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves all stateful pods for a specific resource group
+         * @summary Get resource group pods
+         * @param {string} resourceGroupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDto>> {
+            return localVarFp.getStatefulPodsByResourceGroup(resourceGroupId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves all stateful pods for a specific team
+         * @summary Get team pods
+         * @param {string} teamId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDetailsDto>> {
+            return localVarFp.getStatefulPodsByTeam(teamId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * PodStatefulControllerApi - object-oriented interface
+ * @export
+ * @class PodStatefulControllerApi
+ * @extends {BaseAPI}
+ */
+export class PodStatefulControllerApi extends BaseAPI {
+    /**
+     * Creates a new stateful pod for the specified team and resource group
+     * @summary Create new stateful pod
+     * @param {CreatePodStatefulDto} createPodStatefulDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).createStatefulPod(createPodStatefulDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Deletes a specific stateful pod
+     * @summary Delete pod
+     * @param {string} podId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).deleteStatefulPod(podId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieves detailed information about a specific stateful pod
+     * @summary Get pod details
+     * @param {string} podId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public getStatefulPod(podId: string, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).getStatefulPod(podId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieves all stateful pods for a specific course
+     * @summary Get course pods
+     * @param {string} courseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).getStatefulPodsByCourse(courseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieves all stateful pods for a specific resource group
+     * @summary Get resource group pods
+     * @param {string} resourceGroupId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).getStatefulPodsByResourceGroup(resourceGroupId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieves all stateful pods for a specific team
+     * @summary Get team pods
+     * @param {string} teamId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatefulControllerApi
+     */
+    public getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig) {
+        return PodStatefulControllerApiFp(this.configuration).getStatefulPodsByTeam(teamId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * PodStatelessControllerApi - axios parameter creator
+ * @export
+ */
+export const PodStatelessControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Creates a new stateless pod for the specified team and resource group pool
+         * @summary Create new stateless pod
+         * @param {CreatePodStatelessDto} createPodStatelessDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStatelessPod: async (createPodStatelessDto: CreatePodStatelessDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createPodStatelessDto' is not null or undefined
+            assertParamExists('createStatelessPod', 'createPodStatelessDto', createPodStatelessDto)
+            const localVarPath = `/pods/stateless`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createPodStatelessDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Deletes a specific stateless pod
+         * @summary Delete pod
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteStatelessPod: async (podId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'podId' is not null or undefined
+            assertParamExists('deleteStatelessPod', 'podId', podId)
+            const localVarPath = `/pods/stateless/{podId}`
+                .replace(`{${"podId"}}`, encodeURIComponent(String(podId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves detailed information about a specific stateless pod
+         * @summary Get pod details
+         * @param {string} podId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatelessPod: async (podId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'podId' is not null or undefined
+            assertParamExists('getStatelessPod', 'podId', podId)
+            const localVarPath = `/pods/stateless/{podId}`
+                .replace(`{${"podId"}}`, encodeURIComponent(String(podId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves all stateless pods for a specific course
+         * @summary Get course pods
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatelessPodsByCourse: async (courseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getStatelessPodsByCourse', 'courseId', courseId)
+            const localVarPath = `/pods/stateless/course/{courseId}`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves all stateless pods for a specific resource group pool
+         * @summary Get resource group pool pods
+         * @param {string} poolId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getStatelessPodsByResourceGroupPool: async (poolId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'poolId' is not null or undefined
+            assertParamExists('getStatelessPodsByResourceGroupPool', 'poolId', poolId)
+            const localVarPath = `/pods/stateless/resource-group-pool/{poolId}`
+                .replace(`{${"poolId"}}`, encodeURIComponent(String(poolId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves all stateless pods for a specific team
+         * @summary Get team pods
          * @param {string} teamId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5397,321 +6153,240 @@ export const PodControllerApiAxiosParamCreator = function (configuration?: Confi
 };
 
 /**
- * PodControllerApi - functional programming interface
+ * PodStatelessControllerApi - functional programming interface
  * @export
  */
-export const PodControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PodControllerApiAxiosParamCreator(configuration)
+export const PodStatelessControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PodStatelessControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @param {CreatePodStatefulDto} createPodStatefulDto 
+         * Creates a new stateless pod for the specified team and resource group pool
+         * @summary Create new stateless pod
+         * @param {CreatePodStatelessDto} createPodStatelessDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodStatefulDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createStatefulPod(createPodStatefulDto, options);
+        async createStatelessPod(createPodStatelessDto: CreatePodStatelessDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodStatelessDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStatelessPod(createPodStatelessDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.createStatefulPod']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.createStatelessPod']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {CreateStatelessPodDto} createStatelessPodDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createStatelessPod(createStatelessPodDto: CreateStatelessPodDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createStatelessPod(createStatelessPodDto, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.createStatelessPod']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
+         * Deletes a specific stateless pod
+         * @summary Delete pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatefulPod(podId, options);
+        async deleteStatelessPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPod(podId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.deleteStatefulPod']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.deleteStatelessPod']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPod(teamId, resourceGroupPoolId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.deleteStatelessPod']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
+         * Retrieves detailed information about a specific stateless pod
+         * @summary Get pod details
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStatefulPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodDetailsDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPod(podId, options);
+        async getStatelessPod(podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PodStatelessDetailsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatelessPod(podId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatefulPod']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.getStatelessPod']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Retrieves all stateless pods for a specific course
+         * @summary Get course pods
          * @param {string} courseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByCourse(courseId, options);
+        async getStatelessPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatelessDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatelessPodsByCourse(courseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatefulPodsByCourse']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.getStatelessPodsByCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} resourceGroupId 
+         * Retrieves all stateless pods for a specific resource group pool
+         * @summary Get resource group pool pods
+         * @param {string} poolId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatefulDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByResourceGroup(resourceGroupId, options);
+        async getStatelessPodsByResourceGroupPool(poolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatelessDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatelessPodsByResourceGroupPool(poolId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatefulPodsByResourceGroup']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.getStatelessPodsByResourceGroupPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Retrieves all stateless pods for a specific team
+         * @summary Get team pods
          * @param {string} teamId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodDetailsDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getStatefulPodsByTeam(teamId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatefulPodsByTeam']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {string} teamId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getStatelessPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+        async getStatelessPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatelessDetailsDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getStatelessPodsByTeam(teamId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PodControllerApi.getStatelessPodsByTeam']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.getStatelessPodsByTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * PodControllerApi - factory interface
+ * PodStatelessControllerApi - factory interface
  * @export
  */
-export const PodControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PodControllerApiFp(configuration)
+export const PodStatelessControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PodStatelessControllerApiFp(configuration)
     return {
         /**
-         * 
-         * @param {CreatePodStatefulDto} createPodStatefulDto 
+         * Creates a new stateless pod for the specified team and resource group pool
+         * @summary Create new stateless pod
+         * @param {CreatePodStatelessDto} createPodStatelessDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig): AxiosPromise<PodStatefulDto> {
-            return localVarFp.createStatefulPod(createPodStatefulDto, options).then((request) => request(axios, basePath));
+        createStatelessPod(createPodStatelessDto: CreatePodStatelessDto, options?: RawAxiosRequestConfig): AxiosPromise<PodStatelessDto> {
+            return localVarFp.createStatelessPod(createPodStatelessDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {CreateStatelessPodDto} createStatelessPodDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createStatelessPod(createStatelessPodDto: CreateStatelessPodDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.createStatelessPod(createStatelessPodDto, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
+         * Deletes a specific stateless pod
+         * @summary Delete pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteStatefulPod(podId, options).then((request) => request(axios, basePath));
+        deleteStatelessPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteStatelessPod(podId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} teamId 
-         * @param {string} resourceGroupPoolId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteStatelessPod(teamId, resourceGroupPoolId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
+         * Retrieves detailed information about a specific stateless pod
+         * @summary Get pod details
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatefulPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<PodDetailsDto> {
-            return localVarFp.getStatefulPod(podId, options).then((request) => request(axios, basePath));
+        getStatelessPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<PodStatelessDetailsDto> {
+            return localVarFp.getStatelessPod(podId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Retrieves all stateless pods for a specific course
+         * @summary Get course pods
          * @param {string} courseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDto>> {
-            return localVarFp.getStatefulPodsByCourse(courseId, options).then((request) => request(axios, basePath));
+        getStatelessPodsByCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatelessDto>> {
+            return localVarFp.getStatelessPodsByCourse(courseId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} resourceGroupId 
+         * Retrieves all stateless pods for a specific resource group pool
+         * @summary Get resource group pool pods
+         * @param {string} poolId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatefulDto>> {
-            return localVarFp.getStatefulPodsByResourceGroup(resourceGroupId, options).then((request) => request(axios, basePath));
+        getStatelessPodsByResourceGroupPool(poolId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatelessDto>> {
+            return localVarFp.getStatelessPodsByResourceGroupPool(poolId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Retrieves all stateless pods for a specific team
+         * @summary Get team pods
          * @param {string} teamId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodDetailsDto>> {
-            return localVarFp.getStatefulPodsByTeam(teamId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {string} teamId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getStatelessPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<string>> {
+        getStatelessPodsByTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatelessDetailsDto>> {
             return localVarFp.getStatelessPodsByTeam(teamId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * PodControllerApi - object-oriented interface
+ * PodStatelessControllerApi - object-oriented interface
  * @export
- * @class PodControllerApi
+ * @class PodStatelessControllerApi
  * @extends {BaseAPI}
  */
-export class PodControllerApi extends BaseAPI {
+export class PodStatelessControllerApi extends BaseAPI {
     /**
-     * 
-     * @param {CreatePodStatefulDto} createPodStatefulDto 
+     * Creates a new stateless pod for the specified team and resource group pool
+     * @summary Create new stateless pod
+     * @param {CreatePodStatelessDto} createPodStatelessDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
-    public createStatefulPod(createPodStatefulDto: CreatePodStatefulDto, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).createStatefulPod(createPodStatefulDto, options).then((request) => request(this.axios, this.basePath));
+    public createStatelessPod(createPodStatelessDto: CreatePodStatelessDto, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).createStatelessPod(createPodStatelessDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {CreateStatelessPodDto} createStatelessPodDto 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PodControllerApi
-     */
-    public createStatelessPod(createStatelessPodDto: CreateStatelessPodDto, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).createStatelessPod(createStatelessPodDto, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
+     * Deletes a specific stateless pod
+     * @summary Delete pod
      * @param {string} podId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
-    public deleteStatefulPod(podId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).deleteStatefulPod(podId, options).then((request) => request(this.axios, this.basePath));
+    public deleteStatelessPod(podId: string, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).deleteStatelessPod(podId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {string} teamId 
-     * @param {string} resourceGroupPoolId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PodControllerApi
-     */
-    public deleteStatelessPod(teamId: string, resourceGroupPoolId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).deleteStatelessPod(teamId, resourceGroupPoolId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
+     * Retrieves detailed information about a specific stateless pod
+     * @summary Get pod details
      * @param {string} podId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
-    public getStatefulPod(podId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).getStatefulPod(podId, options).then((request) => request(this.axios, this.basePath));
+    public getStatelessPod(podId: string, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).getStatelessPod(podId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
+     * Retrieves all stateless pods for a specific course
+     * @summary Get course pods
      * @param {string} courseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
-    public getStatefulPodsByCourse(courseId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).getStatefulPodsByCourse(courseId, options).then((request) => request(this.axios, this.basePath));
+    public getStatelessPodsByCourse(courseId: string, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).getStatelessPodsByCourse(courseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {string} resourceGroupId 
+     * Retrieves all stateless pods for a specific resource group pool
+     * @summary Get resource group pool pods
+     * @param {string} poolId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
-    public getStatefulPodsByResourceGroup(resourceGroupId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).getStatefulPodsByResourceGroup(resourceGroupId, options).then((request) => request(this.axios, this.basePath));
+    public getStatelessPodsByResourceGroupPool(poolId: string, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).getStatelessPodsByResourceGroupPool(poolId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
+     * Retrieves all stateless pods for a specific team
+     * @summary Get team pods
      * @param {string} teamId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PodControllerApi
-     */
-    public getStatefulPodsByTeam(teamId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).getStatefulPodsByTeam(teamId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} teamId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PodControllerApi
+     * @memberof PodStatelessControllerApi
      */
     public getStatelessPodsByTeam(teamId: string, options?: RawAxiosRequestConfig) {
-        return PodControllerApiFp(this.configuration).getStatelessPodsByTeam(teamId, options).then((request) => request(this.axios, this.basePath));
+        return PodStatelessControllerApiFp(this.configuration).getStatelessPodsByTeam(teamId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7365,10 +8040,12 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResourceGroupPools: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getResourceGroupPools: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/resource-group-pool`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7380,6 +8057,14 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
 
 
     
@@ -7492,11 +8177,13 @@ export const ResourceGroupPoolControllerApiFp = function(configuration?: Configu
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getResourceGroupPools(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DetailedResourceGroupPoolDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getResourceGroupPools(options);
+        async getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoDetailedResourceGroupPoolDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getResourceGroupPools(page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupPoolControllerApi.getResourceGroupPools']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7563,11 +8250,13 @@ export const ResourceGroupPoolControllerApiFactory = function (configuration?: C
         },
         /**
          * 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResourceGroupPools(options?: RawAxiosRequestConfig): AxiosPromise<Array<DetailedResourceGroupPoolDto>> {
-            return localVarFp.getResourceGroupPools(options).then((request) => request(axios, basePath));
+        getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoDetailedResourceGroupPoolDto> {
+            return localVarFp.getResourceGroupPools(page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -7636,12 +8325,14 @@ export class ResourceGroupPoolControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ResourceGroupPoolControllerApi
      */
-    public getResourceGroupPools(options?: RawAxiosRequestConfig) {
-        return ResourceGroupPoolControllerApiFp(this.configuration).getResourceGroupPools(options).then((request) => request(this.axios, this.basePath));
+    public getResourceGroupPools(page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return ResourceGroupPoolControllerApiFp(this.configuration).getResourceGroupPools(page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

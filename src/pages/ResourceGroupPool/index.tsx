@@ -31,8 +31,8 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
   return (
     <>
       <ConfirmationDialog
-        text="test"
-        header="test"
+        text={t("resourceGroupPoolPage.deleteConfirmationText")}
+        header={t("resourceGroupPoolPage.deleteConfirmation")}
         onConfirm={async () => {
           await deleteResourceGroupPoolAsync(id);
           nav("/pools");
@@ -44,7 +44,10 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           await createStatelessResourceGroupAsync({ id, ...data });
         }}
       />
-      <PageHeader title={resourceGroupPool?.name ?? ""} />
+      <PageHeader
+        title={resourceGroupPool?.name ?? ""}
+        type={t("resourceGroupPoolPage.type")}
+      />
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
