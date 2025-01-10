@@ -17,7 +17,8 @@ export const useFinishReservation = () => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [keys.RESERVATIONS] });
+      queryClient.invalidateQueries({ queryKey: [ keys.RESERVATIONS ] });
+      queryClient.invalidateQueries({ queryKey: [ keys.COURSE_RESOURCES ] });
       toast.success(t("reservations.finishReservation.success"));
     },
     onError: () => {

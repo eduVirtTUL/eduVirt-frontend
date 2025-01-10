@@ -21,7 +21,7 @@ interface PodCardProps {
   };
 }
 
-export function PodCard({ resourceGroup, course }: PodCardProps) {
+export function PodCard({ id, resourceGroup, course }: PodCardProps) {
   return (
     <Card className="h-[320px] mx-auto w-[280px]">
       <CardContent className="p-6 flex flex-col gap-4">
@@ -41,12 +41,12 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
               <p className="font-medium">{course.clusterId}</p> */}
           </div>
           <div className={"grid grid-cols-1"}>
-            <Link to={`/reservations/calendar`}
-                  state={{
-                    clusterId: course.clusterId,
-                    courseId: course.id,
-                    resourceGroupId: resourceGroup.id
-                  }}>
+            <Link to={`/reservations/calendar/resource-group/${resourceGroup.id}`}
+              state={{
+                clusterId: course.clusterId,
+                courseId: course.id,
+                podId: id,
+            }}>
               <Button className={"w-full"}>
                 <CalendarIcon />
                 Make a reservation

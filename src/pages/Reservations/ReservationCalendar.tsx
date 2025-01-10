@@ -1,64 +1,51 @@
 import FullCalendar from "@fullcalendar/react";
-import { DateClickArg } from "@fullcalendar/interaction";
 import {
   DateSelectArg,
-  DateSpanApi, DatesSetArg,
-  EventClickArg,
+  DateSpanApi,
   EventInput,
-  ToolbarInput,
 } from "@fullcalendar/core";
 import React, { useEffect, useRef, useState } from "react";
 import CreateReservationModal from "@/components/Modals/CreateReservationModal";
 import { useDialog } from "@/stores/dialogStore";
 import "../../styles/fullcalendar-shadcn.css";
-import { useCourseResourcesAvailability } from "@/data/reservation/useCourseResourcesAvailability";
 import { ReservationDto, ResourcesAvailabilityDto } from "@/api";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
-import { useReservations } from "@/data/reservation/useReservations";
-import EventCalendar from "@/components/EventCalendar";
-import { Button } from "@/components/ui/button";
-import { useLocation, useNavigate } from "react-router";
-import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import MaintenanceIntervalModal from "@/components/Modals/MaintenanceIntervalModal";
-
-const headerToolbar: ToolbarInput = {
-  center: "title",
-  left: "prev,next",
-  right: "timeGridWeek,dayGridMonth,today",
-};
+import ReservationPresentationCalendar from "@/pages/Reservations/ReservationPresentationCalendar";
 
 type TimeRange = {
   start: string | null,
   end: string | null,
 }
 
-const ReservationCalendar: React.FC = () => {
+type ReservationCalendarProps = {
+  clusterId: string,
+  courseId: string,
+  podId: string,
+  timeWindow: number,
+  currentRange: TimeRange,
+  setCurrentRange: React.Dispatch<React.SetStateAction<TimeRange>>,
+  resources: ResourcesAvailabilityDto[] | undefined,
+  resourcesLoading: boolean,
+  reservations:  ReservationDto[] | undefined
+  reservationsLoading: boolean,
+};
+
+const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
+  clusterId, courseId, podId, timeWindow, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading
+}) => {
   const { t } = useTranslation();
 
-  const location = useLocation();
-  const { clusterId, courseId, resourceGroupId } = location.state || {};
-
   const calendarRef = useRef<FullCalendar | null>(null);
-  const navigate = useNavigate();
 
-  const {open} = useDialog();
+  const { open } = useDialog();
 
-  const [events, setEvents] = useState<EventInput[]>([]);
+  const [ events, setEvents ] = useState<EventInput[]>([]);
 
-  const [currentRange, setCurrentRange] = useState<TimeRange>({start: null, end: null});
-  const {resources, isLoading: resourcesLoading} = useCourseResourcesAvailability(courseId!, resourceGroupId!, currentRange.start!, currentRange.end!);
-  const {intervals, isLoading: intervalsLoading} = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
-  const {reservations, isLoading: reservationsLoading} = useReservations({
-    id: resourceGroupId!,
-    start: currentRange.start,
-    end: currentRange.end
-  });
+  const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
 
-  const [eventStart, setEventStart] = useState<Date | null>(null);
-  const [eventEnd, setEventEnd] = useState<Date | null>(null);
-
-  const [ clickedInterval, setClickedInterval ] = useState<string | null>(null);
+  const [ eventStart, setEventStart ] = useState<Date | null>(null);
+  const [ eventEnd, setEventEnd ] = useState<Date | null>(null);
 
   useEffect(() => {
     if (!currentRange.start || !currentRange.end) return;
@@ -104,7 +91,7 @@ const ReservationCalendar: React.FC = () => {
     });
 
     setEvents(newEvents);
-  }, [currentRange, reservations, resources, intervals, resourceGroupId, courseId, clusterId]);
+  }, [currentRange, reservations, resources, intervals, podId, courseId, clusterId]);
 
   /* Calendar methods */
 
@@ -152,36 +139,6 @@ const ReservationCalendar: React.FC = () => {
     return !(start < currentDate);
   };
 
-  const handleEventClick = (arg: EventClickArg) => {
-    if (arg.event.groupId === '') return;
-    else if (arg.event.groupId === 'MAINTENANCE_INTERVAL') {
-      setClickedInterval(arg.event.id);
-      open("showMaintenanceInterval");
-    } else {
-      navigate(`/reservations/${arg.event.id}`);
-    }
-  };
-
-  const handleDateClick = (info: DateClickArg) => {
-    const clickedDate = info.date;
-    calendarRef.current?.getApi().changeView("timeGridWeek", clickedDate);
-  };
-
-  const handleDatesSet = (dateInfo: DatesSetArg) => {
-    const start = dateInfo.start.toISOString() ?? null;
-    const end = dateInfo.end.toISOString() ?? null;
-
-    const calendarApi = calendarRef.current?.getApi();
-    const currentView = calendarApi?.view.type;
-
-    if (currentView == "dayGridMonth") return;
-
-    setCurrentRange({
-      start: start,
-      end: end,
-    });
-  }
-
   /* Other methods */
 
   const closeCreateReservationDialog = () => {
@@ -191,38 +148,29 @@ const ReservationCalendar: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-start">
-        <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
-          <Undo2/>
-        </Button>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          {t("reservations.altName")}
-        </h3>
-      </div>
-
       <CreateReservationModal
-        resourceGroupId={resourceGroupId!}
+        courseId={courseId!}
+        podId={podId!}
         start={eventStart!}
         end={eventEnd!}
         resetSelection={closeCreateReservationDialog}
       />
 
-      {clickedInterval && <MaintenanceIntervalModal intervalId={clickedInterval} />}
-
-      <EventCalendar
+      <ReservationPresentationCalendar
+        t={t}
         calendarRef={calendarRef}
-        loading={resourcesLoading || intervalsLoading || reservationsLoading}
-        toolbar={headerToolbar}
-        initialView={"timeGridWeek"}
+        timeWindow={timeWindow}
+        currentRange={currentRange}
+        setCurrentRange={setCurrentRange}
         select={handleSelect}
         allowSelect={handleAllowSelect}
-        eventClick={handleEventClick}
-        eventAllow={handleEventAllow}
-        dateClick={handleDateClick}
-        datesSet={handleDatesSet}
-        events={events}
-        initialDate={currentRange.start ? new Date(currentRange.start) : new Date()}
-      />
+        allowEvent={handleEventAllow}
+        resources={resources}
+        resourcesLoading={resourcesLoading}
+        reservations={reservations}
+        reservationsLoading={reservationsLoading}
+        intervals={intervals}
+        intervalsLoading={intervalsLoading} />
     </>
   );
 };

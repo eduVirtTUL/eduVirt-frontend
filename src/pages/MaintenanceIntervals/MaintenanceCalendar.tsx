@@ -37,6 +37,7 @@ const MaintenanceCalendar: React.FC = () => {
   const { id } = useParams();
   const { open } = useDialog();
   const navigate = useNavigate();
+  const timeWindow = 30;
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -164,6 +165,7 @@ const MaintenanceCalendar: React.FC = () => {
       {clickedEvent && <MaintenanceIntervalDetailsModal intervalId={clickedEvent} />}
 
       <EventCalendar
+        timeWindow={timeWindow}
         loading={isLoading}
         calendarRef={calendarRef}
         toolbar={headerToolbar}

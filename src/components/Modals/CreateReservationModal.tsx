@@ -25,7 +25,8 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 
 type ResourceGroupProps = {
-  resourceGroupId: string;
+  courseId: string;
+  podId: string;
   start: Date;
   end: Date;
   resetSelection: () => void;
@@ -47,7 +48,8 @@ type CreateReservationSchema = z.infer<
 >;
 
 const CreateReservationModal: React.FC<ResourceGroupProps> = ({
-  resourceGroupId,
+  courseId,
+  podId,
   start,
   end,
   resetSelection,
@@ -55,7 +57,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
   const { t } = useTranslation();
 
   const { isOpen, close } = useDialog();
-  const { createReservationAsync } = useCreateReservation();
+  const { createReservationAsync } = useCreateReservation({course: courseId, pod: podId});
 
   const form = useForm<CreateReservationSchema>({
     resolver: zodResolver(createReservationSchema(t, start, end)),
@@ -87,7 +89,6 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
       );
 
       const createDto = {
-        resourceGroupId: resourceGroupId,
         start: startTime.toISOString(),
         end: endTime.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,

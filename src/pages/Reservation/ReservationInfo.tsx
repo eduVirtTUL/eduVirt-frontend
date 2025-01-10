@@ -19,7 +19,6 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  console.log(reservation);
 
   const [ authorized, setAuthorized ] = useState<boolean>(false);
   const { team, isLoading } = useTeam(reservation.team?.id ? reservation.team.id : '');

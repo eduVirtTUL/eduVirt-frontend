@@ -25,7 +25,12 @@ const clusters = {
                 maxMemoryOverCommit: 'Maksymalny over-commit pamięci',
             }
         },
-        ovirt: 'Zobacz klaster w ramach systemu oVirt',
+        ovirt: {
+            cluster: 'Zobacz klaster w ramach systemu oVirt',
+            network: 'Zobacz sieci w ramach systemu oVirt',
+            host: 'Zobacz węzły klastra w ramach systemu oVirt',
+            event: 'Zobacz dziennik zdarzeń klastra w ramach systemu oVirt',
+        },
         tabs: {
             details: 'Szczegóły',
             hosts: 'Hosty',

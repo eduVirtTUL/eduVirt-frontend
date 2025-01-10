@@ -81,7 +81,6 @@ const MetricsPage: React.FC = () => {
       const userGroups = decoded.groups;
 
       if (!userGroups.includes("/ovirt-administrator")) {
-        console.log("Does not have administrator group!");
         toast.error(t("general.error.not.authorized"));
         navigate(-1);
       }

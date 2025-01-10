@@ -39,7 +39,7 @@ type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 const CreateCourseModal: React.FC = () => {
   const { isOpen, close } = useDialog();
   const { createCourseAsync } = useCreateCourse();
-  const { clusters } = useClusters({ page: 0, size: 10 });
+  const { clusters } = useClusters({ page: 0, size: 10, sort: [] });
 
   const form = useForm<CreateCourseSchema>({
     resolver: zodResolver(createCourseSchema),
