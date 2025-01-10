@@ -6,9 +6,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export const useDeleteStatelessPod = () => {
     const queryClient = useQueryClient();
     const { mutate, mutateAsync, isPending } = useMutation({
-        mutationFn: async ({ podId }: { podId: string }) => {
+        mutationFn: async (id: string) => {
             const controller = new PodStatelessControllerApi();
-            const response = await controller.deleteStatelessPod(podId);
+            const response = await controller.deleteStatelessPod(id);
             return response.data;
         },
         onSuccess: () => {

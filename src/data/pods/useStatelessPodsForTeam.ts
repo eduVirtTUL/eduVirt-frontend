@@ -12,5 +12,5 @@ export const useStatelessPodsForTeam = (teamId: string) => {
         },
     });
 
-    return { pods: data, isLoading };
+    return { statelessPods: data, isLoading };
 }

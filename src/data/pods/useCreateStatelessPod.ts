@@ -13,7 +13,7 @@ export const useCreateStatelessPod = () => {
             return response.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [keys.POD] });
+            queryClient.invalidateQueries({ queryKey: [keys.STATELESS_POD] });
             toast.success("Stateless pod created successfully!");
         },
         onError: () => {

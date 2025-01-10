@@ -10,11 +10,11 @@ import {useTeam} from "@/data/team/useTeam"
 import {useCourseResourceGroupPools} from "@/data/rgPool/useCourseResourceGroupPools"
 import {useStatelessPodsForTeam} from "@/data/pods/useStatelessPodsForTeam"
 import {useCreateStatelessPod} from "@/data/pods/useCreateStatelessPod"
-// import { useDeleteStatelessPod } from "@/data/pods/useDeleteStatelessPod"
+import {useDeleteStatelessPod} from "@/data/pods/useDeleteStatelessPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {Trash2} from "lucide-react"
-import { useDeleteStatelessPod } from "@/data/pods/useDeleteStatelessPod"
+import {useTranslation} from "react-i18next"
 
 interface StatelessPodDrawerProps {
     open: boolean
@@ -23,35 +23,33 @@ interface StatelessPodDrawerProps {
     courseId: string
 }
 
-// interface StatelessPod {
-//     poolId: string;
-//     teamId: string;
-//     poolName?: string;
-// }
-
 const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPodDrawerProps) => {
     const [selectedPool, setSelectedPool] = useState<string | null>(null)
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const {courseResourceGroupPools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId)
-    // const {pods: statelessPods, isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId) as { pods: string[], isLoading: boolean }
+    const {statelessPods = [], isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId)
     const {createStatelessPod} = useCreateStatelessPod()
-    // const { deleteStatelessPod, isPending: isDeleting } = useDeleteStatelessPod()
-    // const {open: openDialog} = useDialog()
+    const {deleteStatelessPod, isPending: isDeleting} = useDeleteStatelessPod()
+    const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null)
+    const {t} = useTranslation()
+
+    const podsArray = Array.isArray(statelessPods) ? statelessPods : []
 
     const handleSubmit = () => {
-        createStatelessPod({teamId, resourceGroupPoolId: selectedPool!})
-        onOpenChange(false)
+        if (selectedPool) {
+            createStatelessPod({teamId, resourceGroupPoolId: selectedPool})
+        }
     }
 
-    // const handleClickPodDelete = (podId: string) => {
-    //     setPodToDelete(podId)
-    //     openDialog("confirmation")
-    // }
+    const handleClickPodDelete = (podId: string) => {
+        setPodToDelete(podId)
+        openDialog("confirmation")
+    }
 
     const handleConfirmPodDelete = () => {
         if (podToDelete) {
-            // deleteStatelessPod(podToDelete)
+            deleteStatelessPod(podToDelete)
             setPodToDelete(null)
         }
     }
@@ -64,7 +62,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                         {isLoadingTeam ? (
                             <Skeleton className="h-6 w-48"/>
                         ) : (
-                            `Stateless Pod Management - Team ${team?.name}`
+                            `"Stateless Pod Management" - ${team?.name}`
                         )}
                     </DrawerTitle>
                 </DrawerHeader>
@@ -117,15 +115,15 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                         className="w-32"
                                         disabled={!selectedPool}
                                     >
-                                        Create Pod
+                                        {t('podManagement.createPod')}
                                     </Button>
                                 </div>
                             </CardContent>
                         </Card>
 
-                        {/* <Card>
+                        <Card>
                             <CardHeader>
-                                <CardTitle>Team's Pods</CardTitle>
+                                <CardTitle>{t("podManagement.teamPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -139,34 +137,34 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                             <TableHeader>
                                                 <TableRow>
                                                     <TableHead></TableHead>
-                                                    <TableHead>Pool Name</TableHead>
+                                                    <TableHead>Team's Pools</TableHead>
                                                     <TableHead className="w-[100px]"></TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                            {statelessPods?.map((pod: StatelessPod, index) => (
-                                                    <TableRow key={`${pod.poolId}-${pod.teamId}`}>
-                                                    <TableCell>{`${index + 1}.`}</TableCell>
-                                                    <TableCell>
-                                                        {courseResourceGroupPools?.find(p => p.id === pod.poolId)?.name || 'Unknown Pool'}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <Button
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            disabled={isDeleting}
-                                                            onClick={() => handleClickPodDelete(pod.poolId)}
-                                                        >
-                                                            <Trash2 className="h-4 w-4"/>
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
+                                                {podsArray?.map((pod, index) => (
+                                                    <TableRow key={pod.id}>
+                                                        <TableCell>{`${index + 1}.`}</TableCell>
+                                                        <TableCell>
+                                                            {courseResourceGroupPools?.find(p => p.id === pod.resourceGroupPool?.id)?.name}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Button
+                                                                variant="destructive"
+                                                                size="sm"
+                                                                disabled={isDeleting}
+                                                                onClick={() => handleClickPodDelete(pod.id!)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4"/>
+                                                            </Button>
+                                                        </TableCell>
+                                                    </TableRow>
                                                 ))}
-                                                {!statelessPods?.length && (
+                                                {!podsArray?.length && (
                                                     <TableRow>
                                                         <TableCell colSpan={3}
                                                                    className="text-center text-muted-foreground">
-                                                            No pods found
+                                                            {t('podManagement.noPods')}
                                                         </TableCell>
                                                     </TableRow>
                                                 )}
@@ -175,13 +173,13 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                     )}
                                 </ScrollArea>
                             </CardContent>
-                        </Card> */}
+                        </Card>
                     </div>
                 </div>
             </DrawerContent>
             <ConfirmationDialog
-                header="Delete Pod"
-                text="Are you sure you want to delete this pod?"
+                header={t('podManagement.delete.confirmHeader')}
+                text={t('podManagement.delete.confirmText')}
                 onConfirm={handleConfirmPodDelete}
             />
         </Drawer>
