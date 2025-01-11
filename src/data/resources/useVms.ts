@@ -1,5 +1,6 @@
 import { ResourceGroupVmControllerApi } from "@/api";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
+import { injectToken } from "@/utils/requestUtils";
 import { useQuery } from "@tanstack/react-query";
 
 export const useVms = () => {
@@ -8,7 +9,9 @@ export const useVms = () => {
     queryKey: ["vm"],
     queryFn: async () => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.getAvailableVms(id ?? "");
+      const response = await controller.getAvailableVms(id ?? "", {
+        ...injectToken(),
+      });
       return response.data;
     },
   });

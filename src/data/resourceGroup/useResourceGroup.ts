@@ -1,4 +1,5 @@
 import { ResourceGroupControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 import { useQuery } from "@tanstack/react-query";
 
 export const useResourceGroup = (id: string) => {
@@ -6,7 +7,9 @@ export const useResourceGroup = (id: string) => {
     queryKey: ["resourceGroup"],
     queryFn: async () => {
       const controller = new ResourceGroupControllerApi();
-      const response = await controller.getResourceGroup(id);
+      const response = await controller.getResourceGroup(id, {
+        ...injectToken(),
+      });
       return response.data;
     },
   });

@@ -5,6 +5,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
+import { injectToken } from "@/utils/requestUtils";
 
 type AddResourceGroupNetworkPayload = {
   id: string;
@@ -15,7 +16,9 @@ export const useAddResourceGroupNetwork = () => {
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async ({ id, name }: AddResourceGroupNetworkPayload) => {
       const controller = new ResourceGroupNetworkControllerApi();
-      const respone = await controller.addResourceGroupNetwork({ name }, id);
+      const respone = await controller.addResourceGroupNetwork({ name }, id, {
+        ...injectToken(),
+      });
       return respone.data;
     },
     onSuccess: (_, payload) => {

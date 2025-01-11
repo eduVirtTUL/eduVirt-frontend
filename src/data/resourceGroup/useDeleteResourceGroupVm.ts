@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useDeleteResourceGroupVm = () => {
   const { t } = useTranslation();
@@ -12,7 +13,9 @@ export const useDeleteResourceGroupVm = () => {
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.deleteVm(rgId!, id);
+      const response = await controller.deleteVm(rgId!, id, {
+        ...injectToken(),
+      });
       return response.data;
     },
     onSuccess: (_, vmId) => {
