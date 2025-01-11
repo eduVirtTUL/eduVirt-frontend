@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 type Dialog =
+  | "editVm"
   | "createResourceGroup"
   | "editCourseMetric"
   | "createCourseMetricValue"
@@ -17,7 +18,7 @@ type Dialog =
   | "createInterval"
   | "createCourseKey"
   | "createInterval"
-  | "showMaintenanceInterval"
+  | "showMaintenanceInterval";
 
 type DialogStore = {
   opened?: Dialog;

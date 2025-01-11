@@ -167,7 +167,7 @@ const resourceGroupEditor = {
   virtualMachinesList: {
     title: "Maszyny wirtualne",
     hidden: "Ukryte",
-    cpu: "cVPU",
+    cpu: "vCPU",
     memory: "MiB",
     interfaces: "NICs",
     edit: "Edytuj",
@@ -212,6 +212,15 @@ const removeVmModal = {
   error: "Nie udało się usunąć maszyny wirtualnej",
 };
 
+const editVmModal = {
+  title: "Edytuj maszynę wirtualną",
+  hidden: "Ukryte",
+  hiddenDescription:
+    "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
+  success: "Maszyna wirtualna została zaktualizowana",
+  error: "Nie udało się zaktualizować maszyny wirtualnej",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -225,4 +234,5 @@ export default {
   resourceGroupEditor,
   addVmModal,
   removeVmModal,
+  editVmModal,
 };

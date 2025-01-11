@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import BounceLoader from "react-spinners/BounceLoader";
 import RemoveVmConfirmationModal from "./modals/RemoveVmConfirmationModal";
+import EditVmModal from "./modals/EditVmModal";
+import React from "react";
+import { useDialog } from "@/stores/dialogStore";
 
 type VirtualMachinesListProps = {
   id: string;
@@ -21,10 +24,13 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
   setSelectedVm,
 }) => {
   const { t } = useTranslation();
+  const { open } = useDialog();
   const { vms, isLoading } = useResourceGroupVms(id);
+  const vmToEdit = React.useRef<string>();
 
   return (
     <>
+      {vmToEdit.current && <EditVmModal vmId={vmToEdit.current} />}
       <Card className="flex flex-col">
         <CardHeader>
           <CardTitle>
@@ -98,7 +104,13 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 </div>
                               </div>
                               <div className="flex flex-row gap-2 items-center flex-wrap">
-                                <Button onClick={(e) => e.stopPropagation()}>
+                                <Button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    vmToEdit.current = vm.id!;
+                                    open("editVm");
+                                  }}
+                                >
                                   <PencilIcon />
                                   {t(
                                     "resourceGroupEditor.virtualMachinesList.edit"

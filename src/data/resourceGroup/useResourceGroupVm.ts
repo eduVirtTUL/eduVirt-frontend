@@ -13,7 +13,7 @@ export const useVm = (vmId?: string) => {
       }
 
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.getVm1(id ?? "", vmId);
+      const response = await controller.getVm(id ?? "", vmId);
       return response.data;
     },
   });
