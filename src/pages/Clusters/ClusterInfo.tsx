@@ -43,6 +43,7 @@ const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
         ))}
 
         <Button
+          className={"text-wrap"}
           variant="secondary"
           onClick={(e) => e.stopPropagation()}
           asChild
@@ -53,7 +54,7 @@ const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
             to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-general;name=${cluster?.name}`}
           >
             <ExternalLinkIcon/>
-            {t("clusters.details.ovirt")}
+            {t("clusters.details.ovirt.cluster")}
           </Link>
         </Button>
       </CardContent>

@@ -1,12 +1,12 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import React from "react";
-import {useMaintenanceInterval} from "@/data/maintenance/useMaintenanceInterval";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog";
-import {useDialog} from "@/stores/dialogStore";
-import {Button} from "@/components/ui/button";
-import {useRemoveMaintenanceInterval} from "@/data/maintenance/useRemoveMaintenanceInterval";
+import { useMaintenanceInterval } from "@/data/maintenance/useMaintenanceInterval";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useDialog } from "@/stores/dialogStore";
+import { Button } from "@/components/ui/button";
+import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
 
 type MaintenanceIntervalModal = {
     intervalId: string;
@@ -19,7 +19,7 @@ const MaintenanceIntervalDetailsModal: React.FC<MaintenanceIntervalModal> = ({ i
   const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
 
   const handleDelete = async () => {
-    await removeMaintenanceIntervalAsync(interval?.id ?? '');
+    await removeMaintenanceIntervalAsync(intervalId);
     close();
   };
 

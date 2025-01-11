@@ -3,7 +3,7 @@ import React from "react";
 import {useMaintenanceInterval} from "@/data/maintenance/useMaintenanceInterval";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import {Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {useDialog} from "@/stores/dialogStore";
 import {Button} from "@/components/ui/button";
 
@@ -26,9 +26,11 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
       >
 
         <DialogContent>
-          <DialogTitle>
-            {interval?.type == 'CLUSTER' ? t("maintenanceIntervals.details.title.cluster") : t("maintenanceIntervals.details.title.system")}
-          </DialogTitle>
+          <DialogHeader>
+            <DialogTitle>
+              {interval?.type == 'CLUSTER' ? t("maintenanceIntervals.details.title.cluster") : t("maintenanceIntervals.details.title.system")}
+            </DialogTitle>
+          </DialogHeader>
 
           {[
             {label: t("maintenanceIntervals.details.id"), value: interval?.id},
@@ -45,11 +47,11 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
             </div>
           ))}
 
-          <div className={"grid grid-cols-1"}>
+          <DialogFooter className={"grid grid-cols-1"}>
             <Button onClick={() => { close () }}>
               {t("maintenanceIntervals.details.actions.cancel")}
             </Button>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

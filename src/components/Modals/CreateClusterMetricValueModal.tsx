@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import {
   Form,
-  FormControl,
+  FormControl, FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,11 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateMetricValueDto, MetricDto } from "@/api";
-import {useTranslation} from "react-i18next";
-import {TFunction} from "i18next";
+import { MetricDto } from "@/api";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
-import {Loader2} from "lucide-react";
+import { Loader2 } from "lucide-react";
+import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
 
 type CreateClusterMetricValueProps = {
   clusterId: string;
@@ -40,9 +41,10 @@ type CreateClusterMetricValueProps = {
 
 const createClusterMetricValueSchema = (t: TFunction) =>
     z.object({
-      metricId: z.string().min(1, t("clusterMetricValues.validation.metricId.required")),
+      metricId: z.string().nonempty(t("clusterMetricValues.validation.metricId.required")),
       value: z.coerce.number()
-        .min(0, t("clusterMetricValues.validation.value.negative"))
+        .min(0, t("clusterMetricValues.validation.value.negative")),
+      unit: z.string()
     });
 
 type CreateClusterMetricValueSchema = z.infer<
@@ -67,6 +69,9 @@ const CreateClusterMetricValueModal: React.FC<
 
   const [ allMetrics, setAllMetrics ] = useState<MetricDto[]>([]);
 
+  const [ selectedCategory, setSelectedCategory ] = useState<string>();
+  const [ availableUnits, setAvailableUnits ] = useState<UnitDefinition[]>([]);
+
   const fetchNextMetrics = async () => {
     setLoading(true);
     setAllMetrics((prev) => [...prev, ...metrics ?? []]);
@@ -89,18 +94,38 @@ const CreateClusterMetricValueModal: React.FC<
     },
   });
 
-  const handleSubmit = form.handleSubmit(
-    async (values: CreateMetricValueDto) => {
-      await createClusterMetricValueAsync(values);
+  const handleMetricSelect = (metricId: string) => {
+    const selectedMetric = allMetrics.find((metric) => metric.id === metricId);
+    if (selectedMetric && selectedMetric.category) {
+      setSelectedCategory(selectedMetric.category);
+
+      const category = getUnitsCategory(selectedMetric.category);
+      const baseUnit = getBaseUnitForCategory(category.key);
+      form.setValue("unit", baseUnit.symbol);
+      setAvailableUnits(category.units);
+    } else {
+      setAvailableUnits([]);
+      form.setValue("unit", "");
+    }
+    form.setValue("metricId", metricId);
+  };
+
+  const handleSubmit = form.handleSubmit(async (values) => {
+      await createClusterMetricValueAsync({
+        metricId: values.metricId!,
+        value: convertValue(selectedCategory!, values.value, values.unit, getBaseUnitForCategory(selectedCategory!).symbol)
+      });
       close();
       form.reset();
-    }
-  );
+  });
 
   return (
     <Dialog
       open={isOpen("createClusterMetricValue")}
       onOpenChange={() => {
+        setSelectedCategory(undefined);
+        setAvailableUnits([]);
+        form.reset();
         close();
       }}
     >
@@ -117,14 +142,14 @@ const CreateClusterMetricValueModal: React.FC<
                 <FormItem>
                   <FormLabel>{t("clusterMetricValues.createClusterMetricValue.name")}</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(value) => handleMetricSelect(value)}
+                    value={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder={t("clusterMetricValues.createClusterMetricValue.select")} />
+                      <SelectValue placeholder={t("clusterMetricValues.createClusterMetricValue.select.name")} />
                     </SelectTrigger>
                       <SelectContent>
-                        <div className="flex w-full flex-col items-center  gap-3">
+                        <div className="flex w-full flex-col items-center gap-1">
                           {allMetrics.map((metric) => (
                             <SelectItem key={metric.id!} value={metric.id!}>
                               {metric.name}
@@ -133,27 +158,78 @@ const CreateClusterMetricValueModal: React.FC<
                           <InfiniteScroll hasMore={hasMore} isLoading={loading} next={fetchNextMetrics} threshold={1}>
                             {hasMore && <Loader2 className="my-2 h-6 w-6 animate-spin"/>}
                           </InfiniteScroll>
-                          </div>
+                        </div>
                       </SelectContent>
                   </Select>
-                    <FormMessage/>
+                  <FormDescription>
+                    {t("clusterMetricValues.createClusterMetricValue.nameDescription")}
+                  </FormDescription>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
+            {availableUnits.length > 0 && (
               <FormField
-                  control={form.control}
-                  name="value"
-                  render={({field}) => (
-                      <FormItem>
-                          <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type={"number"} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">{t("clusterMetricValues.createClusterMetricValue.submit")}</Button>
+                control={form.control}
+                name="value"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
+                    <FormControl>
+                      <Input {...field} type={"number"} />
+                    </FormControl>
+                    <FormDescription>
+                      {t("clusterMetricValues.createClusterMetricValue.valueDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {availableUnits.length > 0 && (
+              <FormField
+                control={form.control}
+                name="unit"
+                render={({ field }) => {
+                  if (!field.value && availableUnits.length > 0) {
+                    form.setValue("unit", availableUnits[0]?.symbol ?? "");
+                  }
+
+                  return(
+                    <FormItem>
+                      <FormLabel>
+                        {t("clusterMetricValues.createClusterMetricValue.unit")}
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("clusterMetricValues.createClusterMetricValue.select.unit")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableUnits.map((unit) => (
+                            <SelectItem key={unit.symbol} value={unit.symbol}>
+                              {/* @ts-expect-error this doesn't impact the page */}
+                              {t(unit.name)} ({t(unit.symbol)})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {t("clusterMetricValues.createClusterMetricValue.unitDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+            )}
+            <div className="flex flex-row justify-between col-span-2">
+              <Button type="submit">
+                {t("clusterMetricValues.createClusterMetricValue.submit")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

@@ -9,6 +9,8 @@ import {useNavigate} from "react-router";
 import {useFinishReservation} from "@/data/reservation/useFinishReservation";
 import {useTeam} from "@/data/team/useTeam";
 import {jwtDecode} from "jwt-decode";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Info} from "lucide-react";
 
 type ReservationDetailsProps = {
   reservation: ReservationDetailsDto,
@@ -19,7 +21,6 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  console.log(reservation);
 
   const [ authorized, setAuthorized ] = useState<boolean>(false);
   const { team, isLoading } = useTeam(reservation.team?.id ? reservation.team.id : '');
@@ -69,15 +70,36 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
           {label: t("reservations.details.general.teamName"), value: reservation.team?.name},
           {
             label: t("reservations.details.general.start"),
+            popOver: {
+              content: t("reservations.details.general.startInfo")
+            },
             value: new Date(reservation.start + 'Z').toLocaleString()
           },
           {
             label: t("reservations.details.general.end"),
+            popOver: {
+              content: t("reservations.details.general.endInfo")
+            },
             value: new Date(reservation.end + 'Z').toLocaleString()
           },
         ].map((field, index) => (
           <div key={index} className="flex w-full items-center space-x-4">
-            <Label className="w-1/3 text-left">{field.label}</Label>
+            <div className="flex w-1/3 items-center space-x-2 text-left">
+              {field.popOver && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <p className="text-sm">
+                      {/* @ts-expect-error this doesn't impact the page */}
+                      {t(field.popOver.content, { delayTime: 0 })}
+                    </p>
+                  </PopoverContent>
+                </Popover>
+              )}
+              <Label>{field.label}</Label>
+            </div>
             <Input className="w-2/3" value={field.value || ""} disabled/>
           </div>
         ))}

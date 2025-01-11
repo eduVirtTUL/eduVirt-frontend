@@ -46,7 +46,7 @@ import StatefulPodDrawer from "./StatefulPodDrawer";
 import { EditTeamModal } from "@/components/Modals/EditTeamModal";
 import { SoloTeamEditModal } from "@/components/Modals/SoloTeamEditModal";
 import ResourceGroupPoolCard from "./ResourceGroupPoolCard";
-import StatefullResourceGroups from "./StatefullResourceGroups";
+import StatefulResourceGroups from "./StatefulResourceGroups";
 import { useTranslation } from "react-i18next";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
@@ -299,7 +299,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
             </Card>
           )}
         </div>
-        <StatefullResourceGroups courseId={id} />
+        <StatefulResourceGroups courseId={id} />
         <Card>
           <CardHeader>
             <CardTitle>{t("coursePools.title")}</CardTitle>

@@ -5,15 +5,18 @@ import { keys } from "@/data/keys";
 type UseClustersParams = {
   page: number;
   size: number;
+  sort: Array<string>;
 }
 
-export const useClusters = ({ page, size }: UseClustersParams) => {
+export const useClusters = ({
+  page, size, sort
+}: UseClustersParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.CLUSTER, page, size ],
+    queryKey: [ keys.CLUSTER, page, size, sort ],
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findAllClusters(
-        page, size,
+        { page: page, size: size, sort: sort },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       return response.data;

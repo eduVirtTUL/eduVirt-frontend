@@ -8,6 +8,7 @@ import { useUsersTeams } from "@/data/team/useUsersTeams";
 import { StatusDot } from "@/components/StatusDot";
 import JoinTeamModal from "@/components/Modals/JoinTeamModal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 interface TeamWithCourseDto {
   id: string;
@@ -24,6 +25,7 @@ interface TeamWithCourseDto {
 }
 
 const TeamsPage = () => {
+  const { t } = useTranslation();
   const { teams, isLoading } = useUsersTeams();
 
   if (isLoading) {
@@ -58,12 +60,12 @@ const TeamsPage = () => {
   const columns: ColumnDef<TeamWithCourseDto>[] = [
     {
       accessorKey: "active",
-      header: "Status",
+      header: t('teamsList.table.columns.status'),
       cell: ({ row }) => (
         <div className="flex items-center">
           <StatusDot active={row.original.active} />
           <span className="ml-2">
-            {row.original.active ? "Active" : "Inactive"}
+            {row.original.active ? t('teamsList.table.active') : t('teamsList.table.inactive')}
           </span>
         </div>
       ),
@@ -76,14 +78,14 @@ const TeamsPage = () => {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="w-full justify-start pl-2"
         >
-          Name
+          {t('teamsList.table.columns.name')}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
       accessorKey: "course.name",
-      header: "Course",
+      header: t('teamsList.table.columns.course'),
     },
     {
       id: "actions",
@@ -104,7 +106,7 @@ const TeamsPage = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <PageHeader title="Your Teams" />
+        <PageHeader title={t('teamsList.title')} />
         <div className="pb-10">
           <JoinTeamModal />
         </div>

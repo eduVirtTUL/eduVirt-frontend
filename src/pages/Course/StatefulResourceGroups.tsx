@@ -9,11 +9,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
-type StatefullResourceGroupsProps = {
+type StatefulResourceGroupsProps = {
   courseId: string;
 };
 
-const StatefullResourceGroups: React.FC<StatefullResourceGroupsProps> = ({
+const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
   courseId,
 }) => {
   const { t } = useTranslation();
@@ -61,4 +61,4 @@ const StatefullResourceGroups: React.FC<StatefullResourceGroupsProps> = ({
   );
 };
 
-export default StatefullResourceGroups;
+export default StatefulResourceGroups;

@@ -344,9 +344,9 @@ export interface CreateMetricDto {
 }
 
 export const CreateMetricDtoCategoryEnum = {
-    VolatileMemory: 'VOLATILE_MEMORY',
-    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
-    Countable: 'COUNTABLE'
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
 } as const;
 
 export type CreateMetricDtoCategoryEnum = typeof CreateMetricDtoCategoryEnum[keyof typeof CreateMetricDtoCategoryEnum];
@@ -856,9 +856,9 @@ export interface MetricDto {
 }
 
 export const MetricDtoCategoryEnum = {
-    VolatileMemory: 'VOLATILE_MEMORY',
-    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
-    Countable: 'COUNTABLE'
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
 } as const;
 
 export type MetricDtoCategoryEnum = typeof MetricDtoCategoryEnum[keyof typeof MetricDtoCategoryEnum];
@@ -896,9 +896,9 @@ export interface MetricValueDto {
 }
 
 export const MetricValueDtoCategoryEnum = {
-    VolatileMemory: 'VOLATILE_MEMORY',
-    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
-    Countable: 'COUNTABLE'
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
 } as const;
 
 export type MetricValueDtoCategoryEnum = typeof MetricValueDtoCategoryEnum[keyof typeof MetricValueDtoCategoryEnum];

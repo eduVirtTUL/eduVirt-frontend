@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useClusterDetails } from "@/data/cluster-metrics/useClusterDetails";
 import {Link, useNavigate} from "react-router";
 import { Undo2 } from "lucide-react";
@@ -10,11 +10,10 @@ import { useTranslation } from "react-i18next";
 import NetworkList from "@/pages/Clusters/NetworkList";
 import ClusterMetricsList from "@/pages/ClusterLimits/ClusterMetricsList";
 import PageHeader from "@/components/PageHeader";
-import {jwtDecode} from "jwt-decode";
-import {toast} from "sonner";
-import {Skeleton} from "@/components/ui/skeleton";
-import {Label} from "@/components/ui/label";
-import {CardContent} from "@/components/ui/card";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label";
+import { CardContent } from "@/components/ui/card";
 import EventList from "@/pages/Clusters/EventList";
 
 type ClusterDetailsProps = {
@@ -72,16 +71,27 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
           )}
         </TabsContent>
         <TabsContent value="host-list">
-          <HostList clusterId={clusterId}/>
+          <HostList
+            clusterId={clusterId}
+            clusterName={cluster?.name ?? ''}
+          />
         </TabsContent>
         <TabsContent value="network-list">
-          <NetworkList clusterId={clusterId}/>
+          <NetworkList
+            clusterId={clusterId}
+            clusterName={cluster?.name ?? ''}
+          />
         </TabsContent>
         <TabsContent value="metric-list">
-          <ClusterMetricsList clusterId={clusterId}/>
+          <ClusterMetricsList
+            clusterId={clusterId}
+          />
         </TabsContent>
         <TabsContent value="event-list">
-          <EventList clusterId={clusterId} />
+          <EventList
+            clusterId={clusterId}
+            clusterName={cluster?.name ?? ''}
+          />
         </TabsContent>
       </Tabs>
     </>

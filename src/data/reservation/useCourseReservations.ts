@@ -29,8 +29,6 @@ export const useCourseReservations = ({
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
 
-      console.log(response.data);
-
       if (response.status === 204) return [];
       return response.data.items ?? [];
     }

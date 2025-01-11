@@ -1,26 +1,42 @@
-import {useTranslation} from "react-i18next";
-import {useDialog} from "@/stores/dialogStore";
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {ValueDto} from "@/api";
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import React from "react";
-import {useUpdateClusterMetricValue} from "@/data/cluster-metrics/useUpdateClusterMetricValue";
-import {TFunction} from "i18next";
+import { useTranslation } from "react-i18next";
+import { useDialog } from "@/stores/dialogStore";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {MetricValueDto, ValueDto} from "@/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl, FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import React, {useEffect} from "react";
+import { useUpdateClusterMetricValue } from "@/data/cluster-metrics/useUpdateClusterMetricValue";
+import { TFunction } from "i18next";
+import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 type UpdateClusterMetricValueProps = {
   clusterId: string;
-  metricId: string;
+  metric: MetricValueDto;
 };
 
 const updateClusterMetricValueSchema = (t: TFunction) =>
   z.object({
     value: z.coerce.number()
       .min(0, t("clusterMetricValues.validation.value.negative")),
+    unit: z.string()
+      .nonempty(t("clusterMetricValues.validation.unit.required"))
   });
 
 type UpdateClusterMetricValueSchema = z.infer<
@@ -28,22 +44,31 @@ type UpdateClusterMetricValueSchema = z.infer<
 >;
 
 const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = ({
-  clusterId, metricId
+  clusterId, metric
 }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { updateClusterMetricValueAsync } = useUpdateClusterMetricValue(clusterId!, metricId!);
+  const { updateClusterMetricValueAsync } = useUpdateClusterMetricValue(clusterId!, metric.id!);
+  const availableUnits: UnitDefinition[] = getUnitsCategory(metric.category!).units;
 
   const form = useForm<UpdateClusterMetricValueSchema>({
     resolver: zodResolver(updateClusterMetricValueSchema(t)),
     defaultValues: {
-      value: 0,
+      value: metric.value,
     },
   });
 
+  useEffect(() => {
+    form.reset({
+      value: metric.value,
+    });
+  }, [metric, form]);
+
   const handleSubmit = form.handleSubmit(
-    async (values: ValueDto) => {
-      await updateClusterMetricValueAsync(values);
+    async (values) => {
+      await updateClusterMetricValueAsync({
+        value: convertValue(metric.category!, values.value, values.unit, getBaseUnitForCategory(metric.category!).symbol)
+      });
       close();
       form.reset();
     }
@@ -53,6 +78,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
     <Dialog
       open={isOpen("updateClusterMetricValue")}
       onOpenChange={() => {
+        form.reset();
         close();
       }}
     >
@@ -71,10 +97,52 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
                 <FormControl>
                   <Input {...field} type={"number"} />
                 </FormControl>
+                <FormDescription>
+                    {t("clusterMetricValues.updateClusterMetricValue.valueDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {availableUnits.length > 0 && (
+              <FormField
+                control={form.control}
+                name="unit"
+                render={({ field }) => {
+                  if (!field.value && availableUnits.length > 0) {
+                    form.setValue("unit", availableUnits[0]?.symbol ?? "");
+                  }
+
+                  return(
+                    <FormItem>
+                      <FormLabel>
+                        {t("clusterMetricValues.updateClusterMetricValue.unit")}
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("clusterMetricValues.updateClusterMetricValue.select.unit")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableUnits.map((unit) => (
+                            <SelectItem key={unit.symbol} value={unit.symbol}>
+                              {/* @ts-expect-error this doesn't impact the page */}
+                              {t(unit.name)} ({t(unit.symbol)})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {t("clusterMetricValues.updateClusterMetricValue.unitDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+            )}
           <Button type="submit">{t("clusterMetricValues.updateClusterMetricValue.submit")}</Button>
         </form>
       </Form>

@@ -19,6 +19,7 @@ import {useCreateStatefulPod} from "@/data/pods/useCreateStatefulPod"
 import {useDeleteStatefulPod} from "@/data/pods/useDeleteStatefulPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
+import { useTranslation } from "react-i18next"
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -34,6 +35,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }) => {
     const [isOpen, setIsOpen] = useState(false)
     const {vms, isLoading} = useResourceGroupVms(rg.id!)
+    const { t } = useTranslation();
 
     return (
         <>
@@ -67,7 +69,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                         {hasPod && (
                             <div className="flex items-center gap-2 mb-2">
                                 <AlertTriangle className="h-4 w-4"/>
-                                <span>This Resource Group already has a pod associated with it</span>
+                                <div>{t("podManagement.alerts.hasAssociatedPod")}</div>
                             </div>
                         )}
                         {isLoading ? (
@@ -76,7 +78,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                             (vms ?? []).length === 0 ? (
                                 <div className="flex items-center gap-2 mb-2">
                                     <AlertTriangle className="h-4 w-4 text-orange-500"/>
-                                    <div className="text-orange-500">This Resource Group does not have any VMs.</div>
+                                    <div className="text-orange-500">{t("podManagement.alerts.noVMs")}</div>
                                 </div>
                             ) : (
                                 (vms ?? []).map(vm => (
@@ -97,15 +99,18 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }
 
 const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps) => {
+    const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
+    const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const [selectedResource, setSelectedResource] = useState<string | null>(null)
     const {resourceGroups, isLoading: isLoadingRG} = useResourceGroups()
     const {createStatefulPod} = useCreateStatefulPod()
-    const {team, isLoading: isLoadingTeam} = useTeam(teamId)
-    const {statefulPods, isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
     const {resourceGroupsWithPods} = useResourceGroupsWithPods()
     const {deleteStatefulPod, isPending: isDeleting} = useDeleteStatefulPod()
     const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null);
+    const { t } = useTranslation();
+
+    const podsArray = Array.isArray(statefulPods) ? statefulPods : []; // To assure that statefulPods is an array when 204 response is returned
 
     const handleSubmit = () => {
         createStatefulPod({teamId, resourceGroupId: selectedResource!})
@@ -113,20 +118,12 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
     }
 
     const handleClickPodDelete = (podId: string) => {
-        console.log("POD ID")
-        console.log(podId)
         setPodToDelete(podId);
-        console.log("POD TO DELETE")
-        console.log(podToDelete)
         openDialog("confirmation");
     };
 
     const handleConfirmPodDelete = () => {
-        console.log("POD TO DELETE2")
-        console.log(podToDelete)
         if (podToDelete) {
-            console.log("POD TO DELETE")
-            console.log(podToDelete)
             deleteStatefulPod(podToDelete);
             setPodToDelete(null);
         }
@@ -144,7 +141,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                         {isLoadingTeam ? (
                             <Skeleton className="h-6 w-48"/>
                         ) : (
-                            `Stateful Pod Management - Team ${team?.name}`
+                            `${t("podManagement.title")} ${team?.name}`
                         )}
                     </DrawerTitle>
                 </DrawerHeader>
@@ -152,7 +149,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                     <div className="grid grid-cols-2 gap-4">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Resource Groups</CardTitle>
+                                <CardTitle>{t('podManagement.resourceGroups')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -195,7 +192,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                         className="w-32"
                                         disabled={!selectedResource}
                                     >
-                                        Create Pod
+                                        {t('podManagement.createPod')}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -203,7 +200,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>Team's Pods</CardTitle>
+                                <CardTitle>{t("podManagement.teamPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -217,12 +214,12 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                             <TableHeader>
                                                 <TableRow>
                                                     <TableHead></TableHead>
-                                                    <TableHead>Resource Group</TableHead>
+                                                    <TableHead>{t("podManagement.resourceGroup")}</TableHead>
                                                     <TableHead className="w-[100px]"></TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {statefulPods?.map((pod, index) => (
+                                                {podsArray?.map((pod, index) => (
                                                     <TableRow key={pod.id}>
                                                         <TableCell>{`${index + 1}.`}</TableCell>
                                                         <TableCell>{pod.resourceGroup?.name}</TableCell>
@@ -238,11 +235,11 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}
-                                                {!statefulPods?.length && (
+                                                {!podsArray?.length && (
                                                     <TableRow>
                                                         <TableCell colSpan={3}
                                                                    className="text-center text-muted-foreground">
-                                                            No pods found
+                                                            {t('podManagement.noPods')}
                                                         </TableCell>
                                                     </TableRow>
                                                 )}
@@ -256,8 +253,8 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                 </div>
             </DrawerContent>
             <ConfirmationDialog
-                header="Delete Pod"
-                text="Are you sure you want to delete this pod?"
+                header={t('podManagement.delete.confirmHeader')}
+                text={t('podManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}
             />
         </Drawer>
