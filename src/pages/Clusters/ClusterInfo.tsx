@@ -43,6 +43,7 @@ const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
         ))}
 
         <Button
+          className={"text-wrap"}
           variant="secondary"
           onClick={(e) => e.stopPropagation()}
           asChild

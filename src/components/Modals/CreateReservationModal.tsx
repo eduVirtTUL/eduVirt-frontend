@@ -10,12 +10,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl, FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -39,8 +39,8 @@ const createReservationSchema = (t: TFunction, start: Date, end: Date) =>
         .max(24, t("reservations.validation.duration.too.long")),
       automaticStartup: z.boolean(),
       notificationTime: z.coerce.number()
-          .min(0, t("reservations.validation.notificationTime.negative"))
-          .max((end && start) ? (end.valueOf() - start.valueOf()) / (1000 * 60 * 2) : 30, t("reservations.validation.notificationTime.too.long"))
+        .min(0, t("reservations.validation.notificationTime.negative"))
+        .max((end && start) ? (end.valueOf() - start.valueOf()) / (1000 * 60 * 2) : 30, t("reservations.validation.notificationTime.too.long"))
     });
 
 type CreateReservationSchema = z.infer<
@@ -125,6 +125,9 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
+                  <FormDescription>
+                      {t("reservations.createReservation.durationDescription")}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -138,6 +141,9 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
+                  <FormDescription>
+                    {t("reservations.createReservation.notificationTimeDescription")}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -156,7 +162,11 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">{t("reservations.createReservation.submit")}</Button>
+            <div className="flex flex-row justify-center col-span-2">
+              <Button type="submit" className={"w-1/2"}>
+                  {t("reservations.createReservation.submit")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

@@ -75,7 +75,7 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId, clusterName }) => 
       <CardContent className={"p-4"}>
         <div className={"flex items-center justify-start pb-4"}>
           <Button
-            className={"w-1/4"}
+            className={"text-wrap"}
             variant="secondary"
             onClick={(e) => e.stopPropagation()}
             asChild

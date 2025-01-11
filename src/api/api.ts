@@ -335,7 +335,22 @@ export interface CreateMetricDto {
      * @memberof CreateMetricDto
      */
     'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMetricDto
+     */
+    'category': CreateMetricDtoCategoryEnum;
 }
+
+export const CreateMetricDtoCategoryEnum = {
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
+} as const;
+
+export type CreateMetricDtoCategoryEnum = typeof CreateMetricDtoCategoryEnum[keyof typeof CreateMetricDtoCategoryEnum];
+
 /**
  * 
  * @export
@@ -819,7 +834,22 @@ export interface MetricDto {
      * @memberof MetricDto
      */
     'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetricDto
+     */
+    'category'?: MetricDtoCategoryEnum;
 }
+
+export const MetricDtoCategoryEnum = {
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
+} as const;
+
+export type MetricDtoCategoryEnum = typeof MetricDtoCategoryEnum[keyof typeof MetricDtoCategoryEnum];
+
 /**
  * 
  * @export
@@ -840,11 +870,26 @@ export interface MetricValueDto {
     'name'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof MetricValueDto
+     */
+    'category'?: MetricValueDtoCategoryEnum;
+    /**
+     * 
      * @type {number}
      * @memberof MetricValueDto
      */
     'value'?: number;
 }
+
+export const MetricValueDtoCategoryEnum = {
+    Memory: 'MEMORY',
+    Countable: 'COUNTABLE',
+    Percentage: 'PERCENTAGE'
+} as const;
+
+export type MetricValueDtoCategoryEnum = typeof MetricValueDtoCategoryEnum[keyof typeof MetricValueDtoCategoryEnum];
+
 /**
  * 
  * @export

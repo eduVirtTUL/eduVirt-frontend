@@ -162,7 +162,7 @@ const EventList: React.FC<EventListProps> = ({
       <CardContent className={"p-4"}>
         <div className={"flex items-center justify-start pb-4"}>
           <Button
-            className={"w-2/5"}
+            className={"text-wrap"}
             variant="secondary"
             onClick={(e) => e.stopPropagation()}
             asChild

@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import {Calendar, CalendarIcon} from "lucide-react";
+import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PodCardProps {
@@ -44,7 +44,9 @@ export function PodCard({ id, resourceGroup, course }: PodCardProps) {
           </div>
         </div>
         <div className="pt-4 mt-auto">
-          <Link to={`/reservations/calendar/resource-group/${resourceGroup.id}`}
+          <Link to={resourceGroup.isStateless ?
+              `/reservations/calendar/resource-group-pool/${resourceGroup.id}` :
+              `/reservations/calendar/resource-group/${resourceGroup.id}`}
             state={{
               clusterId: course.clusterId,
               courseId: course.id,

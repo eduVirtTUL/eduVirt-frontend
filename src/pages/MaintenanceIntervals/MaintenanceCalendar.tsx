@@ -144,11 +144,14 @@ const MaintenanceCalendar: React.FC = () => {
   return (
     <>
       <div className={"flex flex-row items-center justify-items-center"}>
-        <Link to={id === undefined ? "/maintenance" : `/maintenance/clusters/${id}`}>
-          <Button variant="outline" size="icon" className="mr-5">
-            <Undo2/>
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          size="icon"
+          className="mr-5"
+          onClick={() => (navigate(-1))}
+        >
+          <Undo2/>
+        </Button>
 
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
           {t("maintenanceIntervals.altName")}
@@ -156,10 +159,10 @@ const MaintenanceCalendar: React.FC = () => {
       </div>
 
       <CreateMaintenanceIntervalModal
-          clusterId={id}
-          start={eventStart!}
-          end={eventEnd!}
-          resetSelection={closeCreateReservationDialog}
+        clusterId={id}
+        start={eventStart!}
+        end={eventEnd!}
+        resetSelection={closeCreateReservationDialog}
       />
 
       {clickedEvent && <MaintenanceIntervalDetailsModal intervalId={clickedEvent} />}

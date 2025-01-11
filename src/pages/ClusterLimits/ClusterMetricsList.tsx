@@ -3,7 +3,7 @@ import { useDialog } from "@/stores/dialogStore";
 import { CardContent } from "@/components/ui/card";
 import CreateClusterMetricValue from "@/components/Modals/CreateClusterMetricValueModal";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricValueDto } from "@/api";
 import {
@@ -20,6 +20,9 @@ import { useClusterMetrics } from "@/data/cluster-metrics/useClusterMetrics";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
 import SimpleDataTable from "@/components/SimpleDataTable";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 type ClusterMetricListProps = {
   clusterId: string,
@@ -32,6 +35,16 @@ const columns = (
 ): ColumnDef<MetricValueDto>[] => [
   { accessorKey: "name", header: t("clusterMetricValues.table.columns.name") },
   { accessorKey: "value", header: t("clusterMetricValues.table.columns.value") },
+  {
+    id: "unit",
+    header: t("clusterMetricValues.table.columns.unit"),
+    cell: ({ row }) => {
+      const clusterMetric = row.original;
+      const baseUnit: UnitDefinition = getBaseUnitForCategory(clusterMetric.category!);
+      {/* @ts-expect-error this doesn't impact the page */}
+      return t(baseUnit.symbol)
+    },
+  },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -88,15 +101,17 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
 
   const { removeClusterMetricValueAsync } = useRemoveClusterMetricValue(clusterId);
 
-  const [ editId, setEditId ] = useState<string>();
+  const deleteId = useRef<string>();
+  const [ updateMetric, setUpdateMetric ] = useState<MetricValueDto>();
 
-  const handleUpdateClusterMetricValue = async (dto: MetricValueDto) => {
-    setEditId(dto.id);
+  const handleUpdateClusterMetricValue = async (metricValue: MetricValueDto) => {
+    setUpdateMetric(metricValue);
     open("updateClusterMetricValue");
   };
 
   const handleRemoveClusterMetricValue = async (metricId: string) => {
-    await removeClusterMetricValueAsync(metricId);
+    deleteId.current = metricId;
+    open("confirmation");
   };
 
   if (isLoading || nextLoading) {
@@ -132,9 +147,19 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
   return (
     <>
       <CardContent className={"p-4"}>
-        {editId && <UpdateClusterMetricValueModal
-            clusterId={clusterId} metricId={editId}
+        {updateMetric && <UpdateClusterMetricValueModal
+          clusterId={clusterId}
+          metric={updateMetric}
         />}
+
+        <ConfirmationDialog
+            header={t("clusterMetricValues.removeClusterMetricValue.confirmation.header")}
+            text={t("clusterMetricValues.removeClusterMetricValue.confirmation.text")}
+            onConfirm={async () => {
+              await removeClusterMetricValueAsync(deleteId.current!);
+              deleteId.current = undefined;
+            }}
+        />
 
         <CreateClusterMetricValue clusterId={clusterId} />
 
@@ -145,9 +170,9 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
           </Button>
         </div>
 
-        <SimpleDataTable columns={
-          columns(t, handleUpdateClusterMetricValue, handleRemoveClusterMetricValue)}
-                   data={metrics ?? []}
+        <SimpleDataTable
+          columns={columns(t, handleUpdateClusterMetricValue, handleRemoveClusterMetricValue)}
+          data={metrics ?? []}
         />
 
         <SimplePagination

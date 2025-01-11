@@ -69,7 +69,7 @@ const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarP
       const resourceTime = resource.time! + 'Z';
       const startTime = new Date(resourceTime);
       const timeVar = new Date(resourceTime);
-      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + 30));
+      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + timeWindow));
 
       newEvents.push({
         start: startTime,

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../../styles/fullcalendar-shadcn.css";
 import { useLocation } from "react-router";
-import {useResourceGroupPoolAvailability} from "@/data/reservation/useResourceGroupPoolAvailability";
-import {useResourceGroupPoolReservations} from "@/data/reservation/useResourceGroupPoolReservations";
+import { useResourceGroupPoolAvailability } from "@/data/reservation/useResourceGroupPoolAvailability";
+import { useResourceGroupPoolReservations } from "@/data/reservation/useResourceGroupPoolReservations";
 import ReservationCalendar from "@/pages/Reservations/ReservationCalendar";
 import { Route } from "./+types/index";
 
