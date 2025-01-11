@@ -3,21 +3,22 @@ import { keys } from "@/data/keys";
 import { ReservationControllerApi } from "@/api";
 
 type UseReservationsParams = {
-  id: string;
+  course: string;
+  resourceGroup: string;
   start: string | null;
   end: string | null;
 }
 
-export const useReservations = ({
-  id, start, end
+export const useResourceGroupReservations = ({
+  course, resourceGroup, start, end
 }: UseReservationsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.RESERVATIONS, id, start, end ],
+    queryKey: [ keys.RESERVATIONS, course, resourceGroup, start, end ],
     queryFn: async() => {
       if (start == null || end == null) return [];
       const controller = new ReservationControllerApi();
-      const response = await controller.getReservationsForGivenPeriodForResourceGroup(
-        id, start, end,
+      const response = await controller.getRgReservationsInGivenCourse(
+        course, resourceGroup, start, end,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 

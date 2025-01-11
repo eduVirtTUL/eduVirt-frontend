@@ -1,11 +1,11 @@
-import React, {LegacyRef} from "react";
+import React, { LegacyRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import i18next from "i18next";
 import plLocale from "@fullcalendar/core/locales/pl";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {DateClickArg} from "@fullcalendar/interaction";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import { LoaderIcon } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import {
@@ -28,6 +28,7 @@ type CalendarProps = {
     eventAllow: AllowFunc | undefined;
     dateClick: ((arg: DateClickArg) => void) | undefined;
     datesSet: ((arg: DatesSetArg) => void) | undefined;
+    timeWindow: number;
 
     events: EventInput[];
     initialDate: Date;
@@ -35,7 +36,7 @@ type CalendarProps = {
 
 const EventCalendar: React.FC<CalendarProps> = ({
     calendarRef, loading, toolbar, initialView, select, allowSelect, eventClick,
-    eventAllow, dateClick, datesSet, events, initialDate
+    eventAllow, dateClick, datesSet, events, initialDate, timeWindow
 }) => {
   const {theme} = useTheme();
 
@@ -58,7 +59,7 @@ const EventCalendar: React.FC<CalendarProps> = ({
         initialView={initialView}
         initialDate={initialDate}
         allDaySlot={false}
-        slotDuration={"00:30:00"}
+        slotDuration={`00:${timeWindow}:00`}
         slotLabelFormat={{
           hour: "2-digit",
           minute: "2-digit",

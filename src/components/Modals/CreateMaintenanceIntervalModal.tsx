@@ -11,12 +11,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl, FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -33,14 +33,15 @@ type CreateMaintenanceIntervalModalProps = {
 const createMaintenanceIntervalSchema = (t: TFunction) =>
   z.object({
     cause: z.string()
+      .nonempty(t("maintenanceIntervals.validation.cause.required"))
       .min(4, t("maintenanceIntervals.validation.cause.too.short"))
       .max(128, t("maintenanceIntervals.validation.cause.too.long")),
     description: z.string()
-      .max(256, "maintenanceIntervals.validation.description.too.long")
+      .max(256, t("maintenanceIntervals.validation.description.too.long"))
       .optional(),
     duration: z.coerce.number()
-      .min(1, "maintenanceIntervals.validation.duration.too.short")
-      .max(48, "maintenanceIntervals.validation.duration.too.long"),
+      .min(1, t("maintenanceIntervals.validation.duration.too.short"))
+      .max(24, t("maintenanceIntervals.validation.duration.too.long")),
   });
 
 type CreateMaintenanceIntervalSchema = z.infer<
@@ -120,6 +121,9 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
+                    <FormDescription>
+                      {t("maintenanceIntervals.createMaintenanceInterval.causeDescription")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -133,6 +137,9 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
+                    <FormDescription>
+                      {t("maintenanceIntervals.createMaintenanceInterval.descriptionDescription")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -146,13 +153,18 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                     <FormControl>
                       <Input {...field} type={"number"} />
                     </FormControl>
+                    <FormDescription>
+                      {t("maintenanceIntervals.createMaintenanceInterval.durationDescription")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">
-                {t("maintenanceIntervals.createMaintenanceInterval.submit")}
-              </Button>
+              <div className="flex flex-row justify-center col-span-2">
+                <Button type="submit" className={"w-1/2"}>
+                  {t("maintenanceIntervals.createMaintenanceInterval.submit")}
+                </Button>
+              </div>
             </form>
           </Form>
         </DialogContent>

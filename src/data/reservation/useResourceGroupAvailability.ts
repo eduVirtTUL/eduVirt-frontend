@@ -2,22 +2,22 @@ import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { CourseControllerApi } from "@/api";
 
-export const useCourseResourcesAvailability = (
+export const useResourceGroupAvailability = (
   id: string,
-  rgId: string,
+  resourceGroup: string,
+  timeWindow: number,
   start: string,
   end: string
 ) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.COURSE_RESOURCES, id, rgId, start, end ],
+    queryKey: [ keys.COURSE_RESOURCES, id, resourceGroup, start, end ],
     queryFn: async () => {
       const controller = new CourseControllerApi();
-      const response = await controller.findCourseResourcesAvailability(
-        id, rgId, start, end,
+      const response = await controller.findResourcesAvailabilityForResourceGroup(
+        id, resourceGroup, timeWindow, start, end,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
-      console.log(response.data);
       return response.data;
     },
     refetchInterval: 60000,

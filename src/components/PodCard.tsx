@@ -21,7 +21,7 @@ interface PodCardProps {
   };
 }
 
-export function PodCard({ resourceGroup, course }: PodCardProps) {
+export function PodCard({ id, resourceGroup, course }: PodCardProps) {
   return (
     <Card className="h-[320px] mx-auto w-[280px] transition-all duration-200 hover:shadow-lg hover:border-primary/50">
       <CardContent className="p-6 flex flex-col h-full">
@@ -44,18 +44,18 @@ export function PodCard({ resourceGroup, course }: PodCardProps) {
           </div>
         </div>
         <div className="pt-4 mt-auto">
-          <Link
-            to={`/reservations/calendar`}
+          <Link to={resourceGroup.isStateless ?
+              `/reservations/calendar/resource-group-pool/${resourceGroup.id}` :
+              `/reservations/calendar/resource-group/${resourceGroup.id}`}
             state={{
               clusterId: course.clusterId,
               courseId: course.id,
-              resourceGroupId: resourceGroup.id
-            }}
-          >
-            <Button 
-              className="w-full gap-2 transition-all hover:scale-[1.02]" 
-              variant="default"
-            >
+              podId: id,
+            }}>
+              <Button
+                  className="w-full gap-2 transition-all hover:scale-[1.02]"
+                  variant="default"
+              >
               <Calendar className="h-4 w-4" />
               Make a reservation
             </Button>

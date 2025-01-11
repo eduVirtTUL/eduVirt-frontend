@@ -10,12 +10,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl, FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,8 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 
 type ResourceGroupProps = {
-  resourceGroupId: string;
+  courseId: string;
+  podId: string;
   start: Date;
   end: Date;
   resetSelection: () => void;
@@ -38,8 +39,8 @@ const createReservationSchema = (t: TFunction, start: Date, end: Date) =>
         .max(24, t("reservations.validation.duration.too.long")),
       automaticStartup: z.boolean(),
       notificationTime: z.coerce.number()
-          .min(0, t("reservations.validation.notificationTime.negative"))
-          .max((end && start) ? (end.valueOf() - start.valueOf()) / (1000 * 60 * 2) : 30, t("reservations.validation.notificationTime.too.long"))
+        .min(0, t("reservations.validation.notificationTime.negative"))
+        .max((end && start) ? (end.valueOf() - start.valueOf()) / (1000 * 60 * 2) : 30, t("reservations.validation.notificationTime.too.long"))
     });
 
 type CreateReservationSchema = z.infer<
@@ -47,7 +48,8 @@ type CreateReservationSchema = z.infer<
 >;
 
 const CreateReservationModal: React.FC<ResourceGroupProps> = ({
-  resourceGroupId,
+  courseId,
+  podId,
   start,
   end,
   resetSelection,
@@ -55,7 +57,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
   const { t } = useTranslation();
 
   const { isOpen, close } = useDialog();
-  const { createReservationAsync } = useCreateReservation();
+  const { createReservationAsync } = useCreateReservation({course: courseId, pod: podId});
 
   const form = useForm<CreateReservationSchema>({
     resolver: zodResolver(createReservationSchema(t, start, end)),
@@ -87,7 +89,6 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
       );
 
       const createDto = {
-        resourceGroupId: resourceGroupId,
         start: startTime.toISOString(),
         end: endTime.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -124,6 +125,9 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
+                  <FormDescription>
+                      {t("reservations.createReservation.durationDescription")}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -137,6 +141,9 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                   <FormControl>
                     <Input {...field} type={"number"} />
                   </FormControl>
+                  <FormDescription>
+                    {t("reservations.createReservation.notificationTimeDescription")}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -155,7 +162,11 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">{t("reservations.createReservation.submit")}</Button>
+            <div className="flex flex-row justify-center col-span-2">
+              <Button type="submit" className={"w-1/2"}>
+                  {t("reservations.createReservation.submit")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
