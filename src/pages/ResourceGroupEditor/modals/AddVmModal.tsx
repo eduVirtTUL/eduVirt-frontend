@@ -1,5 +1,3 @@
-import { VmDto } from "@/api";
-import DataTable from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,15 +13,12 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useAddResourceGroupVm } from "@/data/resourceGroup/useAddResourceGroupVm";
-import { useVms } from "@/data/resources/useVms";
 import { cn } from "@/lib/utils";
 import { useDialog } from "@/stores/dialogStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -31,27 +26,10 @@ import {
   PlusIcon,
 } from "lucide-react";
 import React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-const columns = (form: UseFormReturn<AddVmSchema>): ColumnDef<VmDto>[] => [
-  {
-    id: "select",
-    cell: ({ row }) => {
-      const vm = row.original;
-      return (
-        <RadioGroupItem
-          value={vm.id ?? ""}
-          checked={form.getValues("id") === vm.id}
-        />
-      );
-    },
-  },
-  {
-    header: "Name",
-    accessorKey: "name",
-  },
-];
+import AvailableMachinesList from "../components/AvailableMachinesList";
+import { useTranslation } from "react-i18next";
 
 type AddVmProps = {
   id: string;
@@ -65,9 +43,9 @@ const addVmSchema = z.object({
 type AddVmSchema = z.infer<typeof addVmSchema>;
 
 const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
+  const { t } = useTranslation();
   const { close, isOpen } = useDialog();
   const { addVm } = useAddResourceGroupVm(id);
-  const { vms } = useVms();
   const form = useForm<AddVmSchema>({
     resolver: zodResolver(addVmSchema),
     defaultValues: {
@@ -96,7 +74,7 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
     >
       <DialogContent className="h-[540px] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Add Virtual Machine to Resource Group</DialogTitle>
+          <DialogTitle>{t("addVmModal.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="h-full flex-1">
@@ -114,17 +92,10 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <RadioGroup onValueChange={field.onChange}>
-                          <DataTable
-                            columns={columns(form)}
-                            data={vms ?? []}
-                            onRowClick={(row) => {
-                              field.onChange(row.original.id);
-                            }}
-                            paginationEnabled
-                            pageSize={5}
-                          />
-                        </RadioGroup>
+                        <AvailableMachinesList
+                          onValueChange={field.onChange}
+                          id={id}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -136,7 +107,7 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
                     onClick={() => close()}
                   >
                     <CircleXIcon />
-                    Cancel
+                    {t("cancel")}
                   </Button>
                   <Button
                     type="button"
@@ -145,7 +116,7 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
                       setTab("second");
                     }}
                   >
-                    Next
+                    {t("next")}
                     <ArrowRightIcon />
                   </Button>
                 </div>
@@ -157,17 +128,17 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
                   tab === "second" && "h-full"
                 )}
               >
-                {/* <h2>(2/2) Settings</h2> */}
                 <FormField
                   control={form.control}
                   name="hidden"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between border rounded-lg p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Hidden</FormLabel>
+                        <FormLabel className="text-base">
+                          {t("addVmModal.hidden")}
+                        </FormLabel>
                         <FormDescription>
-                          If checked, the virtual machine will be hidden from
-                          the user.
+                          {t("addVmModal.hiddenDescription")}
                         </FormDescription>
                       </div>
                       <FormControl>
@@ -186,10 +157,10 @@ const AddVmModal: React.FC<AddVmProps> = ({ id }) => {
                     onClick={() => setTab("first")}
                   >
                     <ArrowLeftIcon />
-                    Back
+                    {t("previous")}
                   </Button>
                   <Button type="submit">
-                    Add
+                    {t("add")}
                     <PlusIcon />
                   </Button>
                 </div>

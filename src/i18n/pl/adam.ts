@@ -172,6 +172,7 @@ const resourceGroupEditor = {
     interfaces: "NICs",
     edit: "Edytuj",
     ovirt: "oVirt",
+    noMachines: "Grupa nie zawiera maszyn wirtualnych",
   },
   interfaceList: {
     title: "Interfejsy",
@@ -195,6 +196,14 @@ const resourceGroupEditor = {
   },
 };
 
+const addVmModal = {
+  title: "Dodaj maszynę wirtualną do grupy zasobów",
+  searchPlaceholder: "Wyszukaj maszynę wirtualną...",
+  hidden: "Ukryte",
+  hiddenDescription:
+    "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -206,4 +215,5 @@ export default {
   coursePools,
   coursePage,
   resourceGroupEditor,
+  addVmModal,
 };
