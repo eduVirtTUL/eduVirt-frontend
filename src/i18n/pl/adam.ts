@@ -97,6 +97,7 @@ const resourceGroupPoolPage = {
     maxRentTime: "Maksymalny czas wypożyczenia",
   },
   type: "Pula grup zasobów",
+  openEditor: "Otwórz edytor",
 };
 
 const createResourceGroupModal = {
