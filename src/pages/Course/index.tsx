@@ -37,7 +37,7 @@ import { useTeamsInCourseAccessKeys } from "@/data/access-key/useTeamsInCourseAc
 import { StatusDot } from "@/components/StatusDot";
 import { TeamDto } from "@/api";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
-import AddCourseKeyDialog from "@/components/Modals/AddCourseKeyModal";
+import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
 import { Link } from "react-router";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
@@ -80,7 +80,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="w-full justify-start pl-2"
         >
-          Name
+          {t("coursePageB.teamsTable.columns.name")}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -92,7 +92,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
     },
     {
       accessorKey: "users",
-      header: "Members",
+      header: t("coursePageB.teamsTable.columns.members"),
       cell: ({ row }) => {
         const users = row.original.users || [];
         return (
@@ -107,7 +107,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
               <div className="space-y-2">
                 {users.length === 0 ? (
                   <div className="text-muted-foreground text-center">
-                    No members
+                    {t("coursePageB.teamsTable.columns.noMembers")}
                   </div>
                 ) : (
                   users.map((user: string) => (
@@ -124,7 +124,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
     },
     {
       accessorKey: "maxSize",
-      header: "Max Size",
+      header: t("coursePageB.teamsTable.columns.maxSize"),
       cell: ({ row }) => (
         <div className="flex items-center">
           <Badge variant="secondary">{row.original.maxSize}</Badge>
@@ -135,7 +135,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
       ? [
           {
             accessorKey: "keyValue",
-            header: "Team Access Key",
+            header: t("coursePageB.teamsTable.columns.accessKey.label"),
             //@ts-expect-error this doesn't impact the page
             cell: ({ row }) => {
               const teamId = row.original.id;
@@ -156,7 +156,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                       navigator.clipboard.writeText(
                         query?.data?.key?.keyValue || ""
                       );
-                      toast.success("Team key copied to clipboard");
+                      toast.success(t("coursePageB.teamsTable.columns.accessKey.copied"));
                     }}
                   />
                 </div>
@@ -167,18 +167,19 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
       : []),
     {
       accessorKey: "active",
-      header: "Status",
+      header: t("coursePageB.teamsTable.columns.status"),
       cell: ({ row }) => (
         <div className="flex items-center">
           <StatusDot active={row.original.active} />
           <span className="ml-2">
-            {row.original.active ? "Active" : "Inactive"}
+            {row.original.active ? t("activeStatus.active") : t("activeStatus.inactive")}
           </span>
         </div>
       ),
     },
     {
       id: "actions",
+        header: t("coursePageB.teamsTable.columns.operations"),
       cell: ({ row }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -188,7 +189,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => setEditingTeam(row.original)}>
-              Edit Team
+              {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -196,7 +197,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                 setManageStatefulPodsOpen(true);
               }}
             >
-              Manage Stateful Pods
+              {t("coursePageB.teamsTable.dropdownMenu.manageStatefulPods")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -204,7 +205,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                 setManageStatelessPodsOpen(true);
               }}
             >
-              Manage Stateless Pods
+              {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -215,7 +216,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   return (
     <>
       <CreatePoolModal courseId={id} />
-      <AddCourseKeyDialog courseId={id} />
+      <CreateCourseKeyModal courseId={id} />
       <PageHeader title={course?.name ?? ""} type={t("coursePage.title")} />
       <div className="space-y-6">
         <div className="flex space-x-4">
@@ -241,12 +242,12 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
           </Card>
           <Card className={isTeamBased ? "w-1/2" : "w-1/4"}>
             <CardHeader>
-              <CardTitle>Course Type</CardTitle>
+              <CardTitle>{t("coursePageB.courseTypeCard.title")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
                 <Badge variant={isTeamBased ? "default" : "secondary"}>
-                  {isTeamBased ? "Team Based" : "Solo"}
+                  {isTeamBased ? t("courseType.teamBased") : t("courseType.solo")}
                 </Badge>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -255,8 +256,8 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                   <PopoverContent className="w-80">
                     <p className="text-sm">
                       {isTeamBased
-                        ? "Team-based courses allow students to work together in groups, sharing resources and collaborating on assignments."
-                        : "Solo courses are designed for individual work, where each student works independently with their own resources."}
+                        ? t("courseType.teamBasedDescription")
+                        : t("courseType.soloDescription")}
                     </p>
                   </PopoverContent>
                 </Popover>
@@ -266,7 +267,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
           {!isTeamBased && (
             <Card className="w-1/4">
               <CardHeader>
-                <CardTitle>Course Access Key</CardTitle>
+                <CardTitle>{t("coursePageB.courseAccessKeyCard.title")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {isCourseAccessKeyLoading ? (
@@ -283,7 +284,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                           courseAccessKey.keyValue || ""
                         );
                         toast.success(
-                          "Access key has been copied to clipboard"
+                          t("coursePageB.courseAccessKeyCard.keyCopiedToast")
                         );
                       }}
                     />
@@ -291,7 +292,8 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                 ) : (
                   <>
                     <Button onClick={() => open("createCourseKey")}>
-                      Create Key
+                      <PlusIcon />
+                        {t("coursePageB.courseAccessKeyCard.button")}
                     </Button>
                   </>
                 )}
@@ -319,7 +321,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Teams</CardTitle>
+              <CardTitle>{t("coursePageB.teamsTable.title")}</CardTitle>
               {isTeamBased && <CreateTeamModal courseId={id!} />}
             </div>
           </CardHeader>

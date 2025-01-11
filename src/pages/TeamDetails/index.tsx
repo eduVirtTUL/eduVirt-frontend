@@ -18,6 +18,7 @@ import {toast} from "sonner";
 import {PodCard} from "@/components/PodCard";
 import ValueDisplay from "@/components/ValueDisplay";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {useTranslation} from "react-i18next";
 
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -35,28 +36,29 @@ const TeamDetailsPage: React.FC = () => {
     const teamMembers = team?.users ?? [];
     const isTeamBased = course?.courseType === "TEAM_BASED";
     const {open} = useDialog();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const checkAuthorization = async () => {
             const token = localStorage.getItem('token');
-            if (!token) {
-                navigate('/teams');
-                return;
-            }
+            // if (!token) {
+            //     navigate('/teams');
+            //     return;
+            // }
 
-            const decoded = jwtDecode<{ sub: string }>(token);
+            const decoded = jwtDecode<{ sub: string }>(token||'');
             const userId = decoded.sub;
 
             if (!isLoading && team) {
                 if (!team.users?.includes(userId)) {
-                    toast.error("You need to be a member of this team to view its details");
-                    navigate('/teams');
+                    toast.error(t("teamDetails.error.notInTeam"));
+                    // navigate('/teams');
                 } else {
                     setIsAuthorized(true);
                 }
             } else if (!isLoading && !team) {
-                toast.error("Team not found");
-                navigate('/teams');
+                toast.error(t("teamDetails.error.teamNotFound"));
+                // navigate('/teams');
             }
         };
 
@@ -96,19 +98,20 @@ const TeamDetailsPage: React.FC = () => {
     const handleConfirmLeave = () => {
         if (id) {
             leaveTeam(id);
+            navigate(-1);
         }
     };
 
     return (
         <>
-            <PageHeader title={team?.name ?? ""} type="Team"/>
+            <PageHeader title={team?.name ?? ""} type={t("teamDetails.title")}/>
             <div className="space-y-6">
                 <div className="flex flex-col md:flex-row gap-4">
                     <Card className="w-full">
                         <CardHeader>
                             <CardTitle>
                                 <div className="flex flex-row items-center justify-between">
-                                    <span>Team Details</span>
+                                    <span>{t("teamDetails.detailsCard.title")}</span>
                                     <div className="flex flex-row items-center justify-start gap-2">
                                         <Button
                                             variant="destructive"
@@ -116,7 +119,7 @@ const TeamDetailsPage: React.FC = () => {
                                             className="flex items-center gap-2"
                                         >
                                             <LogOut className="h-4 w-4"/>
-                                            Leave Team
+                                            {t("teamDetails.leaveTeam.button")}
                                         </Button>
                                     </div>
                                 </div>
@@ -126,12 +129,12 @@ const TeamDetailsPage: React.FC = () => {
                             <div className="grid grid-cols-2 gap-2">
                                 <ValueDisplay
                                     value={course?.name ?? ""}
-                                    label="Course name"
+                                    label={t("teamDetails.detailsCard.courseName")}
                                 />
                                 <div className="flex items-center gap-2">
                                     <ValueDisplay
-                                        value={isTeamBased ? "Team Based" : "Solo"}
-                                        label="Course type"
+                                        value={isTeamBased ? t("courseType.teamBased") : t("courseType.solo")}
+                                        label={t("teamDetails.detailsCard.courseType")}
                                     />
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -141,8 +144,8 @@ const TeamDetailsPage: React.FC = () => {
                                         <PopoverContent className="w-80" side="right">
                                             <p className="text-sm">
                                                 {isTeamBased
-                                                    ? "Team-based courses allow students to work together in groups, sharing resources and collaborating on assignments."
-                                                    : "Solo courses are designed for individual work, where each student works independently with their own resources."}
+                                                    ? t("courseType.teamBasedDescription")
+                                                    : t("courseType.soloDescription")}
                                             </p>
                                         </PopoverContent>
                                     </Popover>
@@ -150,7 +153,7 @@ const TeamDetailsPage: React.FC = () => {
                                 <div className="col-span-2">
                                     <ValueDisplay
                                         value={course?.description ?? ""}
-                                        label="Course description"
+                                        label={t("teamDetails.detailsCard.courseDescription")}
                                     />
                                 </div>
                             </div>
@@ -164,7 +167,7 @@ const TeamDetailsPage: React.FC = () => {
                         <Card>
                             <CardHeader>
                                 <div className="flex items-center justify-between">
-                                    <CardTitle>Team Members</CardTitle>
+                                    <CardTitle>{t("teamDetails.teamMembers")}</CardTitle>
                                     <CollapsibleTrigger asChild>
                                         <Button variant="ghost" size="sm">
                                             {isMembersOpen ? (
@@ -195,7 +198,7 @@ const TeamDetailsPage: React.FC = () => {
                                         ))}
                                         {(!team?.users || team.users.length === 0) && (
                                             <p className="text-muted-foreground text-center py-4 col-span-3">
-                                                Team is empty
+                                                {t("teamDetails.teamEmpty")}
                                             </p>
                                         )}
                                     </div>
@@ -213,20 +216,20 @@ const TeamDetailsPage: React.FC = () => {
                     ) : ((!statefulPods || statefulPods.length === 0) && (!statelessPods || statelessPods?.length === 0)) ? (
                         <Card className="w-full">
                             <CardHeader>
-                                <CardTitle>Assigned Pods</CardTitle>
+                                <CardTitle>{t("teamDetails.assignedPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-center text-muted-foreground py-8">No pods assigned to this team</p>
+                                <p className="text-center text-muted-foreground py-8">{t("teamDetails.noPods")}</p>
                             </CardContent>
                         </Card>
                     ) : (
                         <Card className="w-full">
                             <CardHeader>
-                                <CardTitle>Assigned Pods</CardTitle>
+                                <CardTitle>{t("teamDetails.assignedPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div
-                                    className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 justify-items-center">
+                                    className="grid gap-4 md:grid-cols-3">
                                     {[
                                         ...(statefulPods || []).map(pod => ({
                                             ...pod,
@@ -276,8 +279,8 @@ const TeamDetailsPage: React.FC = () => {
 
                 </div>
                 <ConfirmationDialog
-                    header="Leave Team"
-                    text="Are you sure you want to leave this team? This action cannot be undone."
+                    header={t("teamDetails.leaveTeam.confirmHeader")}
+                    text={t("teamDetails.leaveTeam.confirmText")}
                     onConfirm={handleConfirmLeave}
                 />
             </div>

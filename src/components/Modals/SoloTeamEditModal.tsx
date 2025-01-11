@@ -1,11 +1,13 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useUpdateTeam } from "@/data/team/useUpdateTeam"
+import { CheckIcon, XCircleIcon } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 interface SoloTeamEditModalProps {
     open: boolean;
@@ -22,6 +24,7 @@ const soloTeamSchema = z.object({
 
 export function SoloTeamEditModal({ open, onOpenChange, team }: SoloTeamEditModalProps) {
     const { updateTeam } = useUpdateTeam();
+    const { t } = useTranslation();
 
     const form = useForm<z.infer<typeof soloTeamSchema>>({
         resolver: zodResolver(soloTeamSchema),
@@ -42,28 +45,42 @@ export function SoloTeamEditModal({ open, onOpenChange, team }: SoloTeamEditModa
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit Team Status</DialogTitle>
+                    <DialogTitle>{t("soloTeamEdit.title")}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="active"
                             render={({ field }) => (
-                                <FormItem className="flex items-center justify-between">
-                                    <FormLabel>Active</FormLabel>
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>{t("soloTeamEdit.active")}</FormLabel>
                                     <FormControl>
                                         <Switch 
                                             checked={field.value}
                                             onCheckedChange={field.onChange}
                                         />
                                     </FormControl>
+                                    <FormDescription>
+                                        {t("soloTeamEdit.activeDescription")}
+                                    </FormDescription>
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full">
-                            Save Changes
-                        </Button>
+                        <div className="flex flex-row justify-between">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => onOpenChange(false)}
+                            >
+                                <XCircleIcon />
+                                {t("cancel")}
+                            </Button>
+                            <Button type="submit">
+                                <CheckIcon />
+                                {t("save")}
+                            </Button>
+                        </div>
                     </form>
                 </Form>
             </DialogContent>

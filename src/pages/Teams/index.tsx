@@ -65,7 +65,7 @@ const TeamsPage = () => {
         <div className="flex items-center">
           <StatusDot active={row.original.active} />
           <span className="ml-2">
-            {row.original.active ? t('teamsList.table.active') : t('teamsList.table.inactive')}
+            {row.original.active ? t('activeStatus.active') : t('activeStatus.inactive')}
           </span>
         </div>
       ),
@@ -96,7 +96,7 @@ const TeamsPage = () => {
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
           >
             <ExternalLink className="h-4 w-4" />
-            <span className="sr-only">View details</span>
+            <span className="sr-only">{t("teamsList.viewDetails")}</span>
           </Link>
         </div>
       ),

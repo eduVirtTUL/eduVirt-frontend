@@ -49,6 +49,7 @@ export default {
   create: "Utwórz",
   yes: "Tak",
   no: "Nie",
+  join: "Dołącz",
   menu,
   general,
   resourceGroupPools,

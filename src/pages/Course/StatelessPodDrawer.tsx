@@ -13,7 +13,7 @@ import {useCreateStatelessPod} from "@/data/pods/useCreateStatelessPod"
 import {useDeleteStatelessPod} from "@/data/pods/useDeleteStatelessPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
-import {Trash2} from "lucide-react"
+import {PlusIcon, Trash2} from "lucide-react"
 import {useTranslation} from "react-i18next"
 
 interface StatelessPodDrawerProps {
@@ -62,7 +62,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                         {isLoadingTeam ? (
                             <Skeleton className="h-6 w-48"/>
                         ) : (
-                            `"Stateless Pod Management" - ${team?.name}`
+                            `${t("statelessPodManagement.title")} ${team?.name}`
                         )}
                     </DrawerTitle>
                 </DrawerHeader>
@@ -70,7 +70,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                     <div className="grid grid-cols-2 gap-4">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Resource Group Pools</CardTitle>
+                                <CardTitle>{t("statelessPodManagement.resourceGroupPools")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -81,12 +81,6 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                         </div>
                                     ) : (
                                         <Table>
-                                            <TableHeader>
-                                                <TableRow>
-                                                    <TableHead className="w-12"></TableHead>
-                                                    <TableHead>Name</TableHead>
-                                                </TableRow>
-                                            </TableHeader>
                                             <TableBody>
                                                 {courseResourceGroupPools?.map((pool) => (
                                                     <TableRow key={pool.id}>
@@ -115,7 +109,8 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                         className="w-32"
                                         disabled={!selectedPool}
                                     >
-                                        {t('podManagement.createPod')}
+                                        <PlusIcon/>
+                                        {t('statelessPodManagement.createPod')}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -123,7 +118,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t("podManagement.teamPods")}</CardTitle>
+                                <CardTitle>{t("statelessPodManagement.teamPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -137,7 +132,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                             <TableHeader>
                                                 <TableRow>
                                                     <TableHead></TableHead>
-                                                    <TableHead>Team's Pools</TableHead>
+                                                    <TableHead>{t("statelessPodManagement.resourceGroupPool")}</TableHead>
                                                     <TableHead className="w-[100px]"></TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -156,6 +151,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                                                 onClick={() => handleClickPodDelete(pod.id!)}
                                                             >
                                                                 <Trash2 className="h-4 w-4"/>
+                                                                {t("statelessPodManagement.delete.button")}
                                                             </Button>
                                                         </TableCell>
                                                     </TableRow>
@@ -164,7 +160,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                                     <TableRow>
                                                         <TableCell colSpan={3}
                                                                    className="text-center text-muted-foreground">
-                                                            {t('podManagement.noPods')}
+                                                            {t('statelessPodManagement.noPods')}
                                                         </TableCell>
                                                     </TableRow>
                                                 )}
@@ -178,8 +174,8 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                 </div>
             </DrawerContent>
             <ConfirmationDialog
-                header={t('podManagement.delete.confirmHeader')}
-                text={t('podManagement.delete.confirmText')}
+                header={t('statelessPodManagement.delete.confirmHeader')}
+                text={t('statelessPodManagement.delete.confirmText')}
                 onConfirm={handleConfirmPodDelete}
             />
         </Drawer>
