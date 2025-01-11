@@ -344,9 +344,9 @@ export interface CreateMetricDto {
 }
 
 export const CreateMetricDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type CreateMetricDtoCategoryEnum = typeof CreateMetricDtoCategoryEnum[keyof typeof CreateMetricDtoCategoryEnum];
@@ -843,9 +843,9 @@ export interface MetricDto {
 }
 
 export const MetricDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type MetricDtoCategoryEnum = typeof MetricDtoCategoryEnum[keyof typeof MetricDtoCategoryEnum];
@@ -883,9 +883,9 @@ export interface MetricValueDto {
 }
 
 export const MetricValueDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type MetricValueDtoCategoryEnum = typeof MetricValueDtoCategoryEnum[keyof typeof MetricValueDtoCategoryEnum];
@@ -8889,15 +8889,12 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} keyValue 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        joinUsingKey: async (keyValue: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        joinUsingKey: async (keyValue: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'keyValue' is not null or undefined
             assertParamExists('joinUsingKey', 'keyValue', keyValue)
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('joinUsingKey', 'userId', userId)
             const localVarPath = `/teams/join`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8914,10 +8911,6 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
                 localVarQueryParameter['keyValue'] = keyValue;
             }
 
-            if (userId !== undefined) {
-                localVarQueryParameter['userId'] = userId;
-            }
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8932,15 +8925,12 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} teamId 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        leaveTeam: async (teamId: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        leaveTeam: async (teamId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'teamId' is not null or undefined
             assertParamExists('leaveTeam', 'teamId', teamId)
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('leaveTeam', 'userId', userId)
             const localVarPath = `/teams/leave`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8955,10 +8945,6 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
 
             if (teamId !== undefined) {
                 localVarQueryParameter['teamId'] = teamId;
-            }
-
-            if (userId !== undefined) {
-                localVarQueryParameter['userId'] = userId;
             }
 
 
@@ -9083,12 +9069,11 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} keyValue 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async joinUsingKey(keyValue: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.joinUsingKey(keyValue, userId, options);
+        async joinUsingKey(keyValue: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.joinUsingKey(keyValue, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.joinUsingKey']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9096,12 +9081,11 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} teamId 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async leaveTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.leaveTeam(teamId, userId, options);
+        async leaveTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.leaveTeam(teamId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.leaveTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9176,22 +9160,20 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
         /**
          * 
          * @param {string} keyValue 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        joinUsingKey(keyValue: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.joinUsingKey(keyValue, userId, options).then((request) => request(axios, basePath));
+        joinUsingKey(keyValue: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.joinUsingKey(keyValue, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} teamId 
-         * @param {string} userId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        leaveTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.leaveTeam(teamId, userId, options).then((request) => request(axios, basePath));
+        leaveTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.leaveTeam(teamId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -9270,25 +9252,23 @@ export class TeamControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} keyValue 
-     * @param {string} userId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public joinUsingKey(keyValue: string, userId: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).joinUsingKey(keyValue, userId, options).then((request) => request(this.axios, this.basePath));
+    public joinUsingKey(keyValue: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).joinUsingKey(keyValue, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} teamId 
-     * @param {string} userId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public leaveTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).leaveTeam(teamId, userId, options).then((request) => request(this.axios, this.basePath));
+    public leaveTeam(teamId: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).leaveTeam(teamId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

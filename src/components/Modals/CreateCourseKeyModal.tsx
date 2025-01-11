@@ -20,7 +20,7 @@ const formSchema = z.object({
   key: z.string()
     .min(4, t("createCourseKey.validation.keyMinLength"))
     .max(20, t("createCourseKey.validation.keyMaxLength"))
-    .regex(/^[a-zA-Z0-9]+$/, t("createCourseKey.validation.keyRegex"))
+    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("createCourseKey.validation.keyRegex"))
 });
 
 const CreateCourseKeyModal = ({ courseId }: CreateCourseKeyModalProps) => {

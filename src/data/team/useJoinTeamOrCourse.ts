@@ -2,12 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TeamControllerApi } from "@/api";
 import { keys } from "../keys";
 import { toast } from "sonner";
-import { jwtDecode } from "jwt-decode";
 import {useTranslation} from "react-i18next";
-
-interface JwtPayload {
-    sub: string;
-}
 
 export const useJoinTeamOrCourse = () => {
     const queryClient = useQueryClient();
@@ -19,11 +14,10 @@ export const useJoinTeamOrCourse = () => {
                 throw new Error('No authentication token found');
             }
 
-            const decoded = jwtDecode<JwtPayload>(token);
-            const userId = decoded.sub;
-
             const teamController = new TeamControllerApi();
-            const response = await teamController.joinUsingKey(key, userId);
+            const response = await teamController.joinUsingKey(key, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             return response.data;
         },
         onSuccess: () => {
