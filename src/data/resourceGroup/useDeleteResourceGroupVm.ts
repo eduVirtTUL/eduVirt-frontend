@@ -3,8 +3,10 @@ import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
+import { useTranslation } from "react-i18next";
 
 export const useDeleteResourceGroupVm = () => {
+  const { t } = useTranslation();
   const { id: rgId } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -22,9 +24,11 @@ export const useDeleteResourceGroupVm = () => {
       queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.vm(rgId!, vmId),
       });
-      toast.success("VM deleted successfully!");
+      toast.success(t("removeVmModal.success"));
     },
-    onError: () => [toast.error("Failed to delete VM")],
+    onError: () => {
+      toast.error(t("removeVmModal.error"));
+    },
   });
 
   return { deleteVm: mutate, deleteVmAsync: mutateAsync, isPending };

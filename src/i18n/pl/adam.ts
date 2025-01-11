@@ -204,6 +204,14 @@ const addVmModal = {
     "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
 };
 
+const removeVmModal = {
+  confirmation: "Czy na pewno chcesz usunąć tę maszynę wirtualną?",
+  confirmationText:
+    "Maszyna wirtualna zostanie usunięta z grupy zasobów. Tej operacji nie można cofnąć.",
+  success: "Maszyna wirtualna została usunięta",
+  error: "Nie udało się usunąć maszyny wirtualnej",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -216,4 +224,5 @@ export default {
   coursePage,
   resourceGroupEditor,
   addVmModal,
+  removeVmModal,
 };

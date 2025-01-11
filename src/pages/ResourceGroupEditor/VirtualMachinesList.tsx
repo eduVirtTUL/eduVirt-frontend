@@ -2,17 +2,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useDeleteResourceGroupVm } from "@/data/resourceGroup/useDeleteResourceGroupVm";
 import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
-import {
-  CircleSlashIcon,
-  ExternalLinkIcon,
-  PencilIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { CircleSlashIcon, ExternalLinkIcon, PencilIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import BounceLoader from "react-spinners/BounceLoader";
+import RemoveVmConfirmationModal from "./modals/RemoveVmConfirmationModal";
 
 type VirtualMachinesListProps = {
   id: string;
@@ -27,7 +22,6 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
 }) => {
   const { t } = useTranslation();
   const { vms, isLoading } = useResourceGroupVms(id);
-  const { deleteVmAsync } = useDeleteResourceGroupVm();
 
   return (
     <>
@@ -125,16 +119,12 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                     )}
                                   </Link>
                                 </Button>
-                                <Button
-                                  variant="destructive"
-                                  onClick={async (e) => {
-                                    e.stopPropagation();
-                                    await deleteVmAsync(vm.id!);
+                                <RemoveVmConfirmationModal
+                                  vmId={vm.id!}
+                                  onConfirm={() => {
                                     setSelectedVm(undefined);
                                   }}
-                                >
-                                  <Trash2Icon />
-                                </Button>
+                                />
                               </div>
                             </div>
                           </div>
