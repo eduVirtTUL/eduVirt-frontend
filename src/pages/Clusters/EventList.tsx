@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { EventGeneralDto } from "@/api";
@@ -7,15 +7,16 @@ import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEvents } from "@/data/cluster/useEvents";
 import { Button } from "@/components/ui/button";
-import {ArrowDown, ArrowUp, ArrowUpDown} from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLinkIcon } from "lucide-react";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
-import {jwtDecode} from "jwt-decode";
-import {toast} from "sonner";
-import {useNavigate} from "react-router";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router";
 
 type EventListProps = {
-  clusterId: string
+  clusterId: string;
+  clusterName: string;
 }
 
 const columns = (
@@ -57,7 +58,7 @@ const columns = (
 ];
 
 const EventList: React.FC<EventListProps> = ({
-  clusterId
+  clusterId, clusterName
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -120,39 +121,63 @@ const EventList: React.FC<EventListProps> = ({
 
   if (isLoading || nextLoading) {
     return (
-      <div className="p-4">
-        <div className="space-y-6">
-          <div className="rounded-md border">
-            <div className="border-b">
-              <div className="grid grid-cols-3 p-4">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-4 w-[100px]"/>
+      <>
+        <div className={"flex items-center justify-start pt-4 pl-4"}>
+          <Skeleton className="h-10 w-2/5"/>
+        </div>
+
+        <div className="p-4">
+          <div className="space-y-6">
+            <div className="rounded-md border">
+              <div className="border-b">
+                <div className="grid grid-cols-3 p-4">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-4 w-[100px]"/>
+                  ))}
+                </div>
+              </div>
+              <div>
+                {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
+                  <div key={row} className="grid grid-cols-3 p-4 border-b">
+                    {[1, 2, 3].map((col) => (
+                      <Skeleton key={col} className="h-4 w-[100px]"/>
+                    ))}
+                  </div>
                 ))}
               </div>
             </div>
-            <div>
-              {Array.from({ length: pageSize }, (_, i) => i + 1).map((row) => (
-                <div key={row} className="grid grid-cols-3 p-4 border-b">
-                  {[1, 2, 3].map((col) => (
-                    <Skeleton key={col} className="h-4 w-[100px]"/>
-                  ))}
-                </div>
-              ))}
+            <div className="flex items-center justify-center space-x-3 mt-4">
+              <Skeleton className="h-8 w-[100px]"/>
+              <Skeleton className="h-8 w-[40px]"/>
+              <Skeleton className="h-8 w-[100px]"/>
             </div>
           </div>
-          <div className="flex items-center justify-center space-x-3 mt-4">
-            <Skeleton className="h-8 w-[100px]"/>
-            <Skeleton className="h-8 w-[40px]"/>
-            <Skeleton className="h-8 w-[100px]"/>
-          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <>
       <CardContent className={"p-4"}>
+        <div className={"flex items-center justify-start pb-4"}>
+          <Button
+            className={"text-wrap"}
+            variant="secondary"
+            onClick={(e) => e.stopPropagation()}
+            asChild
+          >
+
+            <Link
+              target="_blank"
+              to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
+            >
+              <ExternalLinkIcon/>
+              {t("clusters.details.ovirt.event")}
+            </Link>
+          </Button>
+        </div>
+
         <SimpleDataTable
           data={events ?? []}
           columns={columns(t, handleSort, chooseSortingArrow)}

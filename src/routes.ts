@@ -51,8 +51,11 @@ export default [
       ...prefix("reservations", [
         index("./pages/Reservations/index.tsx"),
         route(":id", "./pages/Reservation/index.tsx"),
-        ...prefix("calendar", [
-          index("./pages/Reservations/ReservationCalendar.tsx")
+        ...prefix("calendar/resource-group", [
+          route(":id", "./pages/Reservations/ResourceGroupReservationCalendar.tsx")
+        ]),
+        ...prefix("calendar/resource-group-pool", [
+          route(":id", "./pages/Reservations/ResourceGroupPoolReservationCalendar.tsx")
         ]),
         ...prefix("courses", [
           route(":id", "./pages/Reservations/ReservationList.tsx"),

@@ -8,7 +8,7 @@ import { MetricDto } from "@/api";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button} from "@/components/ui/button";
 import { MoreHorizontal, PlusIcon } from "lucide-react";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import CreateMetricModal from "@/components/Modals/CreateMetricModal";
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
@@ -17,12 +17,22 @@ import SimplePagination from "@/components/SimplePagination";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { getCategory } from "@/utils/unitUtils.js";
 
 const columns = (
   t: TFunction,
   onDelete: (id: string) => void
 ): ColumnDef<MetricDto>[] => [
   { accessorKey: "name", header: t("metrics.table.columns.name") },
+  {
+    accessorKey: "category", header: t("metrics.table.columns.category") ,
+    cell: (category) => {
+      const value = getCategory(category.getValue() as string);
+      {/* @ts-expect-error this doesn't impact the page */}
+      return value.label ? t(value.label) : "";
+    },
+  },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -62,12 +72,9 @@ const MetricsPage: React.FC = () => {
   const { open } = useDialog();
   const { metrics, isLoading } = useMetrics({page: pageNumber, size: pageSize});
   const { metrics: nextMetrics, isLoading: nextLoading } = useMetrics({page: pageNumber + 1, size: pageSize});
+  const deleteId = useRef<string>();
 
   const { removeMetricAsync } = useRemoveMetric();
-
-  const handleRemoveMetric = async (id: string) => {
-    await removeMetricAsync(id);
-  };
 
   useEffect(() => {
     const checkAuthorization = async () => {
@@ -81,7 +88,6 @@ const MetricsPage: React.FC = () => {
       const userGroups = decoded.groups;
 
       if (!userGroups.includes("/ovirt-administrator")) {
-        console.log("Does not have administrator group!");
         toast.error(t("general.error.not.authorized"));
         navigate(-1);
       }
@@ -89,6 +95,11 @@ const MetricsPage: React.FC = () => {
 
     checkAuthorization();
   }, [navigate, t]);
+
+  const handleRemoveMetric = (id: string) => {
+    deleteId.current = id;
+    open("confirmation");
+  };
 
   if (isLoading || nextLoading) {
     return (
@@ -132,7 +143,15 @@ const MetricsPage: React.FC = () => {
     <>
       <PageHeader title={t("metrics.title")}/>
 
-      <CreateMetricModal/>
+      <CreateMetricModal />
+      <ConfirmationDialog
+        header={t("metrics.removeMetric.confirmation.header")}
+        text={t("metrics.removeMetric.confirmation.text")}
+        onConfirm={async () => {
+          await removeMetricAsync(deleteId.current!);
+          deleteId.current = undefined;
+        }}
+      />
 
       <div className="pb-5">
         <Button onClick={() => { open("createMetric"); }}>

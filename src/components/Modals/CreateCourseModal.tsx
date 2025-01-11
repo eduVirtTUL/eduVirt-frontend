@@ -1,17 +1,31 @@
 import React from "react";
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from "../ui/dialog";
-import {Button} from "../ui/button";
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "../ui/form";
-import {Input} from "../ui/input";
-import {Textarea} from "../ui/textarea";
-import {Switch} from "../ui/switch";
-import {useCreateCourse} from "@/data/course/useCreateCourse";
-import {useDialog} from "@/stores/dialogStore";
-import {useClusters} from "@/data/cluster/useClusters";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "../ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Switch } from "../ui/switch";
+import { useCreateCourse } from "@/data/course/useCreateCourse";
+import { useDialog } from "@/stores/dialogStore";
+import { useClusters } from "@/data/cluster/useClusters";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import {useTranslation} from "react-i18next";
 
 const createCourseSchema = z.object({
@@ -24,10 +38,10 @@ const createCourseSchema = z.object({
 type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 
 const CreateCourseModal: React.FC = () => {
-    const {isOpen, close} = useDialog();
-    const {createCourseAsync} = useCreateCourse();
-    const {clusters} = useClusters({page: 0, size: 10});
-    const {t} = useTranslation();
+  const { isOpen, close } = useDialog();
+  const { createCourseAsync } = useCreateCourse();
+  const { clusters } = useClusters({ page: 0, size: 10, sort: [] });
+  const {t} = useTranslation();
 
     const form = useForm<CreateCourseSchema>({
         resolver: zodResolver(createCourseSchema),

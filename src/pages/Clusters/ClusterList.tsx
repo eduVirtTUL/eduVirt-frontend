@@ -8,14 +8,25 @@ import SimplePagination from "@/components/SimplePagination";
 
 type ClusterListProps = {
   columns: ColumnDef<ClusterGeneralDto>[];
+  sortColumn: string | null;
+  sortDirection: 'asc' | 'desc' | null
 };
 
-const ClusterList: React.FC<ClusterListProps> = ({ columns }) => {
+const ClusterList: React.FC<ClusterListProps> = ({ columns, sortColumn, sortDirection }) => {
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
-  const { clusters, isLoading } = useClusters({page: pageNumber, size: pageSize});
-  const { clusters: nextClusters, isLoading: nextLoading } = useClusters({page: pageNumber + 1, size: pageSize});
+  const { clusters, isLoading } = useClusters({
+      page: pageNumber,
+      size: pageSize,
+      sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+  });
+
+  const { clusters: nextClusters, isLoading: nextLoading } = useClusters({
+      page: pageNumber + 1,
+      size: pageSize,
+      sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+  });
 
   if (isLoading || nextLoading) {
     return (
