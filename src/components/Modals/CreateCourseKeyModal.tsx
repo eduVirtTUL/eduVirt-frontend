@@ -5,16 +5,18 @@ import React, { useState } from "react";
 import { useCreateCourseAccessKey } from "@/data/access-key/useCreateCourseAccessKey";
 import { useDialog } from "@/stores/dialogStore";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Info } from "lucide-react";
+import {CheckIcon, Info, XCircleIcon} from "lucide-react";
+import {useTranslation} from "react-i18next";
 
-interface AddCourseKeyDialogProps {
+interface CreateCourseKeyModalProps {
   courseId: string;
 }
 
-const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
+const CreateCourseKeyModal = ({ courseId }: CreateCourseKeyModalProps) => {
   const [key, setKey] = useState("");
   const { createCourseAccessKey } = useCreateCourseAccessKey();
   const { isOpen, close } = useDialog();
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,19 +48,29 @@ const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
             </Popover>
           </div>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Input
-              id="key"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder="Enter course key..."
-              required
+                id="key"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                required
             />
           </div>
-          <Button type="submit" className="w-full">
-            Create Key
-          </Button>
+          <div className="flex flex-row justify-between">
+            <Button
+                type="button"
+                variant="secondary"
+                onClick={() => close()}
+            >
+              <XCircleIcon/>
+              {t("cancel")}
+            </Button>
+            <Button type="submit">
+              <CheckIcon/>
+              {t("create")}
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
@@ -66,4 +78,4 @@ const AddCourseKeyDialog = ({ courseId }: AddCourseKeyDialogProps) => {
   );
 };
 
-export default AddCourseKeyDialog;
+export default CreateCourseKeyModal;
