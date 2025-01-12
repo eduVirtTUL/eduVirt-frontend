@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
-type Dialog =
+export type DialogType =
+  | "deleteResourceGroupConfirmation"
   | "editVm"
   | "createResourceGroup"
   | "editCourseMetric"
@@ -21,9 +22,9 @@ type Dialog =
   | "showMaintenanceInterval";
 
 type DialogStore = {
-  opened?: Dialog;
-  isOpen: (dialog: Dialog) => boolean;
-  open: (dialog: Dialog) => void;
+  opened?: DialogType;
+  isOpen: (dialog: DialogType) => boolean;
+  open: (dialog: DialogType) => void;
   close: () => void;
 };
 

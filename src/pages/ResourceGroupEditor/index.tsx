@@ -11,6 +11,9 @@ import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useDialog } from "@/stores/dialogStore";
 import { useTranslation } from "react-i18next";
 import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGroup";
+import { useNavigate } from "react-router";
 
 export const handle = {
   noScroll: true,
@@ -20,10 +23,12 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
 }) => {
   const { t } = useTranslation();
+  const nav = useNavigate();
   const { open } = useDialog();
   const { resourceGroup } = useResourceGroup(id!);
   const [selectedVm, setSelectedVm] = React.useState<string>();
   const { setId } = useResourceGroupEditorStore();
+  const { deleteResourceGroup } = useDeleteResourceGroup();
 
   React.useEffect(() => {
     setId(id!);
@@ -31,6 +36,15 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 
   return (
     <>
+      <ConfirmationDialog
+        name="deleteResourceGroupConfirmation"
+        header={t("resourceGroupEditor.deleteResourceGroup.confirmation")}
+        text={t("resourceGroupEditor.deleteResourceGroup.confirmationText")}
+        onConfirm={() => {
+          deleteResourceGroup(id);
+          nav("/rg");
+        }}
+      />
       <AddVmModal id={id!} />
       <PageHeader
         title={resourceGroup?.name ?? ""}
@@ -50,7 +64,10 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
           <PencilIcon />
           {t("resourceGroupEditor.edit")}
         </Button>
-        <Button variant="destructive">
+        <Button
+          variant="destructive"
+          onClick={() => open("deleteResourceGroupConfirmation")}
+        >
           <Trash2Icon />
           {t("resourceGroupEditor.delete")}
         </Button>
