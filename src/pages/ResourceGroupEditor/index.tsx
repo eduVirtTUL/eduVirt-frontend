@@ -10,7 +10,11 @@ import type { Route } from ".react-router/types/src/pages/ResourceGroupEditor/+t
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useDialog } from "@/stores/dialogStore";
 import { useTranslation } from "react-i18next";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGroup";
+import { useNavigate } from "react-router";
+import EditResourceGroupModal from "./modals/EditResourceGroupModal";
 
 export const handle = {
   noScroll: true,
@@ -20,10 +24,12 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
 }) => {
   const { t } = useTranslation();
+  const nav = useNavigate();
   const { open } = useDialog();
   const { resourceGroup } = useResourceGroup(id!);
   const [selectedVm, setSelectedVm] = React.useState<string>();
   const { setId } = useResourceGroupEditorStore();
+  const { deleteResourceGroup } = useDeleteResourceGroup();
 
   React.useEffect(() => {
     setId(id!);
@@ -31,6 +37,16 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 
   return (
     <>
+      <EditResourceGroupModal rgId={id} />
+      <ConfirmationDialog
+        name="deleteResourceGroupConfirmation"
+        header={t("resourceGroupEditor.deleteResourceGroup.confirmation")}
+        text={t("resourceGroupEditor.deleteResourceGroup.confirmationText")}
+        onConfirm={() => {
+          deleteResourceGroup(id);
+          nav("/rg");
+        }}
+      />
       <AddVmModal id={id!} />
       <PageHeader
         title={resourceGroup?.name ?? ""}
@@ -45,10 +61,17 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
           <PlusIcon />
           {t("resourceGroupEditor.addVirtualMachine")}
         </Button>
-        <PrivateSegmentDrawer id={id!} />
-        <Button variant={"secondary"}>
+        <PrivateSegmentDrawer id={id} />
+        <Button variant="secondary" onClick={() => open("editResourceGroup")}>
           <PencilIcon />
           {t("resourceGroupEditor.edit")}
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => open("deleteResourceGroupConfirmation")}
+        >
+          <Trash2Icon />
+          {t("resourceGroupEditor.delete")}
         </Button>
       </div>
 

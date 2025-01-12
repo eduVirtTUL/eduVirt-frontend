@@ -25,3 +25,4 @@
 .npmignore
 .gitignore
 git_push.sh
+base.ts

@@ -344,9 +344,9 @@ export interface CreateMetricDto {
 }
 
 export const CreateMetricDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type CreateMetricDtoCategoryEnum = typeof CreateMetricDtoCategoryEnum[keyof typeof CreateMetricDtoCategoryEnum];
@@ -628,6 +628,19 @@ export interface DetailedResourceGroupPoolDto {
 /**
  * 
  * @export
+ * @interface EditVmDto
+ */
+export interface EditVmDto {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EditVmDto
+     */
+    'hidden': boolean;
+}
+/**
+ * 
+ * @export
  * @interface EventGeneralDto
  */
 export interface EventGeneralDto {
@@ -843,9 +856,9 @@ export interface MetricDto {
 }
 
 export const MetricDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type MetricDtoCategoryEnum = typeof MetricDtoCategoryEnum[keyof typeof MetricDtoCategoryEnum];
@@ -883,9 +896,9 @@ export interface MetricValueDto {
 }
 
 export const MetricValueDtoCategoryEnum = {
-    Memory: 'MEMORY',
-    Countable: 'COUNTABLE',
-    Percentage: 'PERCENTAGE'
+    VolatileMemory: 'VOLATILE_MEMORY',
+    NonVolatileMemory: 'NON_VOLATILE_MEMORY',
+    Countable: 'COUNTABLE'
 } as const;
 
 export type MetricValueDtoCategoryEnum = typeof MetricValueDtoCategoryEnum[keyof typeof MetricValueDtoCategoryEnum];
@@ -1377,10 +1390,22 @@ export interface ResourceGroupDto {
     'name'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ResourceGroupDto
+     */
+    'description'?: string;
+    /**
+     * 
      * @type {boolean}
      * @memberof ResourceGroupDto
      */
     'stateless'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceGroupDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -1581,6 +1606,31 @@ export interface UpdateMetricValueDto {
      * @memberof UpdateMetricValueDto
      */
     'value'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateResourceGroupDto
+ */
+export interface UpdateResourceGroupDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateResourceGroupDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateResourceGroupDto
+     */
+    'description': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateResourceGroupDto
+     */
+    'maxRentTime': number;
 }
 /**
  * 
@@ -7544,6 +7594,39 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteResourceGroup: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteResourceGroup', 'id', id)
+            const localVarPath = `/resource-group/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7633,6 +7716,45 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupDto} updateResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateResourceGroup: async (id: string, updateResourceGroupDto: UpdateResourceGroupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateResourceGroup', 'id', id)
+            // verify required parameter 'updateResourceGroupDto' is not null or undefined
+            assertParamExists('updateResourceGroup', 'updateResourceGroupDto', updateResourceGroupDto)
+            const localVarPath = `/resource-group/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateResourceGroupDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -7643,6 +7765,18 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
 export const ResourceGroupControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ResourceGroupControllerApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteResourceGroup(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteResourceGroup(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.deleteResourceGroup']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * 
          * @param {*} [options] Override http request option.
@@ -7677,6 +7811,19 @@ export const ResourceGroupControllerApiFp = function(configuration?: Configurati
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.getResourceGroups']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupDto} updateResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateResourceGroup(id: string, updateResourceGroupDto: UpdateResourceGroupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceGroupDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateResourceGroup(id, updateResourceGroupDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.updateResourceGroup']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -7687,6 +7834,15 @@ export const ResourceGroupControllerApiFp = function(configuration?: Configurati
 export const ResourceGroupControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ResourceGroupControllerApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteResourceGroup(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteResourceGroup(id, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {*} [options] Override http request option.
@@ -7712,6 +7868,16 @@ export const ResourceGroupControllerApiFactory = function (configuration?: Confi
         getResourceGroups(options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourceGroupDto>> {
             return localVarFp.getResourceGroups(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateResourceGroupDto} updateResourceGroupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateResourceGroup(id: string, updateResourceGroupDto: UpdateResourceGroupDto, options?: RawAxiosRequestConfig): AxiosPromise<ResourceGroupDto> {
+            return localVarFp.updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -7722,6 +7888,17 @@ export const ResourceGroupControllerApiFactory = function (configuration?: Confi
  * @extends {BaseAPI}
  */
 export class ResourceGroupControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupControllerApi
+     */
+    public deleteResourceGroup(id: string, options?: RawAxiosRequestConfig) {
+        return ResourceGroupControllerApiFp(this.configuration).deleteResourceGroup(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -7751,6 +7928,18 @@ export class ResourceGroupControllerApi extends BaseAPI {
      */
     public getResourceGroups(options?: RawAxiosRequestConfig) {
         return ResourceGroupControllerApiFp(this.configuration).getResourceGroups(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {UpdateResourceGroupDto} updateResourceGroupDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupControllerApi
+     */
+    public updateResourceGroup(id: string, updateResourceGroupDto: UpdateResourceGroupDto, options?: RawAxiosRequestConfig) {
+        return ResourceGroupControllerApiFp(this.configuration).updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -8480,15 +8669,48 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
         /**
          * 
          * @param {string} rgId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAvailableVms: async (rgId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'rgId' is not null or undefined
+            assertParamExists('getAvailableVms', 'rgId', rgId)
+            const localVarPath = `/resource-group/{rgId}/vm/available`
+                .replace(`{${"rgId"}}`, encodeURIComponent(String(rgId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} rgId 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVm1: async (rgId: string, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVm: async (rgId: string, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'rgId' is not null or undefined
-            assertParamExists('getVm1', 'rgId', rgId)
+            assertParamExists('getVm', 'rgId', rgId)
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getVm1', 'id', id)
+            assertParamExists('getVm', 'id', id)
             const localVarPath = `/resource-group/{rgId}/vm/{id}`
                 .replace(`{${"rgId"}}`, encodeURIComponent(String(rgId)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
@@ -8547,6 +8769,49 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} rgId 
+         * @param {string} id 
+         * @param {EditVmDto} editVmDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateVm: async (rgId: string, id: string, editVmDto: EditVmDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'rgId' is not null or undefined
+            assertParamExists('updateVm', 'rgId', rgId)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateVm', 'id', id)
+            // verify required parameter 'editVmDto' is not null or undefined
+            assertParamExists('updateVm', 'editVmDto', editVmDto)
+            const localVarPath = `/resource-group/{rgId}/vm/{id}`
+                .replace(`{${"rgId"}}`, encodeURIComponent(String(rgId)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(editVmDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -8586,14 +8851,26 @@ export const ResourceGroupVmControllerApiFp = function(configuration?: Configura
         /**
          * 
          * @param {string} rgId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAvailableVms(rgId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VmDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAvailableVms(rgId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupVmControllerApi.getAvailableVms']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} rgId 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVm1(rgId: string, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VmDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVm1(rgId, id, options);
+        async getVm(rgId: string, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VmDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVm(rgId, id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ResourceGroupVmControllerApi.getVm1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupVmControllerApi.getVm']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -8606,6 +8883,20 @@ export const ResourceGroupVmControllerApiFp = function(configuration?: Configura
             const localVarAxiosArgs = await localVarAxiosParamCreator.getVms(rgId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupVmControllerApi.getVms']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} rgId 
+         * @param {string} id 
+         * @param {EditVmDto} editVmDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateVm(rgId: string, id: string, editVmDto: EditVmDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateVm(rgId, id, editVmDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResourceGroupVmControllerApi.updateVm']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -8641,12 +8932,21 @@ export const ResourceGroupVmControllerApiFactory = function (configuration?: Con
         /**
          * 
          * @param {string} rgId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAvailableVms(rgId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<VmDto>> {
+            return localVarFp.getAvailableVms(rgId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} rgId 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVm1(rgId: string, id: string, options?: RawAxiosRequestConfig): AxiosPromise<VmDto> {
-            return localVarFp.getVm1(rgId, id, options).then((request) => request(axios, basePath));
+        getVm(rgId: string, id: string, options?: RawAxiosRequestConfig): AxiosPromise<VmDto> {
+            return localVarFp.getVm(rgId, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -8656,6 +8956,17 @@ export const ResourceGroupVmControllerApiFactory = function (configuration?: Con
          */
         getVms(rgId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<VmDto>> {
             return localVarFp.getVms(rgId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} rgId 
+         * @param {string} id 
+         * @param {EditVmDto} editVmDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateVm(rgId: string, id: string, editVmDto: EditVmDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateVm(rgId, id, editVmDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8694,13 +9005,24 @@ export class ResourceGroupVmControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} rgId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupVmControllerApi
+     */
+    public getAvailableVms(rgId: string, options?: RawAxiosRequestConfig) {
+        return ResourceGroupVmControllerApiFp(this.configuration).getAvailableVms(rgId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} rgId 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ResourceGroupVmControllerApi
      */
-    public getVm1(rgId: string, id: string, options?: RawAxiosRequestConfig) {
-        return ResourceGroupVmControllerApiFp(this.configuration).getVm1(rgId, id, options).then((request) => request(this.axios, this.basePath));
+    public getVm(rgId: string, id: string, options?: RawAxiosRequestConfig) {
+        return ResourceGroupVmControllerApiFp(this.configuration).getVm(rgId, id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8712,6 +9034,19 @@ export class ResourceGroupVmControllerApi extends BaseAPI {
      */
     public getVms(rgId: string, options?: RawAxiosRequestConfig) {
         return ResourceGroupVmControllerApiFp(this.configuration).getVms(rgId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} rgId 
+     * @param {string} id 
+     * @param {EditVmDto} editVmDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResourceGroupVmControllerApi
+     */
+    public updateVm(rgId: string, id: string, editVmDto: EditVmDto, options?: RawAxiosRequestConfig) {
+        return ResourceGroupVmControllerApiFp(this.configuration).updateVm(rgId, id, editVmDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -9955,9 +10290,9 @@ export const VmControllerApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVm: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVm1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getVm', 'id', id)
+            assertParamExists('getVm1', 'id', id)
             const localVarPath = `/resource/vm/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -10064,10 +10399,10 @@ export const VmControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVm(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VmDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVm(id, options);
+        async getVm1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VmDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVm1(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VmControllerApi.getVm']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['VmControllerApi.getVm1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -10125,8 +10460,8 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVm(id: string, options?: RawAxiosRequestConfig): AxiosPromise<VmDto> {
-            return localVarFp.getVm(id, options).then((request) => request(axios, basePath));
+        getVm1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<VmDto> {
+            return localVarFp.getVm1(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -10187,8 +10522,8 @@ export class VmControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof VmControllerApi
      */
-    public getVm(id: string, options?: RawAxiosRequestConfig) {
-        return VmControllerApiFp(this.configuration).getVm(id, options).then((request) => request(this.axios, this.basePath));
+    public getVm1(id: string, options?: RawAxiosRequestConfig) {
+        return VmControllerApiFp(this.configuration).getVm1(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

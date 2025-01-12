@@ -9,10 +9,15 @@ type CreateStatelessResourceGroup = {
 
 export const useCreateStatelessResourceGroup = () => {
   const queryClient = useQueryClient();
+  const token = localStorage.getItem("token") ?? "";
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, ...org }: CreateStatelessResourceGroup) => {
       const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.addResourceGroupToPool(id, org);
+      const response = await controller.addResourceGroupToPool(id, org, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     },
     onSuccess: (_, { id }) => {

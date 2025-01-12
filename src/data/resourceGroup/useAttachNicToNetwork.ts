@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
+import { injectToken } from "@/utils/requestUtils";
 
 type Data = {
   networkId: string;
@@ -14,7 +15,11 @@ export const useAttachNicToNetwork = () => {
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ networkId, ...original }: Data) => {
       const controller = new PrivateNetworkControllerApi();
-      const response = await controller.attachNicToNetwork(networkId, original);
+      const response = await controller.attachNicToNetwork(
+        networkId,
+        original,
+        { ...injectToken() }
+      );
       return response.data;
     },
     onSuccess: (_, variables) => {
