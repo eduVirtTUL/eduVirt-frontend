@@ -25,48 +25,64 @@ const AvailableMachinesList: React.FC<AvailableMachinesListProps> = ({
   const start = currentPage * pageSize;
   const end = start + pageSize;
 
+  const data =
+    vms
+      ?.filter((vm) =>
+        vm.name?.toLowerCase().includes(searchText.toLowerCase())
+      )
+      .slice(start, end) ?? [];
+
   return (
     <div className="flex flex-col gap-6">
       <Input
         placeholder={t("addVmModal.searchPlaceholder")}
         onChange={(e) => setText(e.target.value)}
+        value={text}
       />
-      <RadioGroup onValueChange={onValueChange}>
-        <div className="flex flex-col max-w-full gap-4">
-          {vms
-            ?.filter((vm) =>
-              vm.name?.toLowerCase().includes(searchText.toLowerCase())
-            )
-            .slice(start, end)
-            .map((vm) => (
-              <div className="w-[456px] flex flex-row items-center gap-2">
-                <RadioGroupItem value={vm.id ?? ""} />
-                <span className="break-words flex-1 w-full">{vm.name}</span>
-              </div>
-            ))}
-        </div>
-      </RadioGroup>
-      <div className="flex flex-row justify-center">
-        <div className="flex flex-row items-center gap-4">
-          <Button
-            variant="outline"
-            disabled={currentPage === 0}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-          >
-            <ChevronLeft />
-          </Button>
-          <span>
-            {currentPage + 1} / {Math.ceil((vms?.length ?? 0) / pageSize)}
+      {data.length === 0 ? (
+        <div className="flex flex-col items-center">
+          <span className="font-bold text-lg">
+            {t("addVmModal.noVirtualMachines")}
           </span>
-          <Button
-            variant="outline"
-            disabled={end >= (vms?.length ?? 0)}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-          >
-            <ChevronRight />
-          </Button>
+          <span className="text-center">
+            {t("addVmModal.noVirtualMachinesDescription")}
+          </span>
         </div>
-      </div>
+      ) : (
+        <>
+          <RadioGroup onValueChange={onValueChange}>
+            <div className="flex flex-col max-w-full gap-4">
+              {data.map((vm) => (
+                <div className="w-[456px] flex flex-row items-center gap-2">
+                  <RadioGroupItem value={vm.id ?? ""} />
+                  <span className="break-words flex-1 w-full">{vm.name}</span>
+                </div>
+              ))}
+            </div>
+          </RadioGroup>
+          <div className="flex flex-row justify-center">
+            <div className="flex flex-row items-center gap-4">
+              <Button
+                variant="outline"
+                disabled={currentPage === 0}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+              >
+                <ChevronLeft />
+              </Button>
+              <span>
+                {currentPage + 1} / {Math.ceil((vms?.length ?? 0) / pageSize)}
+              </span>
+              <Button
+                variant="outline"
+                disabled={end >= (vms?.length ?? 0)}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

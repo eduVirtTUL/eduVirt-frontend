@@ -215,6 +215,9 @@ const addVmModal = {
   hidden: "Ukryte",
   hiddenDescription:
     "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
+  noVirtualMachines: "Brak maszyn wirtualnych",
+  noVirtualMachinesDescription:
+    "Nie znaleziono maszyn wirtualnych spełniających kryteria wyszukiwania. Upewnij się, że maszyna, której szukasz znajduje się w odpowiednim klastrze.",
 };
 
 const removeVmModal = {
