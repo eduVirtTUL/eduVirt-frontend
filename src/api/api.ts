@@ -2999,6 +2999,43 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addUserToCourse: async (courseId: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('addUserToCourse', 'courseId', courseId)
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('addUserToCourse', 'userId', userId)
+            const localVarPath = `/course/{courseId}/{userId}`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {CreateResourceGroupDto} createResourceGroupDto 
          * @param {*} [options] Override http request option.
@@ -3432,6 +3469,19 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addUserToCourse(courseId: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addUserToCourse(courseId, userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.addUserToCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {CreateResourceGroupDto} createResourceGroupDto 
          * @param {*} [options] Override http request option.
@@ -3582,6 +3632,16 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addUserToCourse(courseId: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addUserToCourse(courseId, userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {CreateResourceGroupDto} createResourceGroupDto 
          * @param {*} [options] Override http request option.
@@ -3700,6 +3760,18 @@ export class CourseControllerApi extends BaseAPI {
      */
     public addCourse(createCourseDto: CreateCourseDto, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).addCourse(createCourseDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public addUserToCourse(courseId: string, userId: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).addUserToCourse(courseId, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5061,6 +5133,39 @@ export const OVirtUserControllerApiAxiosParamCreator = function (configuration?:
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} principal 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserByPrincipal: async (principal: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'principal' is not null or undefined
+            assertParamExists('getUserByPrincipal', 'principal', principal)
+            const localVarPath = `/resources/users/principal/{principal}`
+                .replace(`{${"principal"}}`, encodeURIComponent(String(principal)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -5105,6 +5210,18 @@ export const OVirtUserControllerApiFp = function(configuration?: Configuration) 
             const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getUserById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} principal 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserByPrincipal(principal, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getUserByPrincipal']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -5139,6 +5256,15 @@ export const OVirtUserControllerApiFactory = function (configuration?: Configura
          */
         getUserById(userId: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.getUserById(userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} principal 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.getUserByPrincipal(principal, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5179,6 +5305,17 @@ export class OVirtUserControllerApi extends BaseAPI {
      */
     public getUserById(userId: string, options?: RawAxiosRequestConfig) {
         return OVirtUserControllerApiFp(this.configuration).getUserById(userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} principal 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OVirtUserControllerApi
+     */
+    public getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig) {
+        return OVirtUserControllerApiFp(this.configuration).getUserByPrincipal(principal, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -8688,6 +8825,43 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addUserToTeam: async (teamId: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'teamId' is not null or undefined
+            assertParamExists('addUserToTeam', 'teamId', teamId)
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('addUserToTeam', 'userId', userId)
+            const localVarPath = `/teams/{teamId}/{userId}`
+                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CreateTeamDto} createTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8932,13 +9106,50 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             if (teamId !== undefined) {
                 localVarQueryParameter['teamId'] = teamId;
             }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeUserFromTeam: async (teamId: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'teamId' is not null or undefined
+            assertParamExists('removeUserFromTeam', 'teamId', teamId)
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('removeUserFromTeam', 'userId', userId)
+            const localVarPath = `/teams/{teamId}/{userId}`
+                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
 
 
     
@@ -9000,6 +9211,19 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
 export const TeamControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = TeamControllerApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addUserToTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addUserToTeam(teamId, userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.addUserToTeam']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * 
          * @param {CreateTeamDto} createTeamDto 
@@ -9091,6 +9315,19 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removeUserFromTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeUserFromTeam(teamId, userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.removeUserFromTeam']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {UpdateTeamDto} updateTeamDto 
          * @param {*} [options] Override http request option.
@@ -9112,6 +9349,16 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
 export const TeamControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = TeamControllerApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addUserToTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addUserToTeam(teamId, userId, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {CreateTeamDto} createTeamDto 
@@ -9182,6 +9429,16 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
+         * @param {string} teamId 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeUserFromTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.removeUserFromTeam(teamId, userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {UpdateTeamDto} updateTeamDto 
          * @param {*} [options] Override http request option.
@@ -9200,6 +9457,18 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
  * @extends {BaseAPI}
  */
 export class TeamControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} teamId 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TeamControllerApi
+     */
+    public addUserToTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).addUserToTeam(teamId, userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {CreateTeamDto} createTeamDto 
@@ -9280,6 +9549,18 @@ export class TeamControllerApi extends BaseAPI {
      */
     public leaveTeam(teamId: string, options?: RawAxiosRequestConfig) {
         return TeamControllerApiFp(this.configuration).leaveTeam(teamId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} teamId 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TeamControllerApi
+     */
+    public removeUserFromTeam(teamId: string, userId: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).removeUserFromTeam(teamId, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

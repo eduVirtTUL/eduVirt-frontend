@@ -60,7 +60,7 @@ const teamDetails = {
     teamMembers: "Członkowie zespołu",
     teamEmpty: "Zespół jest pusty",
     assignedPods: "Pody przypisane do zespołu",
-    noPods: "Brak przypisanych podów do tego zespołu",
+    noPods: "Ten zespół nie posiada żadnych przypisanych podów",
     error: {
         notInTeam: "Aby wyświetlić szczegóły zespołu, musisz być jego członkiem",
         teamNotFound: "Nie znaleziono zespołu",
@@ -111,8 +111,9 @@ const coursePageB = {
       },
       dropdownMenu: {
             editTeam: "Edytuj",
-            manageStatefulPods: "Zarządzaj podami stanowymi",
-            manageStatelessPods: "Zarządzaj podami bezstanowymi",
+            manageUsers: "Członkowie",
+            manageStatefulPods: "Pody stanowe",
+            manageStatelessPods: "Pody bezstanowe",
       }
     }
 }
@@ -186,6 +187,20 @@ const editTeamModal = {
     success: "Zespół został zaktualizowany pomyślnie",
 };
 
+const manageTeamUsersModal = {
+    title: "Członkowie zespołu ",
+    remove: "Usuń",
+    add: "Dodaj",
+    noUsers: "Ten zespół jest pusty",
+    delete: {
+        title: "Usuń użytkownika",
+        title2: "z zespołu",
+        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć użytkownika",
+    
+    }
+
+}
+
 const createTeamModal = {
     title: "Tworzenie zespołu",
     singleTab: "Pojedynczy zespół",
@@ -228,4 +243,5 @@ export default {
     editTeam: editTeamModal,
     createTeam: createTeamModal,
     createCourseKey: createCourseKeyModal,
+    manageTeamUsers: manageTeamUsersModal,
 };

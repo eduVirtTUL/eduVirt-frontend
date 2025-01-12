@@ -84,6 +84,7 @@ export default {
   yes: "Tak",
   no: "Nie",
   join: "Dołącz",
+  close: "Zamknij",
   menu,
   units,
   general,

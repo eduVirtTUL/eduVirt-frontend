@@ -9,10 +9,14 @@ import {
     ChevronLeft,
     ChevronRight,
     Copy,
+    FileCheck,
+    FileCheck2,
+    FileX2,
     Info,
     MoreHorizontal,
     PencilIcon,
     PlusIcon,
+    SmilePlus,
     TrashIcon,
 } from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -48,11 +52,12 @@ import {
     PaginationItem,
     PaginationLink
 } from "@/components/ui/pagination";
+import { ManageTeamUsersModal } from "@/components/Modals/ManageTeamUsersModal";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
     const {course} = useCourse(id);
-    const {open} = useDialog();
+    const { open, close } = useDialog();
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
     const [pageNumber, setPageNumber] = useState(0);
     const pageSize = 4;
@@ -62,6 +67,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const [editingTeam, setEditingTeam] = useState<TeamDto | null>(null);
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
     const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
+    const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
     const isTeamBased = course?.courseType === "TEAM_BASED";
     const {course: courseAccessKey, isLoading: isCourseAccessKeyLoading} =
         useCourseAccessKey(id, {
@@ -192,7 +198,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuItem onClick={() => setEditingTeam(row.original)}>
+                            <PencilIcon/>
                             {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {
+                            setSelectedTeamForUsers(row.original);
+                            open("manageTeamUsers");
+                        }}>
+                            <SmilePlus/>
+                            {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => {
@@ -200,6 +214,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 setManageStatefulPodsOpen(true);
                             }}
                         >
+                            <FileCheck2/>
                             {t("coursePageB.teamsTable.dropdownMenu.manageStatefulPods")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -208,6 +223,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 setManageStatelessPodsOpen(true);
                             }}
                         >
+                            <FileX2/>
                             {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -439,6 +455,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             }}
                         />
                     ))}
+                {selectedTeamForUsers && (
+                    <ManageTeamUsersModal
+                        team={{
+                            id: selectedTeamForUsers.id!,
+                            name: selectedTeamForUsers.name!,
+                            users: selectedTeamForUsers.users ?? [],
+                        }}
+                    />
+                )}
             </div>
         </>
     );

@@ -9,7 +9,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {useResourceGroups} from "@/data/resourceGroup/useResourceGroups"
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam"
 import {useResourceGroupVms} from "@/data/resourceGroup/useResourceGroupVms"
-import {AlertTriangle, ChevronDown, ChevronRight, ExternalLink, PlusIcon, Trash2} from "lucide-react"
+import {AlertTriangle, ChevronDown, ChevronRight, CircleAlert, ExternalLink, PlusIcon, Trash2} from "lucide-react"
 import {cn} from "@/lib/utils"
 import {Badge} from "@/components/ui/badge"
 import {useResourceGroupsWithPods} from "@/data/resourceGroup/useResourceGroupsWithPods"
@@ -73,7 +73,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                             </Button>
                         </Badge>
                         {(!isLoading && hasPod) && (
-                            <AlertTriangle className="h-4 w-4"/>
+                            <CircleAlert className="h-4 w-4"/>
                         )}
                         {(!isLoading && vms?.length === 0) && (
                             <AlertTriangle className="h-4 w-4 text-orange-500"/>
@@ -86,7 +86,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                     <div className="flex flex-col gap-2">
                         {hasPod && (
                             <div className="flex items-center gap-2 mb-2">
-                                <AlertTriangle className="h-4 w-4"/>
+                                <CircleAlert className="h-4 w-4"/>
                                 <div>{t("statefulPodManagement.alerts.hasAssociatedPod")}</div>
                             </div>
                         )}

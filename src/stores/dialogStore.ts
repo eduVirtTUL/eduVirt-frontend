@@ -18,6 +18,7 @@ type Dialog =
   | "createCourseKey"
   | "createInterval"
   | "showMaintenanceInterval"
+  | "manageTeamUsers"  // Add this line
 
 type DialogStore = {
   opened?: Dialog;
