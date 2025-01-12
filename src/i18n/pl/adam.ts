@@ -146,6 +146,7 @@ const resourceGroupEditor = {
   type: "Grupa zasobów",
   addVirtualMachine: "Dodaj maszynę wirtualną",
   edit: "Edytuj",
+  delete: "Usuń",
   privateSegments: {
     button: "Segmenty prywatne",
     title: "Zarządzaj segmentami prywatnymi",
@@ -194,6 +195,17 @@ const resourceGroupEditor = {
     attach: "Przyłącz",
     attachTitle: "Przyłącz interfejs do segmentu prywatnego",
     selectPrivateSegment: "Wybierz segment prywatny",
+  },
+  deleteResourceGroup: {
+    confirmation: "Czy na pewno chcesz usunąć tę grupę zasobów?",
+    confirmationText:
+      "Grupa zasobów zostanie usunięta. Wszystkie maszyny wirtualne przypisane do tej grupy zasobów zostaną usunięte. Tej operacji nie można cofnąć.",
+    success: "Grupa zasobów została usunięta",
+    error: "Nie udało się usunąć grupy zasobów",
+  },
+  updateResourceGroup: {
+    success: "Grupa zasobów została zaktualizowana",
+    error: "Nie udało się zaktualizować grupy zasobów",
   },
 };
 

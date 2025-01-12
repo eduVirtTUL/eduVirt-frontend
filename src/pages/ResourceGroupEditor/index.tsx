@@ -10,7 +10,7 @@ import type { Route } from ".react-router/types/src/pages/ResourceGroupEditor/+t
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useDialog } from "@/stores/dialogStore";
 import { useTranslation } from "react-i18next";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 
 export const handle = {
   noScroll: true,
@@ -49,6 +49,10 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
         <Button variant={"secondary"}>
           <PencilIcon />
           {t("resourceGroupEditor.edit")}
+        </Button>
+        <Button variant="destructive">
+          <Trash2Icon />
+          {t("resourceGroupEditor.delete")}
         </Button>
       </div>
 
