@@ -1,4 +1,4 @@
-import { useDialog } from "@/stores/dialogStore";
+import { DialogType, useDialog } from "@/stores/dialogStore";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +11,7 @@ import { CheckIcon, CircleXIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 type ConfirmationDialogProps = {
+  name?: DialogType;
   header: string;
   text: React.ReactNode;
   onClose?: () => void;
@@ -21,12 +22,13 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
   text,
   header,
+  name = "confirmation",
 }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
 
   return (
-    <Dialog open={isOpen("confirmation")} onOpenChange={() => close()}>
+    <Dialog open={isOpen(name)} onOpenChange={() => close()}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{header}</DialogTitle>

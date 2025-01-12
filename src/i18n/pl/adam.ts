@@ -97,6 +97,7 @@ const resourceGroupPoolPage = {
     maxRentTime: "Maksymalny czas wypożyczenia",
   },
   type: "Pula grup zasobów",
+  openEditor: "Otwórz edytor",
 };
 
 const createResourceGroupModal = {
@@ -139,12 +140,15 @@ const coursePools = {
 const editResourceGroupPoolModal = {
   title: "Edytuj pulę grup zasobów",
   button: "Edytuj",
+  success: "Pula grup zasobów została zaktualizowana",
+  error: "Nie udało się zaktualizować puli grup zasobów",
 };
 
 const resourceGroupEditor = {
   type: "Grupa zasobów",
   addVirtualMachine: "Dodaj maszynę wirtualną",
   edit: "Edytuj",
+  delete: "Usuń",
   privateSegments: {
     button: "Segmenty prywatne",
     title: "Zarządzaj segmentami prywatnymi",
@@ -167,11 +171,12 @@ const resourceGroupEditor = {
   virtualMachinesList: {
     title: "Maszyny wirtualne",
     hidden: "Ukryte",
-    cpu: "cVPU",
+    cpu: "vCPU",
     memory: "MiB",
     interfaces: "NICs",
     edit: "Edytuj",
     ovirt: "oVirt",
+    noMachines: "Grupa nie zawiera maszyn wirtualnych",
   },
   interfaceList: {
     title: "Interfejsy",
@@ -193,6 +198,56 @@ const resourceGroupEditor = {
     attachTitle: "Przyłącz interfejs do segmentu prywatnego",
     selectPrivateSegment: "Wybierz segment prywatny",
   },
+  deleteResourceGroup: {
+    confirmation: "Czy na pewno chcesz usunąć tę grupę zasobów?",
+    confirmationText:
+      "Grupa zasobów zostanie usunięta. Wszystkie maszyny wirtualne przypisane do tej grupy zasobów zostaną usunięte. Tej operacji nie można cofnąć.",
+    success: "Grupa zasobów została usunięta",
+    error: "Nie udało się usunąć grupy zasobów",
+  },
+  updateResourceGroup: {
+    success: "Grupa zasobów została zaktualizowana",
+    error: "Nie udało się zaktualizować grupy zasobów",
+  },
+};
+
+const addVmModal = {
+  title: "Dodaj maszynę wirtualną do grupy zasobów",
+  searchPlaceholder: "Wyszukaj maszynę wirtualną...",
+  hidden: "Ukryte",
+  hiddenDescription:
+    "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
+  noVirtualMachines: "Brak maszyn wirtualnych",
+  noVirtualMachinesDescription:
+    "Nie znaleziono maszyn wirtualnych spełniających kryteria wyszukiwania. Upewnij się, że maszyna, której szukasz znajduje się w odpowiednim klastrze.",
+};
+
+const removeVmModal = {
+  confirmation: "Czy na pewno chcesz usunąć tę maszynę wirtualną?",
+  confirmationText:
+    "Maszyna wirtualna zostanie usunięta z grupy zasobów. Tej operacji nie można cofnąć.",
+  success: "Maszyna wirtualna została usunięta",
+  error: "Nie udało się usunąć maszyny wirtualnej",
+};
+
+const editVmModal = {
+  title: "Edytuj maszynę wirtualną",
+  hidden: "Ukryte",
+  hiddenDescription:
+    "Ukryte maszyny wirtualne nie będą widoczne dla studentów.",
+  success: "Maszyna wirtualna została zaktualizowana",
+  error: "Nie udało się zaktualizować maszyny wirtualnej",
+};
+
+const editResourceGroupModal = {
+  title: "Edytuj grupę zasobów",
+  name: "Nazwa",
+  description: "Opis",
+  maxRentTime: "Maksymalny czas wypożyczenia",
+  descriptionInPoolWarning:
+    "Bezstanowa grupa zasobów posiada opis z puli grup zasobów",
+  maxRentTimeInPoolWarning:
+    "Bezstanowa grupa zasobów posiada maksymalny czas wypożyczenia z puli grup zasobów",
 };
 
 export default {
@@ -206,4 +261,8 @@ export default {
   coursePools,
   coursePage,
   resourceGroupEditor,
+  addVmModal,
+  removeVmModal,
+  editVmModal,
+  editResourceGroupModal,
 };

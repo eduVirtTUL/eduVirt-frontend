@@ -7,11 +7,16 @@ type CreateRgPool = Required<CreateRGPoolDto>;
 
 export const useCreatePool = () => {
   const client = useQueryClient();
+  const token = localStorage.getItem("token") ?? "";
   const { mutate, mutateAsync } = useMutation({
     mutationKey: ["createPool"],
     mutationFn: async (pool: CreateRgPool) => {
       const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.createResourceGroupPool(pool);
+      const response = await controller.createResourceGroupPool(pool, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     },
     onError: (error) => {

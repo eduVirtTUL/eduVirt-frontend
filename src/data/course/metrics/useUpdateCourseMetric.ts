@@ -1,5 +1,6 @@
 import { CourseMetricControllerApi, UpdateMetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
+import { injectToken } from "@/utils/requestUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -22,7 +23,10 @@ export const useUpdateCourseMetric = () => {
       const response = await controller.updateMetric(
         courseId,
         metricId,
-        original
+        original,
+        {
+          ...injectToken(),
+        }
       );
       return response.data;
     },

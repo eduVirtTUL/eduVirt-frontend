@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -23,11 +16,12 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useTranslation } from "react-i18next";
-import { PencilIcon, SaveIcon, XCircleIcon } from "lucide-react";
+import { SaveIcon, XCircleIcon } from "lucide-react";
 import { useResourceGroupPool } from "@/data/rgPool/useResourceGroupPool";
 import RentTimeSelector from "../RentTimeSelector";
 import { TFunction } from "i18next";
 import { useUpdateResourceGroupPool } from "@/data/rgPool/useUpdateResourceGroupPool";
+import { useDialog } from "@/stores/dialogStore";
 
 const editResourceGroupPoolSchema = (t: TFunction) =>
   z.object({
@@ -74,6 +68,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
   poolId,
 }) => {
   const { t } = useTranslation();
+  const { isOpen, close } = useDialog();
   const { resourceGroupPool } = useResourceGroupPool(poolId);
   const { updateResourceGroupPoolAsync } = useUpdateResourceGroupPool();
   const form = useForm<EditResourceGroupPoolSchema>({
@@ -91,16 +86,11 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
       id: poolId,
       ...data,
     });
+    close();
   });
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="secondary">
-          <PencilIcon />
-          {t("editResourceGroupPoolModal.button")}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen("editResourceGroupPool")} onOpenChange={() => close()}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("editResourceGroupPoolModal.title")}</DialogTitle>
@@ -183,17 +173,15 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
               )}
             />
             <div className="flex flex-row justify-between">
-              <DialogClose
-                asChild
+              <Button
+                variant="secondary"
                 onClick={() => {
-                  form.reset();
+                  close();
                 }}
               >
-                <Button variant="secondary">
-                  <XCircleIcon />
-                  {t("cancel")}
-                </Button>
-              </DialogClose>
+                <XCircleIcon />
+                {t("cancel")}
+              </Button>
               <Button type="submit">
                 <SaveIcon />
                 {t("save")}

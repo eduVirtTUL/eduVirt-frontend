@@ -3,6 +3,7 @@ import { CourseControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useCreateCourse = () => {
   const queryClient = useQueryClient();
@@ -10,7 +11,7 @@ export const useCreateCourse = () => {
     mutationKey: ["createCourse"],
     mutationFn: async (course: CreateCourseDto) => {
       const controller = new CourseControllerApi();
-      const response = await controller.addCourse(course);
+      const response = await controller.addCourse(course, { ...injectToken() });
       return response.data;
     },
     onSuccess: () => {

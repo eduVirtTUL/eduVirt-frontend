@@ -1,3 +1,4 @@
+import { injectToken } from "./../../utils/requestUtils";
 import { AddVmDto } from "./../../api/api";
 import { ResourceGroupVmControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,12 +9,14 @@ export const useAddResourceGroupVm = (id: string) => {
   const { mutate } = useMutation({
     mutationFn: async (data: AddVmDto) => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.addVm(id, data);
+      const response = await controller.addVm(id, data, {
+        ...injectToken(),
+      });
       return response.data;
     },
     onSuccess: () => {
       // Invalidate the resourceGroupVms query to refetch the data
-      queryClient.invalidateQueries({ queryKey: ["resourceGroup", id] });
+      queryClient.invalidateQueries({ queryKey: ["resourceGroup", id, "vm"] });
       queryClient.invalidateQueries({ queryKey: ["vm"] });
       toast.success("VM added successfully!");
     },

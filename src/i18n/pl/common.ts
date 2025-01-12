@@ -83,6 +83,7 @@ export default {
   create: "Utwórz",
   yes: "Tak",
   no: "Nie",
+  add: "Dodaj",
   join: "Dołącz",
   close: "Zamknij",
   menu,

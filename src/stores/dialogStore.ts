@@ -1,6 +1,10 @@
 import { create } from "zustand";
 
-type Dialog =
+export type DialogType =
+  | "editResourceGroupPool"
+  | "editResourceGroup"
+  | "deleteResourceGroupConfirmation"
+  | "editVm"
   | "createResourceGroup"
   | "editCourseMetric"
   | "createCourseMetricValue"
@@ -16,14 +20,13 @@ type Dialog =
   | "createReservation"
   | "createInterval"
   | "createCourseKey"
-  | "createInterval"
   | "showMaintenanceInterval"
-  | "manageTeamUsers"  // Add this line
+  | "manageTeamUsers"
 
 type DialogStore = {
-  opened?: Dialog;
-  isOpen: (dialog: Dialog) => boolean;
-  open: (dialog: Dialog) => void;
+  opened?: DialogType;
+  isOpen: (dialog: DialogType) => boolean;
+  open: (dialog: DialogType) => void;
   close: () => void;
 };
 
