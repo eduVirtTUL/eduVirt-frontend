@@ -16,7 +16,7 @@ export const useAddResourceGroupVm = (id: string) => {
     },
     onSuccess: () => {
       // Invalidate the resourceGroupVms query to refetch the data
-      queryClient.invalidateQueries({ queryKey: ["resourceGroup", id] });
+      queryClient.invalidateQueries({ queryKey: ["resourceGroup", id, "vm"] });
       queryClient.invalidateQueries({ queryKey: ["vm"] });
       toast.success("VM added successfully!");
     },

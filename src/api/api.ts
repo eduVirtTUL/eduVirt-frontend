@@ -1390,10 +1390,22 @@ export interface ResourceGroupDto {
     'name'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ResourceGroupDto
+     */
+    'description'?: string;
+    /**
+     * 
      * @type {boolean}
      * @memberof ResourceGroupDto
      */
     'stateless'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceGroupDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 

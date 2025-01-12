@@ -237,6 +237,13 @@ const editVmModal = {
   error: "Nie udało się zaktualizować maszyny wirtualnej",
 };
 
+const editResourceGroupModal = {
+  title: "Edytuj grupę zasobów",
+  name: "Nazwa",
+  description: "Opis",
+  maxRentTime: "Maksymalny czas wypożyczenia",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -251,4 +258,5 @@ export default {
   addVmModal,
   removeVmModal,
   editVmModal,
+  editResourceGroupModal,
 };

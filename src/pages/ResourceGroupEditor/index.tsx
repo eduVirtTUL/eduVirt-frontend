@@ -14,6 +14,7 @@ import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGroup";
 import { useNavigate } from "react-router";
+import EditResourceGroupModal from "./modals/EditResourceGroupModal";
 
 export const handle = {
   noScroll: true,
@@ -36,6 +37,7 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 
   return (
     <>
+      <EditResourceGroupModal rgId={id} />
       <ConfirmationDialog
         name="deleteResourceGroupConfirmation"
         header={t("resourceGroupEditor.deleteResourceGroup.confirmation")}
@@ -59,8 +61,8 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
           <PlusIcon />
           {t("resourceGroupEditor.addVirtualMachine")}
         </Button>
-        <PrivateSegmentDrawer id={id!} />
-        <Button variant={"secondary"}>
+        <PrivateSegmentDrawer id={id} />
+        <Button variant="secondary" onClick={() => open("editResourceGroup")}>
           <PencilIcon />
           {t("resourceGroupEditor.edit")}
         </Button>
