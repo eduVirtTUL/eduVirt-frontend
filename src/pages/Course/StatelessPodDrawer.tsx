@@ -36,6 +36,10 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
 
     const podsArray = Array.isArray(statelessPods) ? statelessPods : []
 
+    const isPoolAssigned = (poolId: string) => {
+        return podsArray.some(pod => pod.resourceGroupPool?.id === poolId);
+    };
+
     const handleSubmit = () => {
         if (selectedPool) {
             createStatelessPod({teamId, resourceGroupPoolId: selectedPool})
@@ -86,7 +90,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                                     <TableRow key={pool.id}>
                                                         <TableCell>
                                                             <Checkbox
-                                                                checked={selectedPool === pool.id}
+                                                                checked={selectedPool === pool.id || isPoolAssigned(pool.id!)}
                                                                 onCheckedChange={(checked) => {
                                                                     if (checked) {
                                                                         setSelectedPool(pool.id!)
@@ -94,9 +98,14 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                                                         setSelectedPool(null)
                                                                     }
                                                                 }}
+                                                                disabled={isPoolAssigned(pool.id!)}
                                                             />
                                                         </TableCell>
-                                                        <TableCell>{pool.name}</TableCell>
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-2">
+                                                                <span>{pool.name}</span>
+                                                            </div>
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>

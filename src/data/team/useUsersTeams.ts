@@ -7,9 +7,9 @@ interface JwtPayload {
     sub: string;
 }
 
-export const useUsersTeams = () => {
+export const useUsersTeams = (pageNumber?: number, pageSize?: number) => {
     const { data, isLoading } = useQuery({
-        queryKey: [keys.TEAM],
+        queryKey: [keys.TEAM, pageNumber, pageSize],
         queryFn: async () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -20,7 +20,7 @@ export const useUsersTeams = () => {
             const userId = decoded.sub;
 
             const teamController = new TeamControllerApi();
-            const response = await teamController.getTeamsByUser(userId);
+            const response = await teamController.getTeamsByUser(userId, pageNumber, pageSize);
             return response.data;
         },
     });
