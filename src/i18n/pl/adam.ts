@@ -140,6 +140,8 @@ const coursePools = {
 const editResourceGroupPoolModal = {
   title: "Edytuj pulę grup zasobów",
   button: "Edytuj",
+  success: "Pula grup zasobów została zaktualizowana",
+  error: "Nie udało się zaktualizować puli grup zasobów",
 };
 
 const resourceGroupEditor = {
@@ -242,6 +244,10 @@ const editResourceGroupModal = {
   name: "Nazwa",
   description: "Opis",
   maxRentTime: "Maksymalny czas wypożyczenia",
+  descriptionInPoolWarning:
+    "Bezstanowa grupa zasobów posiada opis z puli grup zasobów",
+  maxRentTimeInPoolWarning:
+    "Bezstanowa grupa zasobów posiada maksymalny czas wypożyczenia z puli grup zasobów",
 };
 
 export default {

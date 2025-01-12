@@ -9,6 +9,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,13 +31,13 @@ type EditResourceGroupModalProps = {
   rgId: string;
 };
 
-const editResourceGroupModal = z.object({
+const editResourceGroupModalSchema = z.object({
   name: z.string().min(1).max(50),
   description: z.string().min(1).max(1000),
   maxRentTime: z.coerce.number().min(1),
 });
 
-type EditResourceGroupModal = z.infer<typeof editResourceGroupModal>;
+type EditResourceGroupModal = z.infer<typeof editResourceGroupModalSchema>;
 
 const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
   rgId,
@@ -45,7 +46,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
   const { isOpen, close } = useDialog();
   const { resourceGroup } = useResourceGroup(rgId);
   const form = useForm<EditResourceGroupModal>({
-    resolver: zodResolver(editResourceGroupModal),
+    resolver: zodResolver(editResourceGroupModalSchema),
     values: {
       name: resourceGroup?.name ?? "",
       description: resourceGroup?.description ?? "",
@@ -92,8 +93,13 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
                     {t("editResourceGroupModal.description")}
                   </FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} disabled={resourceGroup?.stateless} />
                   </FormControl>
+                  {resourceGroup?.stateless && (
+                    <FormDescription>
+                      {t("editResourceGroupModal.descriptionInPoolWarning")}
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,12 +116,17 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
                     <RentTimeSelector
                       value={field.value?.toString() ?? ""}
                       onChange={field.onChange}
-                      //   disabled={isPool}
+                      disabled={resourceGroup?.stateless}
                       start={0}
                       stop={4 * 60}
                       step={20}
                     />
                   </FormControl>
+                  {resourceGroup?.stateless && (
+                    <FormDescription>
+                      {t("editResourceGroupModal.maxRentTimeInPoolWarning")}
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}

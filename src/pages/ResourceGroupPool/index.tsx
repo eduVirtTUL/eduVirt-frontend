@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ValueDisplay from "@/components/ValueDisplay";
 import { useResourceGroupPool } from "@/data/rgPool/useResourceGroupPool";
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { Route } from "./+types/index";
 import { useDialog } from "@/stores/dialogStore";
 import CreateResourceGroupModal from "@/components/Modals/CreateResourceGroupModal";
@@ -44,6 +44,7 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           await createStatelessResourceGroupAsync({ id, ...data });
         }}
       />
+      <EditResourceGroupPoolModal poolId={id} />
       <PageHeader
         title={resourceGroupPool?.name ?? ""}
         type={t("resourceGroupPoolPage.type")}
@@ -55,7 +56,13 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
               <div className="flex flex-row items-center justify-between">
                 <span>{t("resourceGroupPoolPage.poolSettings")}</span>
                 <div className="flex flex-row items-center justify-start gap-2">
-                  <EditResourceGroupPoolModal poolId={id} />
+                  <Button
+                    variant="secondary"
+                    onClick={() => open("editResourceGroupPool")}
+                  >
+                    <PencilIcon />
+                    {t("editResourceGroupPoolModal.button")}
+                  </Button>
                   <Button
                     variant="destructive"
                     onClick={() => open("confirmation")}

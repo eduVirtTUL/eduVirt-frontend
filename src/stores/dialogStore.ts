@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export type DialogType =
+  | "editResourceGroupPool"
   | "editResourceGroup"
   | "deleteResourceGroupConfirmation"
   | "editVm"
