@@ -1,10 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { TeamControllerApi } from "@/api";
-import { keys } from "../keys";
 import { toast } from "sonner";
 
 export const useAddUserToTeam = (teamId: string) => {
-    const queryClient = useQueryClient();
     
     const { mutateAsync: addUser } = useMutation({
         mutationFn: async (userId: string) => {
@@ -20,7 +18,6 @@ export const useAddUserToTeam = (teamId: string) => {
             return response.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: keys.TEAM_USERS(teamId) });
             toast.success("User added to team");
         },
         onError: (error: Error) => {

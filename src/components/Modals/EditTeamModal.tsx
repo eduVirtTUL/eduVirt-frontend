@@ -10,6 +10,11 @@ import { useUpdateTeam } from "@/data/team/useUpdateTeam"
 import { CheckIcon, XCircleIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
+interface UserDto {
+    id: string;
+    name: string;
+}
+
 interface EditTeamModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -18,7 +23,7 @@ interface EditTeamModalProps {
         name: string;
         maxSize: number;
         active: boolean;
-        users: string[];
+        users: UserDto[];  // Changed from string[] to UserDto[]
     };
     existingNames: string[];
 }

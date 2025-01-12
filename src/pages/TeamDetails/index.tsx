@@ -41,24 +41,18 @@ const TeamDetailsPage: React.FC = () => {
     useEffect(() => {
         const checkAuthorization = async () => {
             const token = localStorage.getItem('token');
-            // if (!token) {
-            //     navigate('/teams');
-            //     return;
-            // }
 
             const decoded = jwtDecode<{ sub: string }>(token||'');
             const userId = decoded.sub;
 
             if (!isLoading && team) {
-                if (!team.users?.includes(userId)) {
+                if (!team.users?.some(user => user.id === userId)) {
                     toast.error(t("teamDetails.error.notInTeam"));
-                    // navigate('/teams');
                 } else {
                     setIsAuthorized(true);
                 }
             } else if (!isLoading && !team) {
                 toast.error(t("teamDetails.error.teamNotFound"));
-                // navigate('/teams');
             }
         };
 
@@ -184,15 +178,26 @@ const TeamDetailsPage: React.FC = () => {
                                     <div className="grid gap-4 md:grid-cols-3">
                                         {teamMembers.map(user => (
                                             <div
-                                                key={user}
+                                                key={user.id}
                                                 className="flex items-center space-x-4 rounded-lg border p-4"
                                             >
                                                 <div
                                                     className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-                                                    <span className="text-lg">U</span>
+                                                    <span className="text-lg">
+                                                        {user.firstName?.[0] || user.userName?.[0] || 'U'}
+                                                    </span>
                                                 </div>
-                                                <div>
-                                                    <p className="font-medium text-sm break-all">{user}</p>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="font-medium text-sm truncate">
+                                                        {user.firstName && user.lastName 
+                                                            ? `${user.firstName} ${user.lastName}`
+                                                            : user.userName || user.email}
+                                                    </p>
+                                                    {user.email && user.email !== user.userName && (
+                                                        <p className="text-xs text-muted-foreground truncate">
+                                                            {user.email}
+                                                        </p>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

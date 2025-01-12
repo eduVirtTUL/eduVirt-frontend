@@ -46,7 +46,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
       const userId = decoded.sub;
 
       if (!isLoading && team) {
-        if (team.users?.includes(userId)) {
+        if (team.users?.some(user => user.id === userId)) {
           setAuthorized(true);
         }
       }

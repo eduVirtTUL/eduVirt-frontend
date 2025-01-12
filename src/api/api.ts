@@ -1559,10 +1559,10 @@ export interface TeamDto {
     'maxSize'?: number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<UserDto>}
      * @memberof TeamDto
      */
-    'users'?: Array<string>;
+    'users'?: Array<UserDto>;
 }
 /**
  * 
@@ -1596,10 +1596,10 @@ export interface TeamWithCourseDto {
     'maxSize'?: number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<UserDto>}
      * @memberof TeamWithCourseDto
      */
-    'users'?: Array<string>;
+    'users'?: Array<UserDto>;
     /**
      * 
      * @type {CourseBasicDto}
@@ -1675,6 +1675,49 @@ export interface UpdateTeamDto {
      * @memberof UpdateTeamDto
      */
     'active'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface UserDto
+ */
+export interface UserDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'oVirtId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'userName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'firstName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'lastName'?: string;
 }
 /**
  * 
@@ -8835,7 +8878,7 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('addUserToTeam', 'teamId', teamId)
             // verify required parameter 'userId' is not null or undefined
             assertParamExists('addUserToTeam', 'userId', userId)
-            const localVarPath = `/teams/{teamId}/{userId}`
+            const localVarPath = `/teams/add/{teamId}/{userId}`
                 .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9106,7 +9149,7 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -9137,7 +9180,7 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('removeUserFromTeam', 'teamId', teamId)
             // verify required parameter 'userId' is not null or undefined
             assertParamExists('removeUserFromTeam', 'userId', userId)
-            const localVarPath = `/teams/{teamId}/{userId}`
+            const localVarPath = `/teams/remove/{teamId}/{userId}`
                 .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)))
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9147,7 +9190,7 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 

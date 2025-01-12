@@ -9,7 +9,6 @@ import {
     ChevronLeft,
     ChevronRight,
     Copy,
-    FileCheck,
     FileCheck2,
     FileX2,
     Info,
@@ -32,7 +31,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 import StatelessPodDrawer from "./StatelessPodDrawer";
 import {useTeamsInCourseAccessKeys} from "@/data/access-key/useTeamsInCourseAccessKeys";
 import {StatusDot} from "@/components/StatusDot";
-import {TeamDto} from "@/api";
+import {TeamDto, UserDto} from "@/api";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
@@ -57,7 +56,7 @@ import { ManageTeamUsersModal } from "@/components/Modals/ManageTeamUsersModal";
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
     const {course} = useCourse(id);
-    const { open, close } = useDialog();
+    const { open } = useDialog();
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
     const [pageNumber, setPageNumber] = useState(0);
     const pageSize = 4;
@@ -119,9 +118,13 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                         {t("coursePageB.teamsTable.columns.noMembers")}
                                     </div>
                                 ) : (
-                                    users.map((user: string) => (
-                                        <div key={user}>
-                                            <Badge variant="outline">{user}</Badge>
+                                    users.map((user: UserDto) => (
+                                        <div key={user.id}>
+                                            <Badge variant="outline">
+                                                {user.firstName && user.lastName 
+                                                    ? `${user.firstName} ${user.lastName}`
+                                                    : user.userName || user.email}
+                                            </Badge>
                                         </div>
                                     ))
                                 )}
@@ -436,7 +439,10 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 name: editingTeam.name ?? "",
                                 maxSize: editingTeam.maxSize ?? 0,
                                 active: editingTeam.active ?? false,
-                                users: editingTeam.users ?? [],
+                                users: (editingTeam.users ?? []).map(user => ({
+                                    id: user.id!,
+                                    name: user.userName || user.email || ''
+                                })),
                             }}
                             existingNames={
                                 teams?.items
