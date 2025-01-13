@@ -275,9 +275,9 @@ const editVmModal = {
 
 const editResourceGroupModal = {
   title: "Edytuj grupę zasobów",
-  name: "Nazwa",
+  name: "Nazwa*",
   description: "Opis",
-  maxRentTime: "Maksymalny czas wypożyczenia",
+  maxRentTime: "Maksymalny czas rezerwacji*",
   descriptionInPoolWarning:
     "Bezstanowa grupa zasobów posiada opis z puli grup zasobów",
   maxRentTimeInPoolWarning:

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 
 type UpdateResourceGroupPool = {
   id: string;
-} & Required<UpdateResourceGroupPoolDto>;
+} & UpdateResourceGroupPoolDto;
 
 export const useUpdateResourceGroupPool = () => {
   const { t } = useTranslation();
