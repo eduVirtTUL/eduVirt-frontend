@@ -175,7 +175,10 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                 <XCircleIcon />
                 {t("cancel")}
               </Button>
-              <Button type="submit">
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid}
+              >
                 <CheckIcon />
                 {t("create")}
               </Button>

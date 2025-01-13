@@ -173,7 +173,10 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                 <XCircleIcon />
                 {t("cancel")}
               </Button>
-              <Button type="submit">
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid}
+              >
                 <CheckIcon />
                 {t("create")}
               </Button>
