@@ -126,6 +126,9 @@ const coursePage = {
   deleteAction: {
     success: "Przedmiot został usunięty",
     error: "Nie udało się usunąć przedmiotu",
+    confirmation: "Czy na pewno chcesz usunąć ten przedmiot?",
+    confirmationText:
+      "Przedmiot zostanie usunięty. Wszystkie grupy zasobów przypisane do tego przedmiotu zostaną usunięte. Tej operacji nie można cofnąć.",
   },
   updateAction: {
     success: "Przedmiot został zaktualizowany",
