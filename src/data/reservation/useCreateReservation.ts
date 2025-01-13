@@ -3,6 +3,7 @@ import { CreateReservationDto, ReservationControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseCreateReservation = {
   course: string;
@@ -19,8 +20,7 @@ export const useCreateReservation = ({
     mutationFn: async (createDto: CreateReservationDto) => {
       const controller = new ReservationControllerApi();
       const response = await controller.createNewReservationForPod(
-        course, pod, createDto,
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        course, pod, createDto, { ...injectToken() }
       );
       return response.data;
     },

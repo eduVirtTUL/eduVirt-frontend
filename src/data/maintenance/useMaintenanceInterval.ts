@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { MaintenanceIntervalControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useMaintenanceInterval = (
   intervalId: string
@@ -11,7 +12,7 @@ export const useMaintenanceInterval = (
       const controller = new MaintenanceIntervalControllerApi();
       const response = await controller
         .getMaintenanceInterval(
-          intervalId, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          intervalId, { ...injectToken() }
         );
 
       return response.data;

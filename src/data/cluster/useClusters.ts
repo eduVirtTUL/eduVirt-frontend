@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ClusterControllerApi } from "@/api";
 import { keys } from "@/data/keys";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseClustersParams = {
   page: number;
@@ -16,8 +17,7 @@ export const useClusters = ({
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findAllClusters(
-        { page: page, size: size, sort: sort },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { page: page, size: size, sort: sort }, { ...injectToken() }
       );
       return response.data;
     },

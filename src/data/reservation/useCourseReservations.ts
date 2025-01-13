@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { ReservationControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseCourseReservationsParams = {
   id: string,
@@ -20,13 +21,11 @@ export const useCourseReservations = ({
 
       if (active)
         response = await controller.getActiveReservations(
-          id, page, size,
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          id, page, size, { ...injectToken() }
         );
       else
         response = await controller.getHistoricReservations(
-          id, page, size,
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          id, page, size, { ...injectToken() }
         );
 
       if (response.status === 204) return [];

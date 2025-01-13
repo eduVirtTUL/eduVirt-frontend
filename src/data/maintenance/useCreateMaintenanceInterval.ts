@@ -6,6 +6,7 @@ import {
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useCreateMaintenanceInterval = (
   clusterId: string | undefined
@@ -20,11 +21,11 @@ export const useCreateMaintenanceInterval = (
 
       if (clusterId != undefined)
         response = await controller.createNewClusterMaintenanceInterval(
-          clusterId, createDto, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          clusterId, createDto, { ...injectToken() }
         );
       else
         response = await controller.createNewSystemMaintenanceInterval(
-            createDto, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+            createDto, { ...injectToken() }
         );
 
       return response.data;

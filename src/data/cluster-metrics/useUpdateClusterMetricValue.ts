@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ClusterMetricControllerApi, ValueDto } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useUpdateClusterMetricValue = (clusterId: string, metricId: string) => {
   const { t } = useTranslation();
@@ -13,8 +14,7 @@ export const useUpdateClusterMetricValue = (clusterId: string, metricId: string)
     mutationFn: async (updateDto: ValueDto) => {
       const controller = new ClusterMetricControllerApi();
       const response = await controller.updateMetricValue(
-        clusterId, metricId, updateDto,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        clusterId, metricId, updateDto, { ...injectToken() }
       );
       return response.data;
     },

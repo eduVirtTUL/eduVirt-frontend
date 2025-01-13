@@ -3,6 +3,7 @@ import { ClusterMetricControllerApi, CreateMetricValueDto } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useCreateClusterMetricValue = (id: string) => {
   const { t } = useTranslation();
@@ -12,8 +13,7 @@ export const useCreateClusterMetricValue = (id: string) => {
     mutationFn: async (createDto: CreateMetricValueDto) => {
       const controller = new ClusterMetricControllerApi();
       const response = await controller.createMetricValue(
-        id, createDto,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        id, createDto, { ...injectToken() }
       );
       return response.data;
     },

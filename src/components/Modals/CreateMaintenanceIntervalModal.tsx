@@ -20,8 +20,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {useTranslation} from "react-i18next";
-import {TFunction} from "i18next";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import { CheckIcon, XCircleIcon } from "lucide-react";
 
 type CreateMaintenanceIntervalModalProps = {
   clusterId: string | undefined;
@@ -160,11 +161,26 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                   </FormItem>
                 )}
               />
-              <div className="flex flex-row justify-center col-span-2">
-                <Button type="submit" className={"w-1/2"}>
-                  {t("maintenanceIntervals.createMaintenanceInterval.submit")}
-                </Button>
-              </div>
+              <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  form.reset();
+                  close();
+                }}
+              >
+                <XCircleIcon />
+                {t("cancel")}
+              </Button>
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid}
+              >
+                <CheckIcon />
+                {t("create")}
+              </Button>
+            </div>
             </form>
           </Form>
         </DialogContent>

@@ -3,7 +3,7 @@ import { useDialog } from "@/stores/dialogStore";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {MetricValueDto, ValueDto} from "@/api";
+import { MetricValueDto } from "@/api";
 import {
   Dialog,
   DialogContent,
@@ -23,8 +23,20 @@ import { Button } from "@/components/ui/button";
 import React, {useEffect} from "react";
 import { useUpdateClusterMetricValue } from "@/data/cluster-metrics/useUpdateClusterMetricValue";
 import { TFunction } from "i18next";
-import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {
+  convertValue,
+  getBaseUnitForCategory,
+  getUnitsCategory,
+  UnitDefinition
+} from "@/utils/unitUtils.js";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {CheckIcon, SaveIcon, XCircleIcon} from "lucide-react";
 
 type UpdateClusterMetricValueProps = {
   clusterId: string;
@@ -143,7 +155,26 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
                 }}
               />
             )}
-          <Button type="submit">{t("clusterMetricValues.updateClusterMetricValue.submit")}</Button>
+          <div className="flex flex-row justify-between">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                form.reset();
+                close();
+              }}
+            >
+              <XCircleIcon />
+              {t("cancel")}
+            </Button>
+            <Button
+              type="submit"
+              disabled={!form.formState.isValid}
+            >
+                <SaveIcon />
+              {t("clusterMetricValues.updateClusterMetricValue.save")}
+            </Button>
+          </div>
         </form>
       </Form>
     </DialogContent>
