@@ -123,6 +123,14 @@ const coursePage = {
   edit: "Edytuj",
   delete: "Usuń",
   limits: "Metryki",
+  deleteAction: {
+    success: "Przedmiot został usunięty",
+    error: "Nie udało się usunąć przedmiotu",
+  },
+  updateAction: {
+    success: "Przedmiot został zaktualizowany",
+    error: "Nie udało się zaktualizować przedmiotu",
+  },
 };
 
 const courseStatefulResourceGroups = {
