@@ -118,51 +118,60 @@ const CoursesPage: React.FC = () => {
           {t("courseListPage.clear")}
         </Button>
       </div>
-      <DataTable data={courses?.items ?? []} columns={columns(t)} />
-      <Pagination className="mt-5">
-        <PaginationContent>
-          {pageNumber > 0 && (
-            <>
-              <PaginationItem>
-                <PaginationPrevious
-                  href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            </>
-          )}
-          <PaginationItem>
-            <PaginationLink
-              href={`/courses?page=${pageNumber}&size=${pageSize}`}
-              isActive
-            >
-              {pageNumber + 1}
-            </PaginationLink>
-          </PaginationItem>
-          {(courses?.page?.totalPages ?? 0) > pageNumber + 1 && (
+      <DataTable
+        data={courses?.items ?? []}
+        columns={columns(t)}
+        onRowClick={(row) => {
+          const course = row.original;
+          console.log("Row clicked", course.id);
+        }}
+      />
+      {courses?.items?.length !== 0 && (
+        <Pagination className="mt-5">
+          <PaginationContent>
+            {pageNumber > 0 && (
+              <>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
             <PaginationItem>
               <PaginationLink
-                href={`/courses?page=${pageNumber + 1}&size=${pageSize}`}
+                href={`/courses?page=${pageNumber}&size=${pageSize}`}
+                isActive
               >
-                {pageNumber + 2}
+                {pageNumber + 1}
               </PaginationLink>
             </PaginationItem>
-          )}
-          {courses?.page?.totalPages !== pageNumber + 1 && (
-            <PaginationItem>
-              <PaginationNext
-                href={`/courses?page=${pageNumber + 1}&size=${pageSize}`}
-              />
-            </PaginationItem>
-          )}
-        </PaginationContent>
-      </Pagination>
+            {(courses?.page?.totalPages ?? 0) > pageNumber + 1 && (
+              <PaginationItem>
+                <PaginationLink
+                  href={`/courses?page=${pageNumber + 1}&size=${pageSize}`}
+                >
+                  {pageNumber + 2}
+                </PaginationLink>
+              </PaginationItem>
+            )}
+            {courses?.page?.totalPages !== pageNumber + 1 && (
+              <PaginationItem>
+                <PaginationNext
+                  href={`/courses?page=${pageNumber + 1}&size=${pageSize}`}
+                />
+              </PaginationItem>
+            )}
+          </PaginationContent>
+        </Pagination>
+      )}
     </>
   );
 };
