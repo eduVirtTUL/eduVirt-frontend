@@ -119,11 +119,13 @@ const createResourceGroupModal = {
 
 const coursePage = {
   title: "Przedmiot",
-  settings: "Ustawienia przedmiotu",
+  details: "Szczegóły",
   edit: "Edytuj",
   delete: "Usuń",
   reset: "Resetuj",
   limits: "Metryki",
+  description: "Opis",
+  externalLink: "Link zewnętrzny",
   deleteAction: {
     success: "Przedmiot został usunięty",
     error: "Nie udało się usunąć przedmiotu",

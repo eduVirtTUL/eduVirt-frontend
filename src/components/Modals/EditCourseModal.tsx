@@ -59,10 +59,17 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
     },
   });
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    await updateCourseAsync({ id, ...data });
-    close();
-  });
+  const handleSubmit = form.handleSubmit(
+    async ({ name, description, externalLink }) => {
+      await updateCourseAsync({
+        id,
+        name,
+        description: description === "" ? undefined : description,
+        externalLink: externalLink === "" ? undefined : externalLink,
+      });
+      close();
+    }
+  );
 
   return (
     <Dialog

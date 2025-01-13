@@ -6,9 +6,11 @@ import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
+  ChartCandlestickIcon,
   ChevronLeft,
   ChevronRight,
   Copy,
+  ExternalLinkIcon,
   FileCheck2,
   FileX2,
   Info,
@@ -66,6 +68,7 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteCourse } from "@/data/course/useDeleteCourse";
 import EditCourseModal from "@/components/Modals/EditCourseModal";
 import { useResetCourse } from "@/data/course/useResetCourse";
+import ValueDisplay from "@/components/ValueDisplay";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { t } = useTranslation();
@@ -280,103 +283,124 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
       <CreatePoolModal courseId={id} />
       <CreateCourseKeyModal courseId={id} />
       <PageHeader title={course?.name ?? ""} type={t("coursePage.title")} />
+      <div className="flex flex-row gap-2 justify-end mb-5">
+        <Button asChild>
+          <Link to={`limits`}>
+            <ChartCandlestickIcon />
+            {t("coursePage.limits")}
+          </Link>
+        </Button>
+        <Button variant="secondary" onClick={() => open("editCourse")}>
+          <PencilIcon />
+          {t("coursePage.edit")}
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => open("resetCourseConfirmation")}
+        >
+          <RefreshCcw />
+          {t("coursePage.reset")}
+        </Button>
+        <Button variant="destructive" onClick={() => open("confirmation")}>
+          <Trash2Icon />
+          {t("coursePage.delete")}
+        </Button>
+      </div>
       <div className="space-y-6">
-        <div className="flex space-x-4">
-          <Card className="w-1/2">
-            <CardHeader className="flex flex-row justify-between items-center">
-              <CardTitle>{t("coursePage.settings")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-row gap-2">
-                <Button asChild>
-                  <Link to={`limits`}>{t("coursePage.limits")}</Link>
-                </Button>
-                <Button variant="secondary" onClick={() => open("editCourse")}>
-                  <PencilIcon />
-                  {t("coursePage.edit")}
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={() => open("resetCourseConfirmation")}
-                >
-                  <RefreshCcw />
-                  {t("coursePage.reset")}
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={() => open("confirmation")}
-                >
-                  <Trash2Icon />
-                  {t("coursePage.delete")}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className={isTeamBased ? "w-1/2" : "w-1/4"}>
-            <CardHeader>
-              <CardTitle>{t("coursePageB.courseTypeCard.title")}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge variant={isTeamBased ? "default" : "secondary"}>
-                  {isTeamBased
-                    ? t("courseType.teamBased")
-                    : t("courseType.solo")}
-                </Badge>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" />
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80">
-                    <p className="text-sm">
-                      {isTeamBased
-                        ? t("courseType.teamBasedDescription")
-                        : t("courseType.soloDescription")}
-                    </p>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </CardContent>
-          </Card>
-          {!isTeamBased && (
-            <Card className="w-1/4">
-              <CardHeader>
-                <CardTitle>
-                  {t("coursePageB.courseAccessKeyCard.title")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {isCourseAccessKeyLoading ? (
-                  <Skeleton className="h-8 w-full" />
-                ) : courseAccessKey?.keyValue ? (
+        <Card>
+          <CardHeader className="flex flex-row justify-between items-center">
+            <CardTitle>{t("coursePage.details")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <ValueDisplay
+                className="col-span-2"
+                label={t("coursePage.description")}
+                value={course?.description ?? "-"}
+              />
+              <ValueDisplay
+                className="col-span-2"
+                label={t("coursePage.externalLink")}
+                value={
+                  course?.externalLink ? (
+                    <Link
+                      to={course.externalLink}
+                      className="flex flex-row items-center gap-2"
+                      target="_blank"
+                    >
+                      {course.externalLink}
+                      <ExternalLinkIcon className="w-4 h-4" />
+                    </Link>
+                  ) : (
+                    "-"
+                  )
+                }
+              />
+              <ValueDisplay
+                label={t("coursePageB.courseTypeCard.title")}
+                value={
                   <div className="flex items-center gap-2">
-                    <Badge variant="destructive">
-                      {courseAccessKey.keyValue}
+                    <Badge variant={isTeamBased ? "default" : "secondary"}>
+                      {isTeamBased
+                        ? t("courseType.teamBased")
+                        : t("courseType.solo")}
                     </Badge>
-                    <Copy
-                      className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          courseAccessKey.keyValue || ""
-                        );
-                        toast.success(
-                          t("coursePageB.courseAccessKeyCard.keyCopiedToast")
-                        );
-                      }}
-                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80">
+                        <p className="text-sm">
+                          {isTeamBased
+                            ? t("courseType.teamBasedDescription")
+                            : t("courseType.soloDescription")}
+                        </p>
+                      </PopoverContent>
+                    </Popover>
                   </div>
-                ) : (
-                  <>
-                    <Button onClick={() => open("createCourseKey")}>
-                      <PlusIcon />
-                      {t("coursePageB.courseAccessKeyCard.button")}
-                    </Button>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          )}
-        </div>
+                }
+              />
+              {!isTeamBased && (
+                <ValueDisplay
+                  label={t("coursePageB.courseAccessKeyCard.title")}
+                  value={
+                    <>
+                      {isCourseAccessKeyLoading ? (
+                        <Skeleton className="h-8 w-full" />
+                      ) : courseAccessKey?.keyValue ? (
+                        <div className="flex items-center gap-2">
+                          <Badge variant="destructive">
+                            {courseAccessKey.keyValue}
+                          </Badge>
+                          <Copy
+                            className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                courseAccessKey.keyValue || ""
+                              );
+                              toast.success(
+                                t(
+                                  "coursePageB.courseAccessKeyCard.keyCopiedToast"
+                                )
+                              );
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <Button onClick={() => open("createCourseKey")}>
+                            <PlusIcon />
+                            {t("coursePageB.courseAccessKeyCard.button")}
+                          </Button>
+                        </>
+                      )}
+                    </>
+                  }
+                />
+              )}
+            </div>
+          </CardContent>
+        </Card>
         <StatefulResourceGroups courseId={id} />
         <Card>
           <CardHeader>
