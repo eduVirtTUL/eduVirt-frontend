@@ -1,6 +1,7 @@
-import {useQuery} from "@tanstack/react-query";
-import {keys} from "@/data/keys";
+import { useQuery } from "@tanstack/react-query";
+import { keys } from "@/data/keys";
 import { VmControllerApi } from "@/api";
+import {injectToken} from "@/utils/requestUtils";
 
 type UseVmEventsParam = {
   id: string,
@@ -17,8 +18,7 @@ export const useVmEvents = ({
     queryFn: async () => {
       const controller = new VmControllerApi();
       const response = await controller.findEventsForVm(
-        id, {page: page, size: size, sort: sort},
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        id, {page: page, size: size, sort: sort}, { ...injectToken() }
       );
 
       if (response.status === 204) return [];

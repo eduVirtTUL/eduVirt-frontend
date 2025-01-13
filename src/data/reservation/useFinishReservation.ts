@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReservationControllerApi } from "@/api";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useFinishReservation = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ export const useFinishReservation = () => {
     mutationFn: async (id: string) => {
       const controller = new ReservationControllerApi();
       const response = await controller.finishReservation(
-        id, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        id, { ...injectToken() }
       );
       return response.data;
     },

@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {Button} from "@/components/ui/button";
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router";
-import {useFinishReservation} from "@/data/reservation/useFinishReservation";
-import {useTeam} from "@/data/team/useTeam";
-import {jwtDecode} from "jwt-decode";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {Info} from "lucide-react";
+import { Button} from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useFinishReservation } from "@/data/reservation/useFinishReservation";
+import { useTeam } from "@/data/team/useTeam";
+import { jwtDecode } from "jwt-decode";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Info } from "lucide-react";
 
 type ReservationDetailsProps = {
   reservation: ReservationDetailsDto,
@@ -90,7 +90,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
                   <PopoverTrigger asChild>
                     <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" />
                   </PopoverTrigger>
-                  <PopoverContent className="w-80">
+                  <PopoverContent side="left" className="w-80">
                     <p className="text-sm">
                       {/* @ts-expect-error this doesn't impact the page */}
                       {t(field.popOver.content, { delayTime: 0 })}

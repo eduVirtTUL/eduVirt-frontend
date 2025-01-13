@@ -32,8 +32,8 @@ import { MetricDto } from "@/api";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
-import { Loader2 } from "lucide-react";
-import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
+import { CheckIcon, Loader2, XCircleIcon } from "lucide-react";
+import { convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition } from "@/utils/unitUtils.js";
 
 type CreateClusterMetricValueProps = {
   clusterId: string;
@@ -225,9 +225,21 @@ const CreateClusterMetricValueModal: React.FC<
                 }}
               />
             )}
-            <div className="flex flex-row justify-between col-span-2">
+            <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  form.reset();
+                  close();
+                }}
+              >
+                <XCircleIcon />
+                {t("cancel")}
+              </Button>
               <Button type="submit">
-                {t("clusterMetricValues.createClusterMetricValue.submit")}
+                <CheckIcon />
+                {t("create")}
               </Button>
             </div>
           </form>

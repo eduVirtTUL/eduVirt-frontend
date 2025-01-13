@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { ClusterControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseHostsParams = {
   id: string,
@@ -17,8 +18,7 @@ export const useHosts = ({
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findHostInfoByClusterId(
-        { page: page, size: size, sort: sort }, id,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { page: page, size: size, sort: sort }, id, { ...injectToken() }
       );
       return response.data ?? [];
     },

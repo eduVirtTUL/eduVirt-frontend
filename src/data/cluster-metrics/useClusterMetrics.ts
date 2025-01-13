@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ClusterMetricControllerApi } from "@/api";
 import { keys } from "@/data/keys";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseClusterMetricsParams = {
   id: string;
@@ -16,8 +17,7 @@ export const useClusterMetrics = ({
     queryFn: async() => {
       const controller = new ClusterMetricControllerApi();
       const response = await controller.getAllMetricValues(
-        id, page, size,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        id, page, size, { ...injectToken() }
       );
       return response.data.items ?? [];
     },
