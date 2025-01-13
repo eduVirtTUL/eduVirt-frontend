@@ -88,6 +88,7 @@ export default {
   close: "Zamknij",
   status: "Status",
   noResults: "Brak wyników",
+  requiredFieldDescription: "(*) - pole wymagane",
   menu,
   units,
   general,

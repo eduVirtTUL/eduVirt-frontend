@@ -38,7 +38,6 @@ const createCourseSchema = (t: TFunction) =>
       .max(50, t("createCourseModal.validation.nameMaxLenght")),
     description: z
       .string()
-      .min(1, t("createCourseModal.validation.descriptionRequired"))
       .max(1000, t("createCourseModal.validation.descriptionMaxLenght")),
     courseType: z.enum(["SOLO", "TEAM_BASED"]),
     clusterId: z
@@ -83,6 +82,7 @@ const CreateCourseModal: React.FC = () => {
       open={isOpen("createCourse")}
       onOpenChange={() => {
         close();
+        form.reset();
       }}
     >
       <DialogContent>
@@ -91,38 +91,13 @@ const CreateCourseModal: React.FC = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("createCourseModal.name")}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("createCourseModal.description")}</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="externalLink"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("createCourseModal.externalLink")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -156,6 +131,32 @@ const CreateCourseModal: React.FC = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("createCourseModal.description")}</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="externalLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("createCourseModal.externalLink")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

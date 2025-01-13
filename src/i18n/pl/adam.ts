@@ -297,14 +297,13 @@ const courseListPage = {
 
 const createCourseModal = {
   title: "Utwórz nowy przedmiot",
-  name: "Nazwa",
+  name: "Nazwa*",
   description: "Opis",
-  cluster: "Klaster",
+  cluster: "Klaster*",
   selectCluster: "Wybierz klaster",
   externalLink: "Link zewnętrzny",
   validation: {
     nameRequired: "Nazwa przedmiotu jest wymagana",
-    descriptionRequired: "Opis przedmiotu jest wymagany",
     nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
     descriptionMaxLenght:
       "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
