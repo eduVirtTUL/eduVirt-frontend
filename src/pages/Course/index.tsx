@@ -15,8 +15,9 @@ import {
   MoreHorizontal,
   PencilIcon,
   PlusIcon,
+  RefreshCcw,
   SmilePlus,
-  TrashIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCourseTeams } from "@/data/team/useCoursesTeams";
@@ -64,6 +65,7 @@ import { ManageTeamUsersModal } from "@/components/Modals/ManageTeamUsersModal";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteCourse } from "@/data/course/useDeleteCourse";
 import EditCourseModal from "@/components/Modals/EditCourseModal";
+import { useResetCourse } from "@/data/course/useResetCourse";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { t } = useTranslation();
@@ -72,7 +74,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { courseResourceGroupPools } = useCourseResourceGroupPools(id);
   const [pageNumber, setPageNumber] = useState(0);
   const pageSize = 4;
-  const { teams, isLoading } = useCourseTeams(id!, pageNumber, pageSize);
+  const { teams, isLoading } = useCourseTeams(id, pageNumber, pageSize);
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const [editingTeam, setEditingTeam] = useState<TeamDto | null>(null);
   const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
@@ -85,6 +87,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
       enabled: !isTeamBased,
     });
   const { deleteCourseAsync } = useDeleteCourse();
+  const { resetCourseAsync } = useResetCourse();
 
   const teamQueries = useTeamsInCourseAccessKeys(
     teams?.items.map((team) => team.id!) ?? [],
@@ -266,6 +269,14 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
           deleteCourseAsync(id);
         }}
       />
+      <ConfirmationDialog
+        header={t("coursePage.resetAction.confirmation")}
+        text={t("coursePage.resetAction.confirmationText")}
+        onConfirm={() => {
+          resetCourseAsync(id);
+        }}
+        name="resetCourseConfirmation"
+      />
       <CreatePoolModal courseId={id} />
       <CreateCourseKeyModal courseId={id} />
       <PageHeader title={course?.name ?? ""} type={t("coursePage.title")} />
@@ -286,9 +297,16 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                 </Button>
                 <Button
                   variant="destructive"
+                  onClick={() => open("resetCourseConfirmation")}
+                >
+                  <RefreshCcw />
+                  {t("coursePage.reset")}
+                </Button>
+                <Button
+                  variant="destructive"
                   onClick={() => open("confirmation")}
                 >
-                  <TrashIcon />
+                  <Trash2Icon />
                   {t("coursePage.delete")}
                 </Button>
               </div>

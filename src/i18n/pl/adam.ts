@@ -122,6 +122,7 @@ const coursePage = {
   settings: "Ustawienia przedmiotu",
   edit: "Edytuj",
   delete: "Usuń",
+  reset: "Resetuj",
   limits: "Metryki",
   deleteAction: {
     success: "Przedmiot został usunięty",
@@ -133,6 +134,13 @@ const coursePage = {
   updateAction: {
     success: "Przedmiot został zaktualizowany",
     error: "Nie udało się zaktualizować przedmiotu",
+  },
+  resetAction: {
+    confirmation: "Czy na pewno chcesz zresetować ten przedmiot?",
+    confirmationText:
+      "Wysztkie zespoły, pody oraz rezerwacje zostaną usunięte. Grupy zasobów i pulę pozostaną bez zmian. Tej operacji nie można cofnąć.",
+    success: "Przedmiot został zresetowany",
+    error: "Nie udało się zresetować przedmiotu",
   },
 };
 
