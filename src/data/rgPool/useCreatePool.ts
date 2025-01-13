@@ -2,29 +2,27 @@ import { CreateRGPoolDto, ResourceGroupPoolControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
-
-type CreateRgPool = Required<CreateRGPoolDto>;
+import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useCreatePool = () => {
+  const { t } = useTranslation();
   const client = useQueryClient();
-  const token = localStorage.getItem("token") ?? "";
   const { mutate, mutateAsync } = useMutation({
     mutationKey: ["createPool"],
-    mutationFn: async (pool: CreateRgPool) => {
+    mutationFn: async (pool: CreateRGPoolDto) => {
       const controller = new ResourceGroupPoolControllerApi();
       const response = await controller.createResourceGroupPool(pool, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        ...injectToken(),
       });
       return response.data;
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to create resource group pool");
+      toast.error(t("createResourceGroupPoolModal.error"));
     },
     onSuccess: () => {
-      toast.success("Resource group pool created");
+      toast.success(t("createResourceGroupPoolModal.success"));
       client.invalidateQueries({ queryKey: [keys.RESOURCE_GROUP] });
     },
   });

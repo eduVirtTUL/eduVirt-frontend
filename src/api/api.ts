@@ -511,7 +511,7 @@ export interface CreateResourceGroupDto {
      * @type {string}
      * @memberof CreateResourceGroupDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
@@ -523,7 +523,7 @@ export interface CreateResourceGroupDto {
      * @type {number}
      * @memberof CreateResourceGroupDto
      */
-    'maxRentTime'?: number;
+    'maxRentTime': number;
 }
 /**
  * 
@@ -8491,7 +8491,7 @@ export class ResourceGroupControllerApi extends BaseAPI {
      * @memberof ResourceGroupControllerApi
      */
     public updateResourceGroup(id: string, updateResourceGroupDto: UpdateResourceGroupDto, options?: RawAxiosRequestConfig) {
-        return ResourceGroupControllerApiFp(this.configuration).updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
+        return ResourceGroupControllerApiFp(this.configuration).updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(this.axios, this.basePath))
     }
 }
 

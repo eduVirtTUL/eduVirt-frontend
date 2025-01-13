@@ -71,6 +71,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
             <FormField
               control={form.control}
               name="name"

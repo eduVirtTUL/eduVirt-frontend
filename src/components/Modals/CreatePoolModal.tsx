@@ -37,7 +37,6 @@ import { useCourses } from "@/data/course/useCourses";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import { Textarea } from "../ui/textarea";
-import { Tabs, TabsContent } from "../ui/tabs";
 import RentTimeSelector from "../RentTimeSelector";
 
 type CreatePoolModalProps = {
@@ -69,7 +68,6 @@ const createPoolSchema = (t: TFunction) =>
       ),
     description: z
       .string()
-      .min(1, t("createResourceGroupPoolModal.validation.descriptionRequired"))
       .max(
         1000,
         t("createResourceGroupPoolModal.validation.descriptionMaxLength")
@@ -104,7 +102,10 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
   const [activeTab, setActiveTab] = React.useState("general");
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await createPoolAsync(values);
+    await createPoolAsync({
+      ...values,
+      description: values.description !== "" ? values.description : undefined,
+    });
     close();
     form.reset();
     setActiveTab("general");
@@ -125,22 +126,21 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ courseId }) => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsContent value="general">
-                <FormGeneralStage
-                  control={form.control}
-                  courseId={courseId}
-                  setActiveTab={setActiveTab}
-                />
-              </TabsContent>
-              <TabsContent value="settings">
-                <FormSettingsStage
-                  control={form.control}
-                  courseId={courseId}
-                  setActiveTab={setActiveTab}
-                />
-              </TabsContent>
-            </Tabs>
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+            {activeTab === "general" && (
+              <FormGeneralStage
+                control={form.control}
+                courseId={courseId}
+                setActiveTab={setActiveTab}
+              />
+            )}
+            {activeTab === "settings" && (
+              <FormSettingsStage
+                control={form.control}
+                courseId={courseId}
+                setActiveTab={setActiveTab}
+              />
+            )}
           </form>
         </Form>
       </DialogContent>
@@ -269,12 +269,7 @@ const FormGeneralStage: React.FC<FormStageProps> = ({
           {t("cancel")}
         </Button>
         <Button
-          disabled={
-            !(
-              form.getFieldState("name").isDirty &&
-              form.getFieldState("description").isDirty
-            )
-          }
+          disabled={!form.getFieldState("name").isDirty}
           onClick={async () => {
             await form.trigger();
 
@@ -321,7 +316,8 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               />
             </FormControl>
             <FormDescription>
-              {t("createResourceGroupPoolModal.maxRentTimeDescription")}
+              <p>{t("createResourceGroupPoolModal.maxRentTimeDescription")}</p>
+              <p>{t("createResourceGroupPoolModal.maxRentTimeDescription2")}</p>
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -337,7 +333,8 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               <Input {...field} type="number" />
             </FormControl>
             <FormDescription>
-              {t("createResourceGroupPoolModal.maxRentDescription")}
+              <p>{t("createResourceGroupPoolModal.maxRentDescription")}</p>
+              <p>{t("createResourceGroupPoolModal.maxRentDescription2")}</p>
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -361,7 +358,8 @@ const FormSettingsStage: React.FC<FormStageProps> = ({
               />
             </FormControl>
             <FormDescription>
-              {t("createResourceGroupPoolModal.gracePeriodDescription")}
+              <p>{t("createResourceGroupPoolModal.gracePeriodDescription")}</p>
+              <p>{t("createResourceGroupPoolModal.gracePeriodDescription2")}</p>
             </FormDescription>
             <FormMessage />
           </FormItem>

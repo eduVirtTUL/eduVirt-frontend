@@ -40,14 +40,17 @@ const courseLimits = {
 
 const createResourceGroupPoolModal = {
   title: "Utwórz pulę grup zasobów",
-  name: "Nazwa",
-  maxRent: "Maksymalna ilość wypożyczeń",
+  name: "Nazwa*",
+  maxRent: "Maksymalna liczba wypożyczeń*",
   maxRentDescription:
-    "Określa ile razy grupa zasobów z puli może zostać wypożyczona przez jeden zespół. Ustaw na 0, aby nie ograniczać ilości wypożyczeń.",
-  gracePeriod: "Okres karencji (godziny)",
+    "Określa ile razy grupa zasobów z puli może zostać wypożyczona przez jeden zespół.",
+  maxRentDescription2: "Ustaw na 0, aby nie ograniczać ilości wypożyczeń.",
+  gracePeriod: "Okres karencji*",
   gracePeriodDescription:
-    "Określa ile godzin po zakończeniu wypożyczenia grupa zasobów z puli jest niedostępna dla innych zespołów. Ustaw na 0, aby grupa zasobów była dostępna natychmiast po zakończeniu wypożyczenia.",
-  course: "Przedmiot",
+    "Określa ile godzin po zakończeniu wypożyczenia grupa zasobów z puli jest niedostępna dla innych zespołów.",
+  gracePeriodDescription2:
+    "Ustaw na 0, aby grupa zasobów była dostępna natychmiast po zakończeniu wypożyczenia.",
+  course: "Przedmiot*",
   create: "Utwórz",
   success: "Pula grup zasobów została utworzona",
   error: "Nie udało się utworzyć puli grup zasobów",
@@ -67,9 +70,11 @@ const createResourceGroupPoolModal = {
   selectCourse: "Wybierz przedmiot",
   noCourses: "Brak przedmiotów",
   searchCourses: "Szukaj przedmiotów",
-  maxRentTime: "Maksymalny czas wypożyczenia",
+  maxRentTime: "Maksymalny czas rezerwacji*",
   maxRentTimeDescription:
-    "Określa maksymalny czas wypożyczenia grupy zasobów z puli.",
+    "Określa maksymalny czas rezerwacji grupy zasobów z puli.",
+  maxRentTimeDescription2:
+    "Ustaw na 0:00 godz., aby nie ograniczać czasu rezerwacji.",
   description: "Opis",
 };
 
@@ -92,28 +97,36 @@ const resourceGroupPoolPage = {
     name: "Nazwa",
     course: "Przedmiot",
     description: "Opis",
-    maxRent: "Maksymalna ilość wypożyczeń",
+    maxRent: "Maksymalna liczba wypożyczeń",
     gracePeriod: "Okres karencji",
-    maxRentTime: "Maksymalny czas wypożyczenia",
+    maxRentTime: "Maksymalny czas rezerwacji",
   },
   type: "Pula grup zasobów",
   openEditor: "Otwórz edytor",
 };
 
 const createResourceGroupModal = {
-  title: "Utwórz grupę zasobów",
-  name: "Nazwa",
-  maxRentTime: "Maksymalny czas wypożyczenia",
+  titleStateless: "Utwórz bezstanową grupę zasobów",
+  titleStateful: "Utwórz stanową grupę zasobów",
+  name: "Nazwa*",
+  maxRentTime: "Maksymalny czas rezerwacji",
   description: "Opis",
   success: "Grupa zasobów została utworzona",
   error: "Nie udało się utworzyć grupy zasobów",
   descriptionInPoolWarning:
     "Tworzonej grupie zasobów zostanie przypisany opis z puli grup zasobów",
   maxRentTimeInPoolWarning:
-    "Tworzonej grupie zasobów zostanie przypisany maksymalny czas wypożyczenia z puli grup zasobów.",
-  maxRentTimeDescription: "Określa maksymalny czas wypożyczenia grupy zasobów.",
+    "Tworzonej grupie zasobów zostanie przypisany maksymalny czas rezerwacji z puli grup zasobów.",
+  maxRentTimeDescription:
+    "Określa maksymalny czas na jaki można zarezerwować grupę zasobów.",
+  maxRentTimeDescription2:
+    "Ustaw na 0:00 godz., aby nie ograniczać czasu rezerwacji.",
   validation: {
     nameRequired: "Nazwa jest wymagana",
+    nameMaxLength: "Nazwa nie może być dłuższa niż 50 znaków",
+    descriptionMaxLength: "Opis nie może być dłuższy niż 1000 znaków",
+    maxRentTimeGreaterOrEqualZero:
+      "Maksymalny czas rezerwacji musi być większy lub równy zero",
   },
 };
 
@@ -262,9 +275,9 @@ const editVmModal = {
 
 const editResourceGroupModal = {
   title: "Edytuj grupę zasobów",
-  name: "Nazwa",
+  name: "Nazwa*",
   description: "Opis",
-  maxRentTime: "Maksymalny czas wypożyczenia",
+  maxRentTime: "Maksymalny czas rezerwacji*",
   descriptionInPoolWarning:
     "Bezstanowa grupa zasobów posiada opis z puli grup zasobów",
   maxRentTimeInPoolWarning:
