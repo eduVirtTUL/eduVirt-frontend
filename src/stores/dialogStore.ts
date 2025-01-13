@@ -20,8 +20,8 @@ export type DialogType =
   | "createReservation"
   | "createInterval"
   | "createCourseKey"
-  | "createInterval"
-  | "showMaintenanceInterval";
+  | "showMaintenanceInterval"
+  | "manageTeamUsers"
 
 type DialogStore = {
   opened?: DialogType;

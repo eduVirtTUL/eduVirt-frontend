@@ -7,7 +7,6 @@ export const useTeam = (id: string) => {
         queryFn: async () => {
             const controller = new TeamControllerApi();
             const response = await controller.getTeamDetails(id);
-
             return response.data;
         },
     });

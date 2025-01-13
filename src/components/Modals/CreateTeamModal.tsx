@@ -1,4 +1,4 @@
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {useEffect, useState} from "react";
@@ -6,24 +6,33 @@ import {Plus} from "lucide-react";
 import {useCreateTeam} from "@/data/team/useCreateTeam";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckIcon, XCircleIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import {t} from "i18next";
 
 interface CreateTeamModalProps {
     courseId: string;
 }
 
 const singleTeamSchema = z.object({
-  teamName: z.string().min(1, "Team name is required"),
-  key: z.string().min(4).max(16),
-  maxSize: z.number().min(1).max(10)
+  teamName: z.string()
+    .min(1, t("createTeam.validation.teamNameMin"))
+    .max(50, t("createTeam.validation.teamNameMax"))
+    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("createTeam.validation.teamNameRegex")),
+  key: z.string().min(4, t("createTeam.validation.keyMinLength")).max(20, t("createTeam.validation.keyMaxLength")).regex(/^[a-zA-Z0-9]+$/, t("createTeam.validation.keyRegex")),
+  maxSize: z.number().min(2, t("createTeam.validation.maxSizeMin")).max(10, t("createTeam.validation.maxSizeMax"))
 })
 
 const bulkTeamSchema = z.object({
-  baseTeamName: z.string().min(1, "Base team name is required"),
-  teamCount: z.number().min(2).max(15),
-  maxSize: z.number().min(1).max(8)
+  baseTeamName: z.string()
+    .min(1, t("createTeam.validation.baseTeamNameMin"))
+    .max(40, t("createTeam.validation.baseTeamNameMax"))
+    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("createTeam.validation.teamNameRegex")),
+  teamCount: z.number().min(2, t("createTeam.validation.teamCountMin")).max(10, t("createTeam.validation.teamCountMax")),
+  maxSize: z.number().min(2, t("createTeam.validation.maxSizeMin")).max(10, t("createTeam.validation.maxSizeMax"))
 })
 
 type SingleTeamForm = z.infer<typeof singleTeamSchema>
@@ -32,10 +41,11 @@ type BulkTeamForm = z.infer<typeof bulkTeamSchema>
 const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
   const [open, setOpen] = useState(false)
   const {createTeam} = useCreateTeam()
+  const { t } = useTranslation();
 
   const generateUniqueKey = (teamName: string) => {
     const MAX_LENGTH = 20;
-    const RANDOM_LENGTH = 4;
+    const RANDOM_LENGTH = 8;
     const sanitizedName = teamName.toLowerCase().replace(/\s+/g, '-');
     const truncatedName = sanitizedName.slice(0, MAX_LENGTH - RANDOM_LENGTH - 1);
     const randomSuffix = Math.random().toString(36).substring(2, 2 + RANDOM_LENGTH);
@@ -99,25 +109,25 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Team Creation</DialogTitle>
+          <DialogTitle>{t('createTeam.title')}</DialogTitle>
         </DialogHeader>
         <Tabs defaultValue="single">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="single">Single Team</TabsTrigger>
-            <TabsTrigger value="bulk">Multiple Teams</TabsTrigger>
+            <TabsTrigger value="single">{t('createTeam.singleTab')}</TabsTrigger>
+            <TabsTrigger value="bulk">{t('createTeam.bulkTab')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="single">
             <Form {...singleForm}>
-              <form onSubmit={singleForm.handleSubmit(onSingleSubmit)} className="space-y-4">
+              <form onSubmit={singleForm.handleSubmit(onSingleSubmit)} className="space-y-6">
                 <FormField
                   control={singleForm.control}
                   name="teamName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Team Name</FormLabel>
+                      <FormLabel>{t('createTeam.name')}</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter team name..."/>
+                        <Input {...field}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,9 +138,9 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                   name="key"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Team Key</FormLabel>
+                      <FormLabel>{t('createTeam.key')}</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter team key..."/>
+                        <Input {...field}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -141,7 +151,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                   name="maxSize"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Max Team Size</FormLabel>
+                      <FormLabel>{t('createTeam.maxSize')}</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
@@ -155,23 +165,42 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Create Team</Button>
+                <div className="flex flex-row justify-between">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      singleForm.reset();
+                      setOpen(false);
+                    }}
+                  >
+                    <XCircleIcon />
+                    {t("cancel")}
+                  </Button>
+                  <Button type="submit">
+                    <CheckIcon />
+                    {t("create")}
+                  </Button>
+                </div>
               </form>
             </Form>
           </TabsContent>
 
           <TabsContent value="bulk">
             <Form {...bulkForm}>
-              <form onSubmit={bulkForm.handleSubmit(onBulkSubmit)} className="space-y-4">
+              <form onSubmit={bulkForm.handleSubmit(onBulkSubmit)} className="space-y-6">
                 <FormField
                   control={bulkForm.control}
                   name="baseTeamName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Base Team Name</FormLabel>
+                      <FormLabel>{t('createTeam.baseTeamName')}</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Base team name (e.g. 'Team')"/>
+                        <Input {...field}/>
                       </FormControl>
+                      <FormDescription>
+                        {t('createTeam.baseTeamNameDescription')}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -181,7 +210,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                   name="teamCount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Number of Teams</FormLabel>
+                      <FormLabel>{t('createTeam.teamCount')}</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
@@ -200,7 +229,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                   name="maxSize"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Max Team Size</FormLabel>
+                      <FormLabel>{t('createTeam.maxSize')}</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
@@ -214,17 +243,30 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                     </FormItem>
                   )}
                 />
-                <div className="text-sm text-muted-foreground">
-                  Teams will be created as: "{bulkForm.watch("baseTeamName")} 1", "{bulkForm.watch("baseTeamName")} 2", etc.
+                <div className="flex flex-row justify-between">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      bulkForm.reset();
+                      setOpen(false);
+                    }}
+                  >
+                    <XCircleIcon />
+                    {t("cancel")}
+                  </Button>
+                  <Button type="submit">
+                    <CheckIcon />
+                    {t("create")}
+                  </Button>
                 </div>
-                <Button type="submit" className="w-full">Create Teams</Button>
               </form>
             </Form>
           </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
 export default CreateTeamModal;

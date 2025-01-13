@@ -9,7 +9,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {useResourceGroups} from "@/data/resourceGroup/useResourceGroups"
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam"
 import {useResourceGroupVms} from "@/data/resourceGroup/useResourceGroupVms"
-import {AlertTriangle, ChevronDown, ChevronRight, Trash2} from "lucide-react"
+import {AlertTriangle, ChevronDown, ChevronRight, CircleAlert, ExternalLink, PlusIcon, Trash2} from "lucide-react"
 import {cn} from "@/lib/utils"
 import {Badge} from "@/components/ui/badge"
 import {useResourceGroupsWithPods} from "@/data/resourceGroup/useResourceGroupsWithPods"
@@ -19,7 +19,8 @@ import {useCreateStatefulPod} from "@/data/pods/useCreateStatefulPod"
 import {useDeleteStatefulPod} from "@/data/pods/useDeleteStatefulPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
-import { useTranslation } from "react-i18next"
+import {useTranslation} from "react-i18next"
+import {Link} from "react-router"
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -35,7 +36,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }) => {
     const [isOpen, setIsOpen] = useState(false)
     const {vms, isLoading} = useResourceGroupVms(rg.id!)
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     return (
         <>
@@ -54,8 +55,25 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                     <div className="flex items-center gap-2">
                         {isOpen ? <ChevronDown className="h-4 w-4"/> : <ChevronRight className="h-4 w-4"/>}
                         <span>{rg.name}</span>
+                        <Badge variant="outline" className="px-2">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-5 w-auto p-1 gap-1 flex items-center"
+                                onClick={(e) => e.stopPropagation()}
+                                asChild
+                            >
+                                <Link
+                                    target="_blank"
+                                    to={`/rg/${rg.id}`}
+                                >
+                                    <ExternalLink className="h-3 w-3"/>
+                                    <span className="text-xs">eduVirt</span>
+                                </Link>
+                            </Button>
+                        </Badge>
                         {(!isLoading && hasPod) && (
-                            <AlertTriangle className="h-4 w-4"/>
+                            <CircleAlert className="h-4 w-4"/>
                         )}
                         {(!isLoading && vms?.length === 0) && (
                             <AlertTriangle className="h-4 w-4 text-orange-500"/>
@@ -68,8 +86,8 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                     <div className="flex flex-col gap-2">
                         {hasPod && (
                             <div className="flex items-center gap-2 mb-2">
-                                <AlertTriangle className="h-4 w-4"/>
-                                <div>{t("podManagement.alerts.hasAssociatedPod")}</div>
+                                <CircleAlert className="h-4 w-4"/>
+                                <div>{t("statefulPodManagement.alerts.hasAssociatedPod")}</div>
                             </div>
                         )}
                         {isLoading ? (
@@ -78,15 +96,35 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                             (vms ?? []).length === 0 ? (
                                 <div className="flex items-center gap-2 mb-2">
                                     <AlertTriangle className="h-4 w-4 text-orange-500"/>
-                                    <div className="text-orange-500">{t("podManagement.alerts.noVMs")}</div>
+                                    <div className="text-orange-500">{t("statefulPodManagement.alerts.noVMs")}</div>
                                 </div>
                             ) : (
                                 (vms ?? []).map(vm => (
-                                    <div key={vm.id} className="flex items-center gap-2">
-                                        <Badge variant="secondary">{vm.name}</Badge>
-                                        <Badge variant="outline">{vm.cpuCount} vCPU</Badge>
-                                        <Badge variant="outline">{vm.memory} MiB</Badge>
-                                        <Badge variant="outline">{(vm.nics ?? []).length} NICs</Badge>
+                                    <div key={vm.id} className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="secondary">{vm.name}</Badge>
+                                            <Badge variant="outline">{vm.cpuCount} vCPU</Badge>
+                                            <Badge variant="outline">{vm.memory} MiB</Badge>
+                                            <Badge variant="outline">{(vm.nics ?? []).length} NICs</Badge>
+                                            <Badge>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-5 w-auto p-1 gap-1 flex items-center"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    asChild
+                                                >
+                                                    <Link
+                                                        target="_blank"
+                                                        to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm.name}`}
+                                                    >
+                                                        <ExternalLink className="h-3 w-3"/>
+                                                        <span
+                                                            className="text-xs">{t("resourceGroupEditor.virtualMachinesList.ovirt")}</span>
+                                                    </Link>
+                                                </Button>
+                                            </Badge>
+                                        </div>
                                     </div>
                                 ))
                             )
@@ -108,7 +146,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
     const {deleteStatefulPod, isPending: isDeleting} = useDeleteStatefulPod()
     const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null);
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const podsArray = Array.isArray(statefulPods) ? statefulPods : []; // To assure that statefulPods is an array when 204 response is returned
 
@@ -141,7 +179,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                         {isLoadingTeam ? (
                             <Skeleton className="h-6 w-48"/>
                         ) : (
-                            `${t("podManagement.title")} ${team?.name}`
+                            `${t("statefulPodManagement.title")} ${team?.name}`
                         )}
                     </DrawerTitle>
                 </DrawerHeader>
@@ -149,7 +187,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                     <div className="grid grid-cols-2 gap-4">
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t('podManagement.resourceGroups')}</CardTitle>
+                                <CardTitle>{t('statefulPodManagement.resourceGroups')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -160,39 +198,36 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                         </div>
                                     ) : (
                                         <Table>
-                                            <TableHeader>
-                                                <TableRow>
-                                                    <TableHead className="w-12"></TableHead>
-                                                    <TableHead>Name</TableHead>
-                                                </TableRow>
-                                            </TableHeader>
                                             <TableBody>
-                                                {resourceGroups?.filter(rg => !rg.stateless).map((rg) => (
-                                                    <CollapsibleRow
-                                                        key={rg.id}
-                                                        rg={rg}
-                                                        checked={selectedResource === rg.id}
-                                                        onCheckedChange={(checked) => {
-                                                            if (checked) {
-                                                                setSelectedResource(rg.id!)
-                                                            } else {
-                                                                setSelectedResource(null)
-                                                            }
-                                                        }}
-                                                        hasPod={hasAssignedPod(rg.id!)}
-                                                    />
-                                                ))}
+                                                {(Array.isArray(resourceGroups) ? resourceGroups : [])
+                                                    ?.filter(rg => !rg.stateless)
+                                                    .map((rg) => (
+                                                        <CollapsibleRow
+                                                            key={rg.id}
+                                                            rg={rg}
+                                                            checked={selectedResource === rg.id}
+                                                            onCheckedChange={(checked) => {
+                                                                if (checked) {
+                                                                    setSelectedResource(rg.id!)
+                                                                } else {
+                                                                    setSelectedResource(null)
+                                                                }
+                                                            }}
+                                                            hasPod={hasAssignedPod(rg.id!)}
+                                                        />
+                                                    ))}
                                             </TableBody>
                                         </Table>
                                     )}
                                 </ScrollArea>
-                                <div className="flex justify-center mt-4">
+                                <div className="flex justify-end mt-4">
                                     <Button
                                         onClick={handleSubmit}
                                         className="w-32"
                                         disabled={!selectedResource}
                                     >
-                                        {t('podManagement.createPod')}
+                                        <PlusIcon/>
+                                        {t('statefulPodManagement.createPod')}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -200,7 +235,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t("podManagement.teamPods")}</CardTitle>
+                                <CardTitle>{t("statefulPodManagement.teamPods")}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ScrollArea className="h-[50vh]">
@@ -214,7 +249,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                             <TableHeader>
                                                 <TableRow>
                                                     <TableHead></TableHead>
-                                                    <TableHead>{t("podManagement.resourceGroup")}</TableHead>
+                                                    <TableHead>{t("statefulPodManagement.resourceGroup")}</TableHead>
                                                     <TableHead className="w-[100px]"></TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -231,6 +266,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                                 onClick={() => handleClickPodDelete(pod.id!)}
                                                             >
                                                                 <Trash2 className="h-4 w-4"/>
+                                                                {t('statefulPodManagement.delete.button')}
                                                             </Button>
                                                         </TableCell>
                                                     </TableRow>
@@ -239,7 +275,7 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                     <TableRow>
                                                         <TableCell colSpan={3}
                                                                    className="text-center text-muted-foreground">
-                                                            {t('podManagement.noPods')}
+                                                            {t('statefulPodManagement.noPods')}
                                                         </TableCell>
                                                     </TableRow>
                                                 )}
@@ -253,8 +289,8 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                 </div>
             </DrawerContent>
             <ConfirmationDialog
-                header={t('podManagement.delete.confirmHeader')}
-                text={t('podManagement.delete.confirmText')}
+                header={t('statefulPodManagement.delete.confirmHeader')}
+                text={t('statefulPodManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}
             />
         </Drawer>
