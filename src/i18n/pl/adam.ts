@@ -101,19 +101,27 @@ const resourceGroupPoolPage = {
 };
 
 const createResourceGroupModal = {
-  title: "Utwórz grupę zasobów",
-  name: "Nazwa",
-  maxRentTime: "Maksymalny czas wypożyczenia",
+  titleStateless: "Utwórz bezstanową grupę zasobów",
+  titleStateful: "Utwórz stanową grupę zasobów",
+  name: "Nazwa*",
+  maxRentTime: "Maksymalny czas rezerwacji",
   description: "Opis",
   success: "Grupa zasobów została utworzona",
   error: "Nie udało się utworzyć grupy zasobów",
   descriptionInPoolWarning:
     "Tworzonej grupie zasobów zostanie przypisany opis z puli grup zasobów",
   maxRentTimeInPoolWarning:
-    "Tworzonej grupie zasobów zostanie przypisany maksymalny czas wypożyczenia z puli grup zasobów.",
-  maxRentTimeDescription: "Określa maksymalny czas wypożyczenia grupy zasobów.",
+    "Tworzonej grupie zasobów zostanie przypisany maksymalny czas rezerwacji z puli grup zasobów.",
+  maxRentTimeDescription:
+    "Określa maksymalny czas na jaki można zarezerwować grupę zasobów.",
+  maxRentTimeDescription2:
+    "Ustaw na 0:00 godz., aby nie ograniczać czasu rezerwacji.",
   validation: {
     nameRequired: "Nazwa jest wymagana",
+    nameMaxLength: "Nazwa nie może być dłuższa niż 50 znaków",
+    descriptionMaxLength: "Opis nie może być dłuższy niż 1000 znaków",
+    maxRentTimeGreaterOrEqualZero:
+      "Maksymalny czas rezerwacji musi być większy lub równy zero",
   },
 };
 

@@ -89,6 +89,7 @@ export default {
   status: "Status",
   noResults: "Brak wyników",
   requiredFieldDescription: "(*) - pole wymagane",
+  houres: "godz.",
   menu,
   units,
   general,

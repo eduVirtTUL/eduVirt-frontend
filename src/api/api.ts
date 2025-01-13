@@ -511,7 +511,7 @@ export interface CreateResourceGroupDto {
      * @type {string}
      * @memberof CreateResourceGroupDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
@@ -523,7 +523,7 @@ export interface CreateResourceGroupDto {
      * @type {number}
      * @memberof CreateResourceGroupDto
      */
-    'maxRentTime'?: number;
+    'maxRentTime': number;
 }
 /**
  * 

@@ -25,9 +25,19 @@ const createResourceGroupSchema = (t: TFunction) =>
   z.object({
     name: z
       .string()
-      .min(1, t("createResourceGroupModal.validation.nameRequired")),
-    description: z.string().max(1000).optional(),
-    maxRentTime: z.coerce.number().min(0).optional(),
+      .min(1, t("createResourceGroupModal.validation.nameRequired"))
+      .max(50, t("createResourceGroupModal.validation.nameMaxLength")),
+    description: z
+      .string()
+      .max(1000, t("createResourceGroupModal.validation.descriptionMaxLength"))
+      .optional(),
+    maxRentTime: z.coerce
+      .number()
+      .min(
+        0,
+        t("createResourceGroupModal.validation.maxRentTimeGreaterOrEqualZero")
+      )
+      .optional(),
   });
 
 type CreateResourceGroupForm = z.infer<
@@ -35,7 +45,7 @@ type CreateResourceGroupForm = z.infer<
 >;
 
 type CreateResourceGroupModalProps = {
-  onCreate: (data: Required<CreateResourceGroupForm>) => Promise<void>;
+  onCreate: (data: CreateResourceGroupForm) => Promise<void>;
   isPool?: boolean;
 };
 
@@ -57,7 +67,7 @@ const CreateResourceGroupModal: React.FC<CreateResourceGroupModalProps> = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await onCreate({
       name: data.name,
-      description: data.description ?? "",
+      description: data.description !== "" ? data.description : undefined,
       maxRentTime: data.maxRentTime ?? 0,
     });
     close();
@@ -74,10 +84,15 @@ const CreateResourceGroupModal: React.FC<CreateResourceGroupModalProps> = ({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("createResourceGroupModal.title")}</DialogTitle>
+          <DialogTitle>
+            {isPool
+              ? t("createResourceGroupModal.titleStateless")
+              : t("createResourceGroupModal.titleStateful")}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
             <FormField
               control={form.control}
               name="name"
@@ -130,9 +145,20 @@ const CreateResourceGroupModal: React.FC<CreateResourceGroupModalProps> = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    {isPool
-                      ? t("createResourceGroupModal.maxRentTimeInPoolWarning")
-                      : t("createResourceGroupModal.maxRentTimeDescription")}
+                    {isPool ? (
+                      t("createResourceGroupModal.maxRentTimeInPoolWarning")
+                    ) : (
+                      <>
+                        <p>
+                          {t("createResourceGroupModal.maxRentTimeDescription")}
+                        </p>
+                        <p>
+                          {t(
+                            "createResourceGroupModal.maxRentTimeDescription2"
+                          )}
+                        </p>
+                      </>
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
