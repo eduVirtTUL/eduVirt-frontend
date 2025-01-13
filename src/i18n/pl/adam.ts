@@ -119,10 +119,31 @@ const createResourceGroupModal = {
 
 const coursePage = {
   title: "Przedmiot",
-  settings: "Ustawienia przedmiotu",
+  details: "Szczegóły",
   edit: "Edytuj",
   delete: "Usuń",
+  reset: "Resetuj",
   limits: "Metryki",
+  description: "Opis",
+  externalLink: "Link zewnętrzny",
+  deleteAction: {
+    success: "Przedmiot został usunięty",
+    error: "Nie udało się usunąć przedmiotu",
+    confirmation: "Czy na pewno chcesz usunąć ten przedmiot?",
+    confirmationText:
+      "Przedmiot zostanie usunięty. Wszystkie grupy zasobów przypisane do tego przedmiotu zostaną usunięte. Tej operacji nie można cofnąć.",
+  },
+  updateAction: {
+    success: "Przedmiot został zaktualizowany",
+    error: "Nie udało się zaktualizować przedmiotu",
+  },
+  resetAction: {
+    confirmation: "Czy na pewno chcesz zresetować ten przedmiot?",
+    confirmationText:
+      "Wysztkie zespoły, pody oraz rezerwacje zostaną usunięte. Grupy zasobów i pulę pozostaną bez zmian. Tej operacji nie można cofnąć.",
+    success: "Przedmiot został zresetowany",
+    error: "Nie udało się zresetować przedmiotu",
+  },
 };
 
 const courseStatefulResourceGroups = {
@@ -250,6 +271,59 @@ const editResourceGroupModal = {
     "Bezstanowa grupa zasobów posiada maksymalny czas wypożyczenia z puli grup zasobów",
 };
 
+const editCourseModal = {
+  title: "Edytuj przedmiot",
+  name: "Nazwa*",
+  externalLink: "Link zewnętrzny",
+  description: "Opis",
+  validation: {
+    nameRequired: "Nazwa przedmiotu jest wymagana",
+    descriptionRequired: "Opis przedmiotu jest wymagany",
+    nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
+    descriptionMaxLenght:
+      "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
+    externalLinkMaxLenght:
+      "Link zewnętrzny nie może być dłuższy niż 1000 znaków",
+    externalLinkShouldBeUrl:
+      "Link zewnętrzny powinien być poprawnym adresem URL",
+  },
+};
+
+const courseListPage = {
+  title: "Przedmioty",
+  searchPlaceholder: "Szukaj przedmiotu...",
+  clear: "Wyczyść",
+  createCourse: "Utwórz przedmiot",
+  table: {
+    name: "Nazwa",
+    description: "Opis",
+    details: "Szczegóły",
+    edit: "Edytuj",
+  },
+};
+
+const createCourseModal = {
+  title: "Utwórz nowy przedmiot",
+  name: "Nazwa*",
+  description: "Opis",
+  cluster: "Klaster*",
+  selectCluster: "Wybierz klaster",
+  externalLink: "Link zewnętrzny",
+  validation: {
+    nameRequired: "Nazwa przedmiotu jest wymagana",
+    nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
+    descriptionMaxLenght:
+      "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
+    clusterRequired: "Klaster jest wymagany",
+    externalLinkMaxLenght:
+      "Link zewnętrzny nie może być dłuższy niż 1000 znaków",
+    externalLinkShouldBeUrl:
+      "Link zewnętrzny powinien być poprawnym adresem URL",
+  },
+  success: "Przedmiot został utworzony",
+  error: "Nie udało się utworzyć przedmiotu",
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -265,4 +339,7 @@ export default {
   removeVmModal,
   editVmModal,
   editResourceGroupModal,
+  editCourseModal,
+  courseListPage,
+  createCourseModal,
 };
