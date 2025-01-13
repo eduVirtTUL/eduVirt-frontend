@@ -293,6 +293,7 @@ const createCourseModal = {
   description: "Opis",
   cluster: "Klaster",
   selectCluster: "Wybierz klaster",
+  externalLink: "Link zewnętrzny",
   validation: {
     nameRequired: "Nazwa przedmiotu jest wymagana",
     descriptionRequired: "Opis przedmiotu jest wymagany",
@@ -300,7 +301,13 @@ const createCourseModal = {
     descriptionMaxLenght:
       "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
     clusterRequired: "Klaster jest wymagany",
+    externalLinkMaxLenght:
+      "Link zewnętrzny nie może być dłuższy niż 1000 znaków",
+    externalLinkShouldBeUrl:
+      "Link zewnętrzny powinien być poprawnym adresem URL",
   },
+  success: "Przedmiot został utworzony",
+  error: "Nie udało się utworzyć przedmiotu",
 };
 
 export default {

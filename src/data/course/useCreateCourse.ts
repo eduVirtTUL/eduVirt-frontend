@@ -4,8 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { injectToken } from "@/utils/requestUtils";
+import { useTranslation } from "react-i18next";
 
 export const useCreateCourse = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationKey: ["createCourse"],
@@ -17,10 +19,10 @@ export const useCreateCourse = () => {
     onSuccess: () => {
       // Invalidate the courses query to refetch the data
       queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
-      toast.success("Course created successfully!");
+      toast.success(t("createCourseModal.success"));
     },
     onError: () => {
-      toast.error("Failed to create course");
+      toast.error(t("createCourseModal.error"));
     },
   });
 

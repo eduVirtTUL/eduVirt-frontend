@@ -44,6 +44,11 @@ const createCourseSchema = (t: TFunction) =>
     clusterId: z
       .string()
       .min(1, t("createCourseModal.validation.clusterRequired")),
+    externalLink: z
+      .string()
+      .max(1000, t("createCourseModal.validation.externalLinkMaxLenght"))
+      .url(t("createCourseModal.validation.externalLinkShouldBeUrl"))
+      .or(z.literal("")),
   });
 
 type CreateCourseSchema = z.infer<ReturnType<typeof createCourseSchema>>;
@@ -61,6 +66,7 @@ const CreateCourseModal: React.FC = () => {
       description: "",
       courseType: "SOLO",
       clusterId: "",
+      externalLink: "",
     },
   });
 
@@ -84,7 +90,7 @@ const CreateCourseModal: React.FC = () => {
           <DialogTitle>{t("createCourseModal.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="name"
@@ -106,6 +112,19 @@ const CreateCourseModal: React.FC = () => {
                   <FormLabel>{t("createCourseModal.description")}</FormLabel>
                   <FormControl>
                     <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="externalLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("createCourseModal.externalLink")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
