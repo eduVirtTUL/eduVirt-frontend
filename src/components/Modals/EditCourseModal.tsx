@@ -11,6 +11,7 @@ import { useDialog } from "@/stores/dialogStore";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,8 +35,12 @@ const editCourseSchema = (t: TFunction) =>
       .max(50, t("editCourseModal.validation.nameMaxLenght")),
     description: z
       .string()
-      .min(1, t("editCourseModal.validation.descriptionRequired"))
       .max(1000, t("editCourseModal.validation.descriptionMaxLenght")),
+    externalLink: z
+      .string()
+      .max(1000, t("editCourseModal.validation.externalLinkMaxLenght"))
+      .url(t("editCourseModal.validation.externalLinkShouldBeUrl"))
+      .or(z.literal("")),
   });
 
 type EditCourseForm = z.infer<ReturnType<typeof editCourseSchema>>;
@@ -50,6 +55,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
     values: {
       name: course?.name ?? "",
       description: course?.description ?? "",
+      externalLink: course?.externalLink ?? "",
     },
   });
 
@@ -66,6 +72,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
             <FormField
               control={form.control}
               name="name"
@@ -87,6 +94,19 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
                   <FormLabel>{t("editCourseModal.description")}</FormLabel>
                   <FormControl>
                     <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="externalLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("editCourseModal.externalLink")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

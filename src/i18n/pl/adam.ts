@@ -271,7 +271,8 @@ const editResourceGroupModal = {
 
 const editCourseModal = {
   title: "Edytuj przedmiot",
-  name: "Nazwa",
+  name: "Nazwa*",
+  externalLink: "Link zewnętrzny",
   description: "Opis",
   validation: {
     nameRequired: "Nazwa przedmiotu jest wymagana",
@@ -279,6 +280,10 @@ const editCourseModal = {
     nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
     descriptionMaxLenght:
       "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
+    externalLinkMaxLenght:
+      "Link zewnętrzny nie może być dłuższy niż 1000 znaków",
+    externalLinkShouldBeUrl:
+      "Link zewnętrzny powinien być poprawnym adresem URL",
   },
 };
 

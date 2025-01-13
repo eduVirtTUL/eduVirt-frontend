@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import {
   ColumnDef,
   flexRender,
@@ -85,6 +86,7 @@ const DataTable = <TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={cn(onRowClick && "cursor-pointer")}
                   onClick={() => {
                     onRowClick?.(row);
                   }}

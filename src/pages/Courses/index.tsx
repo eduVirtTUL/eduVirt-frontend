@@ -3,18 +3,12 @@ import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCourses } from "@/data/course/useCourses";
 import { useDialog } from "@/stores/dialogStore";
-import { ArrowUpDown, MoreHorizontal, PlusIcon, XIcon } from "lucide-react";
+import { ArrowUpDown, PlusIcon, XIcon } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CourseDto } from "@/api";
 import DataTable from "../../components/DataTable";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Link, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import {
   Pagination,
   PaginationContent,
@@ -45,33 +39,6 @@ const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
     },
   },
   { accessorKey: "description", header: t("courseListPage.table.description") },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const course = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              {t("courseListPage.table.edit")}
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to={`/courses/${course.id}`}>
-                {t("courseListPage.table.details")}
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];
 
 const CoursesPage: React.FC = () => {
@@ -84,6 +51,7 @@ const CoursesPage: React.FC = () => {
   const [searchValue] = useDebounce(search, 500);
   const { courses, isLoading } = useCourses(pageNumber, pageSize, searchValue);
   const { open } = useDialog();
+  const nav = useNavigate();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -123,7 +91,7 @@ const CoursesPage: React.FC = () => {
         columns={columns(t)}
         onRowClick={(row) => {
           const course = row.original;
-          console.log("Row clicked", course.id);
+          nav(`/courses/${course.id}`);
         }}
       />
       {courses?.items?.length !== 0 && (
