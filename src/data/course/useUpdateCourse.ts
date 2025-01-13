@@ -1,4 +1,4 @@
-import { CourseControllerApi, UpdateCourceDto } from "@/api";
+import { CourseControllerApi, UpdateCourseDto } from "@/api";
 import { injectToken } from "@/utils/requestUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 type UpdateCourse = {
   id: string;
-} & UpdateCourceDto;
+} & UpdateCourseDto;
 
 export const useUpdateCourse = () => {
   const { t } = useTranslation();
