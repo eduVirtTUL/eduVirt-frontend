@@ -2,11 +2,11 @@ import { toast } from "sonner";
 import { keys } from "../keys";
 import { AccessKeyControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import {useTranslation} from "react-i18next";
 
 export const useCreateCourseAccessKey = () => {
-
     const queryClient = useQueryClient();
+    const { t } = useTranslation();
     const { mutate, mutateAsync } = useMutation({
         mutationKey: ["createCourseAccessKey"],
         mutationFn: async ({ courseId, courseKey }: { courseId: string, courseKey: string }) => {
@@ -16,7 +16,7 @@ export const useCreateCourseAccessKey = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [keys.ACCESS_KEY] });
-            toast.success("Course access key created successfully!");
+            toast.success(t("createCourseKey.success"));
         },
         onError: () => {
             toast.error("Failed to create course access key");

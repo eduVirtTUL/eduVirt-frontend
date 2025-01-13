@@ -4,21 +4,21 @@ import {useTeam} from "@/data/team/useTeam";
 import {useCourse} from "@/data/course/useCourse";
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam";
 import {useStatelessPodsForTeam} from "@/data/pods/useStatelessPodsForTeam";
-
 import PageHeader from "@/components/PageHeader";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
-import {ChevronDown, ChevronUp} from "lucide-react";
+import {ChevronDown, ChevronUp, Info, LogOut} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
-import {StatusDot} from "@/components/StatusDot";
-import {useLeaveTeamOrCourse} from "@/data/team/useLeaveTeamOrCourse";
+import {useLeaveTeamOrCourse} from "@/data/team/users/useLeaveTeamOrCourse";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import {jwtDecode} from "jwt-decode";
 import {useDialog} from "@/stores/dialogStore";
 import {toast} from "sonner";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {PodCard} from "@/components/PodCard";
+import ValueDisplay from "@/components/ValueDisplay";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {useTranslation} from "react-i18next";
 
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -26,40 +26,42 @@ const TeamDetailsPage: React.FC = () => {
     const {course} = useCourse(team?.course?.id ?? "");
     const {statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
     const {statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
-    console.log(statelessPods)
-    const [isMembersOpen, setIsMembersOpen] = useState(true);
+    const [isMembersOpen, setIsMembersOpen] = useState(() => {
+        const saved = localStorage.getItem('teamMembersCollapsible');
+        return saved ? JSON.parse(saved) : true;
+    });
     const {leaveTeam} = useLeaveTeamOrCourse();
     const navigate = useNavigate();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const teamMembers = team?.users ?? [];
+    const isTeamBased = course?.courseType === "TEAM_BASED";
     const {open} = useDialog();
+    const {t} = useTranslation();
 
     useEffect(() => {
         const checkAuthorization = async () => {
             const token = localStorage.getItem('token');
-            if (!token) {
-                navigate('/teams');
-                return;
-            }
 
-            const decoded = jwtDecode<{ sub: string }>(token);
+            const decoded = jwtDecode<{ sub: string }>(token || '');
             const userId = decoded.sub;
 
             if (!isLoading && team) {
-                if (!team.users?.includes(userId)) {
-                    toast.error("You need to be a member of this team to view its details");
-                    navigate('/teams');
+                if (!team.users?.some(user => user.id === userId)) {
+                    toast.error(t("teamDetails.error.notInTeam"));
                 } else {
                     setIsAuthorized(true);
                 }
             } else if (!isLoading && !team) {
-                toast.error("Team not found");
-                navigate('/teams');
+                toast.error(t("teamDetails.error.teamNotFound"));
             }
         };
 
         checkAuthorization();
     }, [team, isLoading, navigate]);
+
+    useEffect(() => {
+        localStorage.setItem('teamMembersCollapsible', JSON.stringify(isMembersOpen));
+    }, [isMembersOpen]);
 
     if (isLoading || isAuthorized === null || !isAuthorized) {
         return (
@@ -90,107 +92,149 @@ const TeamDetailsPage: React.FC = () => {
     const handleConfirmLeave = () => {
         if (id) {
             leaveTeam(id);
+            navigate(-1);
         }
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center mb-6">
-                <PageHeader title={team?.name ?? ""}/>
-                <div className="pb-10">
-                    <Button
-                        variant="destructive"
-                        onClick={handleLeaveTeamClick}
-                    >
-                        Leave Team
-                    </Button>
-                </div>
-            </div>
-            <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                    <h3 className="text-sm font-medium text-muted-foreground">Course:</h3>
-                    {team?.course ? (
-                        <span className="rounded-full bg-muted px-3 py-1 text-sm">
-                            {course?.name ?? "Loading..."}
-                        </span>
-                    ) : (
-                        <p className="text-base">No course assigned</p>
-                    )}
-                </div>
-                <div className="flex items-center space-x-4">
-                    <h3 className="text-sm font-medium text-muted-foreground">Status:</h3>
-                    <div className="flex items-center space-x-2">
-                        <StatusDot active={team?.active ?? false}/>
-                        <span
-                            className="text-sm font-medium text-muted-foreground">{team?.active ? "Active" : "Inactive"}</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div className="grid gap-6">
-                <Collapsible open={isMembersOpen} onOpenChange={setIsMembersOpen}>
-                    <Card>
+        <>
+            <PageHeader title={team?.name ?? ""} type={t("teamDetails.title")}/>
+            <div className="space-y-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                    <Card className="w-full">
                         <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <CardTitle>Team Members</CardTitle>
-                                <CollapsibleTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                        {isMembersOpen ? (
-                                            <ChevronUp className="h-4 w-4"/>
-                                        ) : (
-                                            <ChevronDown className="h-4 w-4"/>
-                                        )}
-                                    </Button>
-                                </CollapsibleTrigger>
-                            </div>
-                        </CardHeader>
-                        <CollapsibleContent>
-                            <CardContent>
-                                <div className="grid gap-4 md:grid-cols-3">
-                                    {teamMembers.map(user => (
-                                        <div
-                                            key={user}
-                                            className="flex items-center space-x-4 rounded-lg border p-4"
+                            <CardTitle>
+                                <div className="flex flex-row items-center justify-between">
+                                    <span>{t("teamDetails.detailsCard.title")}</span>
+                                    <div className="flex flex-row items-center justify-start gap-2">
+                                        <Button
+                                            variant="destructive"
+                                            onClick={handleLeaveTeamClick}
+                                            className="flex items-center gap-2"
                                         >
-                                            <div
-                                                className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-                                                <span className="text-lg">U</span>
-                                            </div>
-                                            <div>
-                                                <p className="font-medium text-sm break-all">{user}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {(!team?.users || team.users.length === 0) && (
-                                        <p className="text-muted-foreground text-center py-4 col-span-3">
-                                            Team is empty
-                                        </p>
-                                    )}
+                                            <LogOut className="h-4 w-4"/>
+                                            {t("teamDetails.leaveTeam.button")}
+                                        </Button>
+                                    </div>
                                 </div>
-                            </CardContent>
-                        </CollapsibleContent>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-2 gap-2">
+                                <ValueDisplay
+                                    value={course?.name ?? ""}
+                                    label={t("teamDetails.detailsCard.courseName")}
+                                />
+                                <div className="flex items-center gap-2">
+                                    <ValueDisplay
+                                        value={isTeamBased ? t("courseType.teamBased") : t("courseType.solo")}
+                                        label={t("teamDetails.detailsCard.courseType")}
+                                    />
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Info
+                                                className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"/>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80" side="right">
+                                            <p className="text-sm">
+                                                {isTeamBased
+                                                    ? t("courseType.teamBasedDescription")
+                                                    : t("courseType.soloDescription")}
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                <div className="col-span-2">
+                                    <ValueDisplay
+                                        value={course?.description ?? ""}
+                                        label={t("teamDetails.detailsCard.courseDescription")}
+                                    />
+                                </div>
+                            </div>
+
+                        </CardContent>
                     </Card>
-                </Collapsible>
-                <div className="space-y-4">
-                    <h2 className="text-2xl font-semibold tracking-tight">Assigned Pods</h2>
+                </div>
+
+                <div className="flex flex-col space-y-4">
+                    <Collapsible open={isMembersOpen} onOpenChange={setIsMembersOpen}>
+                        <Card>
+                            <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <CardTitle>{t("teamDetails.teamMembers")}</CardTitle>
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="ghost" size="sm">
+                                            {isMembersOpen ? (
+                                                <ChevronUp className="h-4 w-4"/>
+                                            ) : (
+                                                <ChevronDown className="h-4 w-4"/>
+                                            )}
+                                        </Button>
+                                    </CollapsibleTrigger>
+                                </div>
+                            </CardHeader>
+                            <CollapsibleContent>
+                                <CardContent>
+                                    <div className="grid gap-4 md:grid-cols-3">
+                                        {teamMembers.map(user => (
+                                            <div
+                                                key={user.id}
+                                                className="flex items-center space-x-4 rounded-lg border p-4"
+                                            >
+                                                <div
+                                                    className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                                                    <span className="text-lg">
+                                                        {user.firstName?.[0] || user.userName?.[0] || 'U'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="font-medium text-sm truncate">
+                                                        {user.firstName && user.lastName
+                                                            ? `${user.firstName} ${user.lastName}`
+                                                            : user.userName || user.email}
+                                                    </p>
+                                                    {user.email && user.email !== user.userName && (
+                                                        <p className="text-xs text-muted-foreground truncate">
+                                                            {user.email}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {(!team?.users || team.users.length === 0) && (
+                                            <p className="text-muted-foreground text-center py-4 col-span-3">
+                                                {t("teamDetails.teamEmpty")}
+                                            </p>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </CollapsibleContent>
+                        </Card>
+                    </Collapsible>
+
                     {isLoadingStatefulPods || isLoadingStatelessPods ? (
-                        <div className="flex gap-4 px-8">
+                        <div className="flex flex-wrap gap-2 px-4 md:px-8">
                             {[1, 2, 3].map((i) => (
-                                <Skeleton key={i} className="h-[280px] w-full"/>
+                                <Skeleton key={i} className="h-[280px] w-full md:w-1/3"/>
                             ))}
                         </div>
-                    ) : ((!statefulPods || statefulPods.length === 0) && (!statelessPods || statelessPods.length === 0)) ? (
-                        <p className="text-center text-muted-foreground py-8">No pods assigned to this team</p>
+                    ) : ((!statefulPods || statefulPods.length === 0) && (!statelessPods || statelessPods?.length === 0)) ? (
+                        <Card className="w-full">
+                            <CardHeader>
+                                <CardTitle>{t("teamDetails.assignedPods")}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-center text-muted-foreground py-8">{t("teamDetails.noPods")}</p>
+                            </CardContent>
+                        </Card>
                     ) : (
-                        <div className="px-8">
-                            <Carousel
-                                opts={{
-                                    align: "start",
-                                    loop: true,
-                                }}
-                                className="w-full"
-                            >
-                                <CarouselContent>
+                        <Card className="w-full">
+                            <CardHeader>
+                                <CardTitle>{t("teamDetails.assignedPods")}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div
+                                    className="grid gap-4 md:grid-cols-3">
                                     {[
                                         ...(statefulPods || []).map(pod => ({
                                             ...pod,
@@ -203,56 +247,49 @@ const TeamDetailsPage: React.FC = () => {
                                         }))
                                     ]
                                         .filter((pod, index, self) =>
-                                            index === self.findIndex(p =>
-                                                p.isStateless
-                                                    ? p.resourceGroupPool?.id === pod.resourceGroupPool?.id
-                                                    : p.resourceGroup?.id === pod.resourceGroup?.id
-                                            )
+                                                index === self.findIndex(p =>
+                                                    p.isStateless
+                                                        ? p.resourceGroupPool?.id === pod.resourceGroupPool?.id
+                                                        : p.resourceGroup?.id === pod.resourceGroup?.id
+                                                )
                                         )
                                         .map((pod) => (
-                                            <CarouselItem
-                                                key={pod.id}
-                                                className="basis-full md:basis-1/3 lg:basis-1/3"
-                                            >
-                                                {((pod.resourceGroup || pod.resourceGroupPool) && pod.course) && (
-                                                    <PodCard
-                                                        id={pod.id || ''}
-                                                        resourceGroup={pod.isStateless ? {
-                                                            id: pod.resourceGroupPool?.id || '',
-                                                            name: pod.resourceGroupPool?.name || '',
-                                                            isStateless: true
-                                                        } : {
-                                                            id: pod.resourceGroup?.id || '',
-                                                            name: pod.resourceGroup?.name || '',
-                                                            isStateless: false
-                                                        }}
-                                                        course={{
-                                                            id: pod.course.id || '',
-                                                            name: pod.course.name || '',
-                                                            description: pod.course.description || '',
-                                                            courseType: pod.course.courseType || '',
-                                                            clusterId: pod.course.clusterId || ''
-                                                        }}
-                                                    />
-                                                )}
-                                            </CarouselItem>
+                                            ((pod.resourceGroup || pod.resourceGroupPool) && pod.course) && (
+                                                <PodCard
+                                                    key={pod.id}
+                                                    id={pod.id || ''}
+                                                    resourceGroup={pod.isStateless ? {
+                                                        id: pod.resourceGroupPool?.id || '',
+                                                        name: pod.resourceGroupPool?.name || '',
+                                                        isStateless: true
+                                                    } : {
+                                                        id: pod.resourceGroup?.id || '',
+                                                        name: pod.resourceGroup?.name || '',
+                                                        isStateless: false
+                                                    }}
+                                                    course={{
+                                                        id: pod.course.id || '',
+                                                        name: pod.course.name || '',
+                                                        description: pod.course.description || '',
+                                                        courseType: pod.course.courseType || '',
+                                                        clusterId: pod.course.clusterId || ''
+                                                    }}
+                                                />
+                                            )
                                         ))}
-                                </CarouselContent>
-                                <div className="flex justify-end gap-2 mt-4">
-                                    <CarouselPrevious variant="outline" className="h-8 w-8"/>
-                                    <CarouselNext variant="outline" className="h-8 w-8"/>
                                 </div>
-                            </Carousel>
-                        </div>
+                            </CardContent>
+                        </Card>
                     )}
+
                 </div>
+                <ConfirmationDialog
+                    header={t("teamDetails.leaveTeam.confirmHeader")}
+                    text={t("teamDetails.leaveTeam.confirmText")}
+                    onConfirm={handleConfirmLeave}
+                />
             </div>
-            <ConfirmationDialog
-                header="Leave Team"
-                text="Are you sure you want to leave this team? This action cannot be undone."
-                onConfirm={handleConfirmLeave}
-            />
-        </div>
+        </>
     );
 };
 
