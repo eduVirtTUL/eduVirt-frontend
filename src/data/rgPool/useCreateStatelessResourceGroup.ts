@@ -1,22 +1,22 @@
+import { injectToken } from "@/utils/requestUtils";
 import { CreateResourceGroupDto, ResourceGroupPoolControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupPoolKeys } from "../keys";
+import { useTranslation } from "react-i18next";
 
 type CreateStatelessResourceGroup = {
   id: string;
-} & Required<CreateResourceGroupDto>;
+} & CreateResourceGroupDto;
 
 export const useCreateStatelessResourceGroup = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const token = localStorage.getItem("token") ?? "";
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, ...org }: CreateStatelessResourceGroup) => {
       const controller = new ResourceGroupPoolControllerApi();
       const response = await controller.addResourceGroupToPool(id, org, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        ...injectToken(),
       });
       return response.data;
     },
@@ -24,11 +24,11 @@ export const useCreateStatelessResourceGroup = () => {
       queryClient.invalidateQueries({
         queryKey: resourceGroupPoolKeys.detail(id),
       });
-      toast.success("Resource group created");
+      toast.success(t("createResourceGroupModal.success"));
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to create resource group");
+      toast.error(t("createResourceGroupModal.error"));
     },
   });
 

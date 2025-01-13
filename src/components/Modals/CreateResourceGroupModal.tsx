@@ -36,8 +36,7 @@ const createResourceGroupSchema = (t: TFunction) =>
       .min(
         0,
         t("createResourceGroupModal.validation.maxRentTimeGreaterOrEqualZero")
-      )
-      .optional(),
+      ),
   });
 
 type CreateResourceGroupForm = z.infer<
