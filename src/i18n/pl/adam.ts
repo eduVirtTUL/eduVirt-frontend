@@ -261,6 +261,19 @@ const editResourceGroupModal = {
     "Bezstanowa grupa zasobów posiada maksymalny czas wypożyczenia z puli grup zasobów",
 };
 
+const editCourseModal = {
+  title: "Edytuj przedmiot",
+  name: "Nazwa",
+  description: "Opis",
+  validation: {
+    nameRequired: "Nazwa przedmiotu jest wymagana",
+    descriptionRequired: "Opis przedmiotu jest wymagany",
+    nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
+    descriptionMaxLenght:
+      "Opis przedmiotu nie może być dłuższy niż 1000 znaków",
+  },
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -276,4 +289,5 @@ export default {
   removeVmModal,
   editVmModal,
   editResourceGroupModal,
+  editCourseModal,
 };

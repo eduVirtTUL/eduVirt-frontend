@@ -63,6 +63,7 @@ import {
 import { ManageTeamUsersModal } from "@/components/Modals/ManageTeamUsersModal";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteCourse } from "@/data/course/useDeleteCourse";
+import EditCourseModal from "@/components/Modals/EditCourseModal";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { t } = useTranslation();
@@ -257,6 +258,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
 
   return (
     <>
+      <EditCourseModal id={id} />
       <ConfirmationDialog
         header={t("coursePage.deleteAction.confirmation")}
         text={t("coursePage.deleteAction.confirmationText")}
@@ -278,7 +280,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                 <Button asChild>
                   <Link to={`limits`}>{t("coursePage.limits")}</Link>
                 </Button>
-                <Button variant="secondary">
+                <Button variant="secondary" onClick={() => open("editCourse")}>
                   <PencilIcon />
                   {t("coursePage.edit")}
                 </Button>
