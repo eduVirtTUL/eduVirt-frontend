@@ -65,7 +65,17 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
   });
 
   return (
-    <Dialog open={isOpen("editCourse")} onOpenChange={close}>
+    <Dialog
+      open={isOpen("editCourse")}
+      onOpenChange={() => {
+        close();
+        form.reset({
+          name: course?.name ?? "",
+          description: course?.description ?? "",
+          externalLink: course?.externalLink ?? "",
+        });
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("editCourseModal.title")}</DialogTitle>
