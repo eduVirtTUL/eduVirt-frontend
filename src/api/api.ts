@@ -3488,10 +3488,11 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
          * 
          * @param {number} [page] 
          * @param {number} [size] 
+         * @param {string} [search] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses: async (page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getCourses: async (page?: number, size?: number, search?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/course`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3510,6 +3511,10 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
 
             if (size !== undefined) {
                 localVarQueryParameter['size'] = size;
+            }
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
             }
 
 
@@ -3858,11 +3863,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
          * 
          * @param {number} [page] 
          * @param {number} [size] 
+         * @param {string} [search] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoCourseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(page, size, options);
+        async getCourses(page?: number, size?: number, search?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoCourseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourses(page, size, search, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourses']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4045,11 +4051,12 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          * 
          * @param {number} [page] 
          * @param {number} [size] 
+         * @param {string} [search] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoCourseDto> {
-            return localVarFp.getCourses(page, size, options).then((request) => request(axios, basePath));
+        getCourses(page?: number, size?: number, search?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoCourseDto> {
+            return localVarFp.getCourses(page, size, search, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4234,12 +4241,13 @@ export class CourseControllerApi extends BaseAPI {
      * 
      * @param {number} [page] 
      * @param {number} [size] 
+     * @param {string} [search] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public getCourses(page?: number, size?: number, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).getCourses(page, size, options).then((request) => request(this.axios, this.basePath));
+    public getCourses(page?: number, size?: number, search?: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourses(page, size, search, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

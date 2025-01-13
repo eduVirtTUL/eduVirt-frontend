@@ -274,6 +274,19 @@ const editCourseModal = {
   },
 };
 
+const courseListPage = {
+  title: "Przedmioty",
+  searchPlaceholder: "Szukaj przedmiotu...",
+  clear: "Wyczyść",
+  createCourse: "Utwórz przedmiot",
+  table: {
+    name: "Nazwa",
+    description: "Opis",
+    details: "Szczegóły",
+    edit: "Edytuj",
+  },
+};
+
 export default {
   courseLimits,
   createResourceGroupPoolModal,
@@ -290,4 +303,5 @@ export default {
   editVmModal,
   editResourceGroupModal,
   editCourseModal,
+  courseListPage,
 };

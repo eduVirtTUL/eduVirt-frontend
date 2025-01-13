@@ -3,13 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCourses } from "@/data/course/useCourses";
 import { useDialog } from "@/stores/dialogStore";
-import {
-  ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
-  MoreHorizontal,
-  PlusIcon,
-} from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, PlusIcon, XIcon } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CourseDto } from "@/api";
@@ -24,12 +18,18 @@ import { Link, useSearchParams } from "react-router";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
+import { useDebounce } from "use-debounce";
+import React from "react";
+import { TFunction } from "i18next";
 
-const columns: ColumnDef<CourseDto>[] = [
+const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -38,13 +38,13 @@ const columns: ColumnDef<CourseDto>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          {t("courseListPage.table.name")}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
-  { accessorKey: "description", header: "Description" },
+  { accessorKey: "description", header: t("courseListPage.table.description") },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -59,9 +59,13 @@ const columns: ColumnDef<CourseDto>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit course</DropdownMenuItem>
+            <DropdownMenuItem>
+              {t("courseListPage.table.edit")}
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`/courses/${course.id}`}>View course</Link>
+              <Link to={`/courses/${course.id}`}>
+                {t("courseListPage.table.details")}
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -73,9 +77,12 @@ const columns: ColumnDef<CourseDto>[] = [
 const CoursesPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
+  const { t } = useTranslation();
   const pageNumber = parseInt(searchParams.get("page") ?? "0", 10);
   const pageSize = parseInt(searchParams.get("size") ?? "10", 10);
-  const { courses, isLoading } = useCourses(pageNumber, pageSize);
+  const [search, setSearch] = React.useState("");
+  const [searchValue] = useDebounce(search, 500);
+  const { courses, isLoading } = useCourses(pageNumber, pageSize, searchValue);
   const { open } = useDialog();
 
   if (isLoading) {
@@ -85,7 +92,7 @@ const CoursesPage: React.FC = () => {
   return (
     <>
       <CreateCourseModal />
-      <PageHeader title="Courses" />
+      <PageHeader title={t("courseListPage.title")} />
       <div className="pb-5">
         <Button
           onClick={() => {
@@ -93,32 +100,42 @@ const CoursesPage: React.FC = () => {
           }}
         >
           <PlusIcon />
-          New course
+          {t("courseListPage.createCourse")}
         </Button>
       </div>
-
-      <DataTable data={courses?.items ?? []} columns={columns} />
-      <Pagination>
+      <div className="flex flex-row gap-2 mb-5">
+        <Input
+          placeholder={t("courseListPage.searchPlaceholder")}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button
+          onClick={() => {
+            setSearch("");
+          }}
+        >
+          <XIcon />
+          {t("courseListPage.clear")}
+        </Button>
+      </div>
+      <DataTable data={courses?.items ?? []} columns={columns(t)} />
+      <Pagination className="mt-5">
         <PaginationContent>
           {pageNumber > 0 && (
-            <PaginationItem>
-              <Button variant="ghost" asChild>
-                <Link to={`/courses?page=${pageNumber - 1}&size=${pageSize}`}>
-                  <ChevronLeft className="h-4 w-4" />
-                  <span>Previous</span>
-                </Link>
-              </Button>
-            </PaginationItem>
-          )}
-
-          {pageNumber > 0 && (
-            <PaginationItem>
-              <PaginationLink
-                href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
-              >
-                {pageNumber}
-              </PaginationLink>
-            </PaginationItem>
+            <>
+              <PaginationItem>
+                <PaginationPrevious
+                  href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink
+                  href={`/courses?page=${pageNumber - 1}&size=${pageSize}`}
+                >
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            </>
           )}
           <PaginationItem>
             <PaginationLink
@@ -137,17 +154,13 @@ const CoursesPage: React.FC = () => {
               </PaginationLink>
             </PaginationItem>
           )}
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <Button variant="ghost" asChild>
-              <Link to={`/courses?page=${pageNumber + 1}&size=${pageSize}`}>
-                <span>Next</span>
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </PaginationItem>
+          {courses?.page?.totalPages !== pageNumber + 1 && (
+            <PaginationItem>
+              <PaginationNext
+                href={`/courses?page=${pageNumber + 1}&size=${pageSize}`}
+              />
+            </PaginationItem>
+          )}
         </PaginationContent>
       </Pagination>
     </>
