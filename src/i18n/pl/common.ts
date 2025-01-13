@@ -86,6 +86,7 @@ export default {
   add: "Dodaj",
   join: "Dołącz",
   close: "Zamknij",
+  status: "Status",
   menu,
   units,
   general,

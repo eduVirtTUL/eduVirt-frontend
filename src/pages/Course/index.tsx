@@ -204,13 +204,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             <PencilIcon/>
                             {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {
-                            setSelectedTeamForUsers(row.original);
-                            open("manageTeamUsers");
-                        }}>
-                            <SmilePlus/>
-                            {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
-                        </DropdownMenuItem>
+                        {isTeamBased && (
+                            <DropdownMenuItem onClick={() => {
+                                setSelectedTeamForUsers(row.original);
+                                open("manageTeamUsers");
+                            }}>
+                                <SmilePlus/>
+                                {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem
                             onClick={() => {
                                 setSelectedTeamId(row.original.id);
@@ -232,7 +234,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             ),
-        },
+        }
     ];
 
     return (

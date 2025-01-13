@@ -10,7 +10,7 @@ import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/
 import {ChevronDown, ChevronUp, Info, LogOut} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
-import {useLeaveTeamOrCourse} from "@/data/team/useLeaveTeamOrCourse";
+import {useLeaveTeamOrCourse} from "@/data/team/users/useLeaveTeamOrCourse";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import {jwtDecode} from "jwt-decode";
 import {useDialog} from "@/stores/dialogStore";
@@ -36,13 +36,13 @@ const TeamDetailsPage: React.FC = () => {
     const teamMembers = team?.users ?? [];
     const isTeamBased = course?.courseType === "TEAM_BASED";
     const {open} = useDialog();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         const checkAuthorization = async () => {
             const token = localStorage.getItem('token');
 
-            const decoded = jwtDecode<{ sub: string }>(token||'');
+            const decoded = jwtDecode<{ sub: string }>(token || '');
             const userId = decoded.sub;
 
             if (!isLoading && team) {
@@ -189,7 +189,7 @@ const TeamDetailsPage: React.FC = () => {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="font-medium text-sm truncate">
-                                                        {user.firstName && user.lastName 
+                                                        {user.firstName && user.lastName
                                                             ? `${user.firstName} ${user.lastName}`
                                                             : user.userName || user.email}
                                                     </p>

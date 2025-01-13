@@ -195,8 +195,11 @@ const manageTeamUsersModal = {
     delete: {
         title: "Usuń użytkownika",
         title2: "z zespołu",
-        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć użytkownika",
-    
+        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć tego użytkownika z zespołu?",
+    },
+    addUser: {
+        email: "Adres e-mail",
+        description: "Wprowadź adres e-mail studenta, którego chcesz dodać do zespołu",
     }
 
 }

@@ -2,29 +2,49 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRemoveUserFromTeam } from "@/data/team/useRemoveUserFromTeam";
-import { XCircleIcon, UserMinusIcon } from "lucide-react";
+import { useAddStudentToTeam } from "@/data/team/users/useAddStudentToTeam";
+import { useRemoveStudentFromTeam } from "@/data/team/users/useRemoveStudentFromTeam";
+import { XCircleIcon, UserMinusIcon, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDialog } from "@/stores/dialogStore";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { UserDto } from "@/api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface ManageTeamUsersModalProps {
     team: {
         id: string;
         name: string;
-        users: UserDto[];  // Changed from string[] to UserDto[]
+        users: UserDto[]; 
     };
 }
+
+const addUserSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
+
+type AddUserForm = z.infer<typeof addUserSchema>;
 
 export function ManageTeamUsersModal({ team }: ManageTeamUsersModalProps) {
     const { isOpen, close, open } = useDialog();
     const { t } = useTranslation();
-    const { removeUser } = useRemoveUserFromTeam(team.id);
+    const { removeStudentFromTeam } = useRemoveStudentFromTeam();
+    const { addStudentToTeam } = useAddStudentToTeam();
     const [activeTab, setActiveTab] = useState("current");
     const [isRemoving, setIsRemoving] = useState<string | null>(null);
     const [userToRemove, setUserToRemove] = useState<UserDto | null>(null);
+
+    const form = useForm<AddUserForm>({
+        resolver: zodResolver(addUserSchema),
+        defaultValues: {
+            email: "",
+        },
+    });
 
     const handleRemoveClick = (user: UserDto) => {
         setUserToRemove(user);
@@ -36,13 +56,23 @@ export function ManageTeamUsersModal({ team }: ManageTeamUsersModalProps) {
         
         setIsRemoving(userToRemove.id);
         try {
-            await removeUser(userToRemove.id);
+            await removeStudentFromTeam({ teamId: team.id, email: userToRemove.email? userToRemove.email : "" });
             close();
         } catch (error) {
             console.error(error);
         } finally {
             setIsRemoving(null);
             setUserToRemove(null);
+        }
+    };
+
+    const onSubmit = async (values: AddUserForm) => {
+        try {
+            await addStudentToTeam({ teamId: team.id, email: values.email });
+            form.reset();
+            close();
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -106,17 +136,43 @@ export function ManageTeamUsersModal({ team }: ManageTeamUsersModalProps) {
                         </TabsContent>
 
                         <TabsContent value="add" className="space-y-4">
-                            <div className="text-center text-muted-foreground py-4">
-                                {/* {t("manageTeamUsers.addUserFeature")} */}
-                            </div>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>{t("manageTeamUsers.addUser.email")}</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="user@example.com" {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    {t("manageTeamUsers.addUser.description")}
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </form>
+                            </Form>
                         </TabsContent>
                     </Tabs>
 
-                    <div className="flex">
+                    <div className="flex justify-between">
                         <Button variant="secondary" onClick={() => close()}>
                             <XCircleIcon className="h-4 w-4 mr-2" />
                             {t("cancel")}
                         </Button>
+                        {activeTab === "add" && (
+                            <Button 
+                                onClick={form.handleSubmit(onSubmit)}
+                                disabled={!form.formState.isValid}
+                            >
+                                <UserPlus className="h-4 w-4 mr-2" />
+                                {t("manageTeamUsers.add")}
+                            </Button>
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>
