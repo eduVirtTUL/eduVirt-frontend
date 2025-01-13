@@ -30,6 +30,7 @@ const AvailableMachinesList: React.FC<AvailableMachinesListProps> = ({
       ?.filter((vm) =>
         vm.name?.toLowerCase().includes(searchText.toLowerCase())
       )
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
       .slice(start, end) ?? [];
 
   return (
