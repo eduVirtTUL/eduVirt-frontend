@@ -15,10 +15,6 @@ const menu = {
   maintenance: "Zarządzanie",
 };
 
-const resourceGroupPools = {
-  title: "Pule grup zasobów",
-};
-
 const general = {
   yes: "Tak",
   no: "Nie",
@@ -93,7 +89,6 @@ export default {
   menu,
   units,
   general,
-  resourceGroupPools,
   ...adam,
   ...piotrek,
   ...bartek,

@@ -296,6 +296,16 @@ const editVmModal = {
   error: "Nie udało się zaktualizować maszyny wirtualnej",
 };
 
+const resourceGroupPools = {
+  title: "Pule grup zasobów",
+  createPool: "Utwórz pulę",
+  table: {
+    name: "Nazwa",
+    course: "Przedmiot",
+    resourceGroups: "Grupy zasobów",
+  },
+};
+
 const editResourceGroupModal = {
   title: "Edytuj grupę zasobów",
   name: "Nazwa*",
@@ -386,4 +396,5 @@ export default {
   editCourseModal,
   courseListPage,
   createCourseModal,
+  resourceGroupPools,
 };

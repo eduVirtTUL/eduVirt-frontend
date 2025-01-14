@@ -4,12 +4,6 @@ import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Pagination,
   PaginationContent,
   PaginationItem,
@@ -20,40 +14,18 @@ import {
 import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { TFunction } from "i18next";
+import { PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
-const columns: ColumnDef<DetailedResourceGroupPoolDto>[] = [
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "course.name", header: "Course" },
+const columns = (t: TFunction): ColumnDef<DetailedResourceGroupPoolDto>[] => [
+  { accessorKey: "name", header: t("resourceGroupPools.table.name") },
+  { accessorKey: "course.name", header: t("resourceGroupPools.table.course") },
   {
     accessorFn: (row) => row.resourceGroups?.length ?? 0,
-    header: "Resource Groups",
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const rgPool = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit pool</DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to={`/pools/${rgPool.id}`}>Pool Details</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    header: t("resourceGroupPools.table.resourceGroups"),
   },
 ];
 
@@ -64,16 +36,27 @@ const ResourceGroupPoolsPage: React.FC = () => {
   const page = parseInt(searchParams.get("page") ?? "0");
   const size = parseInt(searchParams.get("size") ?? "10");
   const { resourceGroupPools } = useResourceGroupPools(page, size);
+  const nav = useNavigate();
 
   return (
     <>
       <CreatePoolModal />
       <PageHeader title={t("resourceGroupPools.title")} />
       <div className="flex flex-row gap-2 pb-5">
-        <Button onClick={() => open("createPool")}>Create pool</Button>
+        <Button onClick={() => open("createPool")}>
+          <PlusIcon />
+          {t("resourceGroupPools.createPool")}
+        </Button>
       </div>
-      <DataTable data={resourceGroupPools?.items ?? []} columns={columns} />
-      <Pagination>
+      <DataTable
+        data={resourceGroupPools?.items ?? []}
+        columns={columns(t)}
+        onRowClick={(row) => {
+          const rgPool = row.original;
+          nav(`/pools/${rgPool.id}`);
+        }}
+      />
+      <Pagination className="mt-5">
         <PaginationContent>
           {page > 0 && (
             <PaginationItem>
