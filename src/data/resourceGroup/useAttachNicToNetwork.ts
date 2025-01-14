@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { injectToken } from "@/utils/requestUtils";
+import { useTranslation } from "react-i18next";
 
 type Data = {
   networkId: string;
@@ -11,6 +12,7 @@ type Data = {
 } & NetworkVmConnectionDto;
 
 export const useAttachNicToNetwork = () => {
+  const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -27,13 +29,14 @@ export const useAttachNicToNetwork = () => {
       return response.data;
     },
     onSuccess: (_, variables) => {
-      toast.success("VM attached to network");
+      toast.success(t("resourceGroupEditor.attachNetwork.success"));
       return queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.vm(id ?? "", variables.vmId ?? ""),
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      console.error(error);
+      toast.error(t("resourceGroupEditor.attachNetwork.error"));
     },
   });
 

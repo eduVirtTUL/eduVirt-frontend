@@ -4,12 +4,14 @@ import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { injectToken } from "@/utils/requestUtils";
+import { useTranslation } from "react-i18next";
 
 type NetworkVmConnection = {
   etag: string;
 } & NetworkVmConnectionDto;
 
 export const useDetachNicFromNetwork = () => {
+  const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
@@ -24,13 +26,14 @@ export const useDetachNicFromNetwork = () => {
       return response.data;
     },
     onSuccess: (_, variables) => {
-      toast.success("VM detached from network");
+      toast.success(t("resourceGroupEditor.detachNetwork.success"));
       return queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.vm(id ?? "", variables.vmId ?? ""),
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      console.error(error);
+      toast.error(t("resourceGroupEditor.detachNetwork.error"));
     },
   });
 

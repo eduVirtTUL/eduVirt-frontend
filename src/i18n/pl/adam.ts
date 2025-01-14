@@ -243,6 +243,10 @@ const resourceGroupEditor = {
     success: "Grupa zasobów została zaktualizowana",
     error: "Nie udało się zaktualizować grupy zasobów",
   },
+  attachNetwork: {
+    success: "Interfejs został podłączony",
+    error: "Nie udało się podłączyć interfejsu",
+  },
 };
 
 const addVmModal = {
