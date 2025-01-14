@@ -15,7 +15,7 @@ export const useUpdateCourse = () => {
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateCourse) => {
       const controller = new CourseControllerApi();
-      const response = await controller.updateCourse(id, org, {
+      const response = await controller.updateCourse(id, etag ?? "", org, {
         headers: {
           "If-Match": etag,
           ...injectToken().headers,

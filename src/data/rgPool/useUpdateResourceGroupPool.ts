@@ -19,12 +19,17 @@ export const useUpdateResourceGroupPool = () => {
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroupPool) => {
       const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.updateResourceGroupPool(id, org, {
-        headers: {
-          "If-Match": etag,
-          ...injectToken().headers,
-        },
-      });
+      const response = await controller.updateResourceGroupPool(
+        id,
+        etag ?? "",
+        org,
+        {
+          headers: {
+            "If-Match": etag,
+            ...injectToken().headers,
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (_, { id }) => {

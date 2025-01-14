@@ -7,18 +7,22 @@ import { injectToken } from "@/utils/requestUtils";
 
 type Data = {
   networkId: string;
+  etag: string;
 } & NetworkVmConnectionDto;
 
 export const useAttachNicToNetwork = () => {
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ networkId, ...original }: Data) => {
+    mutationFn: async ({ networkId, etag, ...original }: Data) => {
       const controller = new PrivateNetworkControllerApi();
       const response = await controller.attachNicToNetwork(
         networkId,
+        etag,
         original,
-        { ...injectToken() }
+        {
+          headers: { "If-Match": etag, ...injectToken().headers },
+        }
       );
       return response.data;
     },

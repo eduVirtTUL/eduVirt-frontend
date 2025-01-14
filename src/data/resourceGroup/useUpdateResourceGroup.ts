@@ -15,7 +15,7 @@ export const useUpdateResourceGroup = () => {
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroup) => {
       const controller = new ResourceGroupControllerApi();
-      const response = await controller.updateResourceGroup(id, org, {
+      const response = await controller.updateResourceGroup(id, etag, org, {
         headers: {
           "If-Match": etag,
           ...injectToken().headers,

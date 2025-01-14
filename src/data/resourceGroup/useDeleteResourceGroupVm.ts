@@ -8,13 +8,16 @@ import { injectToken } from "@/utils/requestUtils";
 
 export const useDeleteResourceGroupVm = () => {
   const { t } = useTranslation();
-  const { id: rgId } = useResourceGroupEditorStore();
+  const { id: rgId, etag } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.deleteVm(rgId!, id, {
-        ...injectToken(),
+      const response = await controller.deleteVm(rgId!, id, etag ?? "", {
+        headers: {
+          "If-Match": etag,
+          ...injectToken().headers,
+        },
       });
       return response.data;
     },
