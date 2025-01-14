@@ -247,6 +247,10 @@ const resourceGroupEditor = {
     success: "Interfejs został podłączony",
     error: "Nie udało się podłączyć interfejsu",
   },
+  detachNetwork: {
+    success: "Interfejs został odłączony",
+    error: "Nie udało się odłączyć interfejsu",
+  },
 };
 
 const addVmModal = {
