@@ -22,6 +22,7 @@ export type DialogType =
   | "createCourseKey"
   | "showMaintenanceInterval"
   | "manageTeamUsers"
+  | "manageCourseUsers"
 
 type DialogStore = {
   opened?: DialogType;

@@ -20,6 +20,7 @@ export const keys = {
   ACCESS_KEY: "accessKey",
   POD: "pod",
   STATELESS_POD: "statelessPod",
+  USER: "user",
 };
 
 export const resourceGroupKeys = {

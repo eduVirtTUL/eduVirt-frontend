@@ -96,6 +96,8 @@ const coursePageB = {
     teamsTable: {
       title: "Zespoły",
       noTeams: "Brak zespołów",
+      students: "Studenci",
+      edit: "Edytuj",
       columns: {
             name: "Nazwa",
             status: "Status",
@@ -114,6 +116,13 @@ const coursePageB = {
             manageUsers: "Członkowie",
             manageStatefulPods: "Pody stanowe",
             manageStatelessPods: "Pody bezstanowe",
+            deleteTeam: {
+                button : "Usuń zespół",
+                confirmation: {
+                    title : "Usuń zespół",
+                    description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
+            }
+        }
       }
     }
 }
@@ -204,6 +213,22 @@ const manageTeamUsersModal = {
 
 }
 
+const manageCourseUsersModal = {
+    title : "Studenci w przedmiocie",
+    remove: "Usuń",
+    add: "Dodaj",
+    noUsers: "Ten przedmiot nie posiada żadnych studentów",
+    delete: {
+        title: "Usuń użytkownika",
+        title2: "z zespołu",
+        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego studenta. Czy na pewno chcesz usunąć tego studenta z przedmiotu?",
+    },
+    addUser: {
+        email: "Adres e-mail",
+        description: "Wprowadź adres e-mail studenta, którego chcesz dodać do przedmiotu",
+    }
+}
+
 const createTeamModal = {
     title: "Tworzenie zespołu",
     singleTab: "Pojedynczy zespół",
@@ -230,6 +255,10 @@ const createTeamModal = {
     }
 };
 
+const deleteTeamModal = {
+    
+}
+
 export default {
     podType,
     activeStatus,
@@ -247,4 +276,6 @@ export default {
     createTeam: createTeamModal,
     createCourseKey: createCourseKeyModal,
     manageTeamUsers: manageTeamUsersModal,
+    manageCourseUsers: manageCourseUsersModal,
+    deleteTeam: deleteTeamModal
 };

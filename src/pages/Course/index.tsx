@@ -17,6 +17,7 @@ import {
     PlusIcon,
     SmilePlus,
     TrashIcon,
+    UserCog,
 } from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {useCourseTeams} from "@/data/team/useCoursesTeams";
@@ -51,12 +52,15 @@ import {
     PaginationItem,
     PaginationLink
 } from "@/components/ui/pagination";
-import { ManageTeamUsersModal } from "@/components/Modals/ManageTeamUsersModal";
+import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
+import {ManageSoloCourseUsersModal} from "@/components/Modals/ManageSoloCoursesTeamModal";
+import {useDeleteTeam} from "@/data/team/useDeleteTeam";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
     const {course} = useCourse(id);
-    const { open } = useDialog();
+    const {open} = useDialog();
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
     const [pageNumber, setPageNumber] = useState(0);
     const pageSize = 4;
@@ -72,6 +76,16 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         useCourseAccessKey(id, {
             enabled: !isTeamBased,
         });
+
+    const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
+    const {deleteTeam} = useDeleteTeam();
+
+    const handleDeleteTeam = async () => {
+        if (teamToDelete?.id) {
+            await deleteTeam(teamToDelete.id);
+            setTeamToDelete(null);
+        }
+    };
 
     const teamQueries = useTeamsInCourseAccessKeys(
         teams?.items.map((team) => team.id!) ?? [],
@@ -121,7 +135,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                     users.map((user: UserDto) => (
                                         <div key={user.id}>
                                             <Badge variant="outline">
-                                                {user.firstName && user.lastName 
+                                                {user.firstName && user.lastName
                                                     ? `${user.firstName} ${user.lastName}`
                                                     : user.userName || user.email}
                                             </Badge>
@@ -231,6 +245,18 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             <FileX2/>
                             {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
                         </DropdownMenuItem>
+                        {isTeamBased && (
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setTeamToDelete(row.original);
+                                    open("confirmation");
+                                }}
+                                className="text-destructive"
+                            >
+                                <TrashIcon className="h-4 w-4"/>
+                                {t("coursePageB.teamsTable.dropdownMenu.deleteTeam.button")}
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             ),
@@ -347,7 +373,14 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle>{t("coursePageB.teamsTable.title")}</CardTitle>
-                            {isTeamBased && <CreateTeamModal courseId={id!}/>}
+                            {isTeamBased ? (
+                                <CreateTeamModal courseId={id!}/>
+                            ) : (
+                                <Button variant="outline" onClick={() => open("manageCourseUsers")}>
+                                    <UserCog className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.students")}
+                                </Button>
+                            )}
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -470,6 +503,19 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             name: selectedTeamForUsers.name!,
                             users: selectedTeamForUsers.users ?? [],
                         }}
+                    />
+                )}
+                {!isTeamBased && (
+                    <ManageSoloCourseUsersModal
+                        courseId={id}
+                        courseName={course?.name ?? ""}
+                    />
+                )}
+                {teamToDelete && (
+                    <ConfirmationDialog
+                        header={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.title")}
+                        text={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.description", {team: teamToDelete.name})}
+                        onConfirm={handleDeleteTeam}
                     />
                 )}
             </div>
