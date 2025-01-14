@@ -12,14 +12,13 @@ type TimeRange = {
 }
 
 const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
-  const timeWindow = 30;
   const location = useLocation();
   const { clusterId, courseId, podId } = location.state || {};
 
-  const [currentRange, setCurrentRange] = useState<TimeRange>({start: null, end: null});
-  const {resources, isLoading: resourcesLoading} = useResourceGroupAvailability(courseId!, id!, timeWindow, currentRange.start!, currentRange.end!);
+  const [ currentRange, setCurrentRange ] = useState<TimeRange>({start: null, end: null});
+  const { resources, isLoading: resourcesLoading } = useResourceGroupAvailability(courseId!, id!, currentRange.start!, currentRange.end!);
 
-  const {reservations, isLoading: reservationsLoading} = useResourceGroupReservations({
+  const { reservations, isLoading: reservationsLoading } = useResourceGroupReservations({
     course: courseId!,
     resourceGroup: id!,
     start: currentRange.start,
@@ -32,7 +31,6 @@ const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ para
         clusterId={clusterId}
         courseId={courseId}
         podId={podId}
-        timeWindow={timeWindow}
         currentRange={currentRange}
         setCurrentRange={setCurrentRange}
         resources={resources}

@@ -320,8 +320,10 @@ const reservations = {
     general: {
       id: 'Identyfikator rezerwacji',
       teamId: 'Identyfikator zespołu',
+      teamButton: 'Przejdź do definicji zespołu w ramach systemu eduVirt',
       teamName: 'Nazwa zespołu',
       rgId: 'Identyfikator grupy zasobów',
+      rgButton: 'Przejdź do definicji grupy zasobów w ramach systemu eduVirt',
       rgName: 'Nazwa grupy zasobów',
       rgState: 'Stan grupy zasobów',
       start: 'Początek',
@@ -346,6 +348,8 @@ const reservations = {
   },
   createReservation: {
     title: 'Utwórz nową rezerwację',
+    startTime: 'Początek rezerwacji',
+    startTimeDescription: 'Początek rezerwacji wyznacza przybliżony moment (zależny od czasu uruchomienia zasobów) od któego możliwe będzie wykorzsytanie funkcjonalności oferowanej przez system oVirt.',
     duration: 'Długość rezerwacji (godziny)',
     durationDescription: 'Długość rezerwacji, od momentu wybranego w ramach kalendarza, w godzinach.',
     automaticStartup: 'Uruchom zasoby w ramach PODa automatycznie',
@@ -374,7 +378,10 @@ const reservations = {
     "duration.too.short": 'Wybrana długość rezerwacji jest za króta',
     "duration.too.long": 'Wybrana długość rezerwacji przekracza maksymalny czas rezerwacji',
     "notificationTime.negative": 'Wskazny czas wysłania powiadomienia jest nieprawidłowy',
+    "notificationTime.required": 'Czas wysłania powiadomienia jest wymagany',
     "notificationTime.too.long": 'Wskazany czas wysłania powiadomienia przekracza połowę długości rezerwacji',
+    "notificationTime.integer": 'Czas wysłania powiadomienia musi być wyrażony w pełnych minutach',
+    "endTime.beforeStart": "Rezerwacja musi się kończyć po jej rozpoczęciu"
   },
 }
 

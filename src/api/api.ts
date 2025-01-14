@@ -3246,19 +3246,16 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
          * 
          * @param {string} id 
          * @param {string} rgId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroup: async (id: string, rgId: string, window: number, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        findResourcesAvailabilityForResourceGroup: async (id: string, rgId: string, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroup', 'id', id)
             // verify required parameter 'rgId' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroup', 'rgId', rgId)
-            // verify required parameter 'window' is not null or undefined
-            assertParamExists('findResourcesAvailabilityForResourceGroup', 'window', window)
             // verify required parameter 'start' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroup', 'start', start)
             // verify required parameter 'end' is not null or undefined
@@ -3276,10 +3273,6 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (window !== undefined) {
-                localVarQueryParameter['window'] = window;
-            }
 
             if (start !== undefined) {
                 localVarQueryParameter['start'] = (start as any instanceof Date) ?
@@ -3308,19 +3301,16 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
          * 
          * @param {string} id 
          * @param {string} rgPoolId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroupPool: async (id: string, rgPoolId: string, window: number, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        findResourcesAvailabilityForResourceGroupPool: async (id: string, rgPoolId: string, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'id', id)
             // verify required parameter 'rgPoolId' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'rgPoolId', rgPoolId)
-            // verify required parameter 'window' is not null or undefined
-            assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'window', window)
             // verify required parameter 'start' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'start', start)
             // verify required parameter 'end' is not null or undefined
@@ -3338,10 +3328,6 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (window !== undefined) {
-                localVarQueryParameter['window'] = window;
-            }
 
             if (start !== undefined) {
                 localVarQueryParameter['start'] = (start as any instanceof Date) ?
@@ -3771,14 +3757,13 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} id 
          * @param {string} rgId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findResourcesAvailabilityForResourceGroup(id: string, rgId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroup(id, rgId, window, start, end, options);
+        async findResourcesAvailabilityForResourceGroup(id: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroup(id, rgId, start, end, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.findResourcesAvailabilityForResourceGroup']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3787,14 +3772,13 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} id 
          * @param {string} rgPoolId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, window, start, end, options);
+        async findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.findResourcesAvailabilityForResourceGroupPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3973,27 +3957,25 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          * 
          * @param {string} id 
          * @param {string} rgId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroup(id: string, rgId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
-            return localVarFp.findResourcesAvailabilityForResourceGroup(id, rgId, window, start, end, options).then((request) => request(axios, basePath));
+        findResourcesAvailabilityForResourceGroup(id: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
+            return localVarFp.findResourcesAvailabilityForResourceGroup(id, rgId, start, end, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} id 
          * @param {string} rgPoolId 
-         * @param {number} window 
          * @param {string} start 
          * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
-            return localVarFp.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, window, start, end, options).then((request) => request(axios, basePath));
+        findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
+            return localVarFp.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4152,30 +4134,28 @@ export class CourseControllerApi extends BaseAPI {
      * 
      * @param {string} id 
      * @param {string} rgId 
-     * @param {number} window 
      * @param {string} start 
      * @param {string} end 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public findResourcesAvailabilityForResourceGroup(id: string, rgId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroup(id, rgId, window, start, end, options).then((request) => request(this.axios, this.basePath));
+    public findResourcesAvailabilityForResourceGroup(id: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroup(id, rgId, start, end, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} id 
      * @param {string} rgPoolId 
-     * @param {number} window 
      * @param {string} start 
      * @param {string} end 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, window: number, start: string, end: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, window, start, end, options).then((request) => request(this.axios, this.basePath));
+    public findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7612,6 +7592,35 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWindowLength: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/reservations/window-length`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -7761,6 +7770,17 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getRgReservationsInGivenCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getWindowLength(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWindowLength(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getWindowLength']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -7879,6 +7899,14 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
          */
         getRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ReservationDto>> {
             return localVarFp.getRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWindowLength(options?: RawAxiosRequestConfig): AxiosPromise<number> {
+            return localVarFp.getWindowLength(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8017,6 +8045,16 @@ export class ReservationControllerApi extends BaseAPI {
      */
     public getRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
         return ReservationControllerApiFp(this.configuration).getRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getWindowLength(options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getWindowLength(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

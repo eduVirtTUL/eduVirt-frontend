@@ -12,6 +12,7 @@ import { ReservationDto, ResourcesAvailabilityDto } from "@/api";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import { useTranslation } from "react-i18next";
 import ReservationPresentationCalendar from "@/pages/Reservations/ReservationPresentationCalendar";
+import { useWindowLength } from "@/data/reservation/useWindowLength";
 
 type TimeRange = {
   start: string | null,
@@ -22,7 +23,6 @@ type ReservationCalendarProps = {
   clusterId: string,
   courseId: string,
   podId: string,
-  timeWindow: number,
   currentRange: TimeRange,
   setCurrentRange: React.Dispatch<React.SetStateAction<TimeRange>>,
   resources: ResourcesAvailabilityDto[] | undefined,
@@ -32,24 +32,23 @@ type ReservationCalendarProps = {
 };
 
 const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
-  clusterId, courseId, podId, timeWindow, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading
+  clusterId, courseId, podId, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading
 }) => {
   const { t } = useTranslation();
+  const { open } = useDialog();
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
-  const { open } = useDialog();
-
   const [ events, setEvents ] = useState<EventInput[]>([]);
-
-  const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
-
   const [ eventStart, setEventStart ] = useState<Date | null>(null);
   const [ eventEnd, setEventEnd ] = useState<Date | null>(null);
 
+  const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervalsInTimePeriod(clusterId, currentRange.start, currentRange.end);
+  const { length, isLoading: windowLoading } = useWindowLength();
+
   useEffect(() => {
     if (!currentRange.start || !currentRange.end) return;
-    if (resourcesLoading || intervalsLoading || reservationsLoading) return;
+    if (resourcesLoading || intervalsLoading || reservationsLoading || windowLoading) return;
 
     const newEvents: EventInput[] = [];
     resources?.forEach((resource: ResourcesAvailabilityDto) => {
@@ -91,7 +90,7 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
     });
 
     setEvents(newEvents);
-  }, [currentRange, reservations, resources, intervals, podId, courseId, clusterId]);
+  }, [currentRange, reservations, resources, intervals, podId, courseId, clusterId, length, windowLoading]);
 
   /* Calendar methods */
 
@@ -151,6 +150,8 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
       <CreateReservationModal
         courseId={courseId!}
         podId={podId!}
+        length={length ?? 15}
+        maxRentTime={12}
         start={eventStart!}
         end={eventEnd!}
         resetSelection={closeCreateReservationDialog}
@@ -158,8 +159,9 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
 
       <ReservationPresentationCalendar
         t={t}
+        window={length ?? 10}
+        windowLoading={windowLoading}
         calendarRef={calendarRef}
-        timeWindow={timeWindow}
         currentRange={currentRange}
         setCurrentRange={setCurrentRange}
         select={handleSelect}

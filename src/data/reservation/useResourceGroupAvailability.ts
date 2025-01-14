@@ -6,7 +6,6 @@ import { injectToken } from "@/utils/requestUtils";
 export const useResourceGroupAvailability = (
   id: string,
   resourceGroup: string,
-  timeWindow: number,
   start: string,
   end: string
 ) => {
@@ -15,8 +14,7 @@ export const useResourceGroupAvailability = (
     queryFn: async () => {
       const controller = new CourseControllerApi();
       const response = await controller.findResourcesAvailabilityForResourceGroup(
-        id, resourceGroup, timeWindow, start, end,
-          { ...injectToken() }
+        id, resourceGroup, start, end, { ...injectToken() }
       );
 
       return response.data;

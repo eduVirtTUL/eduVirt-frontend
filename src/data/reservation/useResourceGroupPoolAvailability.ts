@@ -4,26 +4,25 @@ import { CourseControllerApi } from "@/api";
 import { injectToken } from "@/utils/requestUtils";
 
 export const useResourceGroupPoolAvailability = (
-    id: string,
-    resourceGroupPool: string,
-    timeWindow: number,
-    start: string,
-    end: string
+  id: string,
+  resourceGroupPool: string,
+  start: string,
+  end: string
 ) => {
-    const { data, isLoading } = useQuery({
-        queryKey: [ keys.COURSE_RESOURCES, id, resourceGroupPool, start, end ],
-        queryFn: async () => {
-            const controller = new CourseControllerApi();
-            const response = await controller.findResourcesAvailabilityForResourceGroupPool(
-                id, resourceGroupPool, timeWindow, start, end, { ...injectToken() }
-            );
+  const { data, isLoading } = useQuery({
+    queryKey: [ keys.COURSE_RESOURCES, id, resourceGroupPool, start, end ],
+    queryFn: async () => {
+      const controller = new CourseControllerApi();
+      const response = await controller.findResourcesAvailabilityForResourceGroupPool(
+        id, resourceGroupPool, start, end, { ...injectToken() }
+      );
 
-            return response.data;
-        },
-        refetchInterval: 60000,
-        refetchOnWindowFocus: true,
-        staleTime: 30000,
-    });
+      return response.data;
+    },
+    refetchInterval: 60000,
+    refetchOnWindowFocus: true,
+    staleTime: 30000,
+  });
 
-    return { resources: data, isLoading };
+  return { resources: data, isLoading };
 }

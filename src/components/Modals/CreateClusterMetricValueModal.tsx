@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
 import { CheckIcon, Loader2, XCircleIcon } from "lucide-react";
-import { convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition } from "@/utils/unitUtils.js";
+import { convertValue, getBaseUnit, getUnitsCategory, UnitDefinition } from "@/utils/unitUtils.js";
 
 type CreateClusterMetricValueProps = {
   clusterId: string;
@@ -100,7 +100,7 @@ const CreateClusterMetricValueModal: React.FC<
       setSelectedCategory(selectedMetric.category);
 
       const category = getUnitsCategory(selectedMetric.category);
-      const baseUnit = getBaseUnitForCategory(category.key);
+      const baseUnit = getBaseUnit(category.key);
       form.setValue("unit", baseUnit.symbol);
       setAvailableUnits(category.units);
     } else {
@@ -111,12 +111,12 @@ const CreateClusterMetricValueModal: React.FC<
   };
 
   const handleSubmit = form.handleSubmit(async (values) => {
-      await createClusterMetricValueAsync({
-        metricId: values.metricId!,
-        value: convertValue(selectedCategory!, values.value, values.unit, getBaseUnitForCategory(selectedCategory!).symbol)
-      });
-      close();
-      form.reset();
+    await createClusterMetricValueAsync({
+      metricId: values.metricId!,
+      value: convertValue(selectedCategory!, values.value, values.unit)
+    });
+    close();
+    form.reset();
   });
 
   return (
