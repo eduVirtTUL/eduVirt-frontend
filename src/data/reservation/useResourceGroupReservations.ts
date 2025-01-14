@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { ReservationControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseReservationsParams = {
   course: string;
@@ -18,8 +19,7 @@ export const useResourceGroupReservations = ({
       if (start == null || end == null) return [];
       const controller = new ReservationControllerApi();
       const response = await controller.getRgReservationsInGivenCourse(
-        course, resourceGroup, start, end,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        course, resourceGroup, start, end, { ...injectToken() }
       );
 
       if (response.status === 204) return [];

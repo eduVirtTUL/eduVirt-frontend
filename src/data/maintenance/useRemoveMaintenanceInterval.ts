@@ -3,6 +3,7 @@ import { MaintenanceIntervalControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useRemoveMaintenanceInterval = () => {
   const { t } = useTranslation();
@@ -12,8 +13,7 @@ export const useRemoveMaintenanceInterval = () => {
     mutationFn: async (maintenanceIntervalId: string) => {
       const controller = new MaintenanceIntervalControllerApi();
       const response = await controller.finishMaintenanceInterval(
-        maintenanceIntervalId,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        maintenanceIntervalId, { ...injectToken() }
       );
 
       return response.data;

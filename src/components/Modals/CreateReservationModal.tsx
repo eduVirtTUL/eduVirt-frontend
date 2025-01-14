@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
+import { CheckIcon, XCircleIcon } from "lucide-react";
 
 type ResourceGroupProps = {
   courseId: string;
@@ -162,9 +163,24 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                 </FormItem>
               )}
             />
-            <div className="flex flex-row justify-center col-span-2">
-              <Button type="submit" className={"w-1/2"}>
-                  {t("reservations.createReservation.submit")}
+            <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  form.reset();
+                  close();
+                }}
+              >
+                <XCircleIcon />
+                {t("cancel")}
+              </Button>
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid}
+              >
+                <CheckIcon />
+                {t("create")}
               </Button>
             </div>
           </form>

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 export type DialogType =
+  | "resetCourseConfirmation"
+  | "editCourse"
   | "editResourceGroupPool"
   | "editResourceGroup"
   | "deleteResourceGroupConfirmation"
@@ -21,8 +23,8 @@ export type DialogType =
   | "createInterval"
   | "createCourseKey"
   | "showMaintenanceInterval"
-  | "manageTeamUsers"
   | "manageCourseUsers"
+  | "manageTeamUsers"
 
 type DialogStore = {
   opened?: DialogType;

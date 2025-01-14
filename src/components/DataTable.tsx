@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import {
   ColumnDef,
   flexRender,
@@ -17,7 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +35,7 @@ const DataTable = <TData, TValue>({
   pageSize = 10,
   paginationEnabled = false,
 }: DataTableProps<TData, TValue>) => {
+  const { t } = useTranslation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
@@ -84,6 +86,7 @@ const DataTable = <TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={cn(onRowClick && "cursor-pointer")}
                   onClick={() => {
                     onRowClick?.(row);
                   }}
@@ -104,33 +107,13 @@ const DataTable = <TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      {/*<div className="flex items-center justify-end space-x-2 py-4">*/}
-      {/*  <Button*/}
-      {/*    type="button"*/}
-      {/*    variant="outline"*/}
-      {/*    size="sm"*/}
-      {/*    onClick={() => table.previousPage()}*/}
-      {/*    disabled={!table.getCanPreviousPage()}*/}
-      {/*  >*/}
-      {/*    Previous*/}
-      {/*  </Button>*/}
-      {/*  <Button*/}
-      {/*    type="button"*/}
-      {/*    variant="outline"*/}
-      {/*    size="sm"*/}
-      {/*    onClick={() => table.nextPage()}*/}
-      {/*    disabled={!table.getCanNextPage()}*/}
-      {/*  >*/}
-      {/*    Next*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
     </div>
   );
 };

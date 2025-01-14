@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { MaintenanceIntervalControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useMaintenanceIntervalsInTimePeriod = (
   clusterId: string | undefined = undefined,
@@ -14,7 +15,7 @@ export const useMaintenanceIntervalsInTimePeriod = (
 
       const controller = new MaintenanceIntervalControllerApi();
       const response = await controller.getMaintenanceIntervalsWithinTimePeriod(
-        start, end, clusterId, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        start, end, clusterId, { ...injectToken() }
       );
 
       if (response.status === 204) return [];

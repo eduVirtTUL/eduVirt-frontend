@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { ClusterControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseNetworksParams = {
   id: string,
@@ -14,8 +15,7 @@ export const useNetworks = ({id, page, size}: UseNetworksParams) => {
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findNetworksByClusterId(
-        id, page, size,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        id, page, size, { ...injectToken() }
       );
       return response.data ?? [];
     },

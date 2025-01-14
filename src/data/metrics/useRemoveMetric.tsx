@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MetricControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useRemoveMetric = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ export const useRemoveMetric = () => {
     mutationFn: async (metricId: string) => {
       const controller = new MetricControllerApi();
       const response = await controller.deleteMetric2(
-        metricId, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        metricId, { ...injectToken() }
       );
       return response.data;
     },

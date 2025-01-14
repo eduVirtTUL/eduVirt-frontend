@@ -22,7 +22,7 @@ interface PodCardProps {
     };
 }
 
-export function PodCard({resourceGroup, course}: PodCardProps) {
+export function PodCard({id, resourceGroup, course}: PodCardProps) {
     const {t} = useTranslation();
 
     return (
@@ -48,11 +48,14 @@ export function PodCard({resourceGroup, course}: PodCardProps) {
                 </div>
                 <div className="pt-4 mt-auto">
                     <Link
-                        to={`/reservations/calendar`}
+                        to={resourceGroup.isStateless ?
+                            `/reservations/calendar/resource-group-pool/${resourceGroup.id}` :
+                            `/reservations/calendar/resource-group/${resourceGroup.id}`
+                        }
                         state={{
                             clusterId: course.clusterId,
                             courseId: course.id,
-                            resourceGroupId: resourceGroup.id
+                            podId: id
                         }}
                     >
                         <Button

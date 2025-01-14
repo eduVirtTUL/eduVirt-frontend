@@ -25,9 +25,12 @@ import { useDialog } from "@/stores/dialogStore";
 
 const editResourceGroupPoolSchema = (t: TFunction) =>
   z.object({
+    name: z
+      .string()
+      .min(1, t("createResourceGroupPoolModal.validation.nameRequired"))
+      .max(50, t("createResourceGroupPoolModal.validation.nameMaxLength")),
     description: z
       .string()
-      .min(1, t("createResourceGroupPoolModal.validation.descriptionRequired"))
       .max(
         1000,
         t("createResourceGroupPoolModal.validation.descriptionMaxLength")
@@ -74,6 +77,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
   const form = useForm<EditResourceGroupPoolSchema>({
     resolver: zodResolver(editResourceGroupPoolSchema(t)),
     values: {
+      name: resourceGroupPool?.name ?? "",
       description: resourceGroupPool?.description ?? "",
       maxRentTime: resourceGroupPool?.maxRentTime ?? 0,
       maxRent: resourceGroupPool?.maxRent ?? 0,
@@ -85,6 +89,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
     await updateResourceGroupPoolAsync({
       id: poolId,
       ...data,
+      description: data.description !== "" ? data.description : undefined,
     });
     close();
   });
@@ -97,6 +102,22 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {t("createResourceGroupPoolModal.name")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="description"
@@ -163,7 +184,13 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
                     {t("createResourceGroupPoolModal.gracePeriod")}
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <RentTimeSelector
+                      value={field.value.toString()}
+                      onChange={field.onChange}
+                      start={0}
+                      stop={4 * 60}
+                      step={30}
+                    />
                   </FormControl>
                   <FormDescription>
                     {t("createResourceGroupPoolModal.gracePeriodDescription")}
@@ -174,6 +201,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
             />
             <div className="flex flex-row justify-between">
               <Button
+                type="button"
                 variant="secondary"
                 onClick={() => {
                   close();

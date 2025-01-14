@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ClusterControllerApi } from "@/api";
 import { keys } from "@/data/keys";
+import { injectToken } from "@/utils/requestUtils";
 
 type UseEventsParams = {
   id: string,
@@ -15,8 +16,7 @@ export const useEvents = ({ id, page, size, sort}: UseEventsParams) => {
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findEventsByClusterId(
-        { page, size, sort } , id,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { page, size, sort } , id, { ...injectToken() }
       );
       return response.data;
     },

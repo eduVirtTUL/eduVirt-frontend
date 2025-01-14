@@ -26,6 +26,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { CreateMetricDto } from "@/api";
+import { CheckIcon, XCircleIcon } from "lucide-react";
 
 const createMetricSchema = (t: TFunction) =>
   z.object({
@@ -126,7 +127,26 @@ const CreateMetricModal: React.FC = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">{t("metrics.createMetric.submit")}</Button>
+            <div className="flex flex-row justify-between">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  form.reset();
+                  close();
+                }}
+              >
+                <XCircleIcon />
+                {t("cancel")}
+              </Button>
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid}
+              >
+                <CheckIcon />
+                {t("create")}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

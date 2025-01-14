@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
 import { CourseControllerApi } from "@/api";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useResourceGroupAvailability = (
   id: string,
@@ -15,7 +16,7 @@ export const useResourceGroupAvailability = (
       const controller = new CourseControllerApi();
       const response = await controller.findResourcesAvailabilityForResourceGroup(
         id, resourceGroup, timeWindow, start, end,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+          { ...injectToken() }
       );
 
       return response.data;

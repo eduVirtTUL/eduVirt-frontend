@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateMetricDto, MetricControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
+import { injectToken } from "@/utils/requestUtils";
 
 export const useCreateMetric = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ export const useCreateMetric = () => {
     mutationFn: async (createDto: CreateMetricDto) => {
       const controller = new MetricControllerApi();
       const response = await controller.createNewMetric(
-        createDto, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        createDto, { ...injectToken() }
       );
       return response.data;
     },

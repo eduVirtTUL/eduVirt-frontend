@@ -94,7 +94,6 @@ const metrics = {
     category: 'Kategoria',
     categoryDescription: 'Kategoria metryki określa zakres możliwych do wyboru dla danej metryki jednostek miary.',
     select: 'Wybierz kategorię metryki',
-    submit: 'Utwórz',
     success: 'Nowa metryka została pomyślnie utworzona',
     error: 'Nowa metryka nie mogła zostać utworzona'
   },
@@ -144,7 +143,6 @@ const clusterMetricValues = {
       name: 'Wybierz nazwę metryki',
       unit: 'Wybierz jednostkę miary'
     },
-    submit: 'Utwórz nową wartość',
     success: 'Wartość metryki dla danego klastra została utworzona pomyślnie',
     error: 'Wartość metryki dla danego klastra nie mogła zostałać utworzona',
   },
@@ -157,7 +155,7 @@ const clusterMetricValues = {
     select: {
       unit: 'Wybierz jednostkę miary'
     },
-    submit: 'Modyfikuj',
+    save: 'Zapisz',
     success: 'Wartość metryki dla danego klastra została zmodyfikowana pomyślnie',
     error: 'Wartość metryki dla danego klastra nie mogła zostałać zmodyfikowana',
   },
@@ -249,7 +247,6 @@ const maintenanceIntervals = {
     descriptionDescription: 'Bardziej szczegółowa informacja o przyczynie przerwy administracyjnej.',
     duration: 'Długość przerwy (godziny)',
     durationDescription: 'Długość przerwy w godzinach od momentu wybranego w kalendarzu, w ramach którego nie będzie dostępna funkcjonalność systemu.',
-    submit: 'Utwórz',
     success: 'Przerwa administracyjna została utworzona pomyślnie',
     error: 'Przerwa administracyjna nie mogła zostałać utworzona',
   },
@@ -354,7 +351,6 @@ const reservations = {
     automaticStartup: 'Uruchom zasoby w ramach PODa automatycznie',
     notificationTime: 'Czas wysłania powiadomienia przed końcem rezerwacji (min)',
     notificationTimeDescription: 'Określa czas wysłania powiadomienia o nadchodzącym końcu rezerwacji przed jej faktycznym zakończeniem. W przypadku wyboru wartości 0, powiadomienie nie jest wysyłane.',
-    submit: 'Utwórz',
     success: 'Rezerwacja została utworzona pomyślnie',
     error: 'Rezerwacja nie mogła zostałać utworzona',
   },
