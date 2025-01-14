@@ -6,16 +6,20 @@ import { toast } from "sonner";
 
 type UpdateCourse = {
   id: string;
+  etag: string;
 } & UpdateCourseDto;
 
 export const useUpdateCourse = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ id, ...org }: UpdateCourse) => {
+    mutationFn: async ({ id, etag, ...org }: UpdateCourse) => {
       const controller = new CourseControllerApi();
       const response = await controller.updateCourse(id, org, {
         ...injectToken(),
+        headers: {
+          "If-Match": etag,
+        },
       });
       return response.data;
     },

@@ -7,3 +7,5 @@ export const injectToken = () => {
     },
   };
 };
+
+export const stripEtag = (etag: string) => etag.replace(/"/g, "");

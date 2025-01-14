@@ -1724,25 +1724,31 @@ export interface UpdateResourceGroupPoolDto {
      * @type {string}
      * @memberof UpdateResourceGroupPoolDto
      */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateResourceGroupPoolDto
+     */
     'description'?: string;
     /**
      * 
      * @type {number}
      * @memberof UpdateResourceGroupPoolDto
      */
-    'maxRent'?: number;
+    'maxRent': number;
     /**
      * 
      * @type {number}
      * @memberof UpdateResourceGroupPoolDto
      */
-    'gracePeriod'?: number;
+    'gracePeriod': number;
     /**
      * 
      * @type {number}
      * @memberof UpdateResourceGroupPoolDto
      */
-    'maxRentTime'?: number;
+    'maxRentTime': number;
 }
 /**
  * 
@@ -8491,7 +8497,7 @@ export class ResourceGroupControllerApi extends BaseAPI {
      * @memberof ResourceGroupControllerApi
      */
     public updateResourceGroup(id: string, updateResourceGroupDto: UpdateResourceGroupDto, options?: RawAxiosRequestConfig) {
-        return ResourceGroupControllerApiFp(this.configuration).updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(this.axios, this.basePath))
+        return ResourceGroupControllerApiFp(this.configuration).updateResourceGroup(id, updateResourceGroupDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
