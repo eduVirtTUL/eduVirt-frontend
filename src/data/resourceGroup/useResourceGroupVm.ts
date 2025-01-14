@@ -2,7 +2,7 @@ import { ResourceGroupVmControllerApi } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
-import { injectToken } from "@/utils/requestUtils";
+import { injectToken, stripEtag } from "@/utils/requestUtils";
 
 export const useVm = (vmId?: string) => {
   const { id } = useResourceGroupEditorStore();
@@ -17,9 +17,12 @@ export const useVm = (vmId?: string) => {
       const response = await controller.getVm(id ?? "", vmId, {
         ...injectToken(),
       });
-      return response.data;
+
+      const etag = response.headers["etag"] as string;
+
+      return { data: response.data, etag: stripEtag(etag) };
     },
   });
 
-  return { vm: data, isLoading };
+  return { vm: data?.data, etag: data?.etag, isLoading };
 };

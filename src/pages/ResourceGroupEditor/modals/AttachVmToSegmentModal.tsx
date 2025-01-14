@@ -35,6 +35,7 @@ import { z } from "zod";
 type AttachVmToSegmentModalProps = {
   vmId: string;
   nicId: string;
+  etag?: string;
 };
 
 const attachVmToNetworkSchema = z.object({
@@ -48,6 +49,7 @@ type AttachVmToNetworkSchema = z.infer<typeof attachVmToNetworkSchema>;
 const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
   vmId,
   nicId,
+  etag,
 }) => {
   const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
@@ -64,7 +66,10 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await attachNicToNetworkAsync(data);
+    await attachNicToNetworkAsync({
+      etag: etag ?? "",
+      ...data,
+    });
     setOpen(false);
   });
 

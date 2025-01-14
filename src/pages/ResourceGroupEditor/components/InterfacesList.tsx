@@ -16,7 +16,7 @@ type InterfaceListProps = {
 const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
   const { t } = useTranslation();
   const { close, open } = useDialog();
-  const { vm, isLoading } = useVm(id);
+  const { vm, etag, isLoading } = useVm(id);
   const { detachNicFromNetwork } = useDetachNicFromNetwork();
   const nicId = React.useRef<string>();
 
@@ -59,7 +59,11 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
         header="Are you sure you want to detach this interface?"
         text="This action will detach the interface from the network. Virtual machine will lose connection with this network. You can reattach the interface later. Do you want to continue?"
         onConfirm={() => {
-          detachNicFromNetwork({ vmId: vm?.id, nicId: nicId.current });
+          detachNicFromNetwork({
+            vmId: vm?.id,
+            nicId: nicId.current,
+            etag: etag ?? "",
+          });
           close();
         }}
       />
@@ -81,6 +85,7 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
                 {vm?.nics?.map((nic) => (
                   <Interface
                     key={nic.id}
+                    etag={etag}
                     nic={nic}
                     vmId={vm.id ?? ""}
                     onDetach={() => {

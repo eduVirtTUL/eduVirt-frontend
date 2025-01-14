@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 type EditVmInput = {
   id: string;
+  etag: string;
 } & EditVmDto;
 
 export const useEditVm = () => {
@@ -15,10 +16,13 @@ export const useEditVm = () => {
   const { id: rgId } = useResourceGroupEditorStore();
   const client = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ id, ...org }: EditVmInput) => {
+    mutationFn: async ({ id, etag, ...org }: EditVmInput) => {
       const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.updateVm(rgId!, id, org, {
-        ...injectToken(),
+      const response = await controller.updateVm(rgId!, id, etag, org, {
+        headers: {
+          "If-Match": etag,
+          ...injectToken().headers,
+        },
       });
       return response.data;
     },
