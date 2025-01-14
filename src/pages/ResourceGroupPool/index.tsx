@@ -86,7 +86,7 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
               />
               <div className="col-span-2">
                 <ValueDisplay
-                  value={resourceGroupPool?.description ?? ""}
+                  value={resourceGroupPool?.description ?? "-"}
                   label={t("resourceGroupPoolPage.fields.description")}
                 />
               </div>
@@ -95,17 +95,11 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
                 label={t("resourceGroupPoolPage.fields.maxRent")}
               />
               <ValueDisplay
-                value={
-                  convertMinutesToHoures(resourceGroupPool?.gracePeriod ?? 0) +
-                  " h"
-                }
+                value={`${convertMinutesToHoures(resourceGroupPool?.gracePeriod ?? 0)} ${t("houres")}`}
                 label={t("resourceGroupPoolPage.fields.gracePeriod")}
               />
               <ValueDisplay
-                value={
-                  convertMinutesToHoures(resourceGroupPool?.maxRentTime ?? 0) +
-                  " h"
-                }
+                value={`${convertMinutesToHoures(resourceGroupPool?.maxRentTime ?? 0)} ${t("houres")}`}
                 label={t("resourceGroupPoolPage.fields.maxRentTime")}
               />
             </div>

@@ -43,6 +43,7 @@ const general = {
 
 const units = {
   memory: {
+<<<<<<< HEAD
     name: "Pamięć",
     units: {
       bytes: {name: "Bajty", symbol: "B"},
@@ -51,17 +52,47 @@ const units = {
       gibibytes: {name: "Gibibajty", symbol: "GiB"},
       tebibytes: {name: "Tebibajty", symbol: "TiB"},
     }
+=======
+    nonVolatile: {
+      name: "Pamięć trwała",
+      units: {
+        bytes: { name: "Bajty", symbol: "B" },
+        kilobytes: { name: "Kilobajty", symbol: "KB" },
+        megabytes: { name: "Megabajty", symbol: "MB" },
+        gigabytes: { name: "Gigabajty", symbol: "GB" },
+        terabytes: { name: "Terabajty", symbol: "TB" },
+      },
+    },
+    volatile: {
+      name: "Pamięć ulotna",
+      units: {
+        bytes: { name: "Bajty", symbol: "B" },
+        kibibytes: { name: "Kibibajty", symbol: "KiB" },
+        mebibytes: { name: "Mebibajty", symbol: "MiB" },
+        gibibytes: { name: "Gibibajty", symbol: "GiB" },
+        tebibytes: { name: "Tebibajty", symbol: "TiB" },
+      },
+    },
+>>>>>>> 3d67a425ed4cc70c2cac80585117469e6ededbee
   },
   countable: {
     name: "Policzalne",
     units: {
       pieces: {
         name: "Sztuki",
+<<<<<<< HEAD
         symbol: "szt."
       }
     }
   }
 }
+=======
+        symbol: "szt.",
+      },
+    },
+  },
+};
+>>>>>>> 3d67a425ed4cc70c2cac80585117469e6ededbee
 
 export default {
   save: "Zapisz",
@@ -75,6 +106,9 @@ export default {
   join: "Dołącz",
   close: "Zamknij",
   status: "Status",
+  noResults: "Brak wyników",
+  requiredFieldDescription: "(*) - pole wymagane",
+  houres: "godz.",
   menu,
   units,
   general,

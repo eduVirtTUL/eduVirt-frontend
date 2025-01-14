@@ -40,7 +40,7 @@ const RentTimeSelector: React.FC<RentTimeSelectorProps> = ({
       <SelectContent>
         {range.map((value) => (
           <SelectItem key={value} value={value.toString()}>
-            {convertMinutesToHoures(value)} h
+            {convertMinutesToHoures(value)} {t("houres")}
           </SelectItem>
         ))}
       </SelectContent>
