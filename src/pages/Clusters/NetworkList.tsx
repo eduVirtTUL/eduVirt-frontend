@@ -20,10 +20,18 @@ type NetworkListProps = {
 const columns = (
   t: TFunction
 ): ColumnDef<HostDto>[] => [
-    { accessorKey: "name", header: t("networks.table.columns.name") },
-    { accessorKey: "description", header: t("networks.table.columns.description") },
-    { accessorKey: "comment", header: t("networks.table.columns.comment") },
-    { accessorKey: "status", header: t("networks.table.columns.status") },
+  { accessorKey: "name", header: t("networks.table.columns.name") },
+  { accessorKey: "description", header: t("networks.table.columns.description") },
+  { accessorKey: "comment", header: t("networks.table.columns.comment") },
+  {
+    accessorKey: "status",
+    header: t("networks.table.columns.status.name"),
+    cell: ({ row }) => {
+      const network = row.original;
+      {/* @ts-expect-error this doesn't impact the page */}
+      return t(`networks.table.columns.status.${network.status}`);
+    }
+  },
 ];
 
 const NetworkList: React.FC<NetworkListProps> = ({ clusterId, clusterName }) => {

@@ -61,7 +61,11 @@ const networks = {
       name: 'Nazwa',
       description: 'Opis',
       comment: 'Komentarz',
-      status: 'Stan'
+      status: {
+        name: 'Stan',
+        OPERATIONAL: 'Sprawny',
+        NON_OPERATIONAL: 'Niesprawny'
+      }
     }
   }
 }
@@ -70,7 +74,13 @@ const events = {
   table: {
     columns: {
       message: 'Treść',
-      severity: 'Poziom istotności',
+      severity: {
+        name: 'Poziom istotności',
+        NORMAL: 'Zwykły',
+        WARNING: 'Ostrzeżenie',
+        ERROR: 'Błąd',
+        ALERT: 'Błąd krytyczny',
+      },
       registeredAt: 'Czas wystąpienia'
     }
   }
