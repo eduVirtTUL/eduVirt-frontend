@@ -250,6 +250,21 @@ const resourceGroupEditor = {
   detachNetwork: {
     success: "Interfejs został odłączony",
     error: "Nie udało się odłączyć interfejsu",
+    confirmation: "Czy na pewno chcesz odłączyć ten interfejs?",
+    confirmationText:
+      "Ta operacja odłączy interfejs od sieci. Maszyna wirtualna straci połączenie z tą siecią. Możesz ponownie podłączyć interfejs później. Czy chcesz kontynuować?",
+  },
+  addNetwork: {
+    success: "Interfejs został dodany",
+    error: "Nie udało się dodać interfejsu",
+  },
+  deleteNetwork: {
+    success: "Interfejs został usunięty",
+    error: "Nie udało się usunąć interfejsu",
+  },
+  addVm: {
+    success: "Maszyna wirtualna została dodana",
+    error: "Nie udało się dodać maszyny wirtualnej",
   },
 };
 
@@ -290,6 +305,14 @@ const editResourceGroupModal = {
     "Bezstanowa grupa zasobów posiada opis z puli grup zasobów",
   maxRentTimeInPoolWarning:
     "Bezstanowa grupa zasobów posiada maksymalny czas wypożyczenia z puli grup zasobów",
+  validation: {
+    nameRequired: "Nazwa grupy zasobów jest wymagana",
+    nameMaxLenght: "Nazwa grupy zasobów nie może być dłuższa niż 50 znaków",
+    descriptionMaxLenght:
+      "Opis grupy zasobów nie może być dłuższy niż 1000 znaków",
+    maxRentTimeGreaterOrEqualZero:
+      "Maksymalny czas rezerwacji musi być większy lub równy zero",
+  },
 };
 
 const editCourseModal = {

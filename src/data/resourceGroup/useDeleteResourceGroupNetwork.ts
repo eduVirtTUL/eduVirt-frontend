@@ -19,7 +19,10 @@ export const useDeleteResourceGroupNetwork = () => {
     },
     onSuccess: () => {
       toast.success(t("resourceGroupEditor.privateSegments.deleteSuccess"));
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
+        queryKey: resourceGroupKeys.detail(rgId!),
+      });
+      queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.networks(rgId!),
       });
     },

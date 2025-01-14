@@ -56,8 +56,8 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
   return (
     <>
       <ConfirmationDialog
-        header="Are you sure you want to detach this interface?"
-        text="This action will detach the interface from the network. Virtual machine will lose connection with this network. You can reattach the interface later. Do you want to continue?"
+        header={t("resourceGroupEditor.detachNetwork.confirmation")}
+        text={t("resourceGroupEditor.detachNetwork.confirmationText")}
         onConfirm={() => {
           detachNicFromNetwork({
             vmId: vm?.id,
