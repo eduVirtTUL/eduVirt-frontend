@@ -44,7 +44,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { resourceGroup } = useResourceGroup(rgId);
+  const { resourceGroup, etag } = useResourceGroup(rgId);
   const form = useForm<EditResourceGroupModal>({
     resolver: zodResolver(editResourceGroupModalSchema),
     values: {
@@ -58,6 +58,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await updateResourceGroupAsync({
       id: rgId,
+      etag: etag ?? "",
       ...data,
     });
     close();

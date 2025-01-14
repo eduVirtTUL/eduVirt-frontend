@@ -10,16 +10,20 @@ import { useTranslation } from "react-i18next";
 
 type UpdateResourceGroupPool = {
   id: string;
+  etag: string;
 } & UpdateResourceGroupPoolDto;
 
 export const useUpdateResourceGroupPool = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ id, ...org }: UpdateResourceGroupPool) => {
+    mutationFn: async ({ id, etag, ...org }: UpdateResourceGroupPool) => {
       const controller = new ResourceGroupPoolControllerApi();
       const response = await controller.updateResourceGroupPool(id, org, {
-        ...injectToken(),
+        headers: {
+          "If-Match": etag,
+          ...injectToken().headers,
+        },
       });
       return response.data;
     },

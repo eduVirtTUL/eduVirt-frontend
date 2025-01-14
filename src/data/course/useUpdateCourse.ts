@@ -16,9 +16,9 @@ export const useUpdateCourse = () => {
     mutationFn: async ({ id, etag, ...org }: UpdateCourse) => {
       const controller = new CourseControllerApi();
       const response = await controller.updateCourse(id, org, {
-        ...injectToken(),
         headers: {
           "If-Match": etag,
+          ...injectToken().headers,
         },
       });
       return response.data;
