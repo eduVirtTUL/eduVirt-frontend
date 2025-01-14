@@ -75,8 +75,8 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger onClick={() => setOpen(true)}>
-        <Button>
+      <DialogTrigger asChild>
+        <Button onClick={() => setOpen(true)}>
           <ClipboardPenLineIcon />
           {t("resourceGroupEditor.interfaceList.attach")}
         </Button>

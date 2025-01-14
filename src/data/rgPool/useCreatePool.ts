@@ -1,20 +1,20 @@
-import { CreateRGPoolDto, ResourceGroupPoolControllerApi } from "@/api";
+import { CreateRGPoolDto, ResourceGroupPoolDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { useTranslation } from "react-i18next";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "../privateAxios";
 
 export const useCreatePool = () => {
   const { t } = useTranslation();
   const client = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["createPool"],
     mutationFn: async (pool: CreateRGPoolDto) => {
-      const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.createResourceGroupPool(pool, {
-        ...injectToken(),
-      });
+      const response = await privateAxios.post<ResourceGroupPoolDto>(
+        `/resource-group-pool`,
+        pool
+      );
+
       return response.data;
     },
     onError: (error) => {

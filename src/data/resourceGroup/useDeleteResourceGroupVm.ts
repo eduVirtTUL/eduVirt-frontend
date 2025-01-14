@@ -32,7 +32,7 @@ export const useDeleteResourceGroupVm = () => {
       });
       toast.success(t("removeVmModal.success"));
     },
-    onError: () => {
+    onError: (error) => {
       toast.error(t("removeVmModal.error"));
     },
   });

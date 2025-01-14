@@ -1,12 +1,9 @@
-import {
-  ResourceGroupPoolControllerApi,
-  UpdateResourceGroupPoolDto,
-} from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { UpdateResourceGroupPoolDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { resourceGroupPoolKeys } from "../keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { privateAxios } from "../privateAxios";
 
 type UpdateResourceGroupPool = {
   id: string;
@@ -18,19 +15,11 @@ export const useUpdateResourceGroupPool = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroupPool) => {
-      const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.updateResourceGroupPool(
-        id,
-        etag ?? "",
-        org,
-        {
-          headers: {
-            "If-Match": etag,
-            ...injectToken().headers,
-          },
-        }
-      );
-      return response.data;
+      await privateAxios.put(`/resource-group-pool/${id}`, org, {
+        headers: {
+          "If-Match": etag,
+        },
+      });
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({

@@ -1,16 +1,15 @@
-import { CourseMetricControllerApi } from "@/api";
+import { MetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCourseMetric = (courseId: string, metricId: string) => {
   const { data, isLoading } = useQuery({
     queryKey: courseKeys.metric(courseId, metricId),
     queryFn: async () => {
-      const controller = new CourseMetricControllerApi();
-      const response = await controller.getMetric(courseId, metricId, {
-        ...injectToken(),
-      });
+      const response = await privateAxios.get<MetricValueDto>(
+        `/course/${courseId}/metric/${metricId}`
+      );
       return response.data;
     },
   });

@@ -1,6 +1,5 @@
-import { CourseMetricControllerApi } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -15,11 +14,7 @@ export const useDeleteCourseMetric = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ courseId, metricId }: DeleteCourseMetric) => {
-      const controller = new CourseMetricControllerApi();
-      const respone = await controller.deleteMetric(courseId, metricId, {
-        ...injectToken(),
-      });
-      return respone.data;
+      await privateAxios.delete(`/course/${courseId}/metric/${metricId}`);
     },
     onSuccess: (_, data) => {
       queryClient.invalidateQueries({

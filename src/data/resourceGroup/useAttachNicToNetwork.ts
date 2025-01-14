@@ -1,10 +1,10 @@
-import { NetworkVmConnectionDto, PrivateNetworkControllerApi } from "@/api";
+import { NetworkVmConnectionDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
-import { injectToken } from "@/utils/requestUtils";
 import { useTranslation } from "react-i18next";
+import { privateAxios } from "../privateAxios";
 
 type Data = {
   networkId: string;
@@ -17,16 +17,9 @@ export const useAttachNicToNetwork = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ networkId, etag, ...original }: Data) => {
-      const controller = new PrivateNetworkControllerApi();
-      const response = await controller.attachNicToNetwork(
-        networkId,
-        etag,
-        original,
-        {
-          headers: { "If-Match": etag, ...injectToken().headers },
-        }
-      );
-      return response.data;
+      await privateAxios.post(`/network/${networkId}/attach`, original, {
+        headers: { "If-Match": etag },
+      });
     },
     onSuccess: (_, variables) => {
       toast.success(t("resourceGroupEditor.attachNetwork.success"));

@@ -1,13 +1,10 @@
-import {
-  CreateResourceGroupNetworkDto,
-  ResourceGroupNetworkControllerApi,
-} from "@/api";
+import { CreateResourceGroupNetworkDto, ResourceGroupNetworkDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
-import { injectToken } from "@/utils/requestUtils";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useTranslation } from "react-i18next";
+import { privateAxios } from "../privateAxios";
 
 type AddResourceGroupNetworkPayload = {
   id: string;
@@ -19,19 +16,16 @@ export const useAddResourceGroupNetwork = () => {
   const { etag } = useResourceGroupEditorStore();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async ({ id, ...org }: AddResourceGroupNetworkPayload) => {
-      const controller = new ResourceGroupNetworkControllerApi();
-      const respone = await controller.addResourceGroupNetwork(
-        id,
-        etag ?? "",
+      const response = await privateAxios.post<ResourceGroupNetworkDto>(
+        `/resource-group/${id}/network`,
         org,
         {
           headers: {
             "If-Match": etag,
-            ...injectToken().headers,
           },
         }
       );
-      return respone.data;
+      return response.data;
     },
     onSuccess: (_, payload) => {
       toast.success(t("resourceGroupEditor.addNetwork.success"));

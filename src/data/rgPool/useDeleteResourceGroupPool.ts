@@ -1,18 +1,13 @@
-import { ResourceGroupPoolControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { resourceGroupPoolKeys } from "../keys";
 import { toast } from "sonner";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "../privateAxios";
 
 export const useDeleteResourceGroupPool = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
-      const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.deleteResourceGroupPool(id, {
-        ...injectToken(),
-      });
-      return response.data;
+      await privateAxios.delete(`/resource-group-pool/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: resourceGroupPoolKeys.all });

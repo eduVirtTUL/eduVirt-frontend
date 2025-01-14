@@ -1,27 +1,24 @@
-import { CreateCourseDto } from "../../api/api";
-import { CourseControllerApi } from "@/api";
+import { CourseDto, CreateCourseDto } from "../../api/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
-import { injectToken } from "@/utils/requestUtils";
 import { useTranslation } from "react-i18next";
+import { CustomAxiosError, privateAxios } from "../privateAxios";
 
 export const useCreateCourse = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["createCourse"],
     mutationFn: async (course: CreateCourseDto) => {
-      const controller = new CourseControllerApi();
-      const response = await controller.addCourse(course, { ...injectToken() });
+      const response = await privateAxios.post<CourseDto>("/course", course);
       return response.data;
     },
     onSuccess: () => {
-      // Invalidate the courses query to refetch the data
       queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
       toast.success(t("createCourseModal.success"));
     },
-    onError: () => {
+    onError: (error: CustomAxiosError) => {
+      console.error(error);
       toast.error(t("createCourseModal.error"));
     },
   });

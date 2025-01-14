@@ -306,6 +306,16 @@ const resourceGroupPools = {
   },
 };
 
+const resourceGroups = {
+  title: "Grupy zasobów",
+  table: {
+    name: "Nazwa",
+    type: "Rodzaj",
+    stateless: "Bezstanowa",
+    stateful: "Stanowa",
+  },
+};
+
 const editResourceGroupModal = {
   title: "Edytuj grupę zasobów",
   name: "Nazwa*",
@@ -397,4 +407,5 @@ export default {
   courseListPage,
   createCourseModal,
   resourceGroupPools,
+  resourceGroups,
 };

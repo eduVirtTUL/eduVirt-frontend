@@ -1,8 +1,8 @@
-import { CourseControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { CustomAxiosError, privateAxios } from "../privateAxios";
 
 export const useDeleteCourse = () => {
   const { t } = useTranslation();
@@ -10,15 +10,14 @@ export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
-      const controller = new CourseControllerApi();
-      await controller.deleteCourse(id);
+      await privateAxios.delete(`/course/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["course"] });
       toast.success(t("coursePage.deleteAction.success"));
       nav("/courses");
     },
-    onError: (error) => {
+    onError: (error: CustomAxiosError) => {
       console.error(error);
       toast.error(t("coursePage.deleteAction.error"));
     },

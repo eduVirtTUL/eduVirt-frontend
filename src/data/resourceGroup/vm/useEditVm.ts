@@ -1,7 +1,7 @@
-import { EditVmDto, ResourceGroupVmControllerApi } from "@/api";
+import { EditVmDto } from "@/api";
 import { resourceGroupKeys } from "@/data/keys";
+import { privateAxios } from "@/data/privateAxios";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
-import { injectToken } from "@/utils/requestUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -17,14 +17,11 @@ export const useEditVm = () => {
   const client = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: EditVmInput) => {
-      const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.updateVm(rgId!, id, etag, org, {
+      await privateAxios.put(`/resource-group/${rgId}/vm/${id}`, org, {
         headers: {
           "If-Match": etag,
-          ...injectToken().headers,
         },
       });
-      return response.data;
     },
     onSuccess: () => {
       client.invalidateQueries({ queryKey: resourceGroupKeys.detail(rgId!) });

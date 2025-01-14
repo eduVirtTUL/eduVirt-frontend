@@ -1,16 +1,19 @@
-import { ResourceGroupPoolControllerApi } from "@/api";
+import { PageDtoDetailedResourceGroupPoolDto } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "../keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "../privateAxios";
 
 export const useResourceGroupPools = (page: number, size: number) => {
   const { data, isLoading } = useQuery({
     queryKey: [keys.RESOURCE_GROUP, page, size],
     queryFn: async () => {
-      const controller = new ResourceGroupPoolControllerApi();
-      const response = await controller.getResourceGroupPools(page, size, {
-        ...injectToken(),
-      });
+      const response =
+        await privateAxios.get<PageDtoDetailedResourceGroupPoolDto>(
+          `/resource-group-pool}`,
+          {
+            params: { page, size },
+          }
+        );
       return response.data;
     },
   });
