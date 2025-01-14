@@ -6,16 +6,20 @@ import { toast } from "sonner";
 
 type UpdateResourceGroup = {
   id: string;
+  etag: string;
 } & UpdateResourceGroupDto;
 
 export const useUpdateResourceGroup = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ id, ...org }: UpdateResourceGroup) => {
+    mutationFn: async ({ id, etag, ...org }: UpdateResourceGroup) => {
       const controller = new ResourceGroupControllerApi();
-      const response = await controller.updateResourceGroup(id, org, {
-        ...injectToken(),
+      const response = await controller.updateResourceGroup(id, etag, org, {
+        headers: {
+          "If-Match": etag,
+          ...injectToken().headers,
+        },
       });
       return response.data;
     },

@@ -5,14 +5,21 @@ import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { injectToken } from "@/utils/requestUtils";
 
+type NetworkVmConnection = {
+  etag: string;
+} & NetworkVmConnectionDto;
+
 export const useDetachNicFromNetwork = () => {
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
-    mutationFn: async (data: NetworkVmConnectionDto) => {
+    mutationFn: async ({ etag, ...data }: NetworkVmConnection) => {
       const controller = new PrivateNetworkControllerApi();
-      const response = await controller.detachNicFromNetwork(data, {
-        ...injectToken(),
+      const response = await controller.detachNicFromNetwork(etag, data, {
+        headers: {
+          "If-Match": etag,
+          ...injectToken().headers,
+        },
       });
       return response.data;
     },

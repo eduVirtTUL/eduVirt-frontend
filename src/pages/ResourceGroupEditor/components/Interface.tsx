@@ -19,10 +19,11 @@ import { useTranslation } from "react-i18next";
 type InterfaceProps = {
   nic: NicDto;
   vmId: string;
+  etag?: string;
   onDetach?: () => void;
 };
 
-const Interface: React.FC<InterfaceProps> = ({ nic, vmId, onDetach }) => {
+const Interface: React.FC<InterfaceProps> = ({ nic, vmId, onDetach, etag }) => {
   const isPublic = !!nic.profileName;
   const isPrivate = !!nic.segmentName;
 
@@ -31,7 +32,7 @@ const Interface: React.FC<InterfaceProps> = ({ nic, vmId, onDetach }) => {
   }
 
   if (!isPublic && !isPrivate) {
-    return <UnassignedInterface nic={nic} vmId={vmId} />;
+    return <UnassignedInterface nic={nic} vmId={vmId} etag={etag} />;
   }
 
   if (isPublic) {
@@ -91,7 +92,7 @@ const PublicInterface: React.FC<InterfaceProps> = ({ nic }) => {
   );
 };
 
-const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId }) => {
+const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId, etag }) => {
   const { t } = useTranslation();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
@@ -103,7 +104,7 @@ const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId }) => {
           {t("resourceGroupEditor.interfaceList.mac")} {nic.macAddress}
         </span>
       </div>
-      <AttachVmToSegmentModal nicId={nic.id ?? ""} vmId={vmId} />
+      <AttachVmToSegmentModal nicId={nic.id ?? ""} vmId={vmId} etag={etag} />
     </div>
   );
 };

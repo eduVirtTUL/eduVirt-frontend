@@ -1,5 +1,5 @@
 import { ResourceGroupControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { injectToken, stripEtag } from "@/utils/requestUtils";
 import { useQuery } from "@tanstack/react-query";
 
 export const useResourceGroup = (id: string) => {
@@ -10,9 +10,12 @@ export const useResourceGroup = (id: string) => {
       const response = await controller.getResourceGroup(id, {
         ...injectToken(),
       });
-      return response.data;
+
+      const etag = response.headers["etag"] as string;
+
+      return { data: response.data, etag: stripEtag(etag) };
     },
   });
 
-  return { resourceGroup: data, isLoading };
+  return { resourceGroup: data?.data, etag: data?.etag, isLoading };
 };

@@ -72,7 +72,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { resourceGroupPool } = useResourceGroupPool(poolId);
+  const { resourceGroupPool, etag } = useResourceGroupPool(poolId);
   const { updateResourceGroupPoolAsync } = useUpdateResourceGroupPool();
   const form = useForm<EditResourceGroupPoolSchema>({
     resolver: zodResolver(editResourceGroupPoolSchema(t)),
@@ -90,6 +90,7 @@ const EditResourceGroupPoolModal: React.FC<EditResourceGroupPoolModalProps> = ({
       id: poolId,
       ...data,
       description: data.description !== "" ? data.description : undefined,
+      etag: etag ?? "",
     });
     close();
   });

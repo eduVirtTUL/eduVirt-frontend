@@ -34,7 +34,7 @@ const editVmModalSchema = z.object({
 type EditVmModalSchema = z.infer<typeof editVmModalSchema>;
 
 const EditVmModal: React.FC<EditVmModalProps> = ({ vmId }) => {
-  const { vm } = useVm(vmId);
+  const { vm, etag } = useVm(vmId);
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { editVmAsync } = useEditVm();
@@ -48,6 +48,7 @@ const EditVmModal: React.FC<EditVmModalProps> = ({ vmId }) => {
   const handleSubmit = form.handleSubmit(async (values) => {
     await editVmAsync({
       id: vmId,
+      etag: etag ?? "",
       ...values,
     });
     form.reset();
