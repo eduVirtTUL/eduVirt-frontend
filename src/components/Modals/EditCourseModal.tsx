@@ -48,7 +48,7 @@ type EditCourseForm = z.infer<ReturnType<typeof editCourseSchema>>;
 const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { course } = useCourse(id);
+  const { course, etag } = useCourse(id);
   const { updateCourseAsync } = useUpdateCourse();
   const form = useForm<EditCourseForm>({
     resolver: zodResolver(editCourseSchema(t)),
@@ -63,6 +63,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
     async ({ name, description, externalLink }) => {
       await updateCourseAsync({
         id,
+        etag: etag ?? "",
         name,
         description: description === "" ? undefined : description,
         externalLink: externalLink === "" ? undefined : externalLink,

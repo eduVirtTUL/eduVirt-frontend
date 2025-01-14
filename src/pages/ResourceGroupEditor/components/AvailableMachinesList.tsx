@@ -54,7 +54,10 @@ const AvailableMachinesList: React.FC<AvailableMachinesListProps> = ({
           <RadioGroup onValueChange={onValueChange}>
             <div className="flex flex-col max-w-full gap-4">
               {data.map((vm) => (
-                <div className="w-[456px] flex flex-row items-center gap-2">
+                <div
+                  className="w-[456px] flex flex-row items-center gap-2"
+                  key={vm.id}
+                >
                   <RadioGroupItem value={vm.id ?? ""} />
                   <span className="break-words flex-1 w-full">{vm.name}</span>
                 </div>

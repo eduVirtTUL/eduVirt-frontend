@@ -26,14 +26,15 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   const { t } = useTranslation();
   const nav = useNavigate();
   const { open } = useDialog();
-  const { resourceGroup } = useResourceGroup(id!);
+  const { resourceGroup, etag } = useResourceGroup(id);
   const [selectedVm, setSelectedVm] = React.useState<string>();
-  const { setId } = useResourceGroupEditorStore();
+  const { setId, setEtag } = useResourceGroupEditorStore();
   const { deleteResourceGroup } = useDeleteResourceGroup();
 
   React.useEffect(() => {
-    setId(id!);
-  }, [id, setId]);
+    setId(id);
+    setEtag(etag ?? "");
+  }, [id, setId, etag, setEtag]);
 
   return (
     <>
