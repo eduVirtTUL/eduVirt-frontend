@@ -21,6 +21,7 @@ import { useResourceGroup } from "@/data/resourceGroup/useResourceGroup";
 import { useUpdateResourceGroup } from "@/data/resourceGroup/useUpdateResourceGroup";
 import { useDialog } from "@/stores/dialogStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TFunction } from "i18next";
 import { SaveIcon, XCircleIcon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -31,13 +32,27 @@ type EditResourceGroupModalProps = {
   rgId: string;
 };
 
-const editResourceGroupModalSchema = z.object({
-  name: z.string().min(1).max(50),
-  description: z.string().min(1).max(1000),
-  maxRentTime: z.coerce.number().min(1),
-});
+const editResourceGroupModalSchema = (t: TFunction) =>
+  z.object({
+    name: z
+      .string()
+      .min(1, t("editResourceGroupModal.validation.nameRequired"))
+      .max(50, t("editResourceGroupModal.validation.nameMaxLenght")),
+    description: z
+      .string()
+      .max(1000, t("editResourceGroupModal.validation.descriptionMaxLenght"))
+      .optional(),
+    maxRentTime: z.coerce
+      .number()
+      .min(
+        0,
+        t("editResourceGroupModal.validation.maxRentTimeGreaterOrEqualZero")
+      ),
+  });
 
-type EditResourceGroupModal = z.infer<typeof editResourceGroupModalSchema>;
+type EditResourceGroupModal = z.infer<
+  ReturnType<typeof editResourceGroupModalSchema>
+>;
 
 const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
   rgId,
@@ -46,7 +61,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
   const { isOpen, close } = useDialog();
   const { resourceGroup, etag } = useResourceGroup(rgId);
   const form = useForm<EditResourceGroupModal>({
-    resolver: zodResolver(editResourceGroupModalSchema),
+    resolver: zodResolver(editResourceGroupModalSchema(t)),
     values: {
       name: resourceGroup?.name ?? "",
       description: resourceGroup?.description ?? "",
@@ -60,6 +75,7 @@ const EditResourceGroupModal: React.FC<EditResourceGroupModalProps> = ({
       id: rgId,
       etag: etag ?? "",
       ...data,
+      description: data.description === "" ? undefined : data.description,
     });
     close();
   });

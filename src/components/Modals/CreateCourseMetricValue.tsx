@@ -54,7 +54,7 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { createCourseMetricAsync } = useCreateCourseMetric();
-  const { metrics, isLoading } = useMetrics({ page: 0, size: 10});
+  const { metrics, isLoading } = useMetrics({ page: 0, size: 10 });
 
   const form = useForm<CreateCourseMetricValueSchema>({
     resolver: zodResolver(createCourseMetricValueSchema(t)),
@@ -113,11 +113,12 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
                       />
                     </SelectTrigger>
                     <SelectContent>
-                      {metrics && metrics.map((metric) => (
-                        <SelectItem value={metric.id!}>
-                          {metric.name}
-                        </SelectItem>
-                      ))}
+                      {metrics &&
+                        metrics.map((metric) => (
+                          <SelectItem value={metric.id!} key={metric.id}>
+                            {metric.name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

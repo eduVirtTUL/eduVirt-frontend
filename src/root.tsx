@@ -1,8 +1,16 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { ThemeProvider } from "./components/ThemeProvider";
 import "./index.css";
 import "@/i18n";
+import i18next, { t } from "i18next";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "./data/privateAxios";
+import { toast } from "sonner";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -24,7 +32,26 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      console.error(error);
+
+      if (error instanceof AxiosError) {
+        const axiosError = error as AxiosError<ErrorResponse>;
+        const errorKey = axiosError.response?.data.key;
+        if (errorKey) {
+          if (i18next.exists(`errorKeys.${errorKey}`)) {
+            toast.error(t(`errorKeys.${errorKey}`));
+            return;
+          }
+        }
+
+        toast.error(t("genericError"));
+      }
+    },
+  }),
+});
 
 const Root: React.FC = () => {
   return (

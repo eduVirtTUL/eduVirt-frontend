@@ -1,7 +1,7 @@
-import { CourseControllerApi } from "@/api";
+import { PageDtoCourseDto } from "./../../api/api";
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "../keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "../privateAxios";
 
 export const useCourses = (
   pageNumber?: number,
@@ -11,15 +11,9 @@ export const useCourses = (
   const { data, isLoading } = useQuery({
     queryKey: [keys.COURSE, pageNumber, pageSize, search],
     queryFn: async () => {
-      const courseController = new CourseControllerApi();
-      const response = await courseController.getCourses(
-        pageNumber,
-        pageSize,
-        search,
-        {
-          ...injectToken(),
-        }
-      );
+      const response = await privateAxios.get<PageDtoCourseDto>("/course", {
+        params: { page: pageNumber, size: pageSize, search },
+      });
       return response.data;
     },
   });

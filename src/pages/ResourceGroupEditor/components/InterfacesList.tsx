@@ -14,29 +14,39 @@ type InterfaceListProps = {
 };
 
 const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
+  if (!id) {
+    return <NoVmSelected />;
+  }
+
+  return <VmSelected id={id} />;
+};
+
+const NoVmSelected: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("resourceGroupEditor.interfaceList.title")}</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col flex-1 h-full overflow-hidden">
+        <div className="flex items-center h-full flex-col gap-4">
+          <MousePointerClickIcon className="w-12 h-12" />
+          <span className="text-xl font-semibold">
+            {t("resourceGroupEditor.interfaceList.selectVirtualMachine")}
+          </span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const VmSelected: React.FC<Required<InterfaceListProps>> = ({ id }) => {
   const { t } = useTranslation();
   const { close, open } = useDialog();
   const { vm, etag, isLoading } = useVm(id);
   const { detachNicFromNetwork } = useDetachNicFromNetwork();
   const nicId = React.useRef<string>();
-
-  if (!vm && !isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("resourceGroupEditor.interfaceList.title")}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col flex-1 h-full overflow-hidden">
-          <div className="flex items-center h-full flex-col gap-4">
-            <MousePointerClickIcon className="w-12 h-12" />
-            <span className="text-xl font-semibold">
-              {t("resourceGroupEditor.interfaceList.selectVirtualMachine")}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -56,8 +66,8 @@ const InterfaceList: React.FC<InterfaceListProps> = ({ id }) => {
   return (
     <>
       <ConfirmationDialog
-        header="Are you sure you want to detach this interface?"
-        text="This action will detach the interface from the network. Virtual machine will lose connection with this network. You can reattach the interface later. Do you want to continue?"
+        header={t("resourceGroupEditor.detachNetwork.confirmation")}
+        text={t("resourceGroupEditor.detachNetwork.confirmationText")}
         onConfirm={() => {
           detachNicFromNetwork({
             vmId: vm?.id,

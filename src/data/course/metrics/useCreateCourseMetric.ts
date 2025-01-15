@@ -1,6 +1,6 @@
-import { CourseMetricControllerApi, CreateMetricValueDto } from "@/api";
+import { CreateMetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -14,21 +14,13 @@ export const useCreateCourseMetric = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ courseId, ...original }: CreateCourseMetric) => {
-      const controller = new CourseMetricControllerApi();
-      const response = await controller.createMetric(courseId, original, {
-        ...injectToken(),
-      });
-      return response.data;
+      await privateAxios.post(`/course/${courseId}/metric`, original);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.metrics(variables.courseId),
       });
       toast.success(t("courseLimits.createCourseMetricValue.success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("courseLimits.createCourseMetricValue.error"));
     },
   });
 
