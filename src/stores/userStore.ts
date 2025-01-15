@@ -17,5 +17,8 @@ export const useUser = create<UserStore>((set) => ({
   roles: [],
   activeRole: "student",
   set: (user) => set({ ...user }),
-  changeActiveRole: (role) => set({ activeRole: role }),
+  changeActiveRole: (role) => {
+    localStorage.setItem("activeRole", role);
+    return set({ activeRole: role });
+  },
 }));

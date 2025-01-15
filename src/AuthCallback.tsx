@@ -52,7 +52,18 @@ const AuthCallback: React.FC = () => {
       name: tokenPayload.preferred_username,
       roles: roles.length !== 0 ? roles : ["student"],
     });
-    changeActiveRole(activeRole?.role ?? "student");
+
+    const localStorageActiveRole = localStorage.getItem("activeRole") as
+      | Role
+      | undefined;
+    if (!localStorageActiveRole) {
+      changeActiveRole(activeRole?.role ?? "student");
+    } else {
+      if (roles.includes(localStorageActiveRole)) {
+        changeActiveRole(localStorageActiveRole);
+      }
+    }
+
     localStorage.setItem("token", token);
   }, [token, set, changeActiveRole]);
 

@@ -88,24 +88,27 @@ const MainMenuFooter: React.FC = () => {
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                {t("menu.accessLevel.title")}
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {roles.map((role) => (
-                    <DropdownMenuCheckboxItem
-                      key={role}
-                      checked={role === activeRole}
-                      onClick={() => changeActiveRole(role)}
-                    >
-                      <span>{t(`roles.${role}`)}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
+            {roles.length > 1 && (
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  {t("menu.accessLevel.title")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    {roles.map((role) => (
+                      <DropdownMenuCheckboxItem
+                        key={role}
+                        checked={role === activeRole}
+                        onClick={() => changeActiveRole(role)}
+                      >
+                        <span>{t(`roles.${role}`)}</span>
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            )}
+
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
