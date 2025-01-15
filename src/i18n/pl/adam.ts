@@ -373,6 +373,7 @@ const createCourseModal = {
   cluster: "Klaster*",
   selectCluster: "Wybierz klaster",
   externalLink: "Link zewnętrzny",
+  teacherEmail: "Adres e-mail nauczyciela",
   validation: {
     nameRequired: "Nazwa przedmiotu jest wymagana",
     nameMaxLenght: "Nazwa przedmiotu nie może być dłuższa niż 50 znaków",
@@ -383,6 +384,7 @@ const createCourseModal = {
       "Link zewnętrzny nie może być dłuższy niż 1000 znaków",
     externalLinkShouldBeUrl:
       "Link zewnętrzny powinien być poprawnym adresem URL",
+    teacherEmail: "Podaj poprawny adres e-mail nauczyciela",
   },
   success: "Przedmiot został utworzony",
   error: "Nie udało się utworzyć przedmiotu",

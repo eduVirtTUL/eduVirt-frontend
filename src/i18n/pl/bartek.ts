@@ -32,7 +32,7 @@ const joinTeamModal = {
     button: "Dołącz do zespołu",
     title: "Dołącz do zespołu",
     keyLabel: "Klucz",
-    keyDescription: "Wprowadź klucz otrzymany od prowadzącego zajęcia",
+    keyDescription: "Wprowadź klucz otrzymany od nauczyciela",
     validation: {
         keyMinLength: "Klucz nie może być krótszy niż 4 znaki",
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
@@ -72,6 +72,7 @@ const podCard = {
     course: "Przedmiot",
     description: "Opis przedmiotu",
     makeAReservation: "Rezerwuj",
+    maxRent: "Maksymalna liczba rezerwacji",
 }
 
 const createCourseModalB = {
@@ -96,6 +97,8 @@ const coursePageB = {
     teamsTable: {
       title: "Zespoły",
       noTeams: "Brak zespołów",
+      students: "Studenci",
+      edit: "Edytuj",
       columns: {
             name: "Nazwa",
             status: "Status",
@@ -114,7 +117,19 @@ const coursePageB = {
             manageUsers: "Członkowie",
             manageStatefulPods: "Pody stanowe",
             manageStatelessPods: "Pody bezstanowe",
-      }
+            deleteTeam: {
+                button : "Usuń zespół",
+                confirmation: {
+                    title : "Usuń zespół",
+                    description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
+            }
+        }
+      },
+    },
+    teachersCard: {
+        title: "Nauczyciele",
+        noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
+        manageTeachers: "Zarządzaj",
     }
 }
 
@@ -141,6 +156,7 @@ const statefulPodManagementDrawer = {
     createPod: "Utwórz pod",
     noPods: "Zespół nie posiada żadnych przypisanych podów",
     resourceGroup: "Grupa zasobów",
+    maxRent: "Maksymalna liczba rezerwacji",
     alerts: {
         hasAssociatedPod: "Ta grupa zasobów posiada przypisany pod",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",
@@ -150,6 +166,12 @@ const statefulPodManagementDrawer = {
         confirmHeader: "Usuń pod",
         confirmText: "Czy na pewno chcesz usunąć ten pod? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego poda.",
     },
+    addMaxRentTimeModal: {
+        title: "Dokończ tworzenie poda",
+        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego poda",
+        maxRent: "Maksymalna liczba rezerwacji",
+        success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
+    }
 };
 
 const statelessPodManagementDrawer = {
@@ -201,7 +223,46 @@ const manageTeamUsersModal = {
         email: "Adres e-mail",
         description: "Wprowadź adres e-mail studenta, którego chcesz dodać do zespołu",
     }
+}
 
+const manageCourseUsersModal = {
+    title : "Studenci w przedmiocie",
+    remove: "Usuń",
+    add: "Dodaj",
+    noUsers: "Ten przedmiot nie posiada żadnych studentów",
+    delete: {
+        title: "Usuń użytkownika",
+        title2: "z zespołu",
+        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego studenta. Czy na pewno chcesz usunąć tego studenta z przedmiotu?",
+    },
+    addUser: {
+        email: "Adres e-mail",
+        description: "Wprowadź adres e-mail studenta, którego chcesz dodać do przedmiotu",
+    }
+}
+
+const manageTeachersModal = {
+    title: "Nauczyciele przedmiotu",
+    current: "Obecni nauczyciele",
+    add: "Dodaj nauczyciela",
+    remove: "Usuń",
+    noTeachers: "Ten przedmiot nie posiada żadnych nauczycieli",
+    addTeacher: {
+        email: "Adres e-mail",
+        description: "Wprowadź adres e-mail nauczyciela, którego chcesz dodać do przedmiotu"
+    },
+    delete: {
+        title: "Usuń nauczyciela {user} z przedmiotu {course}",
+        description: "Czy na pewno chcesz usunąć tego nauczyciela z przedmiotu? Spowoduje to utratę dostępu do zarządzania przedmiotem dla tego użytkownika.",
+    },
+    success: {
+        add: "Nauczyciel został dodany do przedmiotu",
+        remove: "Nauczyciel został usunięty z przedmiotu"
+    },
+    error: {
+        add: "Nie udało się dodać nauczyciela do przedmiotu",
+        remove: "Nie udało się usunąć nauczyciela z przedmiotu"
+    }
 }
 
 const createTeamModal = {
@@ -230,6 +291,10 @@ const createTeamModal = {
     }
 };
 
+const deleteTeamModal = {
+    
+}
+
 export default {
     podType,
     activeStatus,
@@ -247,4 +312,7 @@ export default {
     createTeam: createTeamModal,
     createCourseKey: createCourseKeyModal,
     manageTeamUsers: manageTeamUsersModal,
+    manageCourseUsers: manageCourseUsersModal,
+    deleteTeam: deleteTeamModal,
+    manageTeachers: manageTeachersModal,
 };
