@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { resourceGroupKeys } from "../keys";
-import { ResourceGroupNetworkControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { ResourceGroupNetworkDto } from "@/api";
+import { privateAxios } from "../privateAxios";
 
 export const useResourceGroupNetworks = (id: string) => {
   const { data, isLoading } = useQuery({
     queryKey: resourceGroupKeys.networks(id),
     queryFn: async () => {
-      const controller = new ResourceGroupNetworkControllerApi();
-      const response = await controller.get(id, { ...injectToken() });
+      const response = await privateAxios.get<ResourceGroupNetworkDto[]>(
+        `/resource-group/${id}/network`
+      );
       return response.data;
     },
   });

@@ -1705,7 +1705,7 @@ export interface UpdateResourceGroupDto {
      * @type {string}
      * @memberof UpdateResourceGroupDto
      */
-    'description': string;
+    'description'?: string;
     /**
      * 
      * @type {number}

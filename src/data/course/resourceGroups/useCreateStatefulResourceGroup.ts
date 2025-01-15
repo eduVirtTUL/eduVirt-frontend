@@ -1,6 +1,6 @@
-import { CourseControllerApi, CreateResourceGroupDto } from "@/api";
+import { CreateResourceGroupDto } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -14,21 +14,13 @@ export const useCreateStatefulResourceGroup = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, ...org }: CreateResourceGroup) => {
-      const controller = new CourseControllerApi();
-      const response = await controller.createResourceGroup(id, org, {
-        ...injectToken(),
-      });
-      return response.data;
+      await privateAxios.post(`/course/${id}/resource-group`, org);
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.resourceGroups(id),
       });
       toast.success(t("createResourceGroupModal.success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("createResourceGroupModal.error"));
     },
   });
 

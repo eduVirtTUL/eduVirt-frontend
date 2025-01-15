@@ -1,6 +1,6 @@
-import { CourseMetricControllerApi, UpdateMetricValueDto } from "@/api";
+import { UpdateMetricValueDto } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -19,26 +19,16 @@ export const useUpdateCourseMetric = () => {
       metricId,
       ...original
     }: UpdateCourseMetric) => {
-      const controller = new CourseMetricControllerApi();
-      const response = await controller.updateMetric(
-        courseId,
-        metricId,
-        original,
-        {
-          ...injectToken(),
-        }
+      await privateAxios.put(
+        `/course/${courseId}/metric/${metricId}`,
+        original
       );
-      return response.data;
     },
     onSuccess: (_, { courseId }) => {
       queryClient.invalidateQueries({
         queryKey: courseKeys.metrics(courseId),
       });
       toast.success(t("courseLimits.editCourseMetricValue.success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("courseLimits.editCourseMetricValue.error"));
     },
   });
 

@@ -1,8 +1,8 @@
-import { ResourceGroupControllerApi, UpdateResourceGroupDto } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { ResourceGroupDto, UpdateResourceGroupDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { privateAxios } from "../privateAxios";
 
 type UpdateResourceGroup = {
   id: string;
@@ -14,22 +14,20 @@ export const useUpdateResourceGroup = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroup) => {
-      const controller = new ResourceGroupControllerApi();
-      const response = await controller.updateResourceGroup(id, etag, org, {
-        headers: {
-          "If-Match": etag,
-          ...injectToken().headers,
-        },
-      });
+      const response = await privateAxios.put<ResourceGroupDto>(
+        `/resource-group/${id}`,
+        org,
+        {
+          headers: {
+            "If-Match": etag,
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["resourceGroup", id] });
       toast.success(t("resourceGroupEditor.updateResourceGroup.success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("resourceGroupEditor.updateResourceGroup.error"));
     },
   });
 

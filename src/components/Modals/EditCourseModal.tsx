@@ -131,7 +131,18 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ id }) => {
               )}
             />
             <div className="flex flex-row justify-between">
-              <Button type="button" variant="secondary" onClick={() => close()}>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  close();
+                  form.reset({
+                    name: course?.name ?? "",
+                    description: course?.description ?? "",
+                    externalLink: course?.externalLink ?? "",
+                  });
+                }}
+              >
                 <XCircleIcon />
                 {t("cancel")}
               </Button>

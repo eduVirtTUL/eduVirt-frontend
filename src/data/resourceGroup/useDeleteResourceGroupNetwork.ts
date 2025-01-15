@@ -1,10 +1,9 @@
-import { ResourceGroupNetworkControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useTranslation } from "react-i18next";
-import { injectToken } from "@/utils/requestUtils";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
+import { privateAxios } from "../privateAxios";
 
 export const useDeleteResourceGroupNetwork = () => {
   const { t } = useTranslation();
@@ -12,19 +11,20 @@ export const useDeleteResourceGroupNetwork = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async (id: string) => {
-      const controller = new ResourceGroupNetworkControllerApi();
-      await controller.deleteNetwork(id, rgId!, etag ?? "", {
-        headers: { "If-Match": etag, ...injectToken().headers },
+      await privateAxios.delete(`/resource-group/${rgId}/network/${id}`, {
+        headers: {
+          "If-Match": etag,
+        },
       });
     },
     onSuccess: () => {
       toast.success(t("resourceGroupEditor.privateSegments.deleteSuccess"));
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
+        queryKey: resourceGroupKeys.detail(rgId!),
+      });
+      queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.networks(rgId!),
       });
-    },
-    onError: () => {
-      toast.error(t("resourceGroupEditor.privateSegments.deleteError"));
     },
   });
 

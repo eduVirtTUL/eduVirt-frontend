@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { ResourceGroupVmControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { VmDto } from "@/api";
+import { privateAxios } from "../privateAxios";
 export const useResourceGroupVms = (id: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ["resourceGroup", id, "vm"],
     queryFn: async () => {
-      const controller = new ResourceGroupVmControllerApi();
-      const response = await controller.getVms(id, { ...injectToken() });
+      const response = await privateAxios.get<VmDto[]>(
+        `/resource-group/${id}/vm`
+      );
       return response.data;
     },
   });

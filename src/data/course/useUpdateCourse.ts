@@ -1,8 +1,8 @@
-import { CourseControllerApi, UpdateCourseDto } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { UpdateCourseDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { privateAxios } from "../privateAxios";
 
 type UpdateCourse = {
   id: string;
@@ -14,22 +14,17 @@ export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateCourse) => {
-      const controller = new CourseControllerApi();
-      const response = await controller.updateCourse(id, etag ?? "", org, {
+      const response = await privateAxios.put(`/course/${id}`, org, {
         headers: {
           "If-Match": etag,
-          ...injectToken().headers,
         },
       });
+
       return response.data;
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["course", id] });
       toast.success(t("coursePage.updateAction.success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("coursePage.updateAction.error"));
     },
   });
 
