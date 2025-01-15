@@ -19,6 +19,8 @@ import {PodCard} from "@/components/PodCard";
 import ValueDisplay from "@/components/ValueDisplay";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {useTranslation} from "react-i18next";
+import { RouteHandle } from "@/AuthGuard";
+import { t } from "i18next";
 
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -294,3 +296,11 @@ const TeamDetailsPage: React.FC = () => {
 };
 
 export default TeamDetailsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: t("pageTitles.team") }];
+};

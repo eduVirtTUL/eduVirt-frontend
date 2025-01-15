@@ -133,6 +133,8 @@ const pageTitles = {
   courseMetrics: "Przedmiot - Metryki - eduVirt",
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
+  teams: "Zespoły - eduVirt",
+  team: "Zespół - eduVirt",
 };
 
 export default {

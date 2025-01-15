@@ -26,6 +26,8 @@ const teamsList = {
         noTeams: "Nie jesteś obecnie członkiem żadnego zespołu",
     },
     viewDetails: "Wyświetl szczegóły",
+    searchPlaceholder: "Szukaj zespołu...",
+    clear: "Wyczyść",
 };
 
 const joinTeamModal = {

@@ -75,33 +75,40 @@ import {ManageTeachersModal} from "@/components/Modals/ManageTeachersModal";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
+
     const {course} = useCourse(id);
-    const {open} = useDialog();
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
+    const isTeamBased = course?.courseType === "TEAM_BASED";
+    const {course: courseAccessKey, isLoading: isCourseAccessKeyLoading} = useCourseAccessKey(id, {
+        enabled: !isTeamBased,
+    });
+    
+    const {open} = useDialog();
     const [pageNumber, setPageNumber] = useState(0);
     const pageSize = 4;
+    
     const {teams, isLoading} = useCourseTeams(id, pageNumber, pageSize);
+    const teamQueries = useTeamsInCourseAccessKeys(
+        teams?.items.map((team) => team.id!) ?? [],
+        isTeamBased
+    );
+
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
     const [editingTeam, setEditingTeam] = useState<TeamDto | null>(null);
+    const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
+    const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
+    
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
     const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
-    const [selectedTeamForUsers, setSelectedTeamForUsers] =
-        useState<TeamDto | null>(null);
-    const isTeamBased = course?.courseType === "TEAM_BASED";
-    const {course: courseAccessKey, isLoading: isCourseAccessKeyLoading} =
-        useCourseAccessKey(id, {
-            enabled: !isTeamBased,
-        });
-    const {deleteCourseAsync} = useDeleteCourse();
-    const {resetCourseAsync} = useResetCourse();
-
-    const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
-    const {deleteTeam} = useDeleteTeam();
-
+    
     const [isTeachersOpen, setIsTeachersOpen] = useState(() => {
         const saved = localStorage.getItem(`courseTeachersCollapsible-${id}`);
         return saved ? JSON.parse(saved) : true;
     });
+
+    const {deleteCourseAsync} = useDeleteCourse();
+    const {resetCourseAsync} = useResetCourse();
+    const {deleteTeam} = useDeleteTeam();
 
     useEffect(() => {
         localStorage.setItem(`courseTeachersCollapsible-${id}`, JSON.stringify(isTeachersOpen));
@@ -113,11 +120,6 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             setTeamToDelete(null);
         }
     };
-
-    const teamQueries = useTeamsInCourseAccessKeys(
-        teams?.items.map((team) => team.id!) ?? [],
-        isTeamBased
-    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columns: ColumnDef<any, any>[] = [
