@@ -48,6 +48,10 @@ const createCourseSchema = (t: TFunction) =>
       .max(1000, t("createCourseModal.validation.externalLinkMaxLenght"))
       .url(t("createCourseModal.validation.externalLinkShouldBeUrl"))
       .or(z.literal("")),
+    teacherEmail: z
+    .string()
+    .email(t("createCourseModal.validation.teacherEmail")),
+    
   });
 
 type CreateCourseSchema = z.infer<ReturnType<typeof createCourseSchema>>;
@@ -66,6 +70,7 @@ const CreateCourseModal: React.FC = () => {
       courseType: "SOLO",
       clusterId: "",
       externalLink: "",
+      teacherEmail: "",
     },
   });
 
@@ -140,6 +145,23 @@ const CreateCourseModal: React.FC = () => {
             />
             <FormField
               control={form.control}
+              name="teacherEmail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("createCourseModal.teacherEmail")}*</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      type="email" 
+                      placeholder="teacher@example.com"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -164,6 +186,7 @@ const CreateCourseModal: React.FC = () => {
                 </FormItem>
               )}
             />
+            
             <FormField
               control={form.control}
               name="courseType"

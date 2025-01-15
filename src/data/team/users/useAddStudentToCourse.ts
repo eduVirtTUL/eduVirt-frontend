@@ -17,6 +17,7 @@ export const useAddStudentToCourse = () => {
             toast.success("Student added to course");
         },
         onError: (error: Error) => {
+            console.log(error);
             toast.error(error.message);
         },
     });

@@ -21,6 +21,7 @@ import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router"
+import MaxRentModal from "./MaxRentModal"
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -147,12 +148,21 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
     const {open: openDialog} = useDialog()
     const [podToDelete, setPodToDelete] = useState<string | null>(null);
     const {t} = useTranslation();
+    const [showMaxRentModal, setShowMaxRentModal] = useState(false);
 
     const podsArray = Array.isArray(statefulPods) ? statefulPods : []; // To assure that statefulPods is an array when 204 response is returned
 
     const handleSubmit = () => {
-        createStatefulPod({teamId, resourceGroupId: selectedResource!})
-        open = false
+        setShowMaxRentModal(true);
+    }
+
+    const handleCreatePod = (maxRent: number) => {
+        createStatefulPod({
+            teamId, 
+            resourceGroupId: selectedResource!,
+            maxRent
+        });
+        setSelectedResource(null);
     }
 
     const handleClickPodDelete = (podId: string) => {
@@ -172,128 +182,137 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
     }
 
     return (
-        <Drawer open={open} onOpenChange={onOpenChange}>
-            <DrawerContent className="h-[75vh]">
-                <DrawerHeader>
-                    <DrawerTitle>
-                        {isLoadingTeam ? (
-                            <Skeleton className="h-6 w-48"/>
-                        ) : (
-                            `${t("statefulPodManagement.title")} ${team?.name}`
-                        )}
-                    </DrawerTitle>
-                </DrawerHeader>
-                <div className="p-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{t('statefulPodManagement.resourceGroups')}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ScrollArea className="h-[50vh]">
-                                    {isLoadingRG ? (
-                                        <div className="space-y-2">
-                                            <Skeleton className="h-12 w-full"/>
-                                            <Skeleton className="h-12 w-full"/>
-                                        </div>
-                                    ) : (
-                                        <Table>
-                                            <TableBody>
-                                                {(Array.isArray(resourceGroups) ? resourceGroups : [])
-                                                    ?.filter(rg => !rg.stateless)
-                                                    .map((rg) => (
-                                                        <CollapsibleRow
-                                                            key={rg.id}
-                                                            rg={rg}
-                                                            checked={selectedResource === rg.id}
-                                                            onCheckedChange={(checked) => {
-                                                                if (checked) {
-                                                                    setSelectedResource(rg.id!)
-                                                                } else {
-                                                                    setSelectedResource(null)
-                                                                }
-                                                            }}
-                                                            hasPod={hasAssignedPod(rg.id!)}
-                                                        />
-                                                    ))}
-                                            </TableBody>
-                                        </Table>
-                                    )}
-                                </ScrollArea>
-                                <div className="flex justify-end mt-4">
-                                    <Button
-                                        onClick={handleSubmit}
-                                        className="w-32"
-                                        disabled={!selectedResource}
-                                    >
-                                        <PlusIcon/>
-                                        {t('statefulPodManagement.createPod')}
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+        <>
+            <Drawer open={open} onOpenChange={onOpenChange}>
+                <DrawerContent className="h-[75vh]">
+                    <DrawerHeader>
+                        <DrawerTitle>
+                            {isLoadingTeam ? (
+                                <Skeleton className="h-6 w-48"/>
+                            ) : (
+                                `${t("statefulPodManagement.title")} ${team?.name}`
+                            )}
+                        </DrawerTitle>
+                    </DrawerHeader>
+                    <div className="p-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>{t('statefulPodManagement.resourceGroups')}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ScrollArea className="h-[50vh]">
+                                        {isLoadingRG ? (
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-12 w-full"/>
+                                                <Skeleton className="h-12 w-full"/>
+                                            </div>
+                                        ) : (
+                                            <Table>
+                                                <TableBody>
+                                                    {(Array.isArray(resourceGroups) ? resourceGroups : [])
+                                                        ?.filter(rg => !rg.stateless)
+                                                        .map((rg) => (
+                                                            <CollapsibleRow
+                                                                key={rg.id}
+                                                                rg={rg}
+                                                                checked={selectedResource === rg.id}
+                                                                onCheckedChange={(checked) => {
+                                                                    if (checked) {
+                                                                        setSelectedResource(rg.id!)
+                                                                    } else {
+                                                                        setSelectedResource(null)
+                                                                    }
+                                                                }}
+                                                                hasPod={hasAssignedPod(rg.id!)}
+                                                            />
+                                                        ))}
+                                                </TableBody>
+                                            </Table>
+                                        )}
+                                    </ScrollArea>
+                                    <div className="flex justify-end mt-4">
+                                        <Button
+                                            onClick={handleSubmit}
+                                            className="w-32"
+                                            disabled={!selectedResource}
+                                        >
+                                            <PlusIcon/>
+                                            {t('statefulPodManagement.createPod')}
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
 
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{t("statefulPodManagement.teamPods")}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ScrollArea className="h-[50vh]">
-                                    {isLoadingStateful ? (
-                                        <div className="space-y-2">
-                                            <Skeleton className="h-12 w-full"/>
-                                            <Skeleton className="h-12 w-full"/>
-                                        </div>
-                                    ) : (
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow>
-                                                    <TableHead></TableHead>
-                                                    <TableHead>{t("statefulPodManagement.resourceGroup")}</TableHead>
-                                                    <TableHead className="w-[100px]"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {podsArray?.map((pod, index) => (
-                                                    <TableRow key={pod.id}>
-                                                        <TableCell>{`${index + 1}.`}</TableCell>
-                                                        <TableCell>{pod.resourceGroup?.name}</TableCell>
-                                                        <TableCell>
-                                                            <Button
-                                                                variant="destructive"
-                                                                size="sm"
-                                                                disabled={isDeleting}
-                                                                onClick={() => handleClickPodDelete(pod.id!)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4"/>
-                                                                {t('statefulPodManagement.delete.button')}
-                                                            </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                                {!podsArray?.length && (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>{t("statefulPodManagement.teamPods")}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ScrollArea className="h-[50vh]">
+                                        {isLoadingStateful ? (
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-12 w-full"/>
+                                                <Skeleton className="h-12 w-full"/>
+                                            </div>
+                                        ) : (
+                                            <Table>
+                                                <TableHeader>
                                                     <TableRow>
-                                                        <TableCell colSpan={3}
-                                                                   className="text-center text-muted-foreground">
-                                                            {t('statefulPodManagement.noPods')}
-                                                        </TableCell>
+                                                        <TableHead>{t("statefulPodManagement.resourceGroup")}</TableHead>
+                                                        <TableHead>{t("statefulPodManagement.maxRent")}</TableHead>
+                                                        <TableHead className="w-[100px]"></TableHead>
                                                     </TableRow>
-                                                )}
-                                            </TableBody>
-                                        </Table>
-                                    )}
-                                </ScrollArea>
-                            </CardContent>
-                        </Card>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {podsArray?.map((pod) => (
+                                                        <TableRow key={pod.id}>
+                                                            <TableCell>{pod.resourceGroup?.name}</TableCell>
+                                                            <TableCell>{pod.maxRent}</TableCell>
+                                                            <TableCell>
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="sm"
+                                                                    disabled={isDeleting}
+                                                                    onClick={() => handleClickPodDelete(pod.id!)}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4"/>
+                                                                    {t('statefulPodManagement.delete.button')}
+                                                                </Button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                    {!podsArray?.length && (
+                                                        <TableRow>
+                                                            <TableCell colSpan={3}
+                                                                       className="text-center text-muted-foreground">
+                                                                {t('statefulPodManagement.noPods')}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                        )}
+                                    </ScrollArea>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
-                </div>
-            </DrawerContent>
+                </DrawerContent>
+            </Drawer>
+
+            <MaxRentModal
+                open={showMaxRentModal}
+                onOpenChange={setShowMaxRentModal}
+                onSubmit={handleCreatePod}
+            />
+
             <ConfirmationDialog
                 header={t('statefulPodManagement.delete.confirmHeader')}
                 text={t('statefulPodManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}
             />
-        </Drawer>
+        </>
     )
 }
 
