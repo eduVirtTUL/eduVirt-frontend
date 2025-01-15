@@ -15,10 +15,8 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGroup";
 import { useNavigate } from "react-router";
 import EditResourceGroupModal from "./modals/EditResourceGroupModal";
-
-export const handle = {
-  noScroll: true,
-};
+import { RouteHandle } from "@/AuthGuard";
+import i18next from "i18next";
 
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
@@ -89,3 +87,12 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 };
 
 export default ResourceGroupEditor;
+
+export const handle: RouteHandle = {
+  noScroll: true,
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.resourceGroup") }];
+};

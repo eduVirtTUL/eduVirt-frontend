@@ -1,10 +1,11 @@
 import { ResourceGroupDto } from "@/api";
+import { RouteHandle } from "@/AuthGuard";
 import DataTable from "@/components/DataTable";
 import PageHeader from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { useResourceGroups } from "@/data/resourceGroup/useResourceGroups";
 import { ColumnDef } from "@tanstack/react-table";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
@@ -48,3 +49,11 @@ const ResourceGroupsPage: React.FC = () => {
 };
 
 export default ResourceGroupsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.resourceGroups") }];
+};

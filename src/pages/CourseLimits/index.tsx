@@ -20,7 +20,8 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteCourseMetric } from "@/data/course/metrics/useDeleteCourseMetric";
 import EditCourseMetricValue from "@/components/Modals/EditCourseMetricValue";
 import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
+import { RouteHandle } from "@/AuthGuard";
 
 const columns = (
   t: TFunction,
@@ -115,3 +116,11 @@ const CourseLimits: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
 };
 
 export default CourseLimits;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.courseMetrics") }];
+};

@@ -1,17 +1,29 @@
-import { Outlet } from "react-router";
+import { Navigate, Outlet, useMatches } from "react-router";
+import { Role, useUser } from "./stores/userStore";
+import React from "react";
+import NotFoundPage from "./pages/NotFound";
+
+export type RouteHandle = {
+  roles: Role[] | "*";
+  [x: string | number | symbol]: unknown;
+};
 
 const AuthGuard: React.FC = () => {
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("access_token="))
-    ?.split("=")[1];
+  const { id, activeRole } = useUser();
+  const matches = useMatches();
+  const lastMatch = matches.at(-1);
+  const routeHandle = lastMatch?.handle as RouteHandle | undefined;
 
-  if (!token) {
-    window.location.href = "http://localhost:8080/auth/login";
-    return null;
+  if (!id) {
+    return <Navigate to="/auth/callback" />;
   }
 
-  localStorage.setItem("token", token);
+  if (
+    !routeHandle ||
+    (routeHandle.roles !== "*" && !routeHandle.roles.includes(activeRole))
+  ) {
+    return <NotFoundPage />;
+  }
 
   return <Outlet />;
 };
