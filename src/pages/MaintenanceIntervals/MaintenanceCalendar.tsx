@@ -20,7 +20,6 @@ import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
-import { useWindowLength } from "@/data/reservation/useWindowLength";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -46,7 +45,6 @@ const MaintenanceCalendar: React.FC = () => {
   const [ eventStart, setEventStart ] = useState<Date | null>(null);
   const [ eventEnd, setEventEnd ] = useState<Date | null>(null);
 
-  const { length, isLoading: windowLoading } = useWindowLength();
   const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervalsInTimePeriod(id, currentRange.start, currentRange.end);
 
   const [ clickedEvent, setClickedEvent ] = useState<string | null>(null);
@@ -169,8 +167,8 @@ const MaintenanceCalendar: React.FC = () => {
       {clickedEvent && <MaintenanceIntervalDetailsModal intervalId={clickedEvent} />}
 
       <EventCalendar
-        timeWindow={length ?? 15}
-        loading={intervalsLoading || windowLoading}
+        timeWindow={30}
+        loading={intervalsLoading}
         calendarRef={calendarRef}
         toolbar={headerToolbar}
         initialView={"timeGridWeek"}
