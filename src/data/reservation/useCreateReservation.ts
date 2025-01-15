@@ -4,6 +4,7 @@ import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { injectToken } from "@/utils/requestUtils";
+import {AxiosError} from "axios";
 
 type UseCreateReservation = {
   course: string;
@@ -29,7 +30,8 @@ export const useCreateReservation = ({
       queryClient.invalidateQueries({ queryKey: [ keys.COURSE_RESOURCES ] });
       toast.success(t("reservations.createReservation.success"));
     },
-    onError: () => {
+    onError: (error: AxiosError) => {
+      console.log(error)
       toast.error(t("reservations.createReservation.error"));
     },
   });

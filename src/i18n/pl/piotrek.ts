@@ -329,10 +329,10 @@ const reservations = {
     },
     general: {
       id: 'Identyfikator rezerwacji',
-      teamId: 'Identyfikator zespołu',
+      teamId: 'Zespół',
       teamButton: 'Przejdź do definicji zespołu w ramach systemu eduVirt',
       teamName: 'Nazwa zespołu',
-      rgId: 'Identyfikator grupy zasobów',
+      rgId: 'Grupa zasobów',
       rgButton: 'Przejdź do definicji grupy zasobów w ramach systemu eduVirt',
       rgName: 'Nazwa grupy zasobów',
       rgState: 'Stan grupy zasobów',

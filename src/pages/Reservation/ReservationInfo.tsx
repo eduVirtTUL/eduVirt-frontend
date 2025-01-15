@@ -64,26 +64,12 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
             value: reservation.id
           },
           {
-            label: t("reservations.details.general.rgId"),
-            link: {
-              label: t("reservations.details.general.rgButton"),
-              path: `/rg/${reservation.resourceGroup?.id}`,
-            },
-          },
-          {
             label: t("reservations.details.general.rgName"),
             value: reservation.resourceGroup?.name
           },
           {
             label: t("reservations.details.general.rgState"),
             value: reservation.resourceGroup?.stateless ? t("reservations.table.stateless") : t("reservations.table.stateful"),
-          },
-          {
-            label: t("reservations.details.general.teamId"),
-            link: {
-              label: t("reservations.details.general.teamButton"),
-              path: `/teams/${reservation.team?.id}`,
-            },
           },
           {
             label: t("reservations.details.general.teamName"),
@@ -102,6 +88,20 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
               content: t("reservations.details.general.endInfo")
             },
             value: new Date(reservation.end + 'Z').toLocaleString()
+          },
+          {
+            label: t("reservations.details.general.rgId"),
+            link: {
+              label: t("reservations.details.general.rgButton"),
+              path: `/rg/${reservation.resourceGroup?.id}`,
+            },
+          },
+          {
+            label: t("reservations.details.general.teamId"),
+            link: {
+              label: t("reservations.details.general.teamButton"),
+              path: `/teams/${reservation.team?.id}`,
+            },
           },
         ].map((field, index) => (
           <div key={index} className="flex w-full items-center space-x-4">
@@ -122,11 +122,11 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
               <Label>{field.label}</Label>
             </div>
             {(field.link && authorized) ?
-              <Button onClick={() => (navigate(field.link.path))}>
+              <Button className="w-1/2 text-wrap" onClick={() => (navigate(field.link.path))}>
                 {/* @ts-expect-error this doesn't impact the page */}
                 {t(field.link.label)}
               </Button> :
-              <Input className="w-2/3" value={field.value || ""} disabled/>
+              <Input className="w-1/2" value={field.value || ""} disabled/>
             }
           </div>
         ))}

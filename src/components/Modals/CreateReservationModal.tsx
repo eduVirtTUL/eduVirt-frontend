@@ -72,12 +72,6 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
     },
   });
 
-    useEffect(() => {
-        console.log("Form Values:", form.getValues());
-        console.log("Is Form Valid:", form.formState.isValid);
-        console.log("Errors:", form.formState.errors);
-    }, [form]);
-
   useEffect(() => {
     if (start && end) {
       const calculatedDuration = (end.valueOf() - start.valueOf()) / (60000);
