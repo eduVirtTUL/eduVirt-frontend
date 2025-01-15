@@ -73,14 +73,14 @@ const units = {
 };
 
 const errorKeys = {
-  // "course.not.found": "Nie znaleziono przedmiotu",
+  "course.not.found": "Nie znaleziono przedmiotu",
   noNetworkAvailable:
     "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
-  // "courseLimits.error.value.already.defined":
-  //   "Przedmiot posiada już tą metrykę",
-  // "courseLimits.error.value.not.defined": "Przedmiot nie posiada tej metryki",
-  // "resource.group.not.found": "Nie znaleziono grupy zasobów",
-  // "resource.group.pool.not.found": "Nie znaleziono puli grup zasobów",
+  "courseLimits.error.value.already.defined":
+    "Przedmiot posiada już tą metrykę",
+  "courseLimits.error.value.not.defined": "Przedmiot nie posiada tej metryki",
+  "resource.group.not.found": "Nie znaleziono grupy zasobów",
+  "resource.group.pool.not.found": "Nie znaleziono puli grup zasobów",
   courseAlreadyExists: "Przedmiot o podanej nazwie już istnieje",
   courseConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   courseMetricNetworksNotSufficient:

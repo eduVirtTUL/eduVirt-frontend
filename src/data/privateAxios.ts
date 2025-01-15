@@ -11,12 +11,12 @@ export type ErrorKey =
   | "rgPoolConflict"
   | "virtualMachineAlreadyExists"
   | "virtualMachineClusterMismatch"
-  | "vmConflict";
-// | "courseLimits.error.value.already.defined"
-// | "courseLimits.error.value.not.defined"
-// | "course.not.found"
-// | "resource.group.not.found"
-// | "resource.group.pool.not.found";
+  | "vmConflict"
+  | "courseLimits.error.value.already.defined"
+  | "courseLimits.error.value.not.defined"
+  | "course.not.found"
+  | "resource.group.not.found"
+  | "resource.group.pool.not.found";
 
 export type ErrorResponse = {
   message: string;

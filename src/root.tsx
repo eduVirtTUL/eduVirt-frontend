@@ -35,7 +35,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onError: (error) => {
-      console.error("yeeeee");
       console.error(error);
 
       if (error instanceof AxiosError) {
@@ -43,7 +42,6 @@ const queryClient = new QueryClient({
         const errorKey = axiosError.response?.data.key;
         if (errorKey) {
           if (i18next.exists(`errorKeys.${errorKey}`)) {
-            console.log("show key");
             toast.error(t(`errorKeys.${errorKey}`));
             return;
           }
