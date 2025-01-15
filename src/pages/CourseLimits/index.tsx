@@ -21,6 +21,7 @@ import { useDeleteCourseMetric } from "@/data/course/metrics/useDeleteCourseMetr
 import EditCourseMetricValue from "@/components/Modals/EditCourseMetricValue";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
+import { RouteHandle } from "@/AuthGuard";
 
 const columns = (
   t: TFunction,
@@ -115,3 +116,7 @@ const CourseLimits: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
 };
 
 export default CourseLimits;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};

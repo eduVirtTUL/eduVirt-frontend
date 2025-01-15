@@ -5,6 +5,7 @@ import NotFoundPage from "./pages/NotFound";
 
 export type RouteHandle = {
   roles: Role[] | "*";
+  [x: string | number | symbol]: unknown;
 };
 
 const AuthGuard: React.FC = () => {

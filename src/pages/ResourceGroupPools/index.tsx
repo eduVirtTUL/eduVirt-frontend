@@ -1,4 +1,5 @@
 import { DetailedResourceGroupPoolDto } from "@/api";
+import { RouteHandle } from "@/AuthGuard";
 import DataTable from "@/components/DataTable";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import PageHeader from "@/components/PageHeader";
@@ -97,3 +98,7 @@ const ResourceGroupPoolsPage: React.FC = () => {
 };
 
 export default ResourceGroupPoolsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};

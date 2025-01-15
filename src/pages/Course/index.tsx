@@ -69,6 +69,7 @@ import { useDeleteCourse } from "@/data/course/useDeleteCourse";
 import EditCourseModal from "@/components/Modals/EditCourseModal";
 import { useResetCourse } from "@/data/course/useResetCourse";
 import ValueDisplay from "@/components/ValueDisplay";
+import { RouteHandle } from "@/AuthGuard";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { t } = useTranslation();
@@ -553,3 +554,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
 };
 
 export default CoursePage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: "Przedmiot" }];
+};

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router";
 import EditResourceGroupPoolModal from "@/components/Modals/EditResourceGroupPoolModal";
 import { useTranslation } from "react-i18next";
 import { convertMinutesToHoures } from "@/utils/timeUtils";
+import { RouteHandle } from "@/AuthGuard";
 
 const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
   params: { id },
@@ -129,3 +130,7 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
 };
 
 export default ResourceGroupPoolPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};

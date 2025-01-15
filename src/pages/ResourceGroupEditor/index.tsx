@@ -15,9 +15,11 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGroup";
 import { useNavigate } from "react-router";
 import EditResourceGroupModal from "./modals/EditResourceGroupModal";
+import { RouteHandle } from "@/AuthGuard";
 
-export const handle = {
+export const handle: RouteHandle = {
   noScroll: true,
+  roles: ["administrator", "teacher"],
 };
 
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({

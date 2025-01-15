@@ -1,4 +1,5 @@
 import { ResourceGroupDto } from "@/api";
+import { RouteHandle } from "@/AuthGuard";
 import DataTable from "@/components/DataTable";
 import PageHeader from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
@@ -48,3 +49,7 @@ const ResourceGroupsPage: React.FC = () => {
 };
 
 export default ResourceGroupsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};
