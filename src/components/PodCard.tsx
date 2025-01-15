@@ -20,24 +20,32 @@ interface PodCardProps {
         courseType: string;
         clusterId: string;
     };
+    maxRent?: number;
 }
 
-export function PodCard({id, resourceGroup, course}: PodCardProps) {
+export function PodCard({id, resourceGroup, course, maxRent}: PodCardProps) {
     const {t} = useTranslation();
 
     return (
         <Card className="h-auto mx-2 w-auto transition-all duration-200 hover:shadow-lg hover:border-primary/50">
             <CardContent className="p-6 flex flex-col h-full">
                 <div className="space-y-2 flex-1">
-                    <Badge
-                        variant={resourceGroup.isStateless ? "outline" : "default"}
-                        className={cn(
-                            "mb-2 transition-colors",
-                            resourceGroup.isStateless ? "hover:bg-primary/10" : "hover:bg-primary/90"
+                    <div className="flex justify-between items-center mb-2">
+                        <Badge
+                            variant={resourceGroup.isStateless ? "outline" : "default"}
+                            className={cn(
+                                "transition-colors",
+                                resourceGroup.isStateless ? "hover:bg-primary/10" : "hover:bg-primary/90"
+                            )}
+                        >
+                            {resourceGroup.isStateless ? t("podType.stateless") : t("podType.stateful")}
+                        </Badge>
+                        {!resourceGroup.isStateless && maxRent && (
+                            <Badge variant="secondary">
+                                {t("podCard.maxRent")}: {maxRent}
+                            </Badge>
                         )}
-                    >
-                        {resourceGroup.isStateless ? t("podType.stateless") : t("podType.stateful")}
-                    </Badge>
+                    </div>
                     <h3 className="font-semibold text-lg line-clamp-2">{resourceGroup.name}</h3>
                     <div className="space-y-1">
                         <p className="text-sm text-muted-foreground">{t("podCard.course")}</p>

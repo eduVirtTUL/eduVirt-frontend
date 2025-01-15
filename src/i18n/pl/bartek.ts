@@ -72,6 +72,7 @@ const podCard = {
     course: "Przedmiot",
     description: "Opis przedmiotu",
     makeAReservation: "Rezerwuj",
+    maxRent: "Maksymalna liczba rezerwacji",
 }
 
 const createCourseModalB = {
@@ -155,6 +156,7 @@ const statefulPodManagementDrawer = {
     createPod: "Utwórz pod",
     noPods: "Zespół nie posiada żadnych przypisanych podów",
     resourceGroup: "Grupa zasobów",
+    maxRent: "Maksymalna liczba rezerwacji",
     alerts: {
         hasAssociatedPod: "Ta grupa zasobów posiada przypisany pod",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",
@@ -164,6 +166,12 @@ const statefulPodManagementDrawer = {
         confirmHeader: "Usuń pod",
         confirmText: "Czy na pewno chcesz usunąć ten pod? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego poda.",
     },
+    addMaxRentTimeModal: {
+        title: "Dokończ tworzenie poda",
+        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego poda",
+        maxRent: "Maksymalna liczba rezerwacji",
+        success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
+    }
 };
 
 const statelessPodManagementDrawer = {
@@ -215,7 +223,6 @@ const manageTeamUsersModal = {
         email: "Adres e-mail",
         description: "Wprowadź adres e-mail studenta, którego chcesz dodać do zespołu",
     }
-
 }
 
 const manageCourseUsersModal = {

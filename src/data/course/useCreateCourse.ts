@@ -1,4 +1,4 @@
-import { CreateCourseDto } from "../../api/api";
+import { CreateCourseDto } from "@/api";
 import { CourseControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ export const useCreateCourse = () => {
     mutationKey: ["createCourse"],
     mutationFn: async (course: CreateCourseDto) => {
       const controller = new CourseControllerApi();
-      const response = await controller.addCourse(course, { ...injectToken() });
+      const response = await controller.createCourse(course, { ...injectToken() });
       return response.data;
     },
     onSuccess: () => {
