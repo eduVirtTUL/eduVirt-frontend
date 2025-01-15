@@ -11,6 +11,7 @@ import RemoveVmConfirmationModal from "./modals/RemoveVmConfirmationModal";
 import EditVmModal from "./modals/EditVmModal";
 import React from "react";
 import { useDialog } from "@/stores/dialogStore";
+import { useUser } from "@/stores/userStore";
 
 type VirtualMachinesListProps = {
   id: string;
@@ -27,6 +28,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
   const { open } = useDialog();
   const { vms, isLoading } = useResourceGroupVms(id);
   const vmToEdit = React.useRef<string>();
+  const { activeRole } = useUser();
 
   return (
     <>
@@ -104,18 +106,21 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 </div>
                               </div>
                               <div className="flex flex-row gap-2 items-center flex-wrap">
-                                <Button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    vmToEdit.current = vm.id!;
-                                    open("editVm");
-                                  }}
-                                >
-                                  <PencilIcon />
-                                  {t(
-                                    "resourceGroupEditor.virtualMachinesList.edit"
-                                  )}
-                                </Button>
+                                {activeRole === "teacher" && (
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      vmToEdit.current = vm.id!;
+                                      open("editVm");
+                                    }}
+                                  >
+                                    <PencilIcon />
+                                    {t(
+                                      "resourceGroupEditor.virtualMachinesList.edit"
+                                    )}
+                                  </Button>
+                                )}
+
                                 <Button
                                   variant="secondary"
                                   onClick={(e) => e.stopPropagation()}
@@ -131,12 +136,14 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                     )}
                                   </Link>
                                 </Button>
-                                <RemoveVmConfirmationModal
-                                  vmId={vm.id!}
-                                  onConfirm={() => {
-                                    setSelectedVm(undefined);
-                                  }}
-                                />
+                                {activeRole === "teacher" && (
+                                  <RemoveVmConfirmationModal
+                                    vmId={vm.id!}
+                                    onConfirm={() => {
+                                      setSelectedVm(undefined);
+                                    }}
+                                  />
+                                )}
                               </div>
                             </div>
                           </div>

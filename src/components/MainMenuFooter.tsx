@@ -22,12 +22,14 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeProvider";
 import { useUser } from "@/stores/userStore";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MainMenuFooter: React.FC = () => {
   const { t } = useTranslation();
   const { setTheme, theme } = useTheme();
   const { roles, activeRole, changeActiveRole, name } = useUser();
   const nav = useNavigate();
+  const queryClient = useQueryClient();
 
   return (
     <SidebarMenu>
@@ -99,7 +101,10 @@ const MainMenuFooter: React.FC = () => {
                       <DropdownMenuCheckboxItem
                         key={role}
                         checked={role === activeRole}
-                        onClick={() => changeActiveRole(role)}
+                        onClick={() => {
+                          changeActiveRole(role);
+                          queryClient.invalidateQueries();
+                        }}
                       >
                         <span>{t(`roles.${role}`)}</span>
                       </DropdownMenuCheckboxItem>

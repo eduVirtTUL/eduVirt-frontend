@@ -7,17 +7,16 @@ type UseClustersParams = {
   page: number;
   size: number;
   sort: Array<string>;
-}
+};
 
-export const useClusters = ({
-  page, size, sort
-}: UseClustersParams) => {
+export const useClusters = ({ page, size, sort }: UseClustersParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.CLUSTER, page, size, sort ],
+    queryKey: [keys.CLUSTER, page, size, sort],
     queryFn: async () => {
       const controller = new ClusterControllerApi();
       const response = await controller.findAllClusters(
-        { page: page, size: size, sort: sort }, { ...injectToken() }
+        { page: page, size: size, sort: sort },
+        { ...injectToken() }
       );
       return response.data;
     },
