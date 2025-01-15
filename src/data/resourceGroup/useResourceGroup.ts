@@ -1,15 +1,15 @@
-import { ResourceGroupControllerApi } from "@/api";
-import { injectToken, stripEtag } from "@/utils/requestUtils";
+import { ResourceGroupDto } from "@/api";
+import { stripEtag } from "@/utils/requestUtils";
 import { useQuery } from "@tanstack/react-query";
+import { privateAxios } from "../privateAxios";
 
 export const useResourceGroup = (id: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ["resourceGroup", id],
     queryFn: async () => {
-      const controller = new ResourceGroupControllerApi();
-      const response = await controller.getResourceGroup(id, {
-        ...injectToken(),
-      });
+      const response = await privateAxios.get<ResourceGroupDto>(
+        `/resource-group/${id}`
+      );
 
       const etag = response.headers["etag"] as string;
 

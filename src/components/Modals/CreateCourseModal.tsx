@@ -75,9 +75,12 @@ const CreateCourseModal: React.FC = () => {
   });
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.log(values);
-    console.table(values);
-    await createCourseAsync(values);
+    await createCourseAsync({
+      ...values,
+      description: values.description === "" ? undefined : values.description,
+      externalLink:
+        values.externalLink === "" ? undefined : values.externalLink,
+    });
     close();
     form.reset();
   });

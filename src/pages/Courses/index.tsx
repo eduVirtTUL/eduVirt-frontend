@@ -38,7 +38,10 @@ const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
       );
     },
   },
-  { accessorKey: "description", header: t("courseListPage.table.description") },
+  {
+    accessorFn: (row) => row.description ?? "-",
+    header: t("courseListPage.table.description"),
+  },
 ];
 
 const CoursesPage: React.FC = () => {

@@ -6,9 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useDeleteResourceGroupVm } from "@/data/resourceGroup/useDeleteResourceGroupVm";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import { Trash2Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
