@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
 import React from "react";
 import { TFunction } from "i18next";
+import { RouteHandle } from "@/AuthGuard";
 
 const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
   {
@@ -148,3 +149,7 @@ const CoursesPage: React.FC = () => {
 };
 
 export default CoursesPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};

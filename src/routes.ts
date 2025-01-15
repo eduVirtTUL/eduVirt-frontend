@@ -8,6 +8,7 @@ import {
 
 export default [
   route("login", "./pages/Login/index.tsx"),
+  route("auth/callback", "./AuthCallback.tsx"),
 
   layout("./AuthGuard.tsx", [
     layout("./layout/RootLayout.tsx", [
@@ -34,9 +35,7 @@ export default [
         route(":id", "./pages/TeamDetails/index.tsx"),
       ]),
 
-      ...prefix("metrics", [
-        index("./pages/Metrics/index.tsx"),
-      ]),
+      ...prefix("metrics", [index("./pages/Metrics/index.tsx")]),
 
       ...prefix("limits", [
         index("./pages/Clusters/index.tsx"),
@@ -52,10 +51,16 @@ export default [
         index("./pages/Reservations/index.tsx"),
         route(":id", "./pages/Reservation/index.tsx"),
         ...prefix("calendar/resource-group", [
-          route(":id", "./pages/Reservations/ResourceGroupReservationCalendar.tsx")
+          route(
+            ":id",
+            "./pages/Reservations/ResourceGroupReservationCalendar.tsx"
+          ),
         ]),
         ...prefix("calendar/resource-group-pool", [
-          route(":id", "./pages/Reservations/ResourceGroupPoolReservationCalendar.tsx")
+          route(
+            ":id",
+            "./pages/Reservations/ResourceGroupPoolReservationCalendar.tsx"
+          ),
         ]),
         ...prefix("courses", [
           route(":id", "./pages/Reservations/ReservationList.tsx"),
@@ -64,7 +69,10 @@ export default [
 
       ...prefix("maintenance", [
         index("./pages/MaintenanceIntervals/index.tsx"),
-        route("/clusters/:id", "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"),
+        route(
+          "/clusters/:id",
+          "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"
+        ),
         ...prefix("calendar", [
           index("./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
           route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", {
@@ -74,4 +82,5 @@ export default [
       ]),
     ]),
   ]),
+  route("*", "./pages/NotFound/index.tsx"),
 ] satisfies RouteConfig;

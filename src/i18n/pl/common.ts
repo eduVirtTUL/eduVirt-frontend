@@ -39,7 +39,6 @@ const roles = {
 const general = {
   yes: "Tak",
   no: "Nie",
-
   page: "Strona",
   next: "Następna",
   previous: "Poprzednia",
@@ -118,6 +117,12 @@ const errorKeys = {
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
 } satisfies { [key in ErrorKey]: string };
 
+const notFoundPage = {
+  title: "Strona nie znaleziona",
+  description: "Strona, której szukasz, nie istnieje. Sprawdź adres URL.",
+  back: "Powrót na stronę główną",
+};
+
 export default {
   save: "Zapisz",
   cancel: "Anuluj",
@@ -139,6 +144,7 @@ export default {
   general,
   errorKeys,
   roles,
+  notFoundPage,
   ...adam,
   ...piotrek,
   ...bartek,

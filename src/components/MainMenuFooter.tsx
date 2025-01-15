@@ -3,7 +3,7 @@ import {
   MonitorCogIcon,
   MoonIcon,
   SunIcon,
-  User2,
+  UserCircle2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -34,9 +34,18 @@ const MainMenuFooter: React.FC = () => {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton>
-              <User2 /> {name}
-              <ChevronUp className="ml-auto" />
+            <SidebarMenuButton className="py-6">
+              <div className="flex flex-row items-center justify-between w-full">
+                <div className="flex flex-row gap-2 items-center">
+                  <UserCircle2 className="w-7 h-7" />
+                  <div className="flex flex-col">
+                    <span className="font-semibold">{name}</span>
+                    <span>{t(`roles.${activeRole}`)}</span>
+                  </div>
+                </div>
+
+                <ChevronUp className="ml-auto" />
+              </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
