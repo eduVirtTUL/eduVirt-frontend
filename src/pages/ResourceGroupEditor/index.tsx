@@ -16,11 +16,7 @@ import { useDeleteResourceGroup } from "@/data/resourceGroup/useDeleteResourceGr
 import { useNavigate } from "react-router";
 import EditResourceGroupModal from "./modals/EditResourceGroupModal";
 import { RouteHandle } from "@/AuthGuard";
-
-export const handle: RouteHandle = {
-  noScroll: true,
-  roles: ["administrator", "teacher"],
-};
+import i18next from "i18next";
 
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
@@ -91,3 +87,12 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
 };
 
 export default ResourceGroupEditor;
+
+export const handle: RouteHandle = {
+  noScroll: true,
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.resourceGroup") }];
+};

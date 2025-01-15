@@ -15,7 +15,7 @@ import {
 import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -101,4 +101,8 @@ export default ResourceGroupPoolsPage;
 
 export const handle: RouteHandle = {
   roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.resourceGroupPools") }];
 };

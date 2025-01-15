@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
 import React from "react";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { RouteHandle } from "@/AuthGuard";
 
 const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
@@ -152,4 +152,8 @@ export default CoursesPage;
 
 export const handle: RouteHandle = {
   roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.courses") }];
 };

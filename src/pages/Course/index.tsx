@@ -70,6 +70,7 @@ import EditCourseModal from "@/components/Modals/EditCourseModal";
 import { useResetCourse } from "@/data/course/useResetCourse";
 import ValueDisplay from "@/components/ValueDisplay";
 import { RouteHandle } from "@/AuthGuard";
+import { t } from "i18next";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const { t } = useTranslation();
@@ -560,5 +561,5 @@ export const handle: RouteHandle = {
 };
 
 export const meta = () => {
-  return [{ title: "Przedmiot" }];
+  return [{ title: t("pageTitles.course") }];
 };

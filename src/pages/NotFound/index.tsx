@@ -1,5 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import i18next from "i18next";
 import { ChevronLeft, SirenIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
@@ -24,3 +25,7 @@ const NotFoundPage: React.FC = () => {
 };
 
 export default NotFoundPage;
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.notFound") }];
+};

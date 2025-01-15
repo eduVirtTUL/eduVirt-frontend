@@ -4,6 +4,7 @@ import logo from "@/assets/edu_2.png";
 import { Navigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
+import i18next from "i18next";
 
 const LoginPage: React.FC = () => {
   const isExpired = React.useRef(false);
@@ -40,3 +41,7 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.login") }];
+};

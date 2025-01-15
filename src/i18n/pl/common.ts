@@ -123,6 +123,18 @@ const notFoundPage = {
   back: "Powrót na stronę główną",
 };
 
+const pageTitles = {
+  courses: "Przedmioty - eduVirt",
+  course: "Przedmiot - eduVirt",
+  resourceGroups: "Grupy zasobów - eduVirt",
+  resourceGroup: "Grupa zasobów - eduVirt",
+  resourceGroupPools: "Pule grup zasobów - eduVirt",
+  resourceGroupPool: "Pula grup zasobów - eduVirt",
+  courseMetrics: "Przedmiot - Metryki - eduVirt",
+  login: "Zaloguj się do eduVirt",
+  notFound: "Strona nie znaleziona",
+};
+
 export default {
   save: "Zapisz",
   cancel: "Anuluj",
@@ -145,6 +157,7 @@ export default {
   errorKeys,
   roles,
   notFoundPage,
+  pageTitles,
   ...adam,
   ...piotrek,
   ...bartek,
