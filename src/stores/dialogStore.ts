@@ -25,6 +25,7 @@ export type DialogType =
   | "showMaintenanceInterval"
   | "manageCourseUsers"
   | "manageTeamUsers"
+  | "manageTeachers"
 
 type DialogStore = {
   opened?: DialogType;

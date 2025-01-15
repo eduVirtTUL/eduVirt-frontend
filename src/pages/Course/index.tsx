@@ -7,8 +7,10 @@ import {ColumnDef} from "@tanstack/react-table";
 import {
     ArrowUpDown,
     ChartCandlestickIcon,
+    ChevronDown,
     ChevronLeft,
     ChevronRight,
+    ChevronUp,
     Copy,
     ExternalLinkIcon,
     FileCheck2,
@@ -26,7 +28,7 @@ import {
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {useCourseTeams} from "@/data/team/useCoursesTeams";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Route} from "./+types/index";
 import {useCourseAccessKey} from "@/data/access-key/useCourseAccessKey";
 import {Badge} from "@/components/ui/badge";
@@ -64,6 +66,10 @@ import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
 import {ManageSoloCourseUsersModal} from "@/components/Modals/ManageSoloCoursesTeamModal";
 import {useDeleteTeam} from "@/data/team/useDeleteTeam";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import {Collapsible, CollapsibleTrigger} from "@/components/ui/collapsible";
+import {CollapsibleContent} from "@radix-ui/react-collapsible";
+import TeachersList from "@/components/TeachersList";
+import {ManageTeachersModal} from "@/components/Modals/ManageTeachersModal";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
@@ -89,6 +95,15 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 
     const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
     const {deleteTeam} = useDeleteTeam();
+
+    const [isTeachersOpen, setIsTeachersOpen] = useState(() => {
+        const saved = localStorage.getItem(`courseTeachersCollapsible-${id}`);
+        return saved ? JSON.parse(saved) : true;
+    });
+
+    useEffect(() => {
+        localStorage.setItem(`courseTeachersCollapsible-${id}`, JSON.stringify(isTeachersOpen));
+    }, [isTeachersOpen, id]);
 
     const handleDeleteTeam = async () => {
         if (teamToDelete?.id) {
@@ -144,7 +159,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 ) : (
                                     users.map((user: UserDto) => (
                                         <div key={user.id}>
-                                            <Badge variant="outline">
+                                            <Badge variant="secondary">
                                                 {user.firstName && user.lastName
                                                     ? `${user.firstName} ${user.lastName}`
                                                     : user.userName || user.email}
@@ -365,7 +380,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                                 <Info
                                                     className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"/>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-80">
+                                            <PopoverContent className="w-80" side="right">
                                                 <p className="text-sm">
                                                     {isTeamBased
                                                         ? t("courseType.teamBasedDescription")
@@ -417,6 +432,41 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         </div>
                     </CardContent>
                 </Card>
+                <div className="flex flex-col space-y-4">
+                    <Collapsible open={isTeachersOpen} onOpenChange={setIsTeachersOpen}>
+                        <Card>
+                            <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <CardTitle>{t("coursePageB.teachersCard.title")}</CardTitle>
+                                    <div className="flex items-center gap-2">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => open("manageTeachers")}
+                                        >
+                                            <UserCog className="h-4 w-4 mr-2"/>
+                                            {t("coursePageB.teachersCard.manageTeachers")}
+                                        </Button>
+                                        <CollapsibleTrigger asChild>
+                                            <Button variant="ghost" size="sm">
+                                                {isTeachersOpen ? (
+                                                    <ChevronUp className="h-4 w-4"/>
+                                                ) : (
+                                                    <ChevronDown className="h-4 w-4"/>
+                                                )}
+                                            </Button>
+                                        </CollapsibleTrigger>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <CollapsibleContent>
+                                <CardContent>
+                                    <TeachersList courseId={id}/>
+                                </CardContent>
+                            </CollapsibleContent>
+                        </Card>
+                    </Collapsible>
+                </div>
                 <StatefulResourceGroups courseId={id}/>
                 <Card>
                     <CardHeader>
@@ -436,17 +486,17 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 </Card>
                 <Card>
                     <CardHeader>
-                    <div className="flex items-center justify-between">
-              <CardTitle>{t("coursePageB.teamsTable.title")}</CardTitle>
-              {isTeamBased ? (
-                <CreateTeamModal courseId={id!} />
-              ) : (
-                <Button variant="outline" onClick={() => open("manageCourseUsers")}>
-                  <UserCog className="h-4 w-4 mr-2" />
-                  {t("coursePageB.teamsTable.students")}
-                </Button>
-              )}
-            </div>
+                        <div className="flex items-center justify-between">
+                            <CardTitle>{t("coursePageB.teamsTable.title")}</CardTitle>
+                            {isTeamBased ? (
+                                <CreateTeamModal courseId={id!}/>
+                            ) : (
+                                <Button variant="outline" onClick={() => open("manageCourseUsers")}>
+                                    <UserCog className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.students")}
+                                </Button>
+                            )}
+                        </div>
                     </CardHeader>
                     <CardContent>
                         <div className="[&_.inactive-row]:opacity-60">
@@ -583,6 +633,10 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         onConfirm={handleDeleteTeam}
                     />
                 )}
+                <ManageTeachersModal
+                    courseId={id}
+                    courseName={course?.name ?? ""}
+                />
             </div>
         </>
     );

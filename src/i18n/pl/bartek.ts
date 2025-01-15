@@ -32,7 +32,7 @@ const joinTeamModal = {
     button: "Dołącz do zespołu",
     title: "Dołącz do zespołu",
     keyLabel: "Klucz",
-    keyDescription: "Wprowadź klucz otrzymany od prowadzącego zajęcia",
+    keyDescription: "Wprowadź klucz otrzymany od nauczyciela",
     validation: {
         keyMinLength: "Klucz nie może być krótszy niż 4 znaki",
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
@@ -123,7 +123,12 @@ const coursePageB = {
                     description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
             }
         }
-      }
+      },
+    },
+    teachersCard: {
+        title: "Nauczyciele",
+        noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
+        manageTeachers: "Zarządzaj",
     }
 }
 
@@ -229,6 +234,30 @@ const manageCourseUsersModal = {
     }
 }
 
+const manageTeachersModal = {
+    title: "Nauczyciele przedmiotu",
+    current: "Obecni nauczyciele",
+    add: "Dodaj nauczyciela",
+    remove: "Usuń",
+    noTeachers: "Ten przedmiot nie posiada żadnych nauczycieli",
+    addTeacher: {
+        email: "Adres e-mail",
+        description: "Wprowadź adres e-mail nauczyciela, którego chcesz dodać do przedmiotu"
+    },
+    delete: {
+        title: "Usuń nauczyciela {user} z przedmiotu {course}",
+        description: "Czy na pewno chcesz usunąć tego nauczyciela z przedmiotu? Spowoduje to utratę dostępu do zarządzania przedmiotem dla tego użytkownika.",
+    },
+    success: {
+        add: "Nauczyciel został dodany do przedmiotu",
+        remove: "Nauczyciel został usunięty z przedmiotu"
+    },
+    error: {
+        add: "Nie udało się dodać nauczyciela do przedmiotu",
+        remove: "Nie udało się usunąć nauczyciela z przedmiotu"
+    }
+}
+
 const createTeamModal = {
     title: "Tworzenie zespołu",
     singleTab: "Pojedynczy zespół",
@@ -277,5 +306,6 @@ export default {
     createCourseKey: createCourseKeyModal,
     manageTeamUsers: manageTeamUsersModal,
     manageCourseUsers: manageCourseUsersModal,
-    deleteTeam: deleteTeamModal
+    deleteTeam: deleteTeamModal,
+    manageTeachers: manageTeachersModal,
 };

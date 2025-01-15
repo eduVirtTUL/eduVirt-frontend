@@ -3803,14 +3803,13 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7154,14 +7153,13 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7196,14 +7194,13 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8332,14 +8329,13 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8577,14 +8573,13 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8624,12 +8619,11 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
-
-
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9026,14 +9020,13 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9315,14 +9308,13 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9362,12 +9354,11 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
-
-
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9512,14 +9503,13 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
