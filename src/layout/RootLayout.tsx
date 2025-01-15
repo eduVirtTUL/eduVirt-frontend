@@ -4,7 +4,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -15,14 +14,9 @@ import {
   Book,
   Boxes,
   CalendarDays,
-  ChevronUp,
   Group,
   Home,
-  MonitorCogIcon,
-  MoonIcon,
   Network,
-  SunIcon,
-  User2,
   Users,
   ChartLine,
   Wrench,
@@ -30,22 +24,13 @@ import {
 } from "lucide-react";
 import React, { Suspense } from "react";
 import logo from "@/assets/edu_2.png";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Link, Outlet, useMatches } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/stores/userStore";
+import MainMenuFooter from "@/components/MainMenuFooter";
 
 const menuItems = [
   { to: "/", label: (t) => t("menu.home"), icon: <Home /> },
@@ -75,7 +60,10 @@ const menuItems = [
 const RootLayout: React.FC = () => {
   const { t } = useTranslation();
   const matches = useMatches();
-  const { setTheme } = useTheme();
+  const { roles, activeRole } = useUser();
+
+  console.log("roles:", roles);
+  console.log("activeRole:", activeRole);
 
   const lastMatch = matches.at(-1);
 
@@ -98,7 +86,6 @@ const RootLayout: React.FC = () => {
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {menuItems.map((item) => (
@@ -120,56 +107,7 @@ const RootLayout: React.FC = () => {
           <SidebarGroup />
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton>
-                    <User2 /> Username
-                    <ChevronUp className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  className="w-[--radix-popper-anchor-width]"
-                >
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => setTheme("dark")}>
-                          <MoonIcon />
-                          <span>Dark</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("light")}>
-                          <SunIcon />
-                          <span>Light</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("system")}>
-                          <MonitorCogIcon />
-                          <span>System</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                  <DropdownMenuItem>
-                    <span>Account</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <span>Billing</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      window.location.href = "/login";
-                    }}
-                  >
-                    <span>Sign out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <MainMenuFooter />
         </SidebarFooter>
       </Sidebar>
       <main

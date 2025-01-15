@@ -2,6 +2,7 @@ import { ErrorKey } from "./../../data/privateAxios";
 import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
+import { Role } from "@/stores/userStore";
 
 const menu = {
   courses: "Przedmioty",
@@ -14,7 +15,26 @@ const menu = {
   home: "Strona główna",
   limits: "Ograniczenia",
   maintenance: "Zarządzanie",
+  signOut: "Wyloguj",
+  theme: {
+    dark: "Ciemny",
+    light: "Jasny",
+    system: "Systemowy",
+    title: "Motyw",
+  },
+  accessLevel: {
+    title: "Poziom dostępu",
+    administator: "Administrator",
+    teacher: "Nauczyciel",
+    student: "Student",
+  },
 };
+
+const roles = {
+  administrator: "Administrator",
+  teacher: "Nauczyciel",
+  student: "Student",
+} satisfies { [key in Role]: string };
 
 const general = {
   yes: "Tak",
@@ -118,6 +138,7 @@ export default {
   units,
   general,
   errorKeys,
+  roles,
   ...adam,
   ...piotrek,
   ...bartek,
