@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useMatches } from "react-router";
+import { Outlet, useMatches } from "react-router";
 import { Role, useUser } from "./stores/userStore";
 import React from "react";
 import NotFoundPage from "./pages/NotFound";
@@ -9,14 +9,10 @@ export type RouteHandle = {
 };
 
 const AuthGuard: React.FC = () => {
-  const { id, activeRole } = useUser();
+  const { activeRole } = useUser();
   const matches = useMatches();
   const lastMatch = matches.at(-1);
   const routeHandle = lastMatch?.handle as RouteHandle | undefined;
-
-  if (!id) {
-    return <Navigate to="/auth/callback" />;
-  }
 
   if (
     !routeHandle ||

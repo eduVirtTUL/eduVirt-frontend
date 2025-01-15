@@ -66,6 +66,7 @@ const VmSelected: React.FC<Required<InterfaceListProps>> = ({ id }) => {
   return (
     <>
       <ConfirmationDialog
+        name="detachNetwork"
         header={t("resourceGroupEditor.detachNetwork.confirmation")}
         text={t("resourceGroupEditor.detachNetwork.confirmationText")}
         onConfirm={() => {
@@ -100,7 +101,7 @@ const VmSelected: React.FC<Required<InterfaceListProps>> = ({ id }) => {
                     vmId={vm.id ?? ""}
                     onDetach={() => {
                       nicId.current = nic.id;
-                      open("confirmation");
+                      open("detachNetwork");
                     }}
                   />
                 ))}

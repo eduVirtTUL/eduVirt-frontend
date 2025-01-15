@@ -29,6 +29,7 @@ import { useAddResourceGroupNetwork } from "@/data/resourceGroup/useAddResourceG
 import { useDeleteResourceGroupNetwork } from "@/data/resourceGroup/useDeleteResourceGroupNetwork";
 import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupNetworks";
 import { useDialog } from "@/stores/dialogStore";
+import { Role, useUser } from "@/stores/userStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ColumnDef } from "@tanstack/react-table";
 import { TFunction } from "i18next";
@@ -44,6 +45,7 @@ type PrivateSegmentDrawerProps = {
 
 const columns = (
   t: TFunction,
+  activeRole: Role,
   initDelete: (id: string) => void
 ): ColumnDef<ResourceGroupNetworkDto>[] => [
   {
@@ -70,6 +72,7 @@ const columns = (
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
+              disabled={activeRole !== "teacher"}
               onClick={() => {
                 initDelete(network.id!);
               }}
@@ -103,6 +106,7 @@ const PrivateSegmentDrawer: React.FC<PrivateSegmentDrawerProps> = ({ id }) => {
   });
   const networkToDelete = React.useRef<string>();
   const { open } = useDialog();
+  const { activeRole } = useUser();
 
   const handleSubmit = form.handleSubmit((data) => {
     addNetwork({ id, ...data });
@@ -132,41 +136,43 @@ const PrivateSegmentDrawer: React.FC<PrivateSegmentDrawerProps> = ({ id }) => {
             </SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-6">
-            <Form {...form}>
-              <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-                <h3>
-                  {t("resourceGroupEditor.privateSegments.createSegment")}
-                </h3>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("resourceGroupEditor.privateSegments.name")}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder={t(
-                            "resourceGroupEditor.privateSegments.placeholder"
-                          )}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex flex-row justify-end">
-                  <Button type="submit">
-                    {t("resourceGroupEditor.privateSegments.create")}
-                  </Button>
-                </div>
-              </form>
-            </Form>
+            {activeRole === "teacher" && (
+              <Form {...form}>
+                <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+                  <h3>
+                    {t("resourceGroupEditor.privateSegments.createSegment")}
+                  </h3>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("resourceGroupEditor.privateSegments.name")}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder={t(
+                              "resourceGroupEditor.privateSegments.placeholder"
+                            )}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex flex-row justify-end">
+                    <Button type="submit">
+                      {t("resourceGroupEditor.privateSegments.create")}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            )}
             <h3>{t("resourceGroupEditor.privateSegments.segments")}</h3>
             <DataTable
-              columns={columns(t, (id) => {
+              columns={columns(t, activeRole, (id) => {
                 networkToDelete.current = id;
                 open("confirmation");
               })}

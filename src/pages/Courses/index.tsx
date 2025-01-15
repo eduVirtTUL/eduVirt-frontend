@@ -23,6 +23,7 @@ import { useDebounce } from "use-debounce";
 import React from "react";
 import i18next, { TFunction } from "i18next";
 import { RouteHandle } from "@/AuthGuard";
+import { useUser } from "@/stores/userStore";
 
 const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
   {
@@ -56,6 +57,7 @@ const CoursesPage: React.FC = () => {
   const { courses, isLoading } = useCourses(pageNumber, pageSize, searchValue);
   const { open } = useDialog();
   const nav = useNavigate();
+  const { activeRole } = useUser();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -63,18 +65,20 @@ const CoursesPage: React.FC = () => {
 
   return (
     <>
-      <CreateCourseModal />
+      {activeRole === "administrator" && <CreateCourseModal />}
       <PageHeader title={t("courseListPage.title")} />
-      <div className="pb-5">
-        <Button
-          onClick={() => {
-            open("createCourse");
-          }}
-        >
-          <PlusIcon />
-          {t("courseListPage.createCourse")}
-        </Button>
-      </div>
+      {activeRole === "administrator" && (
+        <div className="pb-5">
+          <Button
+            onClick={() => {
+              open("createCourse");
+            }}
+          >
+            <PlusIcon />
+            {t("courseListPage.createCourse")}
+          </Button>
+        </div>
+      )}
       <div className="flex flex-row gap-2 mb-5">
         <Input
           placeholder={t("courseListPage.searchPlaceholder")}

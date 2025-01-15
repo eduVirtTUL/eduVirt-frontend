@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { convertMinutesToHoures } from "@/utils/timeUtils";
 import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
+import { useUser } from "@/stores/userStore";
 
 const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
   params: { id },
@@ -29,6 +30,7 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
 
   const { deleteResourceGroupPoolAsync } = useDeleteResourceGroupPool();
   const nav = useNavigate();
+  const { activeRole } = useUser();
 
   return (
     <>
@@ -51,30 +53,25 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
         title={resourceGroupPool?.name ?? ""}
         type={t("resourceGroupPoolPage.type")}
       />
+      {activeRole === "teacher" && (
+        <div className="flex flex-row items-center justify-end gap-2 pb-5">
+          <Button
+            variant="secondary"
+            onClick={() => open("editResourceGroupPool")}
+          >
+            <PencilIcon />
+            {t("editResourceGroupPoolModal.button")}
+          </Button>
+          <Button variant="destructive" onClick={() => open("confirmation")}>
+            <Trash2Icon />
+            {t("resourceGroupPoolPage.delete")}
+          </Button>
+        </div>
+      )}
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>
-              <div className="flex flex-row items-center justify-between">
-                <span>{t("resourceGroupPoolPage.poolSettings")}</span>
-                <div className="flex flex-row items-center justify-start gap-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() => open("editResourceGroupPool")}
-                  >
-                    <PencilIcon />
-                    {t("editResourceGroupPoolModal.button")}
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => open("confirmation")}
-                  >
-                    <Trash2Icon />
-                    {t("resourceGroupPoolPage.delete")}
-                  </Button>
-                </div>
-              </div>
-            </CardTitle>
+            <CardTitle>{t("resourceGroupPoolPage.poolSettings")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-2">
@@ -112,12 +109,12 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
             <CardTitle>{t("resourceGroupPoolPage.resourceGroups")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="flex justify-start">
+            {activeRole === "teacher" && (
               <Button onClick={() => open("createResourceGroup")}>
                 <PlusIcon />
                 {t("resourceGroupPoolPage.createResourceGroup")}
               </Button>
-            </div>
+            )}
             <div className="grid grid-cols-4 gap-4">
               {resourceGroupPool?.resourceGroups?.map((rg) => (
                 <ResourceGroupCard resourceGroup={rg} />
