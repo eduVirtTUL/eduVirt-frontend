@@ -5,7 +5,6 @@ import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 type NetworkVmConnection = {
   etag: string;
@@ -15,7 +14,6 @@ export const useDetachNicFromNetwork = () => {
   const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
-  const { close } = useDialog();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async ({ etag, ...data }: NetworkVmConnection) => {
       await privateAxios.post("/network/detach", data, {
@@ -29,9 +27,6 @@ export const useDetachNicFromNetwork = () => {
       return queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.vm(id ?? "", variables.vmId ?? ""),
       });
-    },
-    onError: () => {
-      close();
     },
   });
 

@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { resourceGroupPoolKeys } from "../keys";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 type CreateStatelessResourceGroup = {
   id: string;
@@ -13,7 +12,6 @@ type CreateStatelessResourceGroup = {
 export const useCreateStatelessResourceGroup = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const { close } = useDialog();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, ...org }: CreateStatelessResourceGroup) => {
       await privateAxios.post(`/resource-group-pool/${id}/resourceGroup`, org);
@@ -23,9 +21,6 @@ export const useCreateStatelessResourceGroup = () => {
         queryKey: resourceGroupPoolKeys.detail(id),
       });
       toast.success(t("createResourceGroupModal.success"));
-    },
-    onError: () => {
-      close();
     },
   });
 

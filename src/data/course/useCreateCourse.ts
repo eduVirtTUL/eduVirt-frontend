@@ -4,11 +4,9 @@ import { toast } from "sonner";
 import { keys } from "../keys";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 export const useCreateCourse = () => {
   const { t } = useTranslation();
-  const { close } = useDialog();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async (course: CreateCourseDto) => {
@@ -18,9 +16,6 @@ export const useCreateCourse = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
       toast.success(t("createCourseModal.success"));
-    },
-    onError: () => {
-      close();
     },
   });
 

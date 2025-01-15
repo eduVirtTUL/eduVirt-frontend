@@ -43,6 +43,7 @@ const queryClient = new QueryClient({
         const errorKey = axiosError.response?.data.key;
         if (errorKey) {
           if (i18next.exists(`errorKeys.${errorKey}`)) {
+            console.log("show key");
             toast.error(t(`errorKeys.${errorKey}`));
             return;
           }

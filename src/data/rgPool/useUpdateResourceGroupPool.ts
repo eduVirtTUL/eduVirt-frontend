@@ -4,7 +4,6 @@ import { resourceGroupPoolKeys } from "../keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 type UpdateResourceGroupPool = {
   id: string;
@@ -14,7 +13,6 @@ type UpdateResourceGroupPool = {
 export const useUpdateResourceGroupPool = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const { close } = useDialog();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroupPool) => {
       await privateAxios.put(`/resource-group-pool/${id}`, org, {
@@ -28,9 +26,6 @@ export const useUpdateResourceGroupPool = () => {
         queryKey: resourceGroupPoolKeys.detail(id),
       });
       toast.success(t("editResourceGroupPoolModal.success"));
-    },
-    onError: () => {
-      close();
     },
   });
 

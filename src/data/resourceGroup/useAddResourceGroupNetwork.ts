@@ -5,7 +5,6 @@ import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 type AddResourceGroupNetworkPayload = {
   id: string;
@@ -13,7 +12,6 @@ type AddResourceGroupNetworkPayload = {
 
 export const useAddResourceGroupNetwork = () => {
   const { t } = useTranslation();
-  const { close } = useDialog();
   const queryClient = useQueryClient();
   const { etag } = useResourceGroupEditorStore();
   const { mutate, mutateAsync } = useMutation({
@@ -37,9 +35,6 @@ export const useAddResourceGroupNetwork = () => {
       queryClient.invalidateQueries({
         queryKey: resourceGroupKeys.networks(payload.id),
       });
-    },
-    onError: () => {
-      close();
     },
   });
 

@@ -3,11 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { privateAxios } from "../privateAxios";
-import { useDialog } from "@/stores/dialogStore";
 
 export const useDeleteCourse = () => {
   const { t } = useTranslation();
-  const { close } = useDialog();
   const nav = useNavigate();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -18,9 +16,6 @@ export const useDeleteCourse = () => {
       queryClient.invalidateQueries({ queryKey: ["course"] });
       toast.success(t("coursePage.deleteAction.success"));
       nav("/courses");
-    },
-    onError: () => {
-      close();
     },
   });
 
