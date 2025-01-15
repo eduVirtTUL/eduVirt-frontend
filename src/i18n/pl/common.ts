@@ -2,6 +2,7 @@ import { ErrorKey } from "./../../data/privateAxios";
 import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
+import { Role } from "@/stores/userStore";
 
 const menu = {
   courses: "Przedmioty",
@@ -14,12 +15,30 @@ const menu = {
   home: "Strona główna",
   limits: "Ograniczenia",
   maintenance: "Zarządzanie",
+  signOut: "Wyloguj",
+  theme: {
+    dark: "Ciemny",
+    light: "Jasny",
+    system: "Systemowy",
+    title: "Motyw",
+  },
+  accessLevel: {
+    title: "Poziom dostępu",
+    administator: "Administrator",
+    teacher: "Nauczyciel",
+    student: "Student",
+  },
 };
+
+const roles = {
+  administrator: "Administrator",
+  teacher: "Nauczyciel",
+  student: "Student",
+} satisfies { [key in Role]: string };
 
 const general = {
   yes: "Tak",
   no: "Nie",
-
   page: "Strona",
   next: "Następna",
   previous: "Poprzednia",
@@ -84,6 +103,24 @@ const errorKeys = {
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
 } satisfies { [key in ErrorKey]: string };
 
+const notFoundPage = {
+  title: "Strona nie znaleziona",
+  description: "Strona, której szukasz, nie istnieje. Sprawdź adres URL.",
+  back: "Powrót na stronę główną",
+};
+
+const pageTitles = {
+  courses: "Przedmioty - eduVirt",
+  course: "Przedmiot - eduVirt",
+  resourceGroups: "Grupy zasobów - eduVirt",
+  resourceGroup: "Grupa zasobów - eduVirt",
+  resourceGroupPools: "Pule grup zasobów - eduVirt",
+  resourceGroupPool: "Pula grup zasobów - eduVirt",
+  courseMetrics: "Przedmiot - Metryki - eduVirt",
+  login: "Zaloguj się do eduVirt",
+  notFound: "Strona nie znaleziona",
+};
+
 export default {
   save: "Zapisz",
   cancel: "Anuluj",
@@ -104,6 +141,9 @@ export default {
   units,
   general,
   errorKeys,
+  roles,
+  notFoundPage,
+  pageTitles,
   ...adam,
   ...piotrek,
   ...bartek,

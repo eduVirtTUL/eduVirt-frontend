@@ -62,6 +62,8 @@ import {useDeleteCourse} from "@/data/course/useDeleteCourse";
 import EditCourseModal from "@/components/Modals/EditCourseModal";
 import {useResetCourse} from "@/data/course/useResetCourse";
 import ValueDisplay from "@/components/ValueDisplay";
+import { RouteHandle } from "@/AuthGuard";
+import { t } from "i18next";
 import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
 import {ManageSoloCourseUsersModal} from "@/components/Modals/ManageSoloCoursesTeamModal";
 import {useDeleteTeam} from "@/data/team/useDeleteTeam";
@@ -643,3 +645,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 };
 
 export default CoursePage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator", "teacher"],
+};
+
+export const meta = () => {
+  return [{ title: t("pageTitles.course") }];
+};
