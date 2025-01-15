@@ -4,10 +4,12 @@ import { resourceGroupKeys } from "../keys";
 import { useTranslation } from "react-i18next";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useDeleteResourceGroupNetwork = () => {
   const { t } = useTranslation();
   const { id: rgId, etag } = useResourceGroupEditorStore();
+  const { close } = useDialog();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async (id: string) => {
@@ -27,7 +29,7 @@ export const useDeleteResourceGroupNetwork = () => {
       });
     },
     onError: () => {
-      toast.error(t("resourceGroupEditor.privateSegments.deleteError"));
+      close();
     },
   });
 

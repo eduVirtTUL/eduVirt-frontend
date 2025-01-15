@@ -5,10 +5,12 @@ import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { resourceGroupKeys } from "../keys";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useAddResourceGroupVm = (id: string) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { close } = useDialog();
   const { etag } = useResourceGroupEditorStore();
   const { mutate } = useMutation({
     mutationFn: async (data: AddVmDto) => {
@@ -25,7 +27,7 @@ export const useAddResourceGroupVm = (id: string) => {
       toast.success(t("resourceGroupEditor.addVm.success"));
     },
     onError: () => {
-      toast.error(t("resourceGroupEditor.addVm.error"));
+      close();
     },
   });
 

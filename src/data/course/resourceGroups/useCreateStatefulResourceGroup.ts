@@ -1,6 +1,7 @@
 import { CreateResourceGroupDto } from "@/api";
 import { courseKeys } from "@/data/keys";
-import { CustomAxiosError, privateAxios } from "@/data/privateAxios";
+import { privateAxios } from "@/data/privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -10,6 +11,7 @@ type CreateResourceGroup = {
 } & CreateResourceGroupDto;
 
 export const useCreateStatefulResourceGroup = () => {
+  const { close } = useDialog();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -22,9 +24,8 @@ export const useCreateStatefulResourceGroup = () => {
       });
       toast.success(t("createResourceGroupModal.success"));
     },
-    onError: (error: CustomAxiosError) => {
-      console.error(error);
-      toast.error(t("createResourceGroupModal.error"));
+    onError: () => {
+      close();
     },
   });
 

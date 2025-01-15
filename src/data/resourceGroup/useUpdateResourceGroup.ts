@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 type UpdateResourceGroup = {
   id: string;
@@ -12,6 +13,7 @@ type UpdateResourceGroup = {
 export const useUpdateResourceGroup = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { close } = useDialog();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ id, etag, ...org }: UpdateResourceGroup) => {
       const response = await privateAxios.put<ResourceGroupDto>(
@@ -29,9 +31,8 @@ export const useUpdateResourceGroup = () => {
       queryClient.invalidateQueries({ queryKey: ["resourceGroup", id] });
       toast.success(t("resourceGroupEditor.updateResourceGroup.success"));
     },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("resourceGroupEditor.updateResourceGroup.error"));
+    onError: () => {
+      close();
     },
   });
 

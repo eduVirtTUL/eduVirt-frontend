@@ -5,6 +5,7 @@ import { resourceGroupKeys } from "../keys";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useTranslation } from "react-i18next";
 import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 type Data = {
   networkId: string;
@@ -14,6 +15,7 @@ type Data = {
 export const useAttachNicToNetwork = () => {
   const { t } = useTranslation();
   const { id } = useResourceGroupEditorStore();
+  const { close } = useDialog();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async ({ networkId, etag, ...original }: Data) => {
@@ -27,9 +29,8 @@ export const useAttachNicToNetwork = () => {
         queryKey: resourceGroupKeys.vm(id ?? "", variables.vmId ?? ""),
       });
     },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("resourceGroupEditor.attachNetwork.error"));
+    onError: () => {
+      close();
     },
   });
 

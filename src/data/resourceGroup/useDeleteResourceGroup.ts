@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useDeleteResourceGroup = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { close } = useDialog();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
       await privateAxios.delete(`/resource-group/${id}`);
@@ -15,8 +17,7 @@ export const useDeleteResourceGroup = () => {
       toast.success(t("resourceGroupEditor.deleteResourceGroup.success"));
     },
     onError: () => {
-      console.log("error");
-      toast.error(t("resourceGroupEditor.deleteResourceGroup.error"));
+      close();
     },
   });
 

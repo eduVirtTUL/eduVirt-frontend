@@ -3,10 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { useTranslation } from "react-i18next";
-import { CustomAxiosError, privateAxios } from "../privateAxios";
+import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useCreateCourse = () => {
   const { t } = useTranslation();
+  const { close } = useDialog();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationFn: async (course: CreateCourseDto) => {
@@ -17,9 +19,8 @@ export const useCreateCourse = () => {
       queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
       toast.success(t("createCourseModal.success"));
     },
-    onError: (error: CustomAxiosError) => {
-      console.error(error);
-      toast.error(t("createCourseModal.error"));
+    onError: () => {
+      close();
     },
   });
 

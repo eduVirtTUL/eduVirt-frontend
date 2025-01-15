@@ -9,7 +9,7 @@ export const useResourceGroupPools = (page: number, size: number) => {
     queryFn: async () => {
       const response =
         await privateAxios.get<PageDtoDetailedResourceGroupPoolDto>(
-          `/resource-group-pool}`,
+          `/resource-group-pool`,
           {
             params: { page, size },
           }

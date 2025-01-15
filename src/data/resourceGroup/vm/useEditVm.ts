@@ -1,6 +1,7 @@
 import { EditVmDto } from "@/api";
 import { resourceGroupKeys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -13,6 +14,7 @@ type EditVmInput = {
 
 export const useEditVm = () => {
   const { t } = useTranslation();
+  const { close } = useDialog();
   const { id: rgId } = useResourceGroupEditorStore();
   const client = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -27,9 +29,8 @@ export const useEditVm = () => {
       client.invalidateQueries({ queryKey: resourceGroupKeys.detail(rgId!) });
       toast.success(t("editVmModal.success"));
     },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("editVmModal.error"));
+    onError: () => {
+      close();
     },
   });
 

@@ -1,3 +1,4 @@
+import { ErrorKey } from "./../../data/privateAxios";
 import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
@@ -71,6 +72,32 @@ const units = {
   },
 };
 
+const errorKeys = {
+  // "course.not.found": "Nie znaleziono przedmiotu",
+  noNetworkAvailable:
+    "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
+  // "courseLimits.error.value.already.defined":
+  //   "Przedmiot posiada już tą metrykę",
+  // "courseLimits.error.value.not.defined": "Przedmiot nie posiada tej metryki",
+  // "resource.group.not.found": "Nie znaleziono grupy zasobów",
+  // "resource.group.pool.not.found": "Nie znaleziono puli grup zasobów",
+  courseAlreadyExists: "Przedmiot o podanej nazwie już istnieje",
+  courseConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+  courseMetricNetworksNotSufficient:
+    "W przedmiocie znajduje sie, która posiada więcej sieci niż wartość metryki.",
+  rgAlreadyExists: "Grupa zasobów o podanej nazwie już istnieje",
+  resourceGroupConflict:
+    "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+  resourceGroupPoolAlreadyExists:
+    "Pula grup zasobów o podanej nazwie już istnieje",
+  rgPoolConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+  virtualMachineAlreadyExists:
+    "Maszyna wirtualna o podanej nazwie już istnieje",
+  virtualMachineClusterMismatch:
+    "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
+  vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+} satisfies { [key in ErrorKey]: string };
+
 export default {
   save: "Zapisz",
   cancel: "Anuluj",
@@ -86,9 +113,11 @@ export default {
   noResults: "Brak wyników",
   requiredFieldDescription: "(*) - pole wymagane",
   houres: "godz.",
+  genericError: "Wystąpił błąd!",
   menu,
   units,
   general,
+  errorKeys,
   ...adam,
   ...piotrek,
   ...bartek,

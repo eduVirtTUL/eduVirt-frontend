@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { CustomAxiosError, privateAxios } from "../privateAxios";
+import { privateAxios } from "../privateAxios";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useDeleteCourse = () => {
   const { t } = useTranslation();
+  const { close } = useDialog();
   const nav = useNavigate();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
@@ -17,9 +19,8 @@ export const useDeleteCourse = () => {
       toast.success(t("coursePage.deleteAction.success"));
       nav("/courses");
     },
-    onError: (error: CustomAxiosError) => {
-      console.error(error);
-      toast.error(t("coursePage.deleteAction.error"));
+    onError: () => {
+      close();
     },
   });
 

@@ -1,8 +1,26 @@
 import axios, { AxiosError } from "axios";
 
+export type ErrorKey =
+  | "courseAlreadyExists"
+  | "courseConflict"
+  | "courseMetricNetworksNotSufficient"
+  | "noNetworkAvailable"
+  | "rgAlreadyExists"
+  | "resourceGroupConflict"
+  | "resourceGroupPoolAlreadyExists"
+  | "rgPoolConflict"
+  | "virtualMachineAlreadyExists"
+  | "virtualMachineClusterMismatch"
+  | "vmConflict";
+// | "courseLimits.error.value.already.defined"
+// | "courseLimits.error.value.not.defined"
+// | "course.not.found"
+// | "resource.group.not.found"
+// | "resource.group.pool.not.found";
+
 export type ErrorResponse = {
   message: string;
-  key: string;
+  key: ErrorKey;
 };
 
 export type CustomAxiosError = AxiosError<ErrorResponse>;

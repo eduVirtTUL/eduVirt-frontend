@@ -5,11 +5,13 @@ import { toast } from "sonner";
 import { resourceGroupKeys } from "../keys";
 import { useTranslation } from "react-i18next";
 import { injectToken } from "@/utils/requestUtils";
+import { useDialog } from "@/stores/dialogStore";
 
 export const useDeleteResourceGroupVm = () => {
   const { t } = useTranslation();
   const { id: rgId, etag } = useResourceGroupEditorStore();
   const queryClient = useQueryClient();
+  const { close } = useDialog();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
       const controller = new ResourceGroupVmControllerApi();
@@ -32,8 +34,8 @@ export const useDeleteResourceGroupVm = () => {
       });
       toast.success(t("removeVmModal.success"));
     },
-    onError: (error) => {
-      toast.error(t("removeVmModal.error"));
+    onError: () => {
+      close();
     },
   });
 
