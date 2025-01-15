@@ -70,7 +70,7 @@ const AuthCallback: React.FC = () => {
   if (!token) {
     removeCookie("access_token");
     localStorage.removeItem("token");
-    return <Navigate to="http://localhost:8080/auth/login" />;
+    window.location.href = "http://localhost:8080/auth/login";
   }
 
   return <Navigate to={"/"} />;
