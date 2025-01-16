@@ -131,6 +131,8 @@ const errorKeys = {
   "reservations.error.reservation.count.exceeded": "Osiągnięto limit rezerwacji dla danego PODa",
   "reservations.error.stateful.pod.not.assigned": "Wybrany POD stanowy nie jest przypisany do twojego zespołu",
   "reservations.error.stateless.pod.not.assigned": "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
+
+  networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
