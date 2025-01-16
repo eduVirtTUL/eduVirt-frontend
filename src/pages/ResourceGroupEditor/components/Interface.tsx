@@ -133,7 +133,7 @@ const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
               <TooltipTrigger>
                 <CircleHelpIcon />
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="max-w-52">
                 {t("resourceGroupEditor.interfaceList.conflictTooltip")}
               </TooltipContent>
             </Tooltip>

@@ -14,12 +14,14 @@ import {
 } from "@/components/ui/pagination";
 import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
+import { useUser } from "@/stores/userStore";
 import { ColumnDef } from "@tanstack/react-table";
 import i18next, { TFunction } from "i18next";
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router";
+import RGPoolFilters from "./RGPoolFilters";
 
 const columns = (t: TFunction): ColumnDef<DetailedResourceGroupPoolDto>[] => [
   { accessorKey: "name", header: t("resourceGroupPools.table.name") },
@@ -38,17 +40,21 @@ const ResourceGroupPoolsPage: React.FC = () => {
   const size = parseInt(searchParams.get("size") ?? "10");
   const { resourceGroupPools } = useResourceGroupPools(page, size);
   const nav = useNavigate();
+  const { activeRole } = useUser();
 
   return (
     <>
       <CreatePoolModal />
       <PageHeader title={t("resourceGroupPools.title")} />
-      <div className="flex flex-row gap-2 pb-5">
-        <Button onClick={() => open("createPool")}>
-          <PlusIcon />
-          {t("resourceGroupPools.createPool")}
-        </Button>
-      </div>
+      {activeRole === "teacher" && (
+        <div className="flex flex-row gap-2 pb-5">
+          <Button onClick={() => open("createPool")}>
+            <PlusIcon />
+            {t("resourceGroupPools.createPool")}
+          </Button>
+        </div>
+      )}
+      <RGPoolFilters />
       <DataTable
         data={resourceGroupPools?.items ?? []}
         columns={columns(t)}
@@ -80,16 +86,16 @@ const ResourceGroupPoolsPage: React.FC = () => {
             </PaginationLink>
           </PaginationItem>
           {(resourceGroupPools?.page?.totalPages ?? 0) > page + 1 && (
-            <PaginationItem>
-              <PaginationLink href={`/pools?page=${page + 1}&size=${size}`}>
-                {page + 2}
-              </PaginationLink>
-            </PaginationItem>
-          )}
-          {resourceGroupPools?.page?.totalPages !== page + 1 && (
-            <PaginationItem>
-              <PaginationNext href={`/pools?page=${page + 1}&size=${size}`} />
-            </PaginationItem>
+            <>
+              <PaginationItem>
+                <PaginationLink href={`/pools?page=${page + 1}&size=${size}`}>
+                  {page + 2}
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href={`/pools?page=${page + 1}&size=${size}`} />
+              </PaginationItem>
+            </>
           )}
         </PaginationContent>
       </Pagination>

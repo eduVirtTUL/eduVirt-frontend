@@ -304,6 +304,13 @@ const resourceGroupPools = {
     course: "Przedmiot",
     resourceGroups: "Grupy zasobów",
   },
+  filters: {
+    searchPlaceholder: "Szukaj pule grup zasobów...",
+    clear: "Wyczyść",
+    selectCourse: "Wybierz przedmiot",
+    noCourses: "Brak przedmiotów",
+    searchCourse: "Szukaj przedmiotów",
+  },
 };
 
 const resourceGroups = {

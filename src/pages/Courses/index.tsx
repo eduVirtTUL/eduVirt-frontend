@@ -3,7 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useCourses } from "@/data/course/useCourses";
 import { useDialog } from "@/stores/dialogStore";
-import { ArrowUpDown, PlusIcon, XIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, PlusIcon, XIcon } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CourseDto } from "@/api";
@@ -25,17 +25,22 @@ import i18next, { TFunction } from "i18next";
 import { RouteHandle } from "@/AuthGuard";
 import { useUser } from "@/stores/userStore";
 
-const columns = (t: TFunction): ColumnDef<CourseDto>[] => [
+const columns = (
+  t: TFunction,
+  onSortChange: () => void,
+  sortOrder: "ASC" | "DESC"
+): ColumnDef<CourseDto>[] => [
   {
     accessorKey: "name",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => onSortChange()}>
           {t("courseListPage.table.name")}
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {sortOrder === "ASC" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          )}
         </Button>
       );
     },
@@ -52,9 +57,15 @@ const CoursesPage: React.FC = () => {
   const { t } = useTranslation();
   const pageNumber = parseInt(searchParams.get("page") ?? "0", 10);
   const pageSize = parseInt(searchParams.get("size") ?? "10", 10);
+  const sort = (searchParams.get("sort") ?? "ASC") as "ASC" | "DESC";
   const [search, setSearch] = React.useState("");
   const [searchValue] = useDebounce(search, 500);
-  const { courses, isLoading } = useCourses(pageNumber, pageSize, searchValue);
+  const { courses, isLoading } = useCourses(
+    pageNumber,
+    pageSize,
+    searchValue,
+    sort
+  );
   const { open } = useDialog();
   const nav = useNavigate();
   const { activeRole } = useUser();
@@ -96,7 +107,14 @@ const CoursesPage: React.FC = () => {
       </div>
       <DataTable
         data={courses?.items ?? []}
-        columns={columns(t)}
+        columns={columns(
+          t,
+          () => {
+            const newSort = sort === "ASC" ? "DESC" : "ASC";
+            nav(`/courses?page=${pageNumber}&size=${pageSize}&sort=${newSort}`);
+          },
+          sort
+        )}
         onRowClick={(row) => {
           const course = row.original;
           nav(`/courses/${course.id}`);

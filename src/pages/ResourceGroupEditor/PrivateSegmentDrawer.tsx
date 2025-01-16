@@ -54,7 +54,7 @@ const columns = (
   },
   {
     id: "nics",
-    accessorFn: () => 0,
+    accessorFn: (row) => row.interfaces?.length ?? 0,
     header: t("resourceGroupEditor.privateSegments.interfaces"),
   },
   {

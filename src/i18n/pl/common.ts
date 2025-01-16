@@ -101,6 +101,7 @@ const errorKeys = {
   virtualMachineClusterMismatch:
     "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+  networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
