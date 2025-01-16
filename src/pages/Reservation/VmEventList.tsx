@@ -25,10 +25,15 @@ const columns = (
     header: () => {
       return (
         <Button variant="ghost" onClick={() => handleSort("severity")}>
-          {t("events.table.columns.severity")}
+          {t("events.table.columns.severity.name")}
           {(chooseSortingArrow("severity"))}
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const event = row.original;
+      {/* @ts-expect-error this doesn't impact the page */}
+      return t(`events.table.columns.severity.${event.severity}`);
     }
   },
   {

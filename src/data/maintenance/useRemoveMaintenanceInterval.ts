@@ -1,30 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MaintenanceIntervalControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useRemoveMaintenanceInterval = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     mutationKey: [ "removeMaintenanceInterval" ],
-    mutationFn: async (maintenanceIntervalId: string) => {
-      const controller = new MaintenanceIntervalControllerApi();
-      const response = await controller.finishMaintenanceInterval(
-        maintenanceIntervalId, { ...injectToken() }
+    mutationFn: async (id: string) => {
+      const response = await privateAxios.delete<void>(
+          `/maintenance-intervals/${id}`
       );
-
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.MAINTENANCE_INTERVALS] });
       toast.success(t("maintenanceIntervals.removeMaintenanceInterval.success"));
-    },
-    onError: () => {
-      toast.error(t("maintenanceIntervals.removeMaintenanceInterval.error"));
-    },
+    }
   });
 
   return {

@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useDialog } from "@/stores/dialogStore";
 import { Button } from "@/components/ui/button";
 import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 type MaintenanceIntervalModal = {
     intervalId: string;
@@ -76,3 +78,11 @@ const MaintenanceIntervalDetailsModal: React.FC<MaintenanceIntervalModal> = ({ i
 };
 
 export default MaintenanceIntervalDetailsModal;
+
+export const handle: RouteHandle = {
+    roles: ["administrator"],
+};
+
+export const meta = () => {
+    return [{ title: i18next.t("pageTitles.maintenanceInterval") }];
+};

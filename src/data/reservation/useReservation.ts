@@ -1,7 +1,7 @@
 import { keys } from "@/data/keys";
-import { ReservationControllerApi } from "@/api";
+import { ReservationDetailsDto } from "@/api";
 import { useQuery } from "@tanstack/react-query";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseReservationsParams = {
   id: string
@@ -11,11 +11,7 @@ export const useReservation = ({id}: UseReservationsParams) => {
   const { data, isLoading } = useQuery({
     queryKey: [ keys.RESERVATIONS, id ],
     queryFn: async() => {
-      const controller = new ReservationControllerApi();
-      const response = await controller.getReservationDetails(
-        id, { ...injectToken() }
-      );
-
+      const response = await privateAxios.get<ReservationDetailsDto>(`/reservations/${id}`);
       return response.data;
     }
   });

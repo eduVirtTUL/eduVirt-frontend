@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useMetrics } from "@/data/metrics/useMetrics";
 import { useRemoveMetric } from "@/data/metrics/useRemoveMetric";
 import { useDialog } from "@/stores/dialogStore";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricDto } from "@/api";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { getCategory } from "@/utils/unitUtils.js";
+import {RouteHandle} from "@/AuthGuard";
 
 const columns = (
   t: TFunction,
@@ -175,3 +176,11 @@ const MetricsPage: React.FC = () => {
 };
 
 export default MetricsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.metrics") }];
+};

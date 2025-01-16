@@ -1,9 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MetricControllerApi } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useRemoveMetric = () => {
   const { t } = useTranslation();
@@ -11,19 +10,15 @@ export const useRemoveMetric = () => {
   const { mutate, mutateAsync } = useMutation({
     mutationKey: [ "removeMetric" ],
     mutationFn: async (metricId: string) => {
-      const controller = new MetricControllerApi();
-      const response = await controller.deleteMetric2(
-        metricId, { ...injectToken() }
+      const response = await privateAxios.delete<void>(
+        `/metrics/${metricId}`
       );
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: [keys.METRICS]});
       toast.success(t("metrics.removeMetric.success"));
-    },
-    onError: () => {
-      toast.error(t("metrics.removeMetric.error"));
-    },
+    }
   });
 
   return {

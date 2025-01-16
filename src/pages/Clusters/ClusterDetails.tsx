@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useClusterDetails } from "@/data/cluster-metrics/useClusterDetails";
+import { useClusterDetails } from "@/data/cluster/useClusterDetails";
 import {Link, useNavigate} from "react-router";
 import { Undo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";

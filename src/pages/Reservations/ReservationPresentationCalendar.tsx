@@ -15,13 +15,13 @@ import {
     ToolbarInput
 } from "@fullcalendar/core";
 import { MaintenanceIntervalDto, ReservationDto, ResourcesAvailabilityDto } from "@/api";
-import {DateClickArg} from "@fullcalendar/interaction";
-import {useDialog} from "@/stores/dialogStore";
+import { DateClickArg } from "@fullcalendar/interaction";
+import { useDialog } from "@/stores/dialogStore";
 
 const headerToolbar: ToolbarInput = {
-    center: "title",
-    left: "prev,next",
-    right: "timeGridWeek,dayGridMonth,today",
+  center: "title",
+  left: "prev,next",
+  right: "timeGridWeek,dayGridMonth,today",
 };
 
 type TimeRange = {
@@ -32,9 +32,11 @@ type TimeRange = {
 type ReservationPresentationCalendarProps = {
   t: TFunction,
   calendarRef:  React.MutableRefObject<FullCalendar | null>,
-  timeWindow: number,
   currentRange: TimeRange,
   setCurrentRange: React.Dispatch<React.SetStateAction<TimeRange>>,
+
+  window: number,
+  windowLoading: boolean,
 
   select: ((arg: DateSelectArg) => void) | undefined,
   allowSelect: AllowFunc | undefined,
@@ -49,8 +51,8 @@ type ReservationPresentationCalendarProps = {
 }
 
 const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarProps> = ({
-  t, calendarRef, timeWindow, currentRange, setCurrentRange,
-  select, allowSelect, allowEvent, resources, resourcesLoading,
+  t, calendarRef, currentRange, setCurrentRange,
+  select, allowSelect, window, windowLoading, allowEvent, resources, resourcesLoading,
   reservations, reservationsLoading, intervals, intervalsLoading
 }) => {
   const navigate = useNavigate();
@@ -69,7 +71,7 @@ const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarP
       const resourceTime = resource.time! + 'Z';
       const startTime = new Date(resourceTime);
       const timeVar = new Date(resourceTime);
-      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + timeWindow));
+      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + window));
 
       newEvents.push({
         start: startTime,
@@ -104,7 +106,7 @@ const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarP
     });
 
     setEvents(newEvents);
-  }, [currentRange, reservations, resources, intervals]);
+  }, [currentRange, reservations, resources, intervals, window, windowLoading]);
 
   /* Calendar methods */
 
@@ -152,9 +154,9 @@ const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarP
       {clickedInterval && <MaintenanceIntervalModal intervalId={clickedInterval} />}
 
       <EventCalendar
-        timeWindow={timeWindow}
+        timeWindow={window}
         calendarRef={calendarRef}
-        loading={resourcesLoading || intervalsLoading || reservationsLoading}
+        loading={resourcesLoading || intervalsLoading || reservationsLoading || windowLoading}
         toolbar={headerToolbar}
         initialView={"timeGridWeek"}
         select={select}

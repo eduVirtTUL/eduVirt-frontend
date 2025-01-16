@@ -10,16 +10,18 @@ import {
   ToolbarInput,
 } from "@fullcalendar/core";
 import CreateMaintenanceIntervalModal from "@/components/Modals/CreateMaintenanceIntervalModal";
-import {Link, useNavigate, useParams} from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import "../../styles/fullcalendar-shadcn.css";
 import EventCalendar from "@/components/EventCalendar";
 import MaintenanceIntervalDetailsModal from "@/pages/MaintenanceInterval";
-import {Button} from "@/components/ui/button";
-import {Undo2} from "lucide-react";
-import {useTranslation} from "react-i18next";
-import {jwtDecode} from "jwt-decode";
-import {toast} from "sonner";
+import { Button } from "@/components/ui/button";
+import { Undo2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -37,7 +39,6 @@ const MaintenanceCalendar: React.FC = () => {
   const { id } = useParams();
   const { open } = useDialog();
   const navigate = useNavigate();
-  const timeWindow = 30;
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -46,7 +47,7 @@ const MaintenanceCalendar: React.FC = () => {
   const [ eventStart, setEventStart ] = useState<Date | null>(null);
   const [ eventEnd, setEventEnd ] = useState<Date | null>(null);
 
-  const { intervals, isLoading } = useMaintenanceIntervalsInTimePeriod(id, currentRange.start, currentRange.end);
+  const { intervals, isLoading: intervalsLoading } = useMaintenanceIntervalsInTimePeriod(id, currentRange.start, currentRange.end);
 
   const [ clickedEvent, setClickedEvent ] = useState<string | null>(null);
 
@@ -71,7 +72,7 @@ const MaintenanceCalendar: React.FC = () => {
   }, [navigate, t]);
 
   useEffect(() => {
-    if (!isLoading && intervals) {
+    if (!intervalsLoading && intervals) {
       const processedEvents = intervals.map((interval) => ({
         id: interval.id,
         title:
@@ -84,7 +85,7 @@ const MaintenanceCalendar: React.FC = () => {
       }));
       setEvents(processedEvents);
     }
-  }, [intervals, isLoading]);
+  }, [intervals, intervalsLoading]);
 
   /* Calendar methods */
 
@@ -168,8 +169,8 @@ const MaintenanceCalendar: React.FC = () => {
       {clickedEvent && <MaintenanceIntervalDetailsModal intervalId={clickedEvent} />}
 
       <EventCalendar
-        timeWindow={timeWindow}
-        loading={isLoading}
+        timeWindow={30}
+        loading={intervalsLoading}
         calendarRef={calendarRef}
         toolbar={headerToolbar}
         initialView={"timeGridWeek"}
@@ -187,3 +188,11 @@ const MaintenanceCalendar: React.FC = () => {
 };
 
 export default MaintenanceCalendar;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.maintenanceCalendar") }];
+};

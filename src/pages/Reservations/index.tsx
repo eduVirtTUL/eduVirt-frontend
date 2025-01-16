@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useStudentCourses } from "@/data/course/useStudentCourses";
 import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { CourseDto } from "@/api";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import PageHeader from "@/components/PageHeader";
+import {RouteHandle} from "@/AuthGuard";
 
 const columns = (
   t: TFunction
@@ -125,3 +126,11 @@ const ReservationPage: React.FC = () => {
 };
 
 export default ReservationPage;
+
+export const handle: RouteHandle = {
+  roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.reservations") }];
+};

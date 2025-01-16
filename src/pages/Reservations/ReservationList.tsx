@@ -5,16 +5,22 @@ import PageHeader from "@/components/PageHeader";
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { ReservationDto } from "@/api";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {MoreHorizontal} from "lucide-react";
-import {Link} from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
+import { Link } from "react-router";
+import {RouteHandle} from "@/AuthGuard";
 
 const columns = (
   t: TFunction
@@ -168,3 +174,11 @@ const ReservationList: React.FC<Route.ComponentProps> = ({
 };
 
 export default ReservationList;
+
+export const handle: RouteHandle = {
+  roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.reservations") }];
+};
