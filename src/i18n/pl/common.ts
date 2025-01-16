@@ -135,6 +135,7 @@ const pageTitles = {
   notFound: "Strona nie znaleziona",
   teams: "Zespoły - eduVirt",
   team: "Zespół - eduVirt",
+  courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
 };
 
 export default {

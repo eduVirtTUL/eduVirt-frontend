@@ -103,21 +103,6 @@ const TeamsPage = () => {
             <div className="pb-5">
                 <JoinTeamModal />
             </div>
-            <div className="flex flex-row gap-2 mb-5">
-                <Input
-                    placeholder={t("teamsList.searchPlaceholder")}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <Button
-                    onClick={() => {
-                        setSearch("");
-                    }}
-                >
-                    <XIcon />
-                    {t("teamsList.clear")}
-                </Button>
-            </div>
             <div className="[&_.inactive-row]:opacity-60">
                 <DataTable
                     columns={columns}

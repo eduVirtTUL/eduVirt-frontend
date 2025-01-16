@@ -1,3 +1,5 @@
+import { create } from "domain";
+
 const courseType = {
     solo: "Solo",
     teamBased: "Zespołowy",
@@ -97,14 +99,17 @@ const coursePageB = {
         button: "Utwórz klucz",
     },
     teamsTable: {
-      title: "Zespoły",
+      button: "Zespoły",
+      title: "Zespoły przedmiotu",
       noTeams: "Brak zespołów",
       students: "Studenci",
+      createTeam: "Utwórz zespół",
       edit: "Edytuj",
       columns: {
             name: "Nazwa",
             status: "Status",
-            members: "Członkowie",
+            member: "Student",
+            members: "Studenci",
             noMembers: "Zespół jest pusty",
             maxSize: "Rozmiar",
             operations: "Operacje",
@@ -116,7 +121,7 @@ const coursePageB = {
       },
       dropdownMenu: {
             editTeam: "Edytuj",
-            manageUsers: "Członkowie",
+            manageUsers: "Studenci",
             manageStatefulPods: "Pody stanowe",
             manageStatelessPods: "Pody bezstanowe",
             deleteTeam: {
@@ -158,7 +163,7 @@ const statefulPodManagementDrawer = {
     createPod: "Utwórz pod",
     noPods: "Zespół nie posiada żadnych przypisanych podów",
     resourceGroup: "Grupa zasobów",
-    maxRent: "Maksymalna liczba rezerwacji",
+    maxRent: "Maksymalna liczba rezerwacji poda",
     alerts: {
         hasAssociatedPod: "Ta grupa zasobów posiada przypisany pod",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",
