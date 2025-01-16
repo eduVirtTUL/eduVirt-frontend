@@ -21,6 +21,7 @@ import { PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router";
+import RGPoolFilters from "./RGPoolFilters";
 
 const columns = (t: TFunction): ColumnDef<DetailedResourceGroupPoolDto>[] => [
   { accessorKey: "name", header: t("resourceGroupPools.table.name") },
@@ -53,6 +54,7 @@ const ResourceGroupPoolsPage: React.FC = () => {
           </Button>
         </div>
       )}
+      <RGPoolFilters />
       <DataTable
         data={resourceGroupPools?.items ?? []}
         columns={columns(t)}
@@ -84,16 +86,16 @@ const ResourceGroupPoolsPage: React.FC = () => {
             </PaginationLink>
           </PaginationItem>
           {(resourceGroupPools?.page?.totalPages ?? 0) > page + 1 && (
-            <PaginationItem>
-              <PaginationLink href={`/pools?page=${page + 1}&size=${size}`}>
-                {page + 2}
-              </PaginationLink>
-            </PaginationItem>
-          )}
-          {resourceGroupPools?.page?.totalPages !== page + 1 && (
-            <PaginationItem>
-              <PaginationNext href={`/pools?page=${page + 1}&size=${size}`} />
-            </PaginationItem>
+            <>
+              <PaginationItem>
+                <PaginationLink href={`/pools?page=${page + 1}&size=${size}`}>
+                  {page + 2}
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href={`/pools?page=${page + 1}&size=${size}`} />
+              </PaginationItem>
+            </>
           )}
         </PaginationContent>
       </Pagination>
