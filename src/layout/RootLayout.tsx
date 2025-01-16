@@ -30,7 +30,14 @@ import { cn } from "@/lib/utils";
 import { Role, useUser } from "@/stores/userStore";
 import MainMenuFooter from "@/components/MainMenuFooter";
 
-const menuItems = [
+type menuItem = {
+  to: string;
+  label: (t: TFunction) => string;
+  icon: React.ReactNode;
+  roles: Role[];
+}
+
+const menuItems: menuItem[] = [
   {
     to: "/teams",
     label: (t) => t("menu.teams"),
@@ -85,12 +92,7 @@ const menuItems = [
     icon: <Wrench />,
     roles: ["administrator"],
   },
-] satisfies {
-  to: string;
-  label: (t: TFunction) => string;
-  icon: React.ReactNode;
-  roles: Role[];
-}[];
+];
 
 const RootLayout: React.FC = () => {
   const { t } = useTranslation();

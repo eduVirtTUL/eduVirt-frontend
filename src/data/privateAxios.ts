@@ -29,7 +29,6 @@ export type ErrorKey =
   | "maintenanceIntervals.error.begin.at.past"
   | "maintenanceIntervals.error.conflict"
   | "maintenanceIntervals.error.already.finished"
-  | "pod.not.found.exception"
   | "reservations.error.not.found"
   | "reservations.error.conflict"
   | "reservations.error.end.before.start"

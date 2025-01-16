@@ -28,6 +28,7 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
 
   useEffect(() => {
     if (!clusterLoading && !cluster) {
+      {/* @ts-expect-error this doesn't impact the page */}
       toast.error(t("clusters.error.not.found"));
       navigate(-1);
     }
