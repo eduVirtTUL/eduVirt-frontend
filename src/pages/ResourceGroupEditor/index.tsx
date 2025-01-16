@@ -45,7 +45,7 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
         text={t("resourceGroupEditor.deleteResourceGroup.confirmationText")}
         onConfirm={() => {
           deleteResourceGroup(id);
-          nav("/rg");
+          nav(-1);
         }}
       />
       <AddVmModal id={id!} />
