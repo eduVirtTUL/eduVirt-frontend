@@ -38,10 +38,7 @@ const clusters = {
       metric: 'Metryki',
       event: 'Dziennik zdarzeń',
     }
-  },
-  error: {
-    "not.found": 'Wybrany klaster nie został znaleziony',
-  },
+  }
 }
 
 const hosts = {
@@ -116,10 +113,6 @@ const metrics = {
     success: 'Metryka została pomyślnie usunięta',
     error: 'Metryka nie mogła zostać usunięta'
   },
-  errors: {
-    "not.found": 'Metric could not be found',
-    "delete.exception": 'Metric could not be removed',
-  },
   validation: {
     "name.too.short": 'Wybrana nazwa metryki jest zbyt krótka',
     "name.too.long": 'Wybrana nazwa metryki jest zbyt długa',
@@ -176,10 +169,6 @@ const clusterMetricValues = {
     },
     success: 'Wartość metryki dla danego klastra została usunięta pomyślnie',
     error: 'Wartość metryki dla danego klastra nie mogła zostałać usunięta',
-  },
-  error: {
-    "value.not.defined": 'Wartość metryki dla klastra nie została jeszcze zdefniowana',
-    "value.already.defined": 'Wartość metryki dla klastra została już zdefniowana',
   },
   validation: {
     "value.negative": 'Wartość metryki nie może być ujemna',
@@ -274,12 +263,6 @@ const maintenanceIntervals = {
     success: 'Przerwa administracyjna została usunięta pomyślnie',
     error: 'Przerwa administracyjna nie mogła zostałać usunięta',
   },
-  error: {
-    "not.found": 'Wybrana przerwa administracyjna nie została znaleziona',
-    "invalid.time.window": 'Początek przerwy administarcyjnej musi nastąpić przed jej końcem',
-    "begin.at.past": 'Przerwa administracyjna musi zaczynać się w przyszłości',
-    "conflict": 'Inne przerwy administracyjne już istnieją w wybranym oknie czasowym',
-  },
   validation: {
     "cause.too.short": 'Przyczyna przerwy administracyjnej powinna mieć długość co najmniej 4 znaków',
     "cause.too.long": 'Przyczyna przerwy administracyjnej nie może przekroczyć długości 128 znaków',
@@ -371,18 +354,6 @@ const reservations = {
   finishReservation: {
     success: 'Rezerwacja została zakończona pomyślnie',
     error: 'Rezerwacja nie mogła zostałać zakończona',
-  },
-  error: {
-    "end.before.start": "Koniec rezerwacji musi następić po jej rozpoczęciu",
-    "start.in.past": "Rezerwacja nie może rozpoczynać się w przeszłości",
-    "course.resources.insufficient": "Zasoby kursu są niewystarczające do stworzenia nowej rezerwacji",
-    "cluster.resources.insufficient": "Zasoby klastra są niewystarczające do stworzenia nowej rezerwacji",
-    "maintenance.interval.conflict": "W trakcie planowanej rezerwacji zdefiniowane są przerwy administracyjne",
-    "max.length.exceeded": "Przekroczono maksymalną długość rezerwacji",
-    "grace.period.could.not.finish": "Okres karencji planowanej rezerwacji przeciągnąłby się na kolejną rezerwację",
-    "grace.period.not.finished": "Okres karencji od ostatniej rezerwacji musi upłynąć",
-    "resource.group.already.reserved": "Podana grupa zasobów jest już zarezerwowana",
-    "too.short": 'Minimalna długość rezerwacji w systemie eduVirt wynosi 1 godzinę',
   },
   validation: {
     "duration.too.short": 'Wybrana długość rezerwacji jest za króta',

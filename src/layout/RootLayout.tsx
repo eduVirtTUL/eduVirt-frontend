@@ -72,7 +72,7 @@ const menuItems = [
     to: "/reservations",
     label: (t) => t("menu.reservations"),
     icon: <CalendarDays />,
-    roles: ["administrator", "teacher", "student"],
+    roles: ["student"],
   },
   {
     to: "/limits",

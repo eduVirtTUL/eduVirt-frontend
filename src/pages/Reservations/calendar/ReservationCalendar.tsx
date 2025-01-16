@@ -7,11 +7,11 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import CreateReservationModal from "@/components/Modals/CreateReservationModal";
 import { useDialog } from "@/stores/dialogStore";
-import "../../styles/fullcalendar-shadcn.css";
+import "../../../styles/fullcalendar-shadcn.css";
 import { ReservationDto, ResourcesAvailabilityDto } from "@/api";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import { useTranslation } from "react-i18next";
-import ReservationPresentationCalendar from "@/pages/Reservations/ReservationPresentationCalendar";
+import ReservationPresentationCalendar from "@/pages/Reservations/calendar/ReservationPresentationCalendar";
 import { useWindowLength } from "@/data/reservation/useWindowLength";
 
 type TimeRange = {

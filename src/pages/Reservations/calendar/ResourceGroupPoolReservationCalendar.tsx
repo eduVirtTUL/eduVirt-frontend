@@ -1,10 +1,10 @@
+import { Route } from "../+types/index";
 import React, { useState } from "react";
-import "../../styles/fullcalendar-shadcn.css";
-import { useResourceGroupAvailability } from "@/data/reservation/useResourceGroupAvailability";
-import { useResourceGroupReservations } from "@/data/reservation/useResourceGroupReservations";
+import "../../../styles/fullcalendar-shadcn.css";
 import { useLocation } from "react-router";
-import ReservationCalendar from "@/pages/Reservations/ReservationCalendar";
-import { Route } from "./+types/index";
+import { useResourceGroupPoolAvailability } from "@/data/reservation/useResourceGroupPoolAvailability";
+import { useResourceGroupPoolReservations } from "@/data/reservation/useResourceGroupPoolReservations";
+import ReservationCalendar from "@/pages/Reservations/calendar/ReservationCalendar";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
 
@@ -13,16 +13,16 @@ type TimeRange = {
   end: string | null,
 }
 
-const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
+const ResourceGroupPoolReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id }}) => {
   const location = useLocation();
   const { clusterId, courseId, podId } = location.state || {};
 
   const [ currentRange, setCurrentRange ] = useState<TimeRange>({start: null, end: null});
-  const { resources, isLoading: resourcesLoading } = useResourceGroupAvailability(courseId!, id!, currentRange.start!, currentRange.end!);
+  const { resources, isLoading: resourcesLoading } = useResourceGroupPoolAvailability(courseId!, id!, currentRange.start!, currentRange.end!);
 
-  const { reservations, isLoading: reservationsLoading } = useResourceGroupReservations({
+  const {reservations, isLoading: reservationsLoading} = useResourceGroupPoolReservations({
     course: courseId!,
-    resourceGroup: id!,
+    resourceGroupPool: id!,
     start: currentRange.start,
     end: currentRange.end
   });
@@ -43,7 +43,7 @@ const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ para
   );
 };
 
-export default ResourceGroupReservationCalendar;
+export default ResourceGroupPoolReservationCalendar;
 
 export const handle: RouteHandle = {
   roles: ["student", "teacher", "administrator"],

@@ -138,7 +138,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
               name="reservationDuration"
               render={({ field }) => (
                 <FormItem className="space-y-4">
-                  <FormLabel>{t("reservations.createReservation.duration")}</FormLabel>
+                  <FormLabel>* {t("reservations.createReservation.duration")}</FormLabel>
                   <FormControl>
                     <RentTimeSelector
                       value={field.value.toString()}
