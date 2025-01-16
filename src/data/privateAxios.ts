@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export type ErrorKey =
+  | "networkAlreadyExists"
   | "courseAlreadyExists"
   | "courseConflict"
   | "courseMetricNetworksNotSufficient"
