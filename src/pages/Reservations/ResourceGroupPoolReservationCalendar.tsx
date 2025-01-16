@@ -5,6 +5,8 @@ import { useResourceGroupPoolAvailability } from "@/data/reservation/useResource
 import { useResourceGroupPoolReservations } from "@/data/reservation/useResourceGroupPoolReservations";
 import ReservationCalendar from "@/pages/Reservations/ReservationCalendar";
 import { Route } from "./+types/index";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 type TimeRange = {
   start: string | null,
@@ -42,3 +44,11 @@ const ResourceGroupPoolReservationCalendar: React.FC<Route.ComponentProps> = ({ 
 };
 
 export default ResourceGroupPoolReservationCalendar;
+
+export const handle: RouteHandle = {
+  roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.reservationCalendar") }];
+};

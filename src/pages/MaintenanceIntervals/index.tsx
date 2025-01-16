@@ -15,9 +15,10 @@ import {ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal} from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
+import {RouteHandle} from "@/AuthGuard";
 
 const columns = (
     t: TFunction,
@@ -133,3 +134,11 @@ const MaintenancePage: React.FC = () => {
 };
 
 export default MaintenancePage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.maintenanceIntervals") }];
+};

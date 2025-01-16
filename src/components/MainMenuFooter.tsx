@@ -22,12 +22,14 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeProvider";
 import { useUser } from "@/stores/userStore";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MainMenuFooter: React.FC = () => {
   const { t } = useTranslation();
   const { setTheme, theme } = useTheme();
   const { roles, activeRole, changeActiveRole, name } = useUser();
   const nav = useNavigate();
+  const queryClient = useQueryClient();
 
   return (
     <SidebarMenu>
@@ -88,24 +90,30 @@ const MainMenuFooter: React.FC = () => {
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                {t("menu.accessLevel.title")}
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {roles.map((role) => (
-                    <DropdownMenuCheckboxItem
-                      key={role}
-                      checked={role === activeRole}
-                      onClick={() => changeActiveRole(role)}
-                    >
-                      <span>{t(`roles.${role}`)}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
+            {roles.length > 1 && (
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  {t("menu.accessLevel.title")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    {roles.map((role) => (
+                      <DropdownMenuCheckboxItem
+                        key={role}
+                        checked={role === activeRole}
+                        onClick={() => {
+                          changeActiveRole(role);
+                          queryClient.invalidateQueries();
+                        }}
+                      >
+                        <span>{t(`roles.${role}`)}</span>
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            )}
+
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {

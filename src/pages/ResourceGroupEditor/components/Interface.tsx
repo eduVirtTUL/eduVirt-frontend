@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
+import { useUser } from "@/stores/userStore";
 
 type InterfaceProps = {
   nic: NicDto;
@@ -48,6 +49,7 @@ const Interface: React.FC<InterfaceProps> = ({ nic, vmId, onDetach, etag }) => {
 
 const PrivateInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
   const { t } = useTranslation();
+  const { activeRole } = useUser();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
@@ -64,10 +66,12 @@ const PrivateInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
           {t("resourceGroupEditor.interfaceList.segment")} {nic.segmentName}
         </span>
       </div>
-      <Button variant="destructive" onClick={onDetach}>
-        <ClipboardXIcon />
-        {t("resourceGroupEditor.interfaceList.detach")}
-      </Button>
+      {activeRole === "teacher" && (
+        <Button variant="destructive" onClick={onDetach}>
+          <ClipboardXIcon />
+          {t("resourceGroupEditor.interfaceList.detach")}
+        </Button>
+      )}
     </div>
   );
 };
@@ -94,6 +98,7 @@ const PublicInterface: React.FC<InterfaceProps> = ({ nic }) => {
 
 const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId, etag }) => {
   const { t } = useTranslation();
+  const { activeRole } = useUser();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
@@ -104,13 +109,16 @@ const UnassignedInterface: React.FC<InterfaceProps> = ({ nic, vmId, etag }) => {
           {t("resourceGroupEditor.interfaceList.mac")} {nic.macAddress}
         </span>
       </div>
-      <AttachVmToSegmentModal nicId={nic.id ?? ""} vmId={vmId} etag={etag} />
+      {activeRole === "teacher" && (
+        <AttachVmToSegmentModal nicId={nic.id ?? ""} vmId={vmId} etag={etag} />
+      )}
     </div>
   );
 };
 
 const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
   const { t } = useTranslation();
+  const { activeRole } = useUser();
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-row p-6 justify-between items-center">
       <div className="flex flex-col gap-1">
@@ -135,10 +143,12 @@ const ConflictingInterface: React.FC<InterfaceProps> = ({ nic, onDetach }) => {
         <span>Segment: {nic.segmentName}</span>
         <span>Profile: {nic.profileName}</span>
       </div>
-      <Button variant="destructive" onClick={onDetach}>
-        <ClipboardXIcon />
-        {t("resourceGroupEditor.interfaceList.detach")}
-      </Button>
+      {activeRole === "teacher" && (
+        <Button variant="destructive" onClick={onDetach}>
+          <ClipboardXIcon />
+          {t("resourceGroupEditor.interfaceList.detach")}
+        </Button>
+      )}
     </div>
   );
 };

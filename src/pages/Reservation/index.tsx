@@ -12,6 +12,8 @@ import { CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import ResourceGroupDetails from "@/pages/Reservation/ResourceGroupDetails";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 const ReservationPage: React.FC<Route.ComponentProps> = ({
   params: { id }
@@ -68,3 +70,11 @@ const ReservationPage: React.FC<Route.ComponentProps> = ({
 }
 
 export default ReservationPage;
+
+export const handle: RouteHandle = {
+  roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.maintenanceCalendar") }];
+};

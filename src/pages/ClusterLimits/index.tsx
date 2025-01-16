@@ -4,6 +4,8 @@ import ClusterDetails from "@/pages/Clusters/ClusterDetails";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 const ClusterLimitsPage: React.FC = () => {
   const { id } = useParams();
@@ -38,3 +40,11 @@ const ClusterLimitsPage: React.FC = () => {
 };
 
 export default ClusterLimitsPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.clusterMetricValues") }];
+};

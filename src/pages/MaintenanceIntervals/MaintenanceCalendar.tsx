@@ -20,6 +20,8 @@ import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -186,3 +188,11 @@ const MaintenanceCalendar: React.FC = () => {
 };
 
 export default MaintenanceCalendar;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.maintenanceCalendar") }];
+};

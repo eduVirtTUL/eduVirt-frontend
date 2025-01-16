@@ -51,16 +51,10 @@ export default [
         index("./pages/Reservations/index.tsx"),
         route(":id", "./pages/Reservation/index.tsx"),
         ...prefix("calendar/resource-group", [
-          route(
-            ":id",
-            "./pages/Reservations/ResourceGroupReservationCalendar.tsx"
-          ),
+          route(":id", "./pages/Reservations/ResourceGroupReservationCalendar.tsx"),
         ]),
         ...prefix("calendar/resource-group-pool", [
-          route(
-            ":id",
-            "./pages/Reservations/ResourceGroupPoolReservationCalendar.tsx"
-          ),
+          route(":id", "./pages/Reservations/ResourceGroupPoolReservationCalendar.tsx"),
         ]),
         ...prefix("courses", [
           route(":id", "./pages/Reservations/ReservationList.tsx"),
@@ -75,9 +69,7 @@ export default [
         ),
         ...prefix("calendar", [
           index("./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
-          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", {
-            id: "id",
-          }),
+          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
         ]),
       ]),
     ]),

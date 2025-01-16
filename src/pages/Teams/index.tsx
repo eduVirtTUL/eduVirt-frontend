@@ -16,6 +16,8 @@ import {
     PaginationItem,
     PaginationLink,
 } from "@/components/ui/pagination";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 interface TeamWithCourseDto {
     id: string;
@@ -185,3 +187,11 @@ const TeamsPage = () => {
 };
 
 export default TeamsPage;
+
+export const handle: RouteHandle = {
+    roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+    return [{ title: i18next.t("pageTitles.teams") }];
+};

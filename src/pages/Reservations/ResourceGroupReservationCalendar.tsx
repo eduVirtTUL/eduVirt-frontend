@@ -5,6 +5,8 @@ import { useResourceGroupReservations } from "@/data/reservation/useResourceGrou
 import { useLocation } from "react-router";
 import ReservationCalendar from "@/pages/Reservations/ReservationCalendar";
 import { Route } from "./+types/index";
+import {RouteHandle} from "@/AuthGuard";
+import i18next from "i18next";
 
 type TimeRange = {
   start: string | null,
@@ -42,3 +44,11 @@ const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ para
 };
 
 export default ResourceGroupReservationCalendar;
+
+export const handle: RouteHandle = {
+  roles: ["student", "teacher", "administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.reservationCalendar") }];
+};

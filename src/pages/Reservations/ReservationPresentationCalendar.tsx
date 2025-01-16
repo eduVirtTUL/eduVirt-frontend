@@ -19,9 +19,9 @@ import { DateClickArg } from "@fullcalendar/interaction";
 import { useDialog } from "@/stores/dialogStore";
 
 const headerToolbar: ToolbarInput = {
-    center: "title",
-    left: "prev,next",
-    right: "timeGridWeek,dayGridMonth,today",
+  center: "title",
+  left: "prev,next",
+  right: "timeGridWeek,dayGridMonth,today",
 };
 
 type TimeRange = {
