@@ -1,13 +1,11 @@
-import { ReservationControllerApi } from "@/api";
 import { useQuery } from "@tanstack/react-query";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useWindowLength = () => {
   const { data, isLoading } = useQuery({
     queryKey: [],
     queryFn: async() => {
-      const controller = new ReservationControllerApi();
-      const response = await controller.getWindowLength({ ...injectToken() });
+      const response = await privateAxios.get<number>(`/reservations/window-length`);
       return response.data;
     }
   });

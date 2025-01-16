@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { ClusterControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { ClusterDetailsDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useClusterDetails = (id: string) => {
   const { data, isLoading } = useQuery({
     queryKey: [ keys.CLUSTER, id ],
     queryFn: async () => {
-      const controller = new ClusterControllerApi();
-      const response = await controller.findClusterById(
-        id, { ...injectToken() }
-      );
+      const response = await privateAxios.get<ClusterDetailsDto>(`/clusters/${id}`);
       return response.data;
     },
   });

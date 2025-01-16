@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { ClusterControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { HostDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseHostsParams = {
   id: string,
@@ -16,9 +16,17 @@ export const useHosts = ({
   const { data, isLoading } = useQuery({
     queryKey: [ keys.HOSTS, id, page, size, sort ],
     queryFn: async () => {
-      const controller = new ClusterControllerApi();
-      const response = await controller.findHostInfoByClusterId(
-        { page: page, size: size, sort: sort }, id, { ...injectToken() }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      sort.forEach((sortElement) => (
+          searchParams.append("sort", sortElement)
+      ));
+
+      const response = await privateAxios.get<HostDto[]>(
+        `/clusters/${id}/hosts`, { params: searchParams }
       );
       return response.data ?? [];
     },

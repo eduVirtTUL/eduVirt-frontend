@@ -1,12 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  CreateMaintenanceIntervalDto,
-  MaintenanceIntervalControllerApi,
-} from "@/api";
+import { CreateMaintenanceIntervalDto } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useCreateMaintenanceInterval = (
   clusterId: string | undefined
@@ -16,16 +13,15 @@ export const useCreateMaintenanceInterval = (
   const { mutate, mutateAsync } = useMutation({
     mutationKey: [ "createMaintenanceInterval" ],
     mutationFn: async (createDto: CreateMaintenanceIntervalDto) => {
-      const controller = new MaintenanceIntervalControllerApi();
       let response;
 
       if (clusterId != undefined)
-        response = await controller.createNewClusterMaintenanceInterval(
-          clusterId, createDto, { ...injectToken() }
+        response = await privateAxios.post<void>(
+          `/maintenance-intervals/cluster/${clusterId}`, createDto
         );
       else
-        response = await controller.createNewSystemMaintenanceInterval(
-            createDto, { ...injectToken() }
+        response = await privateAxios.post<void>(
+          `/maintenance-intervals/system`, createDto
         );
 
       return response.data;
@@ -33,10 +29,7 @@ export const useCreateMaintenanceInterval = (
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.MAINTENANCE_INTERVALS, clusterId] });
       toast.success(t("maintenanceIntervals.createMaintenanceInterval.success"));
-    },
-    onError: () => {
-      toast.error(t("maintenanceIntervals.createMaintenanceInterval.error"));
-    },
+    }
   });
 
   return {

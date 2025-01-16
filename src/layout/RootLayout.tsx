@@ -36,7 +36,7 @@ const menuItems = [
     to: "/teams",
     label: (t) => t("menu.teams"),
     icon: <Users />,
-    roles: ["administrator"],
+    roles: ["student"],
   },
   {
     to: "/rg",

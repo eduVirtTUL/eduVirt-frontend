@@ -1,20 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { MaintenanceIntervalControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { MaintenanceIntervalDetailsDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
-export const useMaintenanceInterval = (
-  intervalId: string
-) => {
+export const useMaintenanceInterval = (id: string) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.MAINTENANCE_INTERVALS, intervalId ],
+    queryKey: [ keys.MAINTENANCE_INTERVALS, id ],
     queryFn: async () => {
-      const controller = new MaintenanceIntervalControllerApi();
-      const response = await controller
-        .getMaintenanceInterval(
-          intervalId, { ...injectToken() }
-        );
-
+      const response = await privateAxios.get<MaintenanceIntervalDetailsDto>(
+        `/maintenance-intervals/${id}`
+      );
       return response.data;
     },
     refetchInterval: 60000,

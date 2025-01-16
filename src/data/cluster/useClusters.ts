@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ClusterControllerApi } from "@/api";
+import { ClusterGeneralDto } from "@/api";
 import { keys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseClustersParams = {
   page: number;
@@ -13,10 +13,17 @@ export const useClusters = ({ page, size, sort }: UseClustersParams) => {
   const { data, isLoading } = useQuery({
     queryKey: [keys.CLUSTER, page, size, sort],
     queryFn: async () => {
-      const controller = new ClusterControllerApi();
-      const response = await controller.findAllClusters(
-        { page: page, size: size, sort: sort },
-        { ...injectToken() }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      sort.forEach((sortElement) => (
+          searchParams.append("sort", sortElement)
+      ));
+
+      const response = await privateAxios.get<ClusterGeneralDto[]>(
+        `/clusters`, { params: searchParams }
       );
       return response.data;
     },

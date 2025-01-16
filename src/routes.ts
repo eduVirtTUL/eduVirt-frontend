@@ -63,13 +63,10 @@ export default [
 
       ...prefix("maintenance", [
         index("./pages/MaintenanceIntervals/index.tsx"),
-        route(
-          "/clusters/:id",
-          "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"
-        ),
+        route("/clusters/:id", "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"),
         ...prefix("calendar", [
           index("./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
-          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
+          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", { id: "id"}),
         ]),
       ]),
     ]),

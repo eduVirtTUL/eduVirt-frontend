@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateReservationDto, ReservationControllerApi } from "@/api";
+import { CreateReservationDto } from "@/api";
 import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { injectToken } from "@/utils/requestUtils";
-import {AxiosError} from "axios";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseCreateReservation = {
   course: string;
@@ -19,9 +18,8 @@ export const useCreateReservation = ({
   const { mutate, mutateAsync } = useMutation({
     mutationKey: [ "createReservation" ],
     mutationFn: async (createDto: CreateReservationDto) => {
-      const controller = new ReservationControllerApi();
-      const response = await controller.createNewReservationForPod(
-        course, pod, createDto, { ...injectToken() }
+      const response = await privateAxios.post<void>(
+        `/reservations/course/${course}/pod/${pod}`, createDto
       );
       return response.data;
     },
@@ -29,11 +27,7 @@ export const useCreateReservation = ({
       queryClient.invalidateQueries({ queryKey: [ keys.RESERVATIONS ] });
       queryClient.invalidateQueries({ queryKey: [ keys.COURSE_RESOURCES ] });
       toast.success(t("reservations.createReservation.success"));
-    },
-    onError: (error: AxiosError) => {
-      console.log(error)
-      toast.error(t("reservations.createReservation.error"));
-    },
+    }
   });
 
   return { createReservation: mutate, createReservationAsync: mutateAsync };

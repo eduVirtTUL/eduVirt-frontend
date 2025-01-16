@@ -3,6 +3,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { Role, useUser } from "./stores/userStore";
 import { Navigate } from "react-router";
+import { privateAxios } from "@/data/privateAxios";
 
 const roleOrder: { role: Role; index: number }[] = [
   { role: "administrator", index: 0 },
@@ -71,6 +72,13 @@ const AuthCallback: React.FC = () => {
     removeCookie("access_token");
     localStorage.removeItem("token");
     window.location.href = "http://localhost:8080/auth/login";
+  } else {
+    privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
+      params: {
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language.split("-")[0] ?? '',
+      }
+    });
   }
 
   return <Navigate to={"/"} />;

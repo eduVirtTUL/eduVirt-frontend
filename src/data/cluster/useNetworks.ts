@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { ClusterControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { NetworkDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseNetworksParams = {
   id: string,
@@ -13,9 +13,13 @@ export const useNetworks = ({id, page, size}: UseNetworksParams) => {
   const { data, isLoading } = useQuery({
     queryKey: [ keys.NETWORKS, id, page, size ],
     queryFn: async () => {
-      const controller = new ClusterControllerApi();
-      const response = await controller.findNetworksByClusterId(
-        id, page, size, { ...injectToken() }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      const response = await privateAxios.get<NetworkDto[]>(
+        `/clusters/${id}/networks`, { params: searchParams }
       );
       return response.data ?? [];
     },

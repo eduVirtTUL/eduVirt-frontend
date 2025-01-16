@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ClusterMetricControllerApi } from "@/api";
+import { PageDtoMetricValueDto } from "@/api";
 import { keys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseClusterMetricsParams = {
   id: string;
@@ -15,9 +15,13 @@ export const useClusterMetrics = ({
   const { data, isLoading } = useQuery({
     queryKey: [ keys.CLUSTER_METRIC_VALUES, id, page, size ],
     queryFn: async() => {
-      const controller = new ClusterMetricControllerApi();
-      const response = await controller.getAllMetricValues(
-        id, page, size, { ...injectToken() }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      const response = await privateAxios.get<PageDtoMetricValueDto>(
+        `/clusters/${id}/metrics`, { params: searchParams }
       );
       return response.data.items ?? [];
     },
