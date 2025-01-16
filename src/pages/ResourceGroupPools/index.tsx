@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/pagination";
 import { useResourceGroupPools } from "@/data/rgPool/useResourceGroupPools";
 import { useDialog } from "@/stores/dialogStore";
+import { useUser } from "@/stores/userStore";
 import { ColumnDef } from "@tanstack/react-table";
 import i18next, { TFunction } from "i18next";
 import { PlusIcon } from "lucide-react";
@@ -38,17 +39,20 @@ const ResourceGroupPoolsPage: React.FC = () => {
   const size = parseInt(searchParams.get("size") ?? "10");
   const { resourceGroupPools } = useResourceGroupPools(page, size);
   const nav = useNavigate();
+  const { activeRole } = useUser();
 
   return (
     <>
       <CreatePoolModal />
       <PageHeader title={t("resourceGroupPools.title")} />
-      <div className="flex flex-row gap-2 pb-5">
-        <Button onClick={() => open("createPool")}>
-          <PlusIcon />
-          {t("resourceGroupPools.createPool")}
-        </Button>
-      </div>
+      {activeRole === "teacher" && (
+        <div className="flex flex-row gap-2 pb-5">
+          <Button onClick={() => open("createPool")}>
+            <PlusIcon />
+            {t("resourceGroupPools.createPool")}
+          </Button>
+        </div>
+      )}
       <DataTable
         data={resourceGroupPools?.items ?? []}
         columns={columns(t)}
