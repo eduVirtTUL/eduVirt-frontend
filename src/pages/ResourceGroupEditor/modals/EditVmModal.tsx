@@ -18,7 +18,7 @@ import { useVm } from "@/data/resourceGroup/useResourceGroupVm";
 import { useEditVm } from "@/data/resourceGroup/vm/useEditVm";
 import { useDialog } from "@/stores/dialogStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SaveIcon } from "lucide-react";
+import { CircleXIcon, SaveIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -91,7 +91,15 @@ const EditVmModal: React.FC<EditVmModalProps> = ({ vmId }) => {
               )}
             />
             <div className="flex flex-row justify-between">
-              <Button type="button" variant="secondary">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  close();
+                  form.reset({ hidden: vm?.hidden ?? false });
+                }}
+              >
+                <CircleXIcon />
                 {t("cancel")}
               </Button>
               <Button type="submit">

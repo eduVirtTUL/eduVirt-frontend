@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { ReservationControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { ReservationDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseReservationsParams = {
   course: string;
@@ -17,9 +17,14 @@ export const useResourceGroupReservations = ({
     queryKey: [ keys.RESERVATIONS, course, resourceGroup, start, end ],
     queryFn: async() => {
       if (start == null || end == null) return [];
-      const controller = new ReservationControllerApi();
-      const response = await controller.getRgReservationsInGivenCourse(
-        course, resourceGroup, start, end, { ...injectToken() }
+
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("start", start);
+      searchParams.append("end", end);
+
+      const response = await privateAxios.get<ReservationDto[]>(
+        `/reservation/courses/${course}/resource-groups/${resourceGroup}/period`, { params: searchParams }
       );
 
       if (response.status === 204) return [];

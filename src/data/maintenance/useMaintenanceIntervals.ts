@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { MaintenanceIntervalControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { PageDtoMaintenanceIntervalDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseMaintenanceIntervalsParams = {
   clusterId: string | undefined;
@@ -16,11 +16,16 @@ export const useMaintenanceIntervals = ({
   const { data, isLoading } = useQuery({
     queryKey: [ keys.MAINTENANCE_INTERVALS, clusterId, active, page, size ],
     queryFn: async () => {
-      const controller = new MaintenanceIntervalControllerApi();
-      const response = await controller.getAllMaintenanceIntervals(
-        page, size, clusterId, active, { ...injectToken() }
-      );
+      const searchParams = new URLSearchParams();
 
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+      searchParams.append("clusterId", clusterId ?? '');
+      searchParams.append("active", active.toString());
+
+      const response = await privateAxios.get<PageDtoMaintenanceIntervalDto>(
+        `/maintenance-intervals`, { params: searchParams }
+      );
       return response.data.items ?? [];
     },
     refetchInterval: 60000,

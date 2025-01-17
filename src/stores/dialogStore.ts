@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export type DialogType =
+  | "detachNetwork"
   | "resetCourseConfirmation"
   | "editCourse"
   | "editResourceGroupPool"
@@ -25,7 +26,7 @@ export type DialogType =
   | "showMaintenanceInterval"
   | "manageCourseUsers"
   | "manageTeamUsers"
-  | "manageTeachers"
+  | "manageTeachers";
 
 type DialogStore = {
   opened?: DialogType;

@@ -3,6 +3,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { Role, useUser } from "./stores/userStore";
 import { Navigate } from "react-router";
+import { privateAxios } from "@/data/privateAxios";
 
 const roleOrder: { role: Role; index: number }[] = [
   { role: "administrator", index: 0 },
@@ -52,14 +53,32 @@ const AuthCallback: React.FC = () => {
       name: tokenPayload.preferred_username,
       roles: roles.length !== 0 ? roles : ["student"],
     });
-    changeActiveRole(activeRole?.role ?? "student");
+
+    const localStorageActiveRole = localStorage.getItem("activeRole") as
+      | Role
+      | undefined;
+    if (!localStorageActiveRole) {
+      changeActiveRole(activeRole?.role ?? "student");
+    } else {
+      if (roles.includes(localStorageActiveRole)) {
+        changeActiveRole(localStorageActiveRole);
+      }
+    }
+
     localStorage.setItem("token", token);
   }, [token, set, changeActiveRole]);
 
   if (!token) {
     removeCookie("access_token");
     localStorage.removeItem("token");
-    return <Navigate to="http://localhost:8080/auth/login" />;
+    window.location.href = "http://localhost:8080/auth/login";
+  } else {
+    privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
+      params: {
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language.split("-")[0] ?? '',
+      }
+    });
   }
 
   return <Navigate to={"/"} />;

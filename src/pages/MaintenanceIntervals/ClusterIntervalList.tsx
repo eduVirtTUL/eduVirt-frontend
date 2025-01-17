@@ -17,13 +17,14 @@ import {
 import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
 import { useMaintenanceIntervals } from "@/data/maintenance/useMaintenanceIntervals";
 import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDialog } from "@/stores/dialogStore";
+import {RouteHandle} from "@/AuthGuard";
 
 const columns= (
     t: TFunction,
@@ -230,12 +231,20 @@ const ClusterIntervalList: React.FC = () => {
       />
 
       <SimplePagination
-          page={pageNumber}
-          setPage={setPageNumber}
-          hasMore={nextIntervals !== undefined && nextIntervals.length !== 0}
+        page={pageNumber}
+        setPage={setPageNumber}
+        hasMore={nextIntervals !== undefined && nextIntervals.length !== 0}
       />
     </>
   );
 };
 
 export default ClusterIntervalList;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: i18next.t("pageTitles.maintenanceIntervals") }];
+};

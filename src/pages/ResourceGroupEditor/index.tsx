@@ -17,6 +17,7 @@ import { useNavigate } from "react-router";
 import EditResourceGroupModal from "./modals/EditResourceGroupModal";
 import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
+import { useUser } from "@/stores/userStore";
 
 const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   params: { id },
@@ -28,6 +29,7 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
   const [selectedVm, setSelectedVm] = React.useState<string>();
   const { setId, setEtag } = useResourceGroupEditorStore();
   const { deleteResourceGroup } = useDeleteResourceGroup();
+  const { activeRole } = useUser();
 
   React.useEffect(() => {
     setId(id);
@@ -43,7 +45,7 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
         text={t("resourceGroupEditor.deleteResourceGroup.confirmationText")}
         onConfirm={() => {
           deleteResourceGroup(id);
-          nav("/rg");
+          nav(-1);
         }}
       />
       <AddVmModal id={id!} />
@@ -52,26 +54,36 @@ const ResourceGroupEditor: React.FC<Route.ComponentProps> = ({
         type={t("resourceGroupEditor.type")}
       />
       <div className="flex flex-row justify-end gap-2 pb-5">
-        <Button
-          onClick={() => {
-            open("addVmToResourceGroup");
-          }}
-        >
-          <PlusIcon />
-          {t("resourceGroupEditor.addVirtualMachine")}
-        </Button>
+        {activeRole === "teacher" && (
+          <Button
+            onClick={() => {
+              open("addVmToResourceGroup");
+            }}
+          >
+            <PlusIcon />
+            {t("resourceGroupEditor.addVirtualMachine")}
+          </Button>
+        )}
         <PrivateSegmentDrawer id={id} />
-        <Button variant="secondary" onClick={() => open("editResourceGroup")}>
-          <PencilIcon />
-          {t("resourceGroupEditor.edit")}
-        </Button>
-        <Button
-          variant="destructive"
-          onClick={() => open("deleteResourceGroupConfirmation")}
-        >
-          <Trash2Icon />
-          {t("resourceGroupEditor.delete")}
-        </Button>
+        {activeRole === "teacher" && (
+          <>
+            {" "}
+            <Button
+              variant="secondary"
+              onClick={() => open("editResourceGroup")}
+            >
+              <PencilIcon />
+              {t("resourceGroupEditor.edit")}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => open("deleteResourceGroupConfirmation")}
+            >
+              <Trash2Icon />
+              {t("resourceGroupEditor.delete")}
+            </Button>
+          </>
+        )}
       </div>
 
       <div className="grid grid-cols-2 grid-rows-1 gap-x-5 flex-1 h-full overflow-hidden">

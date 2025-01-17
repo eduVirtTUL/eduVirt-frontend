@@ -21,8 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-import {convertValue, getBaseUnitForCategory, getUnitsCategory, UnitDefinition} from "@/utils/unitUtils.js";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {getBaseUnit, getBaseUnitValue, UnitDefinition} from "@/utils/unitUtils.js";
 
 type ClusterMetricListProps = {
   clusterId: string,
@@ -34,13 +33,20 @@ const columns = (
   onDelete: (id: string) => void
 ): ColumnDef<MetricValueDto>[] => [
   { accessorKey: "name", header: t("clusterMetricValues.table.columns.name") },
-  { accessorKey: "value", header: t("clusterMetricValues.table.columns.value") },
+  {
+    accessorKey: "value",
+    header: t("clusterMetricValues.table.columns.value"),
+    cell: ({ row }) => {
+      const clusterMetric = row.original;
+      return getBaseUnitValue(clusterMetric.category!, clusterMetric.value!);
+    }
+  },
   {
     id: "unit",
     header: t("clusterMetricValues.table.columns.unit"),
     cell: ({ row }) => {
       const clusterMetric = row.original;
-      const baseUnit: UnitDefinition = getBaseUnitForCategory(clusterMetric.category!);
+      const baseUnit: UnitDefinition = getBaseUnit(clusterMetric.category!);
       {/* @ts-expect-error this doesn't impact the page */}
       return t(baseUnit.symbol)
     },

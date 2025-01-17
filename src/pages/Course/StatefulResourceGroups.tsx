@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCreateStatefulResourceGroup } from "@/data/course/resourceGroups/useCreateStatefulResourceGroup";
 import { useStatefulResourceGroups } from "@/data/course/resourceGroups/useStatefulResourceGroups";
 import { useDialog } from "@/stores/dialogStore";
+import { useUser } from "@/stores/userStore";
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +21,7 @@ const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
   const { open } = useDialog();
   const { statefulResourceGroups } = useStatefulResourceGroups(courseId);
   const { createResourceGroupAsync } = useCreateStatefulResourceGroup();
+  const { activeRole } = useUser();
 
   return (
     <>
@@ -33,12 +35,14 @@ const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
           <CardTitle>{t("courseStatefulResourceGroups.title")}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <div className="flex flex-row">
-            <Button onClick={() => open("createResourceGroup")}>
-              <PlusIcon />
-              {t("courseStatefulResourceGroups.createResourceGroup")}
-            </Button>
-          </div>
+          {activeRole === "teacher" && (
+            <div className="flex flex-row">
+              <Button onClick={() => open("createResourceGroup")}>
+                <PlusIcon />
+                {t("courseStatefulResourceGroups.createResourceGroup")}
+              </Button>
+            </div>
+          )}
           <div className="grid grid-cols-4 gap-4">
             {statefulResourceGroups?.map((rg) => (
               <Card key={rg.id}>

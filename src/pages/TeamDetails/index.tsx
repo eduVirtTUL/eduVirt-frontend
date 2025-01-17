@@ -298,9 +298,9 @@ const TeamDetailsPage: React.FC = () => {
 export default TeamDetailsPage;
 
 export const handle: RouteHandle = {
-  roles: ["administrator", "teacher"],
+    roles: ["student", "teacher", "administrator"],
 };
 
 export const meta = () => {
-  return [{ title: t("pageTitles.team") }];
+    return [{ title: t("pageTitles.team") }];
 };

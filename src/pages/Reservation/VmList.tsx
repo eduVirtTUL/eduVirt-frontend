@@ -1,10 +1,10 @@
-import {useTranslation} from "react-i18next";
-import {useResourceGroupVms} from "@/data/resourceGroup/useResourceGroupVms";
+import { useTranslation } from "react-i18next";
+import { useResourceGroupVms } from "@/data/resourceGroup/useResourceGroupVms";
+import React from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { VmDto } from "@/api";
 import VmEventList from "@/pages/Reservation/VmEventList";
-import React, {useState} from "react";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Label} from "@/components/ui/label";
-import {Skeleton} from "@/components/ui/skeleton";
 
 type VmListProps = {
   id: string
@@ -15,7 +15,6 @@ const VmList: React.FC<VmListProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [ vmId, setVmId ] = useState<string | null>(null);
   const { vms, isLoading } = useResourceGroupVms(id);
 
   if (isLoading) {
@@ -31,32 +30,18 @@ const VmList: React.FC<VmListProps> = ({
 
   return (
     <>
-      <div className={"p-4 w-1/2 flex items-center space-x-2"}>
-        <Label className={"w-1/3"}>
-          {t("reservations.details.events.chosenVm")}
-        </Label>
-        <div className={"w-1/3"}>
-          <Select
-            onValueChange={setVmId}
-            defaultValue={''}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder={t("reservations.details.events.chooseVm")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {vms && vms.map((vm) => (
-                  <SelectItem key={vm.id!} value={vm.id!}>
-                    {vm.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="flex items-center justify-center space-x-2">
+        <Accordion type="single" collapsible className="w-3/4">
+        {vms?.filter((vm: VmDto) => !vm.hidden).map((vm: VmDto) => (
+          <AccordionItem key={vm.id} value={vm.id!}>
+            <AccordionTrigger>{vm.name}</AccordionTrigger>
+            <AccordionContent>
+              <VmEventList id={vm.id!} />
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
       </div>
-
-      {vmId && <VmEventList id={vmId} />}
     </>
   );
 };

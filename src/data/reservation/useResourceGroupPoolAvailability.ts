@@ -1,29 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { CourseControllerApi } from "@/api";
-import { injectToken } from "@/utils/requestUtils";
+import { ResourcesAvailabilityDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useResourceGroupPoolAvailability = (
-    id: string,
-    resourceGroupPool: string,
-    timeWindow: number,
-    start: string,
-    end: string
+  id: string,
+  resourceGroupPool: string,
+  start: string,
+  end: string
 ) => {
-    const { data, isLoading } = useQuery({
-        queryKey: [ keys.COURSE_RESOURCES, id, resourceGroupPool, start, end ],
-        queryFn: async () => {
-            const controller = new CourseControllerApi();
-            const response = await controller.findResourcesAvailabilityForResourceGroupPool(
-                id, resourceGroupPool, timeWindow, start, end, { ...injectToken() }
-            );
+  const { data, isLoading } = useQuery({
+    queryKey: [ keys.COURSE_RESOURCES, id, resourceGroupPool, start, end ],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams();
 
-            return response.data;
-        },
-        refetchInterval: 60000,
-        refetchOnWindowFocus: true,
-        staleTime: 30000,
-    });
+      searchParams.append("start", start);
+      searchParams.append("end", end);
 
-    return { resources: data, isLoading };
+      const response = await privateAxios.get<ResourcesAvailabilityDto[]>(
+        `/course/${id}/resource-group-pools/${resourceGroupPool}/availability`, { params: searchParams }
+      );
+      return response.data;
+    },
+    refetchInterval: 60000,
+    refetchOnWindowFocus: true,
+    staleTime: 30000,
+  });
+
+  return { resources: data, isLoading };
 }

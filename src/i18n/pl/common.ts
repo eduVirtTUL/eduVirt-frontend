@@ -59,36 +59,22 @@ const general = {
 
 const units = {
   memory: {
-    nonVolatile: {
-      name: "Pamięć trwała",
-      units: {
-        bytes: { name: "Bajty", symbol: "B" },
-        kilobytes: { name: "Kilobajty", symbol: "KB" },
-        megabytes: { name: "Megabajty", symbol: "MB" },
-        gigabytes: { name: "Gigabajty", symbol: "GB" },
-        terabytes: { name: "Terabajty", symbol: "TB" },
-      },
-    },
-    volatile: {
-      name: "Pamięć ulotna",
-      units: {
-        bytes: { name: "Bajty", symbol: "B" },
-        kibibytes: { name: "Kibibajty", symbol: "KiB" },
-        mebibytes: { name: "Mebibajty", symbol: "MiB" },
-        gibibytes: { name: "Gibibajty", symbol: "GiB" },
-        tebibytes: { name: "Tebibajty", symbol: "TiB" },
-      },
-    },
+    name: "Pamięć",
+    units: {
+      mebibytes: {name: "Mebibajty", symbol: "MiB"},
+      gibibytes: {name: "Gibibajty", symbol: "GiB"},
+      tebibytes: {name: "Tebibajty", symbol: "TiB"},
+    }
   },
   countable: {
     name: "Policzalne",
     units: {
       pieces: {
         name: "Sztuki",
-        symbol: "szt.",
-      },
-    },
-  },
+        symbol: "szt."
+      }
+    }
+  }
 };
 
 const errorKeys = {
@@ -115,6 +101,7 @@ const errorKeys = {
   virtualMachineClusterMismatch:
     "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+  networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
@@ -131,6 +118,16 @@ const pageTitles = {
   resourceGroupPools: "Pule grup zasobów - eduVirt",
   resourceGroupPool: "Pula grup zasobów - eduVirt",
   courseMetrics: "Przedmiot - Metryki - eduVirt",
+  teams: 'Zespoły - eduVirt',
+  team: 'Zespół - eduVirt',
+  metrics: 'Metryki - eduVirt',
+  clusters: 'Klastry - eduVirt',
+  reservations: 'Rezerwacje - eduVirt',
+  reservationCalendar: 'Kalendarz rezerwacji - eduVirt',
+  maintenanceCalendar: 'Kalendarz przerw administracyjnych - eduVirt',
+  maintenanceInterval: 'Przerwa administracyjna - eduVirt',
+  maintenanceIntervals: 'Przerwy administracyjne - eduVirt',
+  clusterMetricValues: 'Klaster - Metryki - eduVirt',
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
   teams: "Zespoły - eduVirt",

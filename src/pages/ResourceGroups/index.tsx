@@ -51,7 +51,7 @@ const ResourceGroupsPage: React.FC = () => {
 export default ResourceGroupsPage;
 
 export const handle: RouteHandle = {
-  roles: ["administrator", "teacher"],
+  roles: ["administrator"],
 };
 
 export const meta = () => {

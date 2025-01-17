@@ -20,7 +20,6 @@ import {RouteHandle} from "@/AuthGuard";
 import {t} from "i18next";
 import React from "react";
 import { useDebounce } from "use-debounce";
-import { Input } from "@/components/ui/input";
 
 interface TeamWithCourseDto {
     id: string;
@@ -168,9 +167,9 @@ const TeamsPage = () => {
 export default TeamsPage;
 
 export const handle: RouteHandle = {
-    roles: ["administrator", "teacher"],
+    roles: ["student", "teacher", "administrator"],
 };
 
 export const meta = () => {
-    return [{title: t("pageTitles.course")}];
+    return [{ title: t("pageTitles.teams") }];
 };

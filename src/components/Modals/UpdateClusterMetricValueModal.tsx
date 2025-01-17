@@ -24,10 +24,10 @@ import React, {useEffect} from "react";
 import { useUpdateClusterMetricValue } from "@/data/cluster-metrics/useUpdateClusterMetricValue";
 import { TFunction } from "i18next";
 import {
-  convertValue,
-  getBaseUnitForCategory,
-  getUnitsCategory,
-  UnitDefinition
+    convertValue,
+    getBaseUnit, getBaseUnitValue,
+    getUnitsCategory,
+    UnitDefinition
 } from "@/utils/unitUtils.js";
 import {
   Select,
@@ -72,14 +72,14 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
 
   useEffect(() => {
     form.reset({
-      value: metric.value,
+      value: getBaseUnitValue(metric.category!, metric.value!),
     });
   }, [metric, form]);
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
       await updateClusterMetricValueAsync({
-        value: convertValue(metric.category!, values.value, values.unit, getBaseUnitForCategory(metric.category!).symbol)
+        value: convertValue(metric.category!, values.value, values.unit)
       });
       close();
       form.reset();

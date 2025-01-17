@@ -1,20 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {useCourse} from "@/data/course/useCourse";
 import {useCourseResourceGroupPools} from "@/data/rgPool/useCourseResourceGroupPools";
-import {
-    ChartCandlestickIcon,
-    ChevronDown,
-    ChevronUp,
-    Copy,
-    ExternalLinkIcon,
-    Info,
-    PencilIcon,
-    PlusIcon,
-    RefreshCcw,
-    Trash2Icon,
-    UserCog,
-    UsersIcon,
-} from "lucide-react";
+import {useUser} from "@/stores/userStore";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import React, {useEffect, useState} from "react";
 import {Route} from "./+types/index";
@@ -23,25 +10,33 @@ import {Badge} from "@/components/ui/badge";
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
 import {toast} from "sonner";
 import {Skeleton} from "@/components/ui/skeleton";;
+import {Link} from "react-router";
+import {useDeleteCourse} from "@/data/course/useDeleteCourse";
+import {ManageTeachersModal} from "@/components/Modals/ManageTeachersModal";
+import {useTranslation} from "react-i18next";
+import EditCourseModal from "@/components/Modals/EditCourseModal";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
-import {Link} from "react-router";
-import ResourceGroupPoolCard from "./ResourceGroupPoolCard";
-import StatefulResourceGroups from "./StatefulResourceGroups";
-import {useDeleteCourse} from "@/data/course/useDeleteCourse";
-import EditCourseModal from "@/components/Modals/EditCourseModal";
-import {useResetCourse} from "@/data/course/useResetCourse";
+import {
+    ChartCandlestickIcon, ChevronDown,
+    ChevronUp, ExternalLinkIcon, Info,
+    PencilIcon,
+    PlusIcon,
+    RefreshCcw,
+    Trash2Icon,
+    UserCog,
+    UsersIcon
+} from "lucide-react";
 import ValueDisplay from "@/components/ValueDisplay";
-import { RouteHandle } from "@/AuthGuard";
-import { t } from "i18next";
-import ConfirmationDialog from "@/components/ConfirmationDialog";
-import {Collapsible, CollapsibleTrigger} from "@/components/ui/collapsible";
-import {CollapsibleContent} from "@radix-ui/react-collapsible";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
 import TeachersList from "@/components/TeachersList";
-import {ManageTeachersModal} from "@/components/Modals/ManageTeachersModal";
-import {useTranslation} from "react-i18next";
-import { useDialog } from "@/stores/dialogStore";
+import StatefulResourceGroups from "@/pages/Course/StatefulResourceGroups";
+import ResourceGroupPoolCard from "@/pages/Course/ResourceGroupPoolCard";
+import {RouteHandle} from "@/AuthGuard";
+import {t} from "i18next";
+import {useResetCourse} from "@/data/course/useResetCourse";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
@@ -53,18 +48,19 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         enabled: !isTeamBased,
     });
 
+    const { deleteCourseAsync } = useDeleteCourse();
+    const { resetCourseAsync } = useResetCourse();
+    const {activeRole} = useUser();
+
     const [isTeachersOpen, setIsTeachersOpen] = useState(() => {
         const saved = localStorage.getItem(`courseTeachersCollapsible-${id}`);
         return saved ? JSON.parse(saved) : true;
     });
 
-    const {deleteCourseAsync} = useDeleteCourse();
-    const {resetCourseAsync} = useResetCourse();
-
-    const {open} = useDialog();
-
     useEffect(() => {
-        localStorage.setItem(`courseTeachersCollapsible-${id}`, JSON.stringify(isTeachersOpen));
+        localStorage.setItem(
+            `courseTeachersCollapsible-${id}`,
+            JSON.stringify(isTeachersOpen));
     }, [isTeachersOpen, id]);
 
     return (
@@ -95,27 +91,33 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         {t("coursePageB.teamsTable.button")}
                     </Link>
                 </Button>
-                <Button asChild>
-                    <Link to={`limits`}>
-                        <ChartCandlestickIcon className="mr-2 h-4 w-4"/>
-                        {t("coursePage.limits")}
-                    </Link>
-                </Button>
+                {activeRole === "administrator" && (
+                    <Button asChild>
+                        <Link to={`limits`}>
+                            <ChartCandlestickIcon />
+                            {t("coursePage.limits")}
+                        </Link>
+                    </Button>
+                )}
                 <Button variant="secondary" onClick={() => open("editCourse")}>
-                    <PencilIcon className="mr-2 h-4 w-4"/>
+                    <PencilIcon />
                     {t("coursePage.edit")}
                 </Button>
-                <Button
-                    variant="destructive"
-                    onClick={() => open("resetCourseConfirmation")}
-                >
-                    <RefreshCcw className="mr-2 h-4 w-4"/>
-                    {t("coursePage.reset")}
-                </Button>
-                <Button variant="destructive" onClick={() => open("confirmation")}>
-                    <Trash2Icon className="mr-2 h-4 w-4"/>
-                    {t("coursePage.delete")}
-                </Button>
+                {activeRole === "administrator" && (
+                    <>
+                        <Button
+                            variant="destructive"
+                            onClick={() => open("resetCourseConfirmation")}
+                        >
+                            <RefreshCcw />
+                            {t("coursePage.reset")}
+                        </Button>
+                        <Button variant="destructive" onClick={() => open("confirmation")}>
+                            <Trash2Icon />
+                            {t("coursePage.delete")}
+                        </Button>
+                    </>
+                )}
             </div>
             <div className="space-y-6">
                 <Card>
@@ -277,9 +279,9 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 export default CoursePage;
 
 export const handle: RouteHandle = {
-  roles: ["administrator", "teacher"],
+    roles: ["administrator", "teacher"],
 };
 
 export const meta = () => {
-  return [{ title: t("pageTitles.course") }];
+    return [{title: t("pageTitles.course")}];
 };

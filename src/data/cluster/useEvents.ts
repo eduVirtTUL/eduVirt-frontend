@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ClusterControllerApi } from "@/api";
+import { EventGeneralDto } from "@/api";
 import { keys } from "@/data/keys";
-import { injectToken } from "@/utils/requestUtils";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseEventsParams = {
   id: string,
@@ -14,9 +14,17 @@ export const useEvents = ({ id, page, size, sort}: UseEventsParams) => {
   const { data, isLoading } = useQuery({
     queryKey: [ keys.EVENTS, id, page, size, sort ],
     queryFn: async () => {
-      const controller = new ClusterControllerApi();
-      const response = await controller.findEventsByClusterId(
-        { page, size, sort } , id, { ...injectToken() }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      sort.forEach((sortElement) => (
+          searchParams.append("sort", sortElement)
+      ));
+
+      const response = await privateAxios.get<EventGeneralDto[]>(
+        `/clusters/${id}/events`, { params: searchParams }
       );
       return response.data;
     },

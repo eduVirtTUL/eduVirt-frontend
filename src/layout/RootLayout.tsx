@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Book,
-  Boxes,
   CalendarDays,
   Group,
   Network,
@@ -36,14 +35,14 @@ const menuItems = [
     to: "/teams",
     label: (t) => t("menu.teams"),
     icon: <Users />,
-    roles: ["administrator"],
+    roles: ["student"],
   },
-  {
-    to: "/rg",
-    label: (t) => t("menu.resourceGroups"),
-    icon: <Boxes />,
-    roles: ["administrator", "teacher"],
-  },
+  // {
+  //   to: "/rg",
+  //   label: (t) => t("menu.resourceGroups"),
+  //   icon: <Boxes />,
+  //   roles: ["administrator", "teacher"],
+  // },
   {
     to: "/pools",
     label: (t) => t("menu.resourceGroupPools"),

@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export type ErrorKey =
+  | "networkAlreadyExists"
   | "courseAlreadyExists"
   | "courseConflict"
   | "courseMetricNetworksNotSufficient"
@@ -41,8 +42,8 @@ privateAxios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.reload();
+      // localStorage.removeItem("token");
+      // window.location.reload();
     }
     return Promise.reject(error);
   }
