@@ -5,10 +5,15 @@ import { useDialog } from "@/stores/dialogStore";
 import i18next, { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricDto } from "@/api";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { Button} from "@/components/ui/button";
-import { MoreHorizontal, PlusIcon } from "lucide-react";
-import React, {useEffect, useRef, useState} from "react";
+import {MoreHorizontal, PlusIcon, TrashIcon} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import CreateMetricModal from "@/components/Modals/CreateMetricModal";
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
@@ -19,7 +24,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { getCategory } from "@/utils/unitUtils.js";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 
 const columns = (
   t: TFunction,
@@ -52,7 +57,9 @@ const columns = (
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => onDelete(metric.id!)}
+                className="text-destructive"
               >
+                <TrashIcon className="h-4 w-4 mr-2" />
                 {t("metrics.table.delete")}
               </DropdownMenuItem>
             </DropdownMenuContent>

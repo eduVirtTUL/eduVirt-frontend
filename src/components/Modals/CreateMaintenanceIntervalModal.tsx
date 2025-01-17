@@ -118,7 +118,7 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                 name="cause"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
-                    <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.cause")}</FormLabel>
+                    <FormLabel>* {t("maintenanceIntervals.createMaintenanceInterval.cause")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -150,7 +150,7 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                 name="duration"
                 render={({ field }) => (
                   <FormItem className="space-y-4">
-                    <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.duration")}</FormLabel>
+                    <FormLabel>* {t("maintenanceIntervals.createMaintenanceInterval.duration")}</FormLabel>
                     <FormControl>
                       <Input {...field} type={"number"} />
                     </FormControl>

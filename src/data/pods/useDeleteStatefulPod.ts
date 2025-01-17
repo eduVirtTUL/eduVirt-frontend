@@ -1,14 +1,15 @@
-import { PodStatefulControllerApi } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { keys } from "../keys";
 import { toast } from "sonner";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useDeleteStatefulPod = () => {
   const queryClient = useQueryClient();
   const { mutate, mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
-      const controller = new PodStatefulControllerApi();
-      const response = await controller.deleteStatefulPod(id);
+      const response = await privateAxios.delete<void>(
+        `/pods/stateful/${id}`
+      );
       return response.data;
     },
     onSuccess: (_, podId) => {
@@ -16,8 +17,7 @@ export const useDeleteStatefulPod = () => {
       queryClient.invalidateQueries({ queryKey: [keys.RESOURCE_GROUP, 'withPods'] });
       queryClient.invalidateQueries({ queryKey: keys.POD, id: podId });
       toast.success("Stateful pod deleted successfully!");
-    },
-    onError: () => [toast.error("Failed to delete stateful pod")],
+    }
   });
 
   return { deleteStatefulPod: mutate, deleteStatefulPodAsync: mutateAsync, isPending };

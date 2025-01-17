@@ -4,7 +4,7 @@ import ClusterDetails from "@/pages/Clusters/ClusterDetails";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
 
 const ClusterLimitsPage: React.FC = () => {

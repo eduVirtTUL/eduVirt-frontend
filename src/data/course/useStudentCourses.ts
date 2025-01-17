@@ -1,6 +1,7 @@
 import { keys } from "@/data/keys";
 import { useQuery } from "@tanstack/react-query";
-import {CourseControllerApi} from "@/api";
+import { CourseDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseStudentCoursesParams = {
   page: number;
@@ -11,10 +12,13 @@ export const useStudentCourses = ({page, size}: UseStudentCoursesParams) => {
   const { data, isLoading } = useQuery({
     queryKey: [keys.COURSES, page, size],
     queryFn: async () => {
-      const courseController = new CourseControllerApi();
-      const response = await courseController.getCoursesForStudent(
-        { page: page, size: size, sort: undefined},
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      const response = await privateAxios.get<CourseDto[]>(
+        `/course/student`, { params: searchParams }
       );
 
       if (response.status === 204) return [];

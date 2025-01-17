@@ -101,6 +101,37 @@ const errorKeys = {
   virtualMachineClusterMismatch:
     "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+
+  "metrics.error.not.found": "Metric could not be found",
+  "metrics.error.delete.exception": "Metric could not be removed",
+  "metrics.error.name.already.taken": "Wybrana nazwa metryki jest już zajęta",
+  "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
+  "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",
+  "maintenanceIntervals.error.not.found": "Wybrana przerwa administracyjna nie została znaleziona",
+  "maintenanceIntervals.error.too.long": "Wskazna długość przerwy administracyjnej przekracza dopuszczalne maksiumum",
+  "maintenanceIntervals.error.invalid.time.window": "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
+  "maintenanceIntervals.error.begin.at.past": "Przerwa administracyjna musi zaczynać się w przyszłości",
+  "maintenanceIntervals.error.conflict": "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
+  "maintenanceIntervals.error.already.finished": "Wybrana przerwa administracyjna już się zakończyła",
+
+  "reservations.error.not.found": "Wybrana rezerwacja nie została odnaleziona",
+  "reservations.error.conflict": "W wybranym oknie czasowym wprowadzone są już inne rezerwacje",
+  "reservations.error.end.before.start": "Koniec rezerwacji musi następić po jej rozpoczęciu",
+  "reservations.error.start.in.past": "Rezerwacja nie może rozpoczynać się w przeszłości",
+  "reservations.error.too.short": "Minimalna długość rezerwacji w systemie eduVirt wynosi dwukrotność minimalnego okna czasu",
+  "reservations.error.creation.error": "Wystąpił błąd w trakcie tworzenia rezerwacji",
+  "reservations.error.maintenance.interval.conflict": "W trakcie planowanej rezerwacji zdefiniowane są przerwy administracyjne",
+  "reservations.error.course.resources.insufficient": "Zasoby kursu są niewystarczające do stworzenia nowej rezerwacji",
+  "reservations.error.cluster.resources.insufficient": "Zasoby klastra są niewystarczające do stworzenia nowej rezerwacji",
+  "reservations.error.max.length.exceeded": "Przekroczono maksymalną długość rezerwacji",
+  "reservations.error.grace.period.not.finished": "Okres karencji od ostatniej rezerwacji musi upłynąć",
+  "reservations.error.grace.period.could.not.finish": "Okres karencji planowanej rezerwacji przeciągnąłby się na kolejną rezerwację",
+  "reservations.error.resource.group.already.reserved": "Podana grupa zasobów jest już zarezerwowana",
+  "reservations.error.notification.time.too.long": "Czas wysłania powiadomienia o końcu rezerwacji nie może przekroczyć połowy długości rezerwacji",
+  "reservations.error.reservation.count.exceeded": "Osiągnięto limit rezerwacji dla danego PODa",
+  "reservations.error.stateful.pod.not.assigned": "Wybrany POD stanowy nie jest przypisany do twojego zespołu",
+  "reservations.error.stateless.pod.not.assigned": "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
+
   networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 } satisfies { [key in ErrorKey]: string };
 

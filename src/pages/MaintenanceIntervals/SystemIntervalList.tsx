@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import { CalendarIcon, MoreHorizontal } from "lucide-react";
+import { CalendarIcon, MoreHorizontal, TrashIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { Switch } from "@/components/ui/switch";
@@ -68,21 +68,22 @@ const columns = (
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {new Date() > end ?
-                <DropdownMenuItem disabled
-                  onClick={() => onDelete(maintenanceInterval)}
-                >
-                  {t("maintenanceIntervals.cluster.table.remove")}
-                </DropdownMenuItem> :
-
+              {start < new Date() && new Date() < end ? (
                 <DropdownMenuItem
                   onClick={() => onDelete(maintenanceInterval)}
                 >
-                  {new Date() > start ?
-                    t("maintenanceIntervals.cluster.table.finish") :
-                    t("maintenanceIntervals.cluster.table.remove")}
+                  <XIcon className="h-4 w-4 mr-2" />
+                  {t("maintenanceIntervals.cluster.table.finish")}
                 </DropdownMenuItem>
-              }
+              ) : (
+                <DropdownMenuItem
+                  disabled={new Date() > end} className="text-destructive"
+                  onClick={() => onDelete(maintenanceInterval)}
+                >
+                  <TrashIcon className="h-4 w-4 mr-2" />
+                  {t("maintenanceIntervals.cluster.table.remove")}
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </>

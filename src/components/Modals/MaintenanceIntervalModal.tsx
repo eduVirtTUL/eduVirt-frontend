@@ -1,11 +1,20 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import React from "react";
-import {useMaintenanceInterval} from "@/data/maintenance/useMaintenanceInterval";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {useDialog} from "@/stores/dialogStore";
-import {Button} from "@/components/ui/button";
+import { useMaintenanceInterval } from "@/data/maintenance/useMaintenanceInterval";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import { useDialog } from "@/stores/dialogStore";
+import { Button } from "@/components/ui/button";
+import { CheckIcon, TrashIcon, XCircleIcon } from "lucide-react";
+import { useUser } from "@/stores/userStore";
+import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
 
 type MaintenanceIntervalModal = {
     intervalId: string;
@@ -15,6 +24,14 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { interval } = useMaintenanceInterval(intervalId);
+  const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
+
+  const user = useUser();
+
+  const handleDelete = async () => {
+    await removeMaintenanceIntervalAsync(intervalId);
+    close();
+  };
 
   return (
     <>
@@ -48,9 +65,50 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
           ))}
 
           <DialogFooter className={"grid grid-cols-1"}>
-            <Button onClick={() => { close () }}>
-              {t("maintenanceIntervals.details.actions.cancel")}
-            </Button>
+            {user.activeRole === 'administrator' ? (
+              <div className="flex flex-row justify-between">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => { close() }}
+                >
+                  <XCircleIcon/>
+                  {t("cancel")}
+                </Button>
+
+                {(new Date(interval?.beginAt + 'Z') < new Date() && new Date() < new Date(interval?.endAt + 'Z')) ? (
+                  <Button
+                    type="submit"
+                    disabled={new Date(interval?.endAt + 'Z') < new Date()}
+                    onClick={() => handleDelete()}
+                  >
+                    <CheckIcon className="h-4 w-4 mr-2" />
+                    {t("maintenanceIntervals.details.actions.finish.name")}
+                </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="destructive"
+                    disabled={new Date(interval?.endAt + 'Z') < new Date()}
+                    onClick={() => handleDelete()}
+                  >
+                    <TrashIcon className="h-4 w-4 mr-2" />
+                    {t("maintenanceIntervals.details.actions.delete.name")}
+                </Button>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-row justify-between">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => { close() }}
+                >
+                  <XCircleIcon/>
+                  {t("cancel")}
+                </Button>
+              </div>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

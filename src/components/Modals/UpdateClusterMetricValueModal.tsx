@@ -25,7 +25,7 @@ import { useUpdateClusterMetricValue } from "@/data/cluster-metrics/useUpdateClu
 import { TFunction } from "i18next";
 import {
     convertValue,
-    getBaseUnit, getBaseUnitValue,
+    getBaseUnitValue,
     getUnitsCategory,
     UnitDefinition
 } from "@/utils/unitUtils.js";
@@ -36,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import {CheckIcon, SaveIcon, XCircleIcon} from "lucide-react";
+import { SaveIcon, XCircleIcon } from "lucide-react";
 
 type UpdateClusterMetricValueProps = {
   clusterId: string;
@@ -105,7 +105,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
             name="value"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("clusterMetricValues.updateClusterMetricValue.value")}</FormLabel>
+                <FormLabel>* {t("clusterMetricValues.updateClusterMetricValue.value")}</FormLabel>
                 <FormControl>
                   <Input {...field} type={"number"} />
                 </FormControl>
@@ -127,9 +127,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
 
                   return(
                     <FormItem>
-                      <FormLabel>
-                        {t("clusterMetricValues.updateClusterMetricValue.unit")}
-                      </FormLabel>
+                      <FormLabel>* {t("clusterMetricValues.updateClusterMetricValue.unit")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}

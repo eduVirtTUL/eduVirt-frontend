@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ValueDisplay from "@/components/ValueDisplay";
 import { useResourceGroupPool } from "@/data/rgPool/useResourceGroupPool";
-import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { CalendarIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { Route } from "./+types/index";
 import { useDialog } from "@/stores/dialogStore";
 import CreateResourceGroupModal from "@/components/Modals/CreateResourceGroupModal";
@@ -11,7 +11,7 @@ import { useCreateStatelessResourceGroup } from "@/data/rgPool/useCreateStateles
 import ResourceGroupCard from "./ResourceGroupCard";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDeleteResourceGroupPool } from "@/data/rgPool/useDeleteResourceGroupPool";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import EditResourceGroupPoolModal from "@/components/Modals/EditResourceGroupPoolModal";
 import { useTranslation } from "react-i18next";
 import { convertMinutesToHoures } from "@/utils/timeUtils";
@@ -24,9 +24,12 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
 }) => {
   const { t } = useTranslation();
   const { open } = useDialog();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { resourceGroupPool } = useResourceGroupPool(id);
-  const { createStatelessResourceGroupAsync } =
-    useCreateStatelessResourceGroup();
+  const { createStatelessResourceGroupAsync } = useCreateStatelessResourceGroup();
+
+  const { courseId, clusterId } = location.state || {};
 
   const { deleteResourceGroupPoolAsync } = useDeleteResourceGroupPool();
   const nav = useNavigate();
@@ -62,11 +65,35 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
             <PencilIcon />
             {t("editResourceGroupPoolModal.button")}
           </Button>
+          <Button
+            variant="secondary"
+            onClick={() => navigate(`/reservations/calendar/resource-group-pool/presentation/${id}`, {
+              state: { clusterId, courseId }
+            })}
+          >
+            <CalendarIcon />
+            {t("resourceGroupPoolPage.calendar")}
+          </Button>
           <Button variant="destructive" onClick={() => open("confirmation")}>
             <Trash2Icon />
             {t("resourceGroupPoolPage.delete")}
           </Button>
         </div>
+      )}
+      {activeRole === "administrator" && (
+        <>
+          <div className="flex flex-row items-center justify-end gap-2 pb-5">
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`/reservations/calendar/resource-group-pool/presentation/${id}`, {
+                state: { clusterId, courseId }
+              })}
+            >
+              <CalendarIcon />
+              {t("resourceGroupPoolPage.calendar")}
+            </Button>
+          </div>
+        </>
       )}
       <div className="flex flex-col gap-6">
         <Card>
@@ -117,7 +144,11 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
             )}
             <div className="grid grid-cols-4 gap-4">
               {resourceGroupPool?.resourceGroups?.map((rg) => (
-                <ResourceGroupCard resourceGroup={rg} />
+                <ResourceGroupCard
+                  resourceGroup={rg}
+                  courseId={courseId}
+                  clusterId={clusterId}
+                />
               ))}
             </div>
           </CardContent>

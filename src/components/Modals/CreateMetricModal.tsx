@@ -84,7 +84,7 @@ const CreateMetricModal: React.FC = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("metrics.createMetric.name")}</FormLabel>
+                  <FormLabel>* {t("metrics.createMetric.name")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -100,7 +100,7 @@ const CreateMetricModal: React.FC = () => {
               name="category"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>{t("metrics.createMetric.category")}</FormLabel>
+                  <FormLabel>* {t("metrics.createMetric.category")}</FormLabel>
                   <Select
                     {...field}
                     value={field.value}

@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, PlusIcon } from "lucide-react";
+import {MoreHorizontal, Pen, PlusIcon, TrashIcon} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import UpdateClusterMetricValueModal from "@/components/Modals/UpdateClusterMetricValueModal";
@@ -70,11 +70,14 @@ const columns = (
               <DropdownMenuItem
                 onClick={() => onEdit(metric)}
               >
+                <Pen className="h-4 w-4 mr-2"/>
                 {t("clusterMetricValues.table.edit")}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => onDelete(metric.id!)}
+                className="text-destructive"
               >
+                <TrashIcon className="h-4 w-4 mr-2" />
                 {t("clusterMetricValues.table.delete")}
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -122,7 +125,11 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
 
   if (isLoading || nextLoading) {
     return (
-      <div className="space-y-6">
+      <>
+        <div className="pl-5 pt-3">
+          <Skeleton className="h-10 w-[100px]"/>
+        </div>
+        <div className="space-y-6 p-5">
         <div className="rounded-md border">
           <div className="border-b">
             <div className="grid grid-cols-2 p-4">
@@ -147,6 +154,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
           <Skeleton className="h-8 w-[100px]"/>
         </div>
       </div>
+      </>
     );
   }
 
@@ -159,12 +167,12 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
         />}
 
         <ConfirmationDialog
-            header={t("clusterMetricValues.removeClusterMetricValue.confirmation.header")}
-            text={t("clusterMetricValues.removeClusterMetricValue.confirmation.text")}
-            onConfirm={async () => {
-              await removeClusterMetricValueAsync(deleteId.current!);
-              deleteId.current = undefined;
-            }}
+          header={t("clusterMetricValues.removeClusterMetricValue.confirmation.header")}
+          text={t("clusterMetricValues.removeClusterMetricValue.confirmation.text")}
+          onConfirm={async () => {
+            await removeClusterMetricValueAsync(deleteId.current!);
+            deleteId.current = undefined;
+          }}
         />
 
         <CreateClusterMetricValue clusterId={clusterId} />
