@@ -169,7 +169,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             {
                 accessorKey: "maxSize",
                 header: t("coursePageB.teamsTable.columns.maxSize"),
-                cell: ({row}) => (
+                cell: ({row}: { row: Row<TeamDto> }) => (
                     <div className="flex items-center">
                         <Badge variant="secondary">{row.original.maxSize}</Badge>
                     </div>
