@@ -37,9 +37,12 @@ import ResourceGroupPoolCard from "@/pages/Course/ResourceGroupPoolCard";
 import {RouteHandle} from "@/AuthGuard";
 import {t} from "i18next";
 import {useResetCourse} from "@/data/course/useResetCourse";
+import { useDialog } from "@/stores/dialogStore";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
+    
+    const { open } = useDialog();
 
     const {course} = useCourse(id);
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
