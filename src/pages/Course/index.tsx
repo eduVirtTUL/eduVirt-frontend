@@ -9,7 +9,7 @@ import {useCourseAccessKey} from "@/data/access-key/useCourseAccessKey";
 import {Badge} from "@/components/ui/badge";
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
 import {toast} from "sonner";
-import {Skeleton} from "@/components/ui/skeleton";;
+import {Skeleton} from "@/components/ui/skeleton";
 import {Link} from "react-router";
 import {useDeleteCourse} from "@/data/course/useDeleteCourse";
 import {ManageTeachersModal} from "@/components/Modals/ManageTeachersModal";
@@ -21,7 +21,7 @@ import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
 import {
     ChartCandlestickIcon, ChevronDown,
-    ChevronUp, ExternalLinkIcon, Info,
+    ChevronUp, Copy, ExternalLinkIcon, Info,
     PencilIcon,
     PlusIcon,
     RefreshCcw,
@@ -94,13 +94,13 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 {activeRole === "administrator" && (
                     <Button asChild>
                         <Link to={`limits`}>
-                            <ChartCandlestickIcon />
+                            <ChartCandlestickIcon/>
                             {t("coursePage.limits")}
                         </Link>
                     </Button>
                 )}
                 <Button variant="secondary" onClick={() => open("editCourse")}>
-                    <PencilIcon />
+                    <PencilIcon/>
                     {t("coursePage.edit")}
                 </Button>
                 {activeRole === "administrator" && (
@@ -109,11 +109,11 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             variant="destructive"
                             onClick={() => open("resetCourseConfirmation")}
                         >
-                            <RefreshCcw />
+                            <RefreshCcw/>
                             {t("coursePage.reset")}
                         </Button>
                         <Button variant="destructive" onClick={() => open("confirmation")}>
-                            <Trash2Icon />
+                            <Trash2Icon/>
                             {t("coursePage.delete")}
                         </Button>
                     </>
