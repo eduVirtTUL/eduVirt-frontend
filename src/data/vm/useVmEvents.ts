@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "@/data/keys";
-import { VmControllerApi } from "@/api";
-import {injectToken} from "@/utils/requestUtils";
+import { EventGeneralDto } from "@/api";
+import { privateAxios } from "@/data/privateAxios";
 
 type UseVmEventsParam = {
   id: string,
@@ -16,9 +16,16 @@ export const useVmEvents = ({
   const { data, isLoading } = useQuery({
     queryKey: [ keys.VM_EVENTS, id, page, size, sort ],
     queryFn: async () => {
-      const controller = new VmControllerApi();
-      const response = await controller.findEventsForVm(
-        id, {page: page, size: size, sort: sort}, { ...injectToken() }
+      const searchParams = new URLSearchParams();
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      sort.forEach((sortElement) => (
+          searchParams.append("sort", sortElement)
+      ));
+
+      const response = await privateAxios.get<EventGeneralDto[]>(
+        `/resource/vm/${id}/events`, { params: searchParams }
       );
 
       if (response.status === 204) return [];

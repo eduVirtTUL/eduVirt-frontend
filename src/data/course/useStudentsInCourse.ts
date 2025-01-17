@@ -1,16 +1,18 @@
-import {CourseControllerApi} from "@/api";
-import {keys} from "../keys";
-import {useQuery} from "@tanstack/react-query";
+import { UserDto } from "@/api";
+import { keys } from "../keys";
+import { useQuery } from "@tanstack/react-query";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useStudentsInCourse = (courseId: string) => {
-    const {data, isLoading} = useQuery({
-        queryKey: [keys.USER],
-        queryFn: async () => {
-            const podController = new CourseControllerApi();
-            const response = await podController.getStudentsInSoloCourse(courseId);
-            return response.data;
-        },
-    });
+  const {data, isLoading} = useQuery({
+    queryKey: [keys.USER],
+    queryFn: async () => {
+      const response = await privateAxios.get<UserDto[]>(
+        `/course/${courseId}/students`
+      );
+      return response.data;
+    },
+  });
 
-    return {students: data, isLoading};
+  return {students: data, isLoading};
 }

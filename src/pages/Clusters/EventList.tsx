@@ -128,7 +128,7 @@ const EventList: React.FC<EventListProps> = ({
     return (
       <>
         <div className={"flex items-center justify-start pt-4 pl-4"}>
-          <Skeleton className="h-10 w-2/5"/>
+          <Skeleton className="h-10 w-1/4"/>
         </div>
 
         <div className="p-4">

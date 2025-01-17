@@ -14,7 +14,6 @@ import { useNavigate, useParams } from "react-router";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import "../../styles/fullcalendar-shadcn.css";
 import EventCalendar from "@/components/EventCalendar";
-import MaintenanceIntervalDetailsModal from "@/pages/MaintenanceInterval";
 import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -22,6 +21,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
+import MaintenanceIntervalModal from "@/components/Modals/MaintenanceIntervalModal";
 
 const headerToolbar: ToolbarInput = {
   center: "title",
@@ -166,7 +166,7 @@ const MaintenanceCalendar: React.FC = () => {
         resetSelection={closeCreateReservationDialog}
       />
 
-      {clickedEvent && <MaintenanceIntervalDetailsModal intervalId={clickedEvent} />}
+      {clickedEvent && <MaintenanceIntervalModal intervalId={clickedEvent} />}
 
       <EventCalendar
         timeWindow={30}

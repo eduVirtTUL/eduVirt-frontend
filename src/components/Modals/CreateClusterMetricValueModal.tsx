@@ -140,7 +140,7 @@ const CreateClusterMetricValueModal: React.FC<
               name="metricId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("clusterMetricValues.createClusterMetricValue.name")}</FormLabel>
+                  <FormLabel>* {t("clusterMetricValues.createClusterMetricValue.name")}</FormLabel>
                   <Select
                     onValueChange={(value) => handleMetricSelect(value)}
                     value={field.value}
@@ -174,7 +174,7 @@ const CreateClusterMetricValueModal: React.FC<
                 name="value"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>{t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
+                    <FormLabel>* {t("clusterMetricValues.createClusterMetricValue.value")}</FormLabel>
                     <FormControl>
                       <Input {...field} type={"number"} />
                     </FormControl>
@@ -197,9 +197,7 @@ const CreateClusterMetricValueModal: React.FC<
 
                   return(
                     <FormItem>
-                      <FormLabel>
-                        {t("clusterMetricValues.createClusterMetricValue.unit")}
-                      </FormLabel>
+                      <FormLabel>* {t("clusterMetricValues.createClusterMetricValue.unit")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}

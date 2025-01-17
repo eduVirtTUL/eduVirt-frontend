@@ -103,6 +103,7 @@ const resourceGroupPoolPage = {
   },
   type: "Pula grup zasobów",
   openEditor: "Otwórz edytor",
+  calendar: "Rezerwacje"
 };
 
 const createResourceGroupModal = {
@@ -163,6 +164,7 @@ const courseStatefulResourceGroups = {
   title: "Stanowe grupy zasobów",
   createResourceGroup: "Utwórz grupę zasobów",
   openEditor: "Otwórz edytor",
+  calendar: "Rezerwacje",
 };
 
 const coursePools = {

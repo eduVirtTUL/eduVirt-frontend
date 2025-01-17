@@ -4,14 +4,8 @@ import SystemIntervalList from "@/pages/MaintenanceIntervals/SystemIntervalList"
 import ClusterList from "@/pages/Clusters/ClusterList";
 import { ColumnDef } from "@tanstack/react-table";
 import { ClusterGeneralDto } from "@/api";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal} from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
@@ -45,21 +39,15 @@ const columns = (
 
       return (
         <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link to={`/maintenance/clusters/${cluster.id}`}>
-                  {t("clusters.table.showIntervals")}
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex justify-end">
+            <Link
+              to={`/maintenance/clusters/${cluster.id}`}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+            >
+              <ExternalLink className="h-4 w-4"/>
+              <span className="sr-only">{t("clusters.table.showIntervals")}</span>
+            </Link>
+          </div>
         </>
       );
     },

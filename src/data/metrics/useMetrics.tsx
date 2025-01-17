@@ -14,7 +14,14 @@ export const useMetrics = ({
   const { data, isLoading } = useQuery({
     queryKey: [ keys.METRICS, page, size ],
     queryFn: async () => {
-      const response = await privateAxios.get<PageDtoMetricDto>(`/metrics`);
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("page", page.toString());
+      searchParams.append("size", size.toString());
+
+      const response = await privateAxios.get<PageDtoMetricDto>(
+        `/metrics`, { params: searchParams }
+      );
       return response.data?.items ?? [];
     },
   });

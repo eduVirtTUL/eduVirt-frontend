@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { TeamControllerApi } from "@/api";
+import { TeamWithCourseDto } from "@/api";
 import { keys } from "../keys";
-export const useTeam = (id: string) => {
-    const { data, isLoading } = useQuery({
-        queryKey: [keys.TEAM, id],
-        queryFn: async () => {
-            const controller = new TeamControllerApi();
-            const response = await controller.getTeamDetails(id);
-            return response.data;
-        },
-    });
+import { privateAxios } from "@/data/privateAxios";
 
-    return { team: data, isLoading };
+export const useTeam = (id: string) => {
+  const { data, isLoading } = useQuery({
+    queryKey: [keys.TEAM, id],
+    queryFn: async () => {
+      const response = await privateAxios.get<TeamWithCourseDto>(
+        `/teams/${id}`
+      );
+      return response.data;
+    },
+  });
+
+  return { team: data, isLoading };
 };
