@@ -5,23 +5,26 @@ import { useCreateStatefulResourceGroup } from "@/data/course/resourceGroups/use
 import { useStatefulResourceGroups } from "@/data/course/resourceGroups/useStatefulResourceGroups";
 import { useDialog } from "@/stores/dialogStore";
 import { useUser } from "@/stores/userStore";
-import { PlusIcon } from "lucide-react";
+import {CalendarIcon, PlusIcon} from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
 
 type StatefulResourceGroupsProps = {
   courseId: string;
+  clusterId: string;
 };
 
 const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
-  courseId,
+  courseId, clusterId
 }) => {
   const { t } = useTranslation();
   const { open } = useDialog();
   const { statefulResourceGroups } = useStatefulResourceGroups(courseId);
   const { createResourceGroupAsync } = useCreateStatefulResourceGroup();
   const { activeRole } = useUser();
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -50,11 +53,23 @@ const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
                   <CardTitle>{rg.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Button asChild>
-                    <Link to={`/rg/${rg.id}`}>
-                      {t("courseStatefulResourceGroups.openEditor")}
-                    </Link>
-                  </Button>
+                  <div className="flex flex-row flex-wrap items-center justify-start gap-2 pb-5">
+                    <Button asChild>
+                      <Link to={`/rg/${rg.id}`}>
+                        {t("courseStatefulResourceGroups.openEditor")}
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      className="text-wrap"
+                      onClick={() => navigate(`/reservations/calendar/resource-group/presentation/${rg.id}`, {
+                        state: { clusterId: clusterId, courseId: courseId}
+                      })}
+                    >
+                      <CalendarIcon />
+                      {t("courseStatefulResourceGroups.calendar")}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}

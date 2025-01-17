@@ -24,7 +24,7 @@ export const useResourceGroupReservations = ({
       searchParams.append("end", end);
 
       const response = await privateAxios.get<ReservationDto[]>(
-        `/reservation/courses/${course}/resource-groups/${resourceGroup}/period`, { params: searchParams }
+        `/reservations/courses/${course}/resource-groups/${resourceGroup}/period`, { params: searchParams }
       );
 
       if (response.status === 204) return [];

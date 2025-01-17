@@ -490,7 +490,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
             </Card>
           </Collapsible>
         </div>
-        <StatefulResourceGroups courseId={id} />
+        <StatefulResourceGroups courseId={id} clusterId={course?.clusterId ?? ''} />
         <Card>
           <CardHeader>
             <CardTitle>{t("coursePools.title")}</CardTitle>
@@ -505,7 +505,12 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
 
             <div className="grid grid-cols-4 gap-6">
               {courseResourceGroupPools?.map((pool) => (
-                <ResourceGroupPoolCard key={pool.id} pool={pool} />
+                <ResourceGroupPoolCard
+                  key={pool.id}
+                  pool={pool}
+                  courseId={course?.id ?? ''}
+                  clusterId={course?.clusterId ?? ''}
+                />
               ))}
             </div>
           </CardContent>

@@ -65,8 +65,7 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
           ))}
 
           <DialogFooter className={"grid grid-cols-1"}>
-            {/*Administrator buttons*/}
-            {user.roles.includes('administrator') && (
+            {user.activeRole === 'administrator' ? (
               <div className="flex flex-row justify-between">
                 <Button
                   type="button"
@@ -98,10 +97,7 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
                 </Button>
                 )}
               </div>
-            )}
-
-            {/*Other user's buttons*/}
-            {!user.activeRole.includes('administrator') && (
+            ) : (
               <div className="flex flex-row justify-between">
                 <Button
                   type="button"

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import FullCalendar from "@fullcalendar/react";
+import "../../../styles/fullcalendar-shadcn.css";
 import React, { useEffect, useState } from "react";
 import {
     AllowFunc,

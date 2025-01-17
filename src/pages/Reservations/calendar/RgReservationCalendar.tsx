@@ -13,7 +13,7 @@ type TimeRange = {
   end: string | null,
 }
 
-const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
+const RgReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const location = useLocation();
   const { clusterId, courseId, podId } = location.state || {};
 
@@ -43,10 +43,10 @@ const ResourceGroupReservationCalendar: React.FC<Route.ComponentProps> = ({ para
   );
 };
 
-export default ResourceGroupReservationCalendar;
+export default RgReservationCalendar;
 
 export const handle: RouteHandle = {
-  roles: ["student", "teacher", "administrator"],
+  roles: ["student"],
 };
 
 export const meta = () => {

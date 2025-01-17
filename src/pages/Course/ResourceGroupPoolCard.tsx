@@ -7,10 +7,12 @@ import { Link } from "react-router";
 
 type ResourceGroupPoolCardProps = {
   pool: ResourceGroupPoolDto;
+  courseId: string;
+  clusterId: string;
 };
 
 const ResourceGroupPoolCard: React.FC<ResourceGroupPoolCardProps> = ({
-  pool,
+  pool, courseId, clusterId
 }) => {
   const { t } = useTranslation();
   return (
@@ -22,7 +24,12 @@ const ResourceGroupPoolCard: React.FC<ResourceGroupPoolCardProps> = ({
         <p>{pool.description}</p>
         <div className="flex justify-start">
           <Button asChild>
-            <Link to={`/pools/${pool.id}`}>{t("coursePools.openPool")}</Link>
+            <Link
+              to={`/pools/${pool.id}`}
+              state={{ courseId: courseId, clusterId: clusterId }}
+            >
+              {t("coursePools.openPool")}
+            </Link>
           </Button>
         </div>
       </CardContent>
