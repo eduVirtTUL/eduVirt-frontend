@@ -3,7 +3,7 @@ import { useDialog } from "@/stores/dialogStore";
 import { CardContent } from "@/components/ui/card";
 import CreateClusterMetricValue from "@/components/Modals/CreateClusterMetricValueModal";
 import { Button } from "@/components/ui/button";
-import React, {useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MetricValueDto } from "@/api";
 import {
@@ -12,7 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {MoreHorizontal, Pen, PlusIcon, TrashIcon} from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  MoreHorizontal,
+  Pen,
+  PlusIcon,
+  TrashIcon
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import UpdateClusterMetricValueModal from "@/components/Modals/UpdateClusterMetricValueModal";
@@ -21,7 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-import {getBaseUnit, getBaseUnitValue, UnitDefinition} from "@/utils/unitUtils.js";
+import { getBaseUnit, getBaseUnitValue, UnitDefinition } from "@/utils/unitUtils.js";
 
 type ClusterMetricListProps = {
   clusterId: string,
@@ -29,10 +37,22 @@ type ClusterMetricListProps = {
 
 const columns = (
   t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode,
   onEdit: (dto: MetricValueDto) => void,
   onDelete: (id: string) => void
 ): ColumnDef<MetricValueDto>[] => [
-  { accessorKey: "name", header: t("clusterMetricValues.table.columns.name") },
+  {
+    accessorKey: "name",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("metric.name")}>
+          {t("clusterMetricValues.table.columns.name")}
+          {(chooseSortingArrow("metric.name"))}
+        </Button>
+      );
+    }
+  },
   {
     accessorKey: "value",
     header: t("clusterMetricValues.table.columns.value"),
@@ -94,18 +114,23 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
+  const [ sortColumn, setSortColumn ] = useState<string>("metric.name");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
+
   const { open } = useDialog();
 
   const { metrics, isLoading } = useClusterMetrics({
     id: clusterId,
     page: pageNumber,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { metrics: nextMetrics, isLoading: nextLoading } = useClusterMetrics({
     id: clusterId,
     page: pageNumber + 1,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { removeClusterMetricValueAsync } = useRemoveClusterMetricValue(clusterId);
@@ -121,6 +146,23 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
   const handleRemoveClusterMetricValue = async (metricId: string) => {
     deleteId.current = metricId;
     open("confirmation");
+  };
+
+  const handleSort = useCallback((column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  }, [sortColumn]);
+
+  const chooseSortingArrow = (column: string) => {
+    if (column === sortColumn && sortDirection === "desc")
+      return <ArrowDown className="ml-2 h-4 w-4" />;
+    else if (column === sortColumn && sortDirection === "asc")
+      return <ArrowUp className="ml-2 h-4 w-4" />;
+    return <ArrowUpDown className="ml-2 h-4 w-4" />;
   };
 
   if (isLoading || nextLoading) {
@@ -185,7 +227,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
         </div>
 
         <SimpleDataTable
-          columns={columns(t, handleUpdateClusterMetricValue, handleRemoveClusterMetricValue)}
+          columns={columns(t, handleSort, chooseSortingArrow, handleUpdateClusterMetricValue, handleRemoveClusterMetricValue)}
           data={metrics ?? []}
         />
 

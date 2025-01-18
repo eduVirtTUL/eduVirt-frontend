@@ -12,6 +12,7 @@ interface PodCardProps {
         id: string;
         name: string;
         isStateless: boolean;
+        maxRentTime: number;
     };
     course: {
         id: string;
@@ -63,7 +64,8 @@ export function PodCard({id, resourceGroup, course, maxRent}: PodCardProps) {
                         state={{
                             clusterId: course.clusterId,
                             courseId: course.id,
-                            podId: id
+                            podId: id,
+                            maxRentTime: resourceGroup.maxRentTime
                         }}
                     >
                         <Button

@@ -54,7 +54,7 @@ const CreateCourseMetricValueModal: React.FC<CreateCourseMetricValueProps> = ({
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
   const { createCourseMetricAsync } = useCreateCourseMetric();
-  const { metrics, isLoading } = useMetrics({ page: 0, size: 10 });
+  const { metrics, isLoading } = useMetrics({ page: 0, size: 10 , sort: [ "name,ASC" ]});
 
   const form = useForm<CreateCourseMetricValueSchema>({
     resolver: zodResolver(createCourseMetricValueSchema(t)),

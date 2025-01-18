@@ -102,8 +102,9 @@ const errorKeys = {
     "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
 
-  "metrics.error.not.found": "Metric could not be found",
-  "metrics.error.delete.exception": "Metric could not be removed",
+  "clusters.error.not.found": "Wybrany klaster nie został odnaleziony",
+  "metrics.error.not.found": "Metryka nie została znaleziona",
+  "metrics.error.delete.exception": "Metryka nie mogła zostać usunięta",
   "metrics.error.name.already.taken": "Wybrana nazwa metryki jest już zajęta",
   "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
   "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",

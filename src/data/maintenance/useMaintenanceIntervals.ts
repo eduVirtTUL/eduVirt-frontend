@@ -8,13 +8,14 @@ type UseMaintenanceIntervalsParams = {
   active: boolean;
   page: number;
   size: number;
+  sort: string[];
 }
 
 export const useMaintenanceIntervals = ({
-  clusterId, active, page, size
+  clusterId, active, page, size, sort
 }: UseMaintenanceIntervalsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.MAINTENANCE_INTERVALS, clusterId, active, page, size ],
+    queryKey: [ keys.MAINTENANCE_INTERVALS, clusterId, active, page, size, sort ],
     queryFn: async () => {
       const searchParams = new URLSearchParams();
 
@@ -22,6 +23,7 @@ export const useMaintenanceIntervals = ({
       searchParams.append("size", size.toString());
       searchParams.append("clusterId", clusterId ?? '');
       searchParams.append("active", active.toString());
+      sort.forEach((sortElement) => (searchParams.append("sort", sortElement)));
 
       const response = await privateAxios.get<PageDtoMaintenanceIntervalDto>(
         `/maintenance-intervals`, { params: searchParams }

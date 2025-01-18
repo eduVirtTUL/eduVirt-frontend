@@ -8,9 +8,10 @@ import { useHosts } from "@/data/cluster/useHosts";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
-import {ArrowDown, ArrowUp, ArrowUpDown, ExternalLinkIcon} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {Link} from "react-router";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLinkIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { getBaseUnit, getBaseUnitValue, UnitDefinition } from "@/utils/unitUtils.js";
 
 type HostListProps = {
   clusterId: string;
@@ -20,22 +21,38 @@ type HostListProps = {
 const columns = (
   t: TFunction,
   handleSort: (column: string) => void,
-  chooseSortingArrow: (column: string) => JSX.Element
+  chooseSortingArrow: (column: string) => React.ReactNode
 ): ColumnDef<HostDto>[] => [
   {
     accessorKey: "name",
     header: () => {
       return (
-          <Button variant="ghost" onClick={() => handleSort("name")}>
-            {t("hosts.table.columns.name")}
-            {(chooseSortingArrow("name"))}
-          </Button>
+        <Button variant="ghost" onClick={() => handleSort("name")}>
+          {t("hosts.table.columns.name")}
+          {(chooseSortingArrow("name"))}
+        </Button>
       );
     }
   },
   { accessorKey: "address", header: t("hosts.table.columns.domainName") },
-  { accessorKey: "cpus", header: t("hosts.table.columns.cpuCount") },
-  { accessorKey: "memory", header: t("hosts.table.columns.memorySize") },
+  {
+    accessorKey: "cpus", header: t("hosts.table.columns.cpuCount"),
+    cell: ({ row }) => {
+      const host = row.original;
+      const baseUnit: UnitDefinition = getBaseUnit("COUNTABLE");
+      {/* @ts-expect-error this doesn't impact the page */}
+      return getBaseUnitValue("COUNTABLE", host.cpus) + " " + t(baseUnit.symbol);
+    }
+  },
+  {
+    accessorKey: "memory", header: t("hosts.table.columns.memorySize"),
+    cell: ({ row }) => {
+      const host = row.original;
+      const baseUnit: UnitDefinition = getBaseUnit("MEMORY");
+      {/* @ts-expect-error this doesn't impact the page */}
+      return getBaseUnitValue("MEMORY", host.memory) + " " + t(baseUnit.symbol);
+    }
+  },
 ];
 
 const HostList: React.FC<HostListProps> = ({
@@ -46,8 +63,8 @@ const HostList: React.FC<HostListProps> = ({
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
-  const [ sortColumn, setSortColumn ] = useState<string | null>(null);
-  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc" | null>(null);
+  const [ sortColumn, setSortColumn ] = useState<string>("name");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
 
   const { hosts, isLoading } = useHosts({
     id: clusterId,

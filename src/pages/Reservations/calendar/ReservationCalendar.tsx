@@ -28,10 +28,11 @@ type ReservationCalendarProps = {
   resourcesLoading: boolean,
   reservations:  ReservationDto[] | undefined
   reservationsLoading: boolean,
+  maxRentTime: number
 };
 
 const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
-  clusterId, courseId, podId, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading
+  clusterId, courseId, podId, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading, maxRentTime
 }) => {
   const { t } = useTranslation();
   const { open } = useDialog();
@@ -150,7 +151,7 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
         courseId={courseId!}
         podId={podId!}
         length={length ?? 15}
-        maxRentTime={12}
+        maxRentTime={maxRentTime}
         start={eventStart!}
         end={eventEnd!}
         resetSelection={closeCreateReservationDialog}

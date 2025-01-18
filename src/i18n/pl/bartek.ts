@@ -124,6 +124,7 @@ const coursePageB = {
             manageUsers: "Studenci",
             manageStatefulPods: "Pody stanowe",
             manageStatelessPods: "Pody bezstanowe",
+            reservations: "Rezerwacje",
             deleteTeam: {
                 button : "Usuń zespół",
                 confirmation: {
