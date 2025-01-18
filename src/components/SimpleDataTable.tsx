@@ -15,6 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -25,6 +26,8 @@ const DataTable = <TData, TValue>({
   data,
   columns,
 }: DataTableProps<TData, TValue>) => {
+  const {t} = useTranslation();
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
@@ -99,7 +102,7 @@ const DataTable = <TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {t("noResults")}
               </TableCell>
             </TableRow>
           )}

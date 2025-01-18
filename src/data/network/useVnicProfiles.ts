@@ -1,13 +1,15 @@
-import {VnicProfileControllerApi} from "@/api";
-import {useQuery} from "@tanstack/react-query";
-import {keys} from "../keys";
+import { VnicProfileDto} from "@/api";
+import { useQuery } from "@tanstack/react-query";
+import { keys } from "../keys";
+import { privateAxios } from "@/data/privateAxios";
 
 export const useVnicProfiles = () => {
     const {data, isLoading} = useQuery({
         queryKey: [keys.VNIC_PROFILE],
         queryFn: async () => {
-            const vnicProfileController = new VnicProfileControllerApi();
-            const response = await vnicProfileController.getSynchronizedVnicProfiles();
+            const response = await privateAxios.get<VnicProfileDto[]>(
+                `/resources/vnic-profiles`
+            );
             return response.data;
         },
     });
