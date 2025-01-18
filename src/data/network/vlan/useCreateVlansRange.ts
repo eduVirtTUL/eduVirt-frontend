@@ -19,7 +19,7 @@ export const useCreateVlansRange = () => {
         onSuccess: () => {
             // Force to refetch vlans ranges
             queryClient.invalidateQueries({queryKey: [keys.VLANS_RANGE]});
-            toast.success(t("vlansRange.add.success"));
+            toast.success(t("vlansRange.actions.add.success"));
         }
     });
 

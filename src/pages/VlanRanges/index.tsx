@@ -1,7 +1,7 @@
 import PageHeader from "@/components/PageHeader";
 import {useDialog} from "@/stores/dialogStore";
 import {Button} from "@/components/ui/button";
-import {LoaderIcon, PlusIcon, Undo2} from "lucide-react";
+import {PlusIcon, Undo2} from "lucide-react";
 import CreateVlansRangeModal from "@/components/Modals/CreateVlansRangeModal";
 import {useVlansRanges} from "@/data/network/vlan/useVlansRanges";
 import {
@@ -17,6 +17,7 @@ import React from "react";
 import {RouteHandle} from "@/AuthGuard";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const VlanRangesPage: React.FC = () => {
     const {t} = useTranslation();
@@ -32,12 +33,42 @@ const VlanRangesPage: React.FC = () => {
     };
 
     if (isLoading) {
-        return <LoaderIcon className="animate-spin size-10"/>;
+        return (
+            <>
+                <CreateVlansRangeModal/>
+
+                <div>
+                    <Button asChild variant="outline" size="icon">
+                        <Link to={"/networks"}>
+                            <Undo2/>
+                        </Link>
+                    </Button>
+                </div>
+
+                <PageHeader title={t("vlansRange.title")}/>
+
+                <div className="pb-5">
+                    <Button
+                        onClick={() => {
+                            open("createVlansRange");
+                        }}
+                    >
+                        <PlusIcon/>
+                        {t("vlansRange.createButton")}
+                    </Button>
+                </div>
+
+                <div className="flex justify-center items-center min-h-hull">
+                    <BounceLoader color="#1e1e1e"/>
+                </div>
+            </>
+        );
     }
 
     return (
         <>
             <CreateVlansRangeModal/>
+
             <div>
                 <Button asChild variant="outline" size="icon">
                     <Link to={"/networks"}>
@@ -45,7 +76,9 @@ const VlanRangesPage: React.FC = () => {
                     </Link>
                 </Button>
             </div>
-            <PageHeader title="VLAN ranges"/>
+
+            <PageHeader title={t("vlansRange.title")}/>
+
             <div className="pb-5">
                 <Button
                     onClick={() => {
@@ -53,7 +86,7 @@ const VlanRangesPage: React.FC = () => {
                     }}
                 >
                     <PlusIcon/>
-                    New VLANs range
+                    {t("vlansRange.createButton")}
                 </Button>
             </div>
 
@@ -61,14 +94,14 @@ const VlanRangesPage: React.FC = () => {
                 {(vlansRanges?.length ? vlansRanges : [])?.map((vlansRange) => (
                     <Card key={vlansRange.id} className="w-80">
                         <CardHeader>
-                            <CardTitle>Range</CardTitle>
+                            <CardTitle>{t("vlansRange.unitName")}</CardTitle>
                             <CardDescription>
                                 {vlansRange.from}-{vlansRange.to}
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
                             <Button onClick={() => handleRemoveVlansRange(vlansRange.id)}>
-                                Remove
+                                {t("vlansRange.removeButton")}
                             </Button>
                         </CardFooter>
                     </Card>

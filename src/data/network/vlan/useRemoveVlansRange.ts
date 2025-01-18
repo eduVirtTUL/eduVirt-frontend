@@ -18,7 +18,7 @@ export const useRemoveVlansRange = () => {
         onSuccess: () => {
             // Force to refetch vlans ranges
             queryClient.invalidateQueries({queryKey: [keys.VLANS_RANGE]});
-            toast.success(t("vlansRange.remove.success"));
+            toast.success(t("vlansRange.actions.remove.success"));
         }
     });
 

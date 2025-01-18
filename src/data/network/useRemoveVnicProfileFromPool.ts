@@ -18,7 +18,7 @@ export const useRemoveVnicProfileFromPool = () => {
         onSuccess: () => {
             // Force to refetch vnic profiles
             queryClient.invalidateQueries({queryKey: [keys.VNIC_PROFILE]});
-            toast.success(t("vnicProfiles.pool.remove.success"));
+            toast.success(t("vnicProfiles.pool.actions.remove.success"));
         }
     });
 
