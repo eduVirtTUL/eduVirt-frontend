@@ -96,7 +96,7 @@ const coursePageB = {
     courseAccessKeyCard: {
         title: "Klucz dostępu",
         keyCopiedToast: "Klucz dostępu do kursu został skopiowany do schowka",
-        button: "Utwórz klucz",
+        button: "Utwórz klucz dostępu",
     },
     teamsTable: {
       button: "Zespoły",

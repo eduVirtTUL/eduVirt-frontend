@@ -7,13 +7,12 @@ import { privateAxios } from "@/data/privateAxios";
 export const useJoinTeamOrCourse = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  
   const { mutate: joinTeam } = useMutation({
     mutationFn: async (key: string) => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("key", key);
-
       const response = await privateAxios.post(
-        `/teams/join`, { params: searchParams }
+        '/teams/join',
+        { keyValue: key }
       );
       return response.data;
     },

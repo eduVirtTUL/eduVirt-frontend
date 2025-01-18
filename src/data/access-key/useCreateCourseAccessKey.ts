@@ -15,7 +15,8 @@ export const useCreateCourseAccessKey = () => {
       searchParams.append("courseKey", courseKey);
 
       const response = await privateAxios.post<CourseAccessKeyDto>(
-        `/access-keys/course/${courseId}`, { params: searchParams }
+        `/access-keys/course/${courseId}?${searchParams.toString()}`, 
+        {}
       );
       return response.data;
     },

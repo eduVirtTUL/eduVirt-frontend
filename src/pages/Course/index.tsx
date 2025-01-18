@@ -6,9 +6,7 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import React, {useEffect, useState} from "react";
 import {Route} from "./+types/index";
 import {useCourseAccessKey} from "@/data/access-key/useCourseAccessKey";
-import {Badge} from "@/components/ui/badge";
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
-import {toast} from "sonner";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Link} from "react-router";
 import {useDeleteCourse} from "@/data/course/useDeleteCourse";
@@ -20,8 +18,13 @@ import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
 import {
-    ChartCandlestickIcon, ChevronDown,
-    ChevronUp, Copy, ExternalLinkIcon, Info,
+    ChartCandlestickIcon,
+    ChevronDown,
+    ChevronUp,
+    Copy,
+    ExternalLinkIcon,
+    Info,
+    KeyRound,
     PencilIcon,
     PlusIcon,
     RefreshCcw,
@@ -37,12 +40,13 @@ import ResourceGroupPoolCard from "@/pages/Course/ResourceGroupPoolCard";
 import {RouteHandle} from "@/AuthGuard";
 import {t} from "i18next";
 import {useResetCourse} from "@/data/course/useResetCourse";
-import { useDialog } from "@/stores/dialogStore";
+import {useDialog} from "@/stores/dialogStore";
+import {toast} from "sonner";
 
 const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
 
-    const { open } = useDialog();
+    const {open} = useDialog();
 
     const {course} = useCourse(id);
     const {courseResourceGroupPools} = useCourseResourceGroupPools(id);
@@ -51,8 +55,8 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         enabled: !isTeamBased,
     });
 
-    const { deleteCourseAsync } = useDeleteCourse();
-    const { resetCourseAsync } = useResetCourse();
+    const {deleteCourseAsync} = useDeleteCourse();
+    const {resetCourseAsync} = useResetCourse();
     const {activeRole} = useUser();
 
     const [isTeachersOpen, setIsTeachersOpen] = useState(() => {
@@ -88,12 +92,14 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             <CreateCourseKeyModal courseId={id}/>
             <PageHeader title={course?.name ?? ""} type={t("coursePage.title")}/>
             <div className="flex flex-row gap-2 justify-end mb-5">
-                <Button asChild>
-                    <Link to={`teams`}>
-                        <UsersIcon className="mr-2 h-4 w-4"/>
-                        {t("coursePageB.teamsTable.button")}
-                    </Link>
-                </Button>
+                {activeRole === "teacher" && (
+                    <Button asChild>
+                        <Link to={`teams`}>
+                            <UsersIcon className="mr-2 h-4 w-4"/>
+                            {t("coursePageB.teamsTable.button")}
+                        </Link>
+                    </Button>
+                )}
                 {activeRole === "administrator" && (
                     <Button asChild>
                         <Link to={`limits`}>
@@ -153,14 +159,13 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 }
                             />
                             <ValueDisplay
+                                className="col-span-2"
                                 label={t("coursePageB.courseTypeCard.title")}
                                 value={
                                     <div className="flex items-center gap-2">
-                                        <Badge variant={isTeamBased ? "default" : "secondary"}>
-                                            {isTeamBased
-                                                ? t("courseType.teamBased")
-                                                : t("courseType.solo")}
-                                        </Badge>
+                                        {isTeamBased
+                                            ? t("courseType.teamBased")
+                                            : t("courseType.solo")}
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Info
@@ -178,43 +183,38 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 }
                             />
                             {!isTeamBased && (
-                                <ValueDisplay
-                                    label={t("coursePageB.courseAccessKeyCard.title")}
-                                    value={
-                                        <>
-                                            {isCourseAccessKeyLoading ? (
-                                                <Skeleton className="h-8 w-full"/>
-                                            ) : courseAccessKey?.keyValue ? (
-                                                <div className="flex items-center gap-2">
-                                                    <Badge variant="destructive">
-                                                        {courseAccessKey.keyValue}
-                                                    </Badge>
-                                                    <Copy
-                                                        className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                                                        onClick={() => {
-                                                            navigator.clipboard.writeText(
-                                                                courseAccessKey.keyValue || ""
-                                                            );
-                                                            toast.success(
-                                                                t(
-                                                                    "coursePageB.courseAccessKeyCard.keyCopiedToast"
-                                                                )
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    <Button onClick={() => open("createCourseKey")}>
-                                                        <PlusIcon/>
-                                                        {t("coursePageB.courseAccessKeyCard.button")}
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </>
-                                    }
-                                />
-                            )}
+    <>
+        {(isCourseAccessKeyLoading || !courseAccessKey) ? (
+            <div className="col-span-2">
+                {isCourseAccessKeyLoading ? (
+                    <Skeleton className="h-9 w-32" />
+                ) : (
+                    <Button variant="destructive" size="sm" onClick={() => open("createCourseKey")}>
+                        <KeyRound />
+                        {t("coursePageB.courseAccessKeyCard.button")}
+                    </Button>
+                )}
+            </div>
+        ) : (
+            <ValueDisplay
+                className="col-span-2"
+                label={t("coursePageB.courseAccessKeyCard.title")}
+                value={
+                    <div className="flex items-center gap-2 text-destructive">
+                        {courseAccessKey.keyValue}
+                        <Copy
+                            className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                            onClick={async () => {
+                                await navigator.clipboard.writeText(courseAccessKey.keyValue || "");
+                                toast.success(t("coursePageB.courseAccessKeyCard.keyCopiedToast"));
+                            }}
+                        />
+                    </div>
+                }
+            />
+        )}
+    </>
+)}
                         </div>
                     </CardContent>
                 </Card>
@@ -253,7 +253,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         </Card>
                     </Collapsible>
                 </div>
-                <StatefulResourceGroups courseId={id} clusterId={course?.clusterId ?? ''} />
+                <StatefulResourceGroups courseId={id} clusterId={course?.clusterId ?? ''}/>
                 <Card>
                     <CardHeader>
                         <CardTitle>{t("coursePools.title")}</CardTitle>

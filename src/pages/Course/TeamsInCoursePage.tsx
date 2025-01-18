@@ -69,7 +69,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 export default TeamsInCoursePage;
 
 export const handle: RouteHandle = {
-    roles: ["administrator", "teacher"],
+    roles: ["teacher"],
 };
 
 interface MetaData {

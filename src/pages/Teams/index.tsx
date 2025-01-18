@@ -1,7 +1,7 @@
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import {ColumnDef} from "@tanstack/react-table";
-import {ArrowUpDown, XIcon} from "lucide-react"
+import {ArrowDown, ArrowUp, ArrowUpDown, XIcon} from "lucide-react"
 import {Button} from "@/components/ui/button";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUsersTeams} from "@/data/team/useUsersTeams";
@@ -20,6 +20,7 @@ import {RouteHandle} from "@/AuthGuard";
 import {t} from "i18next";
 import React from "react";
 import { useDebounce } from "use-debounce";
+import { Input } from "@/components/ui/input";
 
 interface TeamWithCourseDto {
     id: string;
@@ -42,10 +43,12 @@ const TeamsPage = () => {
 
     const pageNumber = parseInt(searchParams.get("page") ?? "0", 10);
     const pageSize = parseInt(searchParams.get("size") ?? "10", 10);
-    const {teams, isLoading} = useUsersTeams(pageNumber, pageSize);
-
+    const sort = (searchParams.get("sort") ?? "ASC") as "ASC" | "DESC";
     const [search, setSearch] = React.useState("");
     const [searchValue] = useDebounce(search, 500);
+    
+    const {teams, isLoading} = useUsersTeams(pageNumber, pageSize, searchValue, sort);
+
 
     if (isLoading) {
         return (
@@ -79,14 +82,20 @@ const TeamsPage = () => {
     const columns: ColumnDef<TeamWithCourseDto>[] = [
         {
             accessorKey: "name",
-            header: ({column}) => (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="w-full justify-start pl-2"
+            header: () => (
+                <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                        const newSort = sort === "ASC" ? "DESC" : "ASC";
+                        navigate(`/teams?page=${pageNumber}&size=${pageSize}&sort=${newSort}`);
+                    }}
                 >
                     {t('teamsList.table.columns.name')}
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    {sort === "ASC" ? (
+                        <ArrowUp className="ml-2 h-4 w-4" />
+                    ) : (
+                        <ArrowDown className="ml-2 h-4 w-4" />
+                    )}
                 </Button>
             ),
         },
@@ -101,6 +110,21 @@ const TeamsPage = () => {
             <PageHeader title={t('teamsList.title')} />
             <div className="pb-5">
                 <JoinTeamModal />
+            </div>
+            <div className="flex flex-row gap-2 mb-5">
+                <Input
+                    placeholder={t("teamsList.searchPlaceholder")}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <Button
+                    onClick={() => {
+                        setSearch("");
+                    }}
+                >
+                    <XIcon />
+                    {t("teamsList.clear")}
+                </Button>
             </div>
             <div className="[&_.inactive-row]:opacity-60">
                 <DataTable

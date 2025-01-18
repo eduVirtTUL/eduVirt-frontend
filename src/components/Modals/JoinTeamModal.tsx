@@ -12,7 +12,10 @@ import {t} from "i18next";
 import {useJoinTeamOrCourse} from "@/data/team/users/useJoinTeamOrCourse";
 
 const joinTeamSchema = z.object({
-    teamKey: z.string().min(4, t("joinTeam.validation.keyMinLength")).max(20, t("joinTeam.validation.keyMaxLength")).regex(/^[a-zA-Z0-9\s\-_]+$/, t("joinTeam.validation.keyRegex"))
+    teamKey: z.string()
+    .min(4, t("joinTeam.validation.keyMinLength"))
+    .max(20, t("joinTeam.validation.keyMaxLength"))
+    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("joinTeam.validation.keyRegex"))
 });
 
 const JoinTeamModal = () => {
@@ -28,6 +31,7 @@ const JoinTeamModal = () => {
     });
 
     const onSubmit = (values: z.infer<typeof joinTeamSchema>) => {
+        console.log(values.teamKey);
         joinTeam(values.teamKey);
         setOpen(false);
         form.reset();

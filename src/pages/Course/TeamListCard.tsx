@@ -5,7 +5,8 @@ import {useTranslation} from "react-i18next";
 import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
 import {
-    ArrowUpDown, CalendarIcon,
+    ArrowUpDown,
+    CalendarIcon,
     Copy,
     FileCheck2,
     FileX2,
@@ -42,7 +43,7 @@ import {useDeleteTeam} from "@/data/team/useDeleteTeam";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
-import {Link} from "react-router";
+import {useNavigate} from "react-router";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -56,15 +57,15 @@ interface TeamsTableProps {
 }
 
 const TeamListCard: React.FC<TeamsTableProps> = ({
-    isTeamBased,
-    teams,
-    isLoading,
-    teamQueries,
-    pageNumber,
-    setPageNumber,
-    courseId,
-    courseName,
-}) => {
+                                                     isTeamBased,
+                                                     teams,
+                                                     isLoading,
+                                                     teamQueries,
+                                                     pageNumber,
+                                                     setPageNumber,
+                                                     courseId,
+                                                     courseName,
+                                                 }) => {
     const {t} = useTranslation();
     const {open} = useDialog();
     const {deleteTeam} = useDeleteTeam();
@@ -77,6 +78,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
     const [manageStatelessPodsOpen, setManageStatelessPodsOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleDeleteTeam = async () => {
         if (teamToDelete?.id) {
@@ -107,12 +109,12 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
         },
         {
             accessorKey: "users",
-            header: isTeamBased 
+            header: isTeamBased
                 ? t("coursePageB.teamsTable.columns.members")
                 : t("coursePageB.teamsTable.columns.member"),
             cell: ({row}: { row: Row<TeamDto> }) => {
                 const users = row.original.users || [];
-                
+
                 if (!isTeamBased) {
                     const user = users[0];
                     return user ? (
@@ -268,13 +270,11 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                             <FileX2 className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link to={`/reservations/teams/${row.original.id}`}>
-                                <DropdownMenuItem>
-                                    <CalendarIcon className="h-4 w-4 mr-2" />
-                                    {t("coursePageB.teamsTable.dropdownMenu.reservations")}
-                                </DropdownMenuItem>
-                            </Link>
+                        <DropdownMenuItem
+                            onClick={() => navigate(`/reservations/teams/${row.original.id}`)}
+                        >
+                            <CalendarIcon className="h-4 w-4 mr-2"/>
+                            {t("coursePageB.teamsTable.dropdownMenu.reservations")}
                         </DropdownMenuItem>
                         {isTeamBased && (
                             <DropdownMenuItem
@@ -296,10 +296,10 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
 
     const filteredTeams = useMemo(() => {
         if (!teams?.items || !searchValue) return teams?.items;
-        
-        return teams.items.filter(team => 
+
+        return teams.items.filter(team =>
             team.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
-            team.users?.some(user => 
+            team.users?.some(user =>
                 (user.userName || user.email || '')
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
@@ -389,7 +389,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     teamId={selectedTeamId}
                 />
             )}
-            
+
             {selectedTeamId && manageStatelessPodsOpen && (
                 <StatelessPodDrawer
                     open={manageStatelessPodsOpen}
