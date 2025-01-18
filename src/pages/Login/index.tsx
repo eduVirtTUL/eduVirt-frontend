@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
           <img src={logo} className="w-60" />
           <Button
             onClick={() => {
-              window.location.href = "http://localhost:8080/auth/login";
+              window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
             }}
           >
             Login using oVirt SSO

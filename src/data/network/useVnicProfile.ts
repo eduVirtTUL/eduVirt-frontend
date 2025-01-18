@@ -1,13 +1,15 @@
-import {VnicProfileControllerApi} from "@/api";
+import {VnicProfilePoolMemberDto} from "@/api";
 import {useQuery} from "@tanstack/react-query";
 import {keys} from "../keys";
+import {privateAxios} from "@/data/privateAxios";
 
 export const useVnicProfile = (id: string) => {
     const {data, isLoading} = useQuery({
         queryKey: [keys.VNIC_PROFILE, id],
         queryFn: async () => {
-            const vnicProfileController = new VnicProfileControllerApi();
-            const response = await vnicProfileController.getVnicProfileFromPool(id);
+            const response = await privateAxios.get<VnicProfilePoolMemberDto>(
+                `/resources/vnic-profiles/eduvirt/${id}`
+            );
             return response.data;
         },
     });
