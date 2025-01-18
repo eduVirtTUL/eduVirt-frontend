@@ -14,7 +14,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 const columns = (
   t: TFunction,
   handleSort: (column: string) => void,
-  chooseSortingArrow: (column: string) => JSX.Element
+  chooseSortingArrow: (column: string) => React.ReactNode
 ): ColumnDef<EventGeneralDto>[] => [
   {
     accessorKey: "message",
@@ -66,21 +66,21 @@ const VmEventList: React.FC<VmEventListProps> = ({
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
-  const [ sortColumn, setSortColumn ] = useState<string | null>(null);
-  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc" | null>(null);
+  const [ sortColumn, setSortColumn ] = useState<string>("time");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("desc");
 
   const { events, isLoading } = useVmEvents({
     id: id,
     page: pageNumber,
     size: pageSize,
-    sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { events: nextEvents, isLoading: nextLoading } = useVmEvents({
     id: id,
     page: pageNumber + 1,
     size: pageSize,
-    sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const handleSort = useCallback((column: string) => {

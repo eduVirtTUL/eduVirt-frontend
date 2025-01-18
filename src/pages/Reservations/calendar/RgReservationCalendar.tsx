@@ -1,11 +1,11 @@
 import { Route } from "../+types/index";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../../styles/fullcalendar-shadcn.css";
 import { useResourceGroupAvailability } from "@/data/reservation/useResourceGroupAvailability";
 import { useResourceGroupReservations } from "@/data/reservation/useResourceGroupReservations";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import ReservationCalendar from "@/pages/Reservations/calendar/ReservationCalendar";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
 
 type TimeRange = {
@@ -15,7 +15,8 @@ type TimeRange = {
 
 const RgReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
   const location = useLocation();
-  const { clusterId, courseId, podId } = location.state || {};
+  const { clusterId, courseId, podId, maxRentTime } = location.state || {};
+  const navigate = useNavigate();
 
   const [ currentRange, setCurrentRange ] = useState<TimeRange>({start: null, end: null});
   const { resources, isLoading: resourcesLoading } = useResourceGroupAvailability(courseId!, id!, currentRange.start!, currentRange.end!);
@@ -26,6 +27,10 @@ const RgReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } 
     start: currentRange.start,
     end: currentRange.end
   });
+
+  useEffect(() => {
+    if ((!reservationsLoading && !reservations) && !(resourcesLoading && !resources)) navigate(-1);
+  }, [navigate, resources, resourcesLoading, reservations, reservationsLoading]);
 
   return (
     <>
@@ -38,7 +43,9 @@ const RgReservationCalendar: React.FC<Route.ComponentProps> = ({ params: { id } 
         resources={resources}
         resourcesLoading={resourcesLoading}
         reservations={reservations}
-        reservationsLoading={reservationsLoading} />
+        reservationsLoading={reservationsLoading}
+        maxRentTime={maxRentTime}
+      />
     </>
   );
 };

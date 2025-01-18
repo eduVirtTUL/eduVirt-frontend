@@ -4,9 +4,9 @@ import { NetworkDto } from "@/api";
 import { privateAxios } from "@/data/privateAxios";
 
 type UseNetworksParams = {
-  id: string,
-  page: number,
-  size: number
+  id: string;
+  page: number;
+  size: number;
 }
 
 export const useNetworks = ({id, page, size}: UseNetworksParams) => {

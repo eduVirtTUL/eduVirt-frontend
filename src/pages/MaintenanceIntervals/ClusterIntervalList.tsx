@@ -1,9 +1,23 @@
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import {CalendarIcon, MoreHorizontal, TrashIcon, Undo2, X, XIcon} from "lucide-react";
-import React, {useEffect, useRef, useState} from "react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  CalendarIcon,
+  MoreHorizontal,
+  TrashIcon,
+  Undo2,
+  XIcon
+} from "lucide-react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -20,21 +34,39 @@ import { useTranslation } from "react-i18next";
 import i18next, { TFunction } from "i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "sonner";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { useDialog } from "@/stores/dialogStore";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 
 const columns= (
-    t: TFunction,
-    onDelete: (id: MaintenanceIntervalDto) => void,
+  t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode,
+  onDelete: (id: MaintenanceIntervalDto) => void,
 ): ColumnDef<MaintenanceIntervalDto>[] => [
-  { accessorKey: "cause", header: t("maintenanceIntervals.cluster.table.columns.cause") },
-  { accessorKey: "description", header: t("maintenanceIntervals.cluster.table.columns.description") },
-  { accessorKey: "type", header: t("maintenanceIntervals.cluster.table.columns.type") },
   {
-    accessorKey: "beginAt", header: t("maintenanceIntervals.cluster.table.columns.start"),
+    accessorKey: "cause",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("cause")}>
+          {t("maintenanceIntervals.cluster.table.columns.cause")}
+          {(chooseSortingArrow("cause"))}
+        </Button>
+      );
+    }
+  },
+  { accessorKey: "description", header: t("maintenanceIntervals.cluster.table.columns.description") },
+  { accessorKey: "type",  header: t("maintenanceIntervals.cluster.table.columns.type") },
+  {
+    accessorKey: "beginAt",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("beginAt")}>
+          {t("maintenanceIntervals.cluster.table.columns.start")}
+          {(chooseSortingArrow("beginAt"))}
+        </Button>
+      );
+    },
     cell: (start) => {
       const value = start.getValue() as string;
       const startTime = new Date(value + 'Z');
@@ -42,7 +74,15 @@ const columns= (
     },
   },
   {
-    accessorKey: "endAt", header: t("maintenanceIntervals.cluster.table.columns.end"),
+    accessorKey: "endAt",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("endAt")}>
+          {t("maintenanceIntervals.cluster.table.columns.end")}
+          {(chooseSortingArrow("endAt"))}
+        </Button>
+      );
+    },
     cell: (end) => {
       const value = end.getValue() as string;
       const endTime = new Date(value + 'Z');
@@ -104,20 +144,25 @@ const ClusterIntervalList: React.FC = () => {
   const { id } = useParams();
   const [ active, setActive ] = useState<boolean>(true);
 
+  const [ sortColumn, setSortColumn ] = useState<string>(active ? "beginAt" : "endAt");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
+
   const deleteInterval = useRef<MaintenanceIntervalDto>();
 
   const { intervals, isLoading } = useMaintenanceIntervals({
     clusterId: id,
     active: active,
     page: pageNumber,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { intervals: nextIntervals, isLoading: nextLoading } = useMaintenanceIntervals({
     clusterId: id,
     active: active,
     page: pageNumber,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
@@ -128,24 +173,25 @@ const ClusterIntervalList: React.FC = () => {
   };
 
   useEffect(() => {
-    const checkAuthorization = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate(-1);
-        return;
-      }
+    if (!isLoading && !intervals) navigate(-1);
+  }, [navigate, t, intervals, isLoading]);
 
-      const decoded = jwtDecode<{ groups: string[] }>(token);
-      const userGroups = decoded.groups;
-
-      if (!userGroups.includes("/ovirt-administrator")) {
-        toast.error(t("general.error.not.authorized"));
-        navigate(-1);
-      }
+  const handleSort = useCallback((column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
     }
+  }, [sortColumn]);
 
-    checkAuthorization();
-  }, [navigate, t]);
+  const chooseSortingArrow = (column: string) => {
+    if (column === sortColumn && sortDirection === "desc")
+      return <ArrowDown className="ml-2 h-4 w-4" />;
+    else if (column === sortColumn && sortDirection === "asc")
+      return <ArrowUp className="ml-2 h-4 w-4" />;
+    return <ArrowUpDown className="ml-2 h-4 w-4" />;
+  };
 
   if (isLoading || nextLoading) {
     return (
@@ -227,7 +273,7 @@ const ClusterIntervalList: React.FC = () => {
       </div>
 
       <DataTable
-        columns={columns(t, handleRemoveMaintenanceInterval)}
+        columns={columns(t, handleSort, chooseSortingArrow, handleRemoveMaintenanceInterval)}
         data={intervals ?? []}
       />
 

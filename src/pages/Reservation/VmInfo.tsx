@@ -6,7 +6,8 @@ import { VmDto } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ExternalLinkIcon } from "lucide-react";
-import {getBaseUnit} from "@/utils/unitUtils.js";
+import { getBaseUnit } from "@/utils/unitUtils.js";
+import {useUser} from "@/stores/userStore";
 
 type UseVmInfoProps = {
   vm: VmDto
@@ -16,6 +17,7 @@ const VmInfo: React.FC<UseVmInfoProps> = ({
   vm
 }) => {
   const { t } = useTranslation();
+  const { activeRole } = useUser();
 
   return (
     <>
@@ -39,10 +41,12 @@ const VmInfo: React.FC<UseVmInfoProps> = ({
           onClick={(e) => e.stopPropagation()}
           asChild
         >
-
           <Link
             target="_blank"
-            to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/web-ui/vm/${vm.id}`}
+            to={(activeRole === "teacher" || activeRole === "administrator") ?
+              `https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm.name}` :
+              `https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/web-ui/vm/${vm.id}`
+            }
           >
             <ExternalLinkIcon/>
             {t("reservations.details.rg.ovirt")}

@@ -17,10 +17,7 @@ export const useClusters = ({ page, size, sort }: UseClustersParams) => {
 
       searchParams.append("page", page.toString());
       searchParams.append("size", size.toString());
-
-      sort.forEach((sortElement) => (
-          searchParams.append("sort", sortElement)
-      ));
+      sort.forEach((sortElement) => (searchParams.append("sort", sortElement)));
 
       const response = await privateAxios.get<ClusterGeneralDto[]>(
         `/clusters`, { params: searchParams }

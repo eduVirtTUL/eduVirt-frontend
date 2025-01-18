@@ -12,15 +12,24 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button} from "@/components/ui/button";
-import {MoreHorizontal, PlusIcon, TrashIcon} from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  MoreHorizontal,
+  PlusIcon,
+  TrashIcon
+} from "lucide-react";
+import React, {
+  useCallback,
+  useRef,
+  useState
+} from "react";
 import CreateMetricModal from "@/components/Modals/CreateMetricModal";
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { getCategory } from "@/utils/unitUtils.js";
@@ -28,9 +37,21 @@ import { RouteHandle } from "@/AuthGuard";
 
 const columns = (
   t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode,
   onDelete: (id: string) => void
 ): ColumnDef<MetricDto>[] => [
-  { accessorKey: "name", header: t("metrics.table.columns.name") },
+  {
+    accessorKey: "name",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("name")}>
+          {t("metrics.table.columns.name")}
+          {(chooseSortingArrow("name"))}
+        </Button>
+      );
+    },
+  },
   {
     accessorKey: "category", header: t("metrics.table.columns.category") ,
     cell: (category) => {
@@ -77,36 +98,46 @@ const MetricsPage: React.FC = () => {
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
+  const [ sortColumn, setSortColumn ] = useState<string>("name");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
+
   const { open } = useDialog();
-  const { metrics, isLoading } = useMetrics({page: pageNumber, size: pageSize});
-  const { metrics: nextMetrics, isLoading: nextLoading } = useMetrics({page: pageNumber + 1, size: pageSize});
+  const { metrics, isLoading } = useMetrics({
+    page: pageNumber,
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
+  });
+
+  const { metrics: nextMetrics, isLoading: nextLoading } = useMetrics({
+    page: pageNumber + 1,
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
+  });
+
   const deleteId = useRef<string>();
 
   const { removeMetricAsync } = useRemoveMetric();
 
-  useEffect(() => {
-    const checkAuthorization = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate(-1);
-        return;
-      }
-
-      const decoded = jwtDecode<{ groups: string[] }>(token);
-      const userGroups = decoded.groups;
-
-      if (!userGroups.includes("/ovirt-administrator")) {
-        toast.error(t("general.error.not.authorized"));
-        navigate(-1);
-      }
-    }
-
-    checkAuthorization();
-  }, [navigate, t]);
-
   const handleRemoveMetric = (id: string) => {
     deleteId.current = id;
     open("confirmation");
+  };
+
+  const handleSort = useCallback((column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  }, [sortColumn]);
+
+  const chooseSortingArrow = (column: string) => {
+    if (column === sortColumn && sortDirection === "desc")
+      return <ArrowDown className="ml-2 h-4 w-4" />;
+    else if (column === sortColumn && sortDirection === "asc")
+      return <ArrowUp className="ml-2 h-4 w-4" />;
+    return <ArrowUpDown className="ml-2 h-4 w-4" />;
   };
 
   if (isLoading || nextLoading) {
@@ -169,7 +200,7 @@ const MetricsPage: React.FC = () => {
       </div>
 
       <DataTable columns={
-        columns(t, handleRemoveMetric)}
+        columns(t, handleSort, chooseSortingArrow, handleRemoveMetric)}
                  data={metrics ?? []}
       />
 

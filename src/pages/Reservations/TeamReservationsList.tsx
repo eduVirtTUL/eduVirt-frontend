@@ -1,14 +1,12 @@
 import { Route } from "./+types/index";
-import { useCourseReservations } from "@/data/reservation/useCourseReservations";
-import React, {useCallback, useState} from "react";
-import i18next from "i18next";
+import { useTeamReservations } from "@/data/reservation/useTeamReservations";
+import { useCallback, useState } from "react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { RouteHandle } from "@/AuthGuard";
+import i18next from "i18next";
 import ReservationTable from "@/pages/Reservations/ReservationTable";
-import {ArrowDown, ArrowUp, ArrowUpDown} from "lucide-react";
 
-const ReservationList: React.FC<Route.ComponentProps> = ({
-  params: { id }
-}) => {
+const TeamReservationList: React.FC<Route.ComponentProps> = ({ params: { id }}) => {
   const [ active, setActive ] = useState<boolean>(true);
 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
@@ -17,7 +15,7 @@ const ReservationList: React.FC<Route.ComponentProps> = ({
   const [ sortColumn, setSortColumn ] = useState<string>(active ? "startTime" : "endTime");
   const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
 
-  const { reservations, isLoading } = useCourseReservations({
+  const { reservations, isLoading } = useTeamReservations({
     id: id!,
     active: active,
     page: pageNumber,
@@ -25,7 +23,7 @@ const ReservationList: React.FC<Route.ComponentProps> = ({
     sort: [ `${sortColumn},${sortDirection}` ]
   });
 
-  const { reservations: nextReservations, isLoading: nextLoading } = useCourseReservations({
+  const { reservations: nextReservations, isLoading: nextLoading } = useTeamReservations({
     id: id!,
     active: active,
     page: pageNumber + 1,
@@ -69,12 +67,12 @@ const ReservationList: React.FC<Route.ComponentProps> = ({
   );
 };
 
-export default ReservationList;
+export default TeamReservationList;
 
 export const handle: RouteHandle = {
-  roles: ["student"],
+    roles: ["teacher", "administrator"],
 };
 
 export const meta = () => {
-  return [{ title: i18next.t("pageTitles.reservations") }];
+    return [{ title: i18next.t("pageTitles.reservations") }];
 };

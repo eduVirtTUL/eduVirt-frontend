@@ -1,14 +1,14 @@
 import { Route } from "../+types/index";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router";
-import { useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { useWindowLength } from "@/data/reservation/useWindowLength";
 import { useResourceGroupPoolAvailability } from "@/data/reservation/useResourceGroupPoolAvailability";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
 import { useResourceGroupPoolReservations } from "@/data/reservation/useResourceGroupPoolReservations";
 import ReservationPresentationCalendar from "@/pages/Reservations/calendar/ReservationPresentationCalendar";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
 
 type TimeRange = {
@@ -18,6 +18,7 @@ type TimeRange = {
 
 const RgPoolPresentationCalendar: React.FC<Route.ComponentProps> = ({ params: { id }}) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const location = useLocation();
   const { clusterId, courseId } = location.state || {};
@@ -36,6 +37,10 @@ const RgPoolPresentationCalendar: React.FC<Route.ComponentProps> = ({ params: { 
     start: currentRange.start,
     end: currentRange.end
   });
+
+  useEffect(() => {
+    if ((!reservationsLoading && !reservations) && !(resourcesLoading && !resources)) navigate(-1);
+  }, [navigate, resources, resourcesLoading, reservations, reservationsLoading]);
 
   return (
     <>

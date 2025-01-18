@@ -17,8 +17,6 @@ import EventCalendar from "@/components/EventCalendar";
 import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "sonner";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
 import MaintenanceIntervalModal from "@/components/Modals/MaintenanceIntervalModal";
@@ -52,24 +50,8 @@ const MaintenanceCalendar: React.FC = () => {
   const [ clickedEvent, setClickedEvent ] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkAuthorization = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate(-1);
-        return;
-      }
-
-      const decoded = jwtDecode<{ groups: string[] }>(token);
-      const userGroups = decoded.groups;
-
-      if (!userGroups.includes("/ovirt-administrator")) {
-        toast.error(t("general.error.not.authorized"));
-        navigate(-1);
-      }
-    }
-
-    checkAuthorization();
-  }, [navigate, t]);
+    if (!intervalsLoading && !intervals) navigate(-1);
+  }, [navigate, t, intervalsLoading, intervals]);
 
   useEffect(() => {
     if (!intervalsLoading && intervals) {

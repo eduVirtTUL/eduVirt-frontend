@@ -19,9 +19,14 @@ const ResourceGroupDetails: React.FC<ResourceGroupDetails> = ({id}) => {
   if (vmsLoading) {
     return (
       <>
-        <div className={"p-4 w-1/2 flex items-center space-x-2"}>
-          <Skeleton className={"h-8 w-[100px]"} />
-          <Skeleton className={"h-8 w-[200px]"} />
+        <div className="flex items-center justify-center space-x-2">
+          <Accordion type="single" collapsible className="w-3/4">
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((row) => (
+              <div key={row} className="w-full p-2">
+                <Skeleton className={"h-12 w-full"} />
+              </div>
+            ))}
+          </Accordion>
         </div>
       </>
     );

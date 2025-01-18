@@ -18,6 +18,7 @@ export type ErrorKey =
   | "course.not.found"
   | "resource.group.not.found"
   | "resource.group.pool.not.found"
+  | "clusters.error.not.found"
   | "metrics.error.not.found"
   | "metrics.error.delete.exception"
   | "metrics.error.name.already.taken"

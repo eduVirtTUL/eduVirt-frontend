@@ -64,8 +64,8 @@ const CreateClusterMetricValueModal: React.FC<
   const { isOpen, close } = useDialog();
   const { createClusterMetricValueAsync } = useCreateClusterMetricValue(clusterId!);
 
-  const { metrics } = useMetrics({ page: pageNumber, size: pageSize});
-  const { metrics: nextMetrics } = useMetrics({ page: pageNumber + 1, size: pageSize});
+  const { metrics } = useMetrics({ page: pageNumber, size: pageSize, sort: [ "name,ASC" ]});
+  const { metrics: nextMetrics } = useMetrics({ page: pageNumber + 1, size: pageSize, sort: [ "name,ASC" ]});
 
   const [ allMetrics, setAllMetrics ] = useState<MetricDto[]>([]);
 

@@ -15,18 +15,18 @@ import { toast } from "sonner";
 import {RouteHandle} from "@/AuthGuard";
 
 const columns = (
-    t: TFunction,
-    handleSort: (column: string) => void,
-    chooseSortingArrow: (column: string) => JSX.Element
+  t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode
 ): ColumnDef<ClusterGeneralDto>[] => [
   {
     accessorKey: "name",
     header: () => {
       return (
-          <Button variant="ghost" onClick={() => handleSort("name")}>
-            {t("clusters.table.columns.name")}
-            {(chooseSortingArrow("name"))}
-          </Button>
+        <Button variant="ghost" onClick={() => handleSort("name")}>
+          {t("clusters.table.columns.name")}
+          {(chooseSortingArrow("name"))}
+        </Button>
       );
     }
   },
@@ -58,8 +58,8 @@ const MaintenancePage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [ sortColumn, setSortColumn ] = useState<string | null>(null);
-  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc" | null>(null);
+  const [ sortColumn, setSortColumn ] = useState<string>("name");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     const checkAuthorization = async () => {

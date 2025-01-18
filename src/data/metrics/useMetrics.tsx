@@ -4,20 +4,22 @@ import { PageDtoMetricDto } from "@/api";
 import { privateAxios } from "@/data/privateAxios";
 
 type UseMetricsParams = {
-  page: number,
-  size: number
+  page: number;
+  size: number;
+  sort: string[];
 }
 
 export const useMetrics = ({
-  page, size
+  page, size, sort
 }: UseMetricsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.METRICS, page, size ],
+    queryKey: [ keys.METRICS, page, size, sort ],
     queryFn: async () => {
       const searchParams = new URLSearchParams();
 
       searchParams.append("page", page.toString());
       searchParams.append("size", size.toString());
+      sort.forEach((sortElement) => (searchParams.append("sort", sortElement)));
 
       const response = await privateAxios.get<PageDtoMetricDto>(
         `/metrics`, { params: searchParams }
