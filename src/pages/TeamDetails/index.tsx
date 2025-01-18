@@ -257,6 +257,7 @@ const TeamDetailsPage: React.FC = () => {
                                         )
                                         .map((pod) => (
                                             ((pod.resourceGroup || pod.resourceGroupPool) && pod.course) && (
+                                                // TODO: Add maxRentTime to DTO
                                                 <PodCard
                                                     key={pod.id}
                                                     id={pod.id || ''}
@@ -264,12 +265,14 @@ const TeamDetailsPage: React.FC = () => {
                                                         id: pod.resourceGroupPool?.id || '',
                                                         name: pod.resourceGroupPool?.name || '',
                                                         isStateless: true,
-                                                        maxRentTime: pod.resourceGroupPool?.maxRentTime || 0
+                                                        maxRentTime: pod.resourceGroupPool?.maxRentTime || 12,
+                                                        maxRent: pod.resourceGroupPool?.maxRent || 0
                                                     } : {
                                                         id: pod.resourceGroup?.id || '',
                                                         name: pod.resourceGroup?.name || '',
                                                         isStateless: false,
-                                                        maxRentTime: pod.resourceGroup?.maxRentTime || 0
+                                                        maxRentTime: pod.resourceGroup?.maxRentTime || 12,
+                                                        maxRent: pod.maxRent || 0
                                                     }}
                                                     course={{
                                                         id: pod.course.id || '',

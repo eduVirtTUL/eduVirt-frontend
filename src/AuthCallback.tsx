@@ -69,7 +69,7 @@ const AuthCallback: React.FC = () => {
   }, [token, set, changeActiveRole]);
 
   if (!token) {
-    removeCookie("access_token");
+    removeCookie("access_token", { domain: "localhost", path: "/"});
     localStorage.removeItem("token");
     window.location.href = "http://localhost:8080/auth/login";
   } else {
