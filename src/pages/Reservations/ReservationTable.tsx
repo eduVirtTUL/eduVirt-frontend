@@ -1,12 +1,6 @@
 import { ReservationDto } from "@/api";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import {ExternalLink, Undo2} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ColumnDef } from "@tanstack/react-table";
 import { TFunction } from "i18next";
@@ -17,11 +11,16 @@ import { Label } from "@/components/ui/label";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 import { useTranslation } from "react-i18next";
+import React from "react";
+import {useNavigate} from "react-router";
 
 type ReservationTableProps = {
   pageNumber: number;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   pageSize: number;
+
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode,
 
   active: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,11 +33,20 @@ type ReservationTableProps = {
 };
 
 const columns = (
-  t: TFunction
+  t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode
 ): ColumnDef<ReservationDto>[] => [
   {
     accessorKey: "resourceGroup.name",
-    header: t("reservations.table.columns.rgName"),
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("resourceGroup.name")}>
+          {t("reservations.table.columns.rgName")}
+          {(chooseSortingArrow("resourceGroup.name"))}
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "resourceGroup.stateless",
@@ -50,10 +58,25 @@ const columns = (
   },
   {
     accessorKey: "team.name",
-    header: t("reservations.table.columns.teamName"),
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("resourceGroup.name")}>
+          {t("reservations.table.columns.teamName")}
+          {(chooseSortingArrow("team.name"))}
+        </Button>
+      );
+    },
   },
   {
-    accessorKey: "start", header: t("reservations.table.columns.start"),
+    accessorKey: "start",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("startTime")}>
+          {t("reservations.table.columns.start")}
+          {(chooseSortingArrow("startTime"))}
+        </Button>
+      );
+    },
     cell: (start) => {
       const value = start.getValue() as string;
       const startTime = new Date(value + 'Z');
@@ -61,7 +84,15 @@ const columns = (
     },
   },
   {
-    accessorKey: "end", header: t("reservations.table.columns.end"),
+    accessorKey: "end",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("endTime")}>
+          {t("reservations.table.columns.end")}
+          {(chooseSortingArrow("endTime"))}
+        </Button>
+      );
+    },
     cell: (end) => {
       const value = end.getValue() as string;
       const endTime = new Date(value + 'Z');
@@ -74,33 +105,28 @@ const columns = (
       const reservation = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">
-                {t("reservations.table.openMenu")}
-              </span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link to={`/reservations/${reservation.id}`}>
-                {t("reservations.table.showDetails")}
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <div className="flex justify-end">
+            <Link
+              to={`/reservations/${reservation.id}`}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+            >
+              <ExternalLink className="h-4 w-4"/>
+              <span className="sr-only">{t("reservations.table.showDetails")}</span>
+            </Link>
+          </div>
+        </>
       );
     },
   },
 ];
 
 const ReservationTable: React.FC<ReservationTableProps> = ({
-    pageNumber, setPageNumber, pageSize,
+    pageNumber, setPageNumber, pageSize, handleSort, chooseSortingArrow,
   active, setActive, reservations, isLoading, nextReservations, nextLoading
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   if (isLoading || nextLoading) {
     return (
@@ -142,7 +168,15 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
 
   return (
     <>
-      <PageHeader title={t("reservations.title")} />
+      <div className="flex justify-start">
+        <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
+          <Undo2/>
+        </Button>
+        <PageHeader title={t("reservations.title")} />
+        {/*<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">*/}
+        {/*  {t("reservations.altName")}*/}
+        {/*</h3>*/}
+      </div>
 
       <div className="p-3 flex flex-row items-center justify-end">
         <div className={"flex flex-row space-x-3"}>
@@ -154,7 +188,7 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
       </div>
 
       <SimpleDataTable
-        columns={columns(t)}
+        columns={columns(t, handleSort, chooseSortingArrow)}
         data={reservations ?? []}
       />
 

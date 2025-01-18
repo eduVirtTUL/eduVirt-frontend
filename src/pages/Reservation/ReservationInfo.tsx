@@ -8,9 +8,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useFinishReservation } from "@/data/reservation/useFinishReservation";
 import { useTeam } from "@/data/team/useTeam";
-import { jwtDecode } from "jwt-decode";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Info } from "lucide-react";
+import { useUser } from "@/stores/userStore";
 
 type ReservationDetailsProps = {
   reservation: ReservationDetailsDto,
@@ -24,6 +24,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
 
   const [ authorized, setAuthorized ] = useState<boolean>(false);
   const { team, isLoading } = useTeam(reservation.team?.id ? reservation.team.id : '');
+  const user = useUser();
 
   const { finishReservationAsync } = useFinishReservation();
 
@@ -35,24 +36,12 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
   };
 
   useEffect(() => {
-    const checkAuthorization = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate(-1);
-        return;
+    if (!isLoading && team) {
+      if ((user.activeRole === "student" && team.users?.some(userDto => userDto.id === user.id)) ||
+          user.activeRole === "teacher" || user.activeRole === "administrator") {
+        setAuthorized(true);
       }
-
-      const decoded = jwtDecode<{ sub: string }>(token);
-      const userId = decoded.sub;
-
-      if (!isLoading && team) {
-        if (team.users?.some(user => user.id === userId)) {
-          setAuthorized(true);
-        }
-      }
-    };
-
-    checkAuthorization();
+    }
   }, [team, isLoading, navigate]);
 
   return (
@@ -90,17 +79,22 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
             value: new Date(reservation.end + 'Z').toLocaleString()
           },
           {
-            label: t("reservations.details.general.rgId"),
-            link: {
-              label: t("reservations.details.general.rgButton"),
-              path: `/rg/${reservation.resourceGroup?.id}`,
-            },
-          },
-          {
             label: t("reservations.details.general.teamId"),
+            showButton: team?.users?.map((userDto) => userDto.id).includes(user.id),
+            value: reservation.team?.id,
             link: {
               label: t("reservations.details.general.teamButton"),
               path: `/teams/${reservation.team?.id}`,
+            },
+          },
+          {
+            label: t("reservations.details.general.rgId"),
+            showButton: team?.users?.map((userDto) => userDto.id).includes(user.id) ||
+                user.activeRole === "teacher" || user.activeRole === "administrator",
+            value: reservation.resourceGroup?.id,
+            link: {
+              label: t("reservations.details.general.rgButton"),
+              path: `/rg/${reservation.resourceGroup?.id}`,
             },
           },
         ].map((field, index) => (
@@ -121,7 +115,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
               )}
               <Label>{field.label}</Label>
             </div>
-            {(field.link && authorized) ?
+            {(field.link && field.showButton) ?
               <Button className="w-1/2 text-wrap" onClick={() => (navigate(field.link.path))}>
                 {/* @ts-expect-error this doesn't impact the page */}
                 {t(field.link.label)}

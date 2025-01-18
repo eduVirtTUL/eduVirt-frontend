@@ -8,9 +8,9 @@ import { CardContent } from "@/components/ui/card";
 import { useNetworks } from "@/data/cluster/useNetworks";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
-import {Button} from "@/components/ui/button";
-import {Link} from "react-router";
-import {ExternalLinkIcon} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { ExternalLinkIcon } from "lucide-react";
 
 type NetworkListProps = {
     clusterId: string;
@@ -40,8 +40,17 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId, clusterName }) => 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
 
-  const { networks, isLoading } = useNetworks({id: clusterId, page: pageNumber, size: pageSize});
-  const { networks: nextNetworks, isLoading: nextLoading } = useNetworks({id: clusterId, page: pageNumber + 1, size: pageSize});
+  const { networks, isLoading } = useNetworks({
+    id: clusterId,
+    page: pageNumber,
+    size: pageSize
+  });
+
+  const { networks: nextNetworks, isLoading: nextLoading } = useNetworks({
+    id: clusterId,
+    page: pageNumber + 1,
+    size: pageSize
+  });
 
   if (isLoading || nextLoading) {
     return (

@@ -1,8 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, {useCallback, useRef, useState} from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MaintenanceIntervalDto } from "@/api";
 import DataTable from "@/components/DataTable";
-import { CalendarIcon, MoreHorizontal, TrashIcon, XIcon } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  CalendarIcon,
+  MoreHorizontal,
+  TrashIcon,
+  XIcon
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { Switch } from "@/components/ui/switch";
@@ -27,13 +35,32 @@ type SystemIntervalListProps = {
 };
 
 const columns = (
-    t: TFunction,
-    onDelete: (id: MaintenanceIntervalDto) => void,
+  t: TFunction,
+  handleSort: (column: string) => void,
+  chooseSortingArrow: (column: string) => React.ReactNode,
+  onDelete: (id: MaintenanceIntervalDto) => void,
 ): ColumnDef<MaintenanceIntervalDto>[] => [
-  { accessorKey: "cause", header: t("maintenanceIntervals.system.table.columns.cause") },
+  {
+    accessorKey: "cause",
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("cause")}>
+          {t("maintenanceIntervals.system.table.columns.cause")}
+          {(chooseSortingArrow("cause"))}
+        </Button>
+      );
+    }
+  },
   { accessorKey: "description", header: t("maintenanceIntervals.system.table.columns.description") },
   {
-    accessorKey: "beginAt", header: t("maintenanceIntervals.system.table.columns.start"),
+    accessorKey: "beginAt", header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("beginAt")}>
+          {t("maintenanceIntervals.system.table.columns.start")}
+          {(chooseSortingArrow("beginAt"))}
+        </Button>
+      );
+    },
     cell: (start) => {
       const value = start.getValue() as string;
       const startTime = new Date(value + 'Z');
@@ -41,7 +68,14 @@ const columns = (
     },
   },
   {
-    accessorKey: "endAt", header: t("maintenanceIntervals.system.table.columns.end"),
+    accessorKey: "endAt", header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("endAt")}>
+          {t("maintenanceIntervals.system.table.columns.end")}
+          {(chooseSortingArrow("endAt"))}
+        </Button>
+      );
+    },
     cell: (end) => {
       const value = end.getValue() as string;
       const endTime = new Date(value + 'Z');
@@ -102,20 +136,25 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
 
   const [ active, setActive ] = useState<boolean>(true);
 
+  const [ sortColumn, setSortColumn ] = useState<string>(active ? "beginAt" : "endAt");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("asc");
+
   const deleteInterval = useRef<MaintenanceIntervalDto>();
 
   const { intervals, isLoading } = useMaintenanceIntervals({
     clusterId: undefined,
     active: active,
     page: pageNumber,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { intervals: nextIntervals, isLoading: nextLoading } = useMaintenanceIntervals({
     clusterId: undefined,
     active: active,
     page: pageNumber + 1,
-    size: pageSize
+    size: pageSize,
+    sort: [ `${sortColumn},${sortDirection}` ]
   });
 
   const { removeMaintenanceIntervalAsync } = useRemoveMaintenanceInterval();
@@ -123,6 +162,23 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
   const handleRemoveMaintenanceInterval = async (maintenanceInterval: MaintenanceIntervalDto) => {
     deleteInterval.current = maintenanceInterval;
     open("confirmation")
+  };
+
+  const handleSort = useCallback((column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  }, [sortColumn]);
+
+  const chooseSortingArrow = (column: string) => {
+    if (column === sortColumn && sortDirection === "desc")
+      return <ArrowDown className="ml-2 h-4 w-4" />;
+    else if (column === sortColumn && sortDirection === "asc")
+      return <ArrowUp className="ml-2 h-4 w-4" />;
+    return <ArrowUpDown className="ml-2 h-4 w-4" />;
   };
 
   if (isLoading || nextLoading) {
@@ -193,7 +249,7 @@ const SystemIntervalList: React.FC<SystemIntervalListProps> = () => {
       </div>
 
       <DataTable
-        columns={columns(t, handleRemoveMaintenanceInterval)}
+        columns={columns(t, handleSort, chooseSortingArrow, handleRemoveMaintenanceInterval)}
         data={intervals ?? []}
         paginationEnabled={true}
       />

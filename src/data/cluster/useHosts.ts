@@ -4,10 +4,10 @@ import { HostDto } from "@/api";
 import { privateAxios } from "@/data/privateAxios";
 
 type UseHostsParams = {
-  id: string,
-  page: number,
-  size: number,
-  sort: Array<string>
+  id: string;
+  page: number;
+  size: number;
+  sort: string[];
 }
 
 export const useHosts = ({
@@ -20,6 +20,7 @@ export const useHosts = ({
 
       searchParams.append("page", page.toString());
       searchParams.append("size", size.toString());
+      sort.forEach((sortElement) => searchParams.append("sort", sortElement));
 
       sort.forEach((sortElement) => (
           searchParams.append("sort", sortElement)

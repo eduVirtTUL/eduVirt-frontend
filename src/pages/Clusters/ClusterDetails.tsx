@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useClusterDetails } from "@/data/cluster/useClusterDetails";
-import {Link, useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Undo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import NetworkList from "@/pages/Clusters/NetworkList";
 import ClusterMetricsList from "@/pages/ClusterLimits/ClusterMetricsList";
 import PageHeader from "@/components/PageHeader";
-import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
@@ -28,8 +27,6 @@ const ClusterDetails: React.FC<ClusterDetailsProps> = ({ clusterId }) => {
 
   useEffect(() => {
     if (!clusterLoading && !cluster) {
-      {/* @ts-expect-error this doesn't impact the page */}
-      toast.error(t("clusters.error.not.found"));
       navigate(-1);
     }
   }, [cluster, clusterLoading, navigate, t]);

@@ -12,7 +12,7 @@ import { CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import ResourceGroupDetails from "@/pages/Reservation/ResourceGroupDetails";
-import {RouteHandle} from "@/AuthGuard";
+import { RouteHandle } from "@/AuthGuard";
 import i18next from "i18next";
 
 const ReservationPage: React.FC<Route.ComponentProps> = ({

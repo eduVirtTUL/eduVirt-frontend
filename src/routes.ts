@@ -65,6 +65,9 @@ export default [
         ...prefix("courses", [
           route(":id", "./pages/Reservations/ReservationList.tsx"),
         ]),
+        ...prefix("teams", [
+          route(":id", "./pages/Reservations/TeamReservationsList.tsx"),
+        ])
       ]),
 
       ...prefix("maintenance", [

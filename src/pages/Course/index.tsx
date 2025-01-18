@@ -5,7 +5,7 @@ import { useCourseResourceGroupPools } from "@/data/rgPool/useCourseResourceGrou
 import { useDialog } from "@/stores/dialogStore";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  ArrowUpDown,
+  ArrowUpDown, CalendarIcon,
   ChartCandlestickIcon,
   ChevronDown,
   ChevronLeft,
@@ -292,6 +292,12 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
               <FileX2 className="h-4 w-4 mr-2" />
               {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
             </DropdownMenuItem>
+            <Link to={`/reservations/teams/${row.original.id}`}>
+              <DropdownMenuItem>
+                <CalendarIcon className="h-4 w-4 mr-2" />
+                {t("coursePageB.teamsTable.dropdownMenu.reservations")}
+              </DropdownMenuItem>
+            </Link>
             {isTeamBased && (
               <DropdownMenuItem
                 onClick={() => {

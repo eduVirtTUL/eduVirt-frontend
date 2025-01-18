@@ -263,11 +263,13 @@ const TeamDetailsPage: React.FC = () => {
                                                     resourceGroup={pod.isStateless ? {
                                                         id: pod.resourceGroupPool?.id || '',
                                                         name: pod.resourceGroupPool?.name || '',
-                                                        isStateless: true
+                                                        isStateless: true,
+                                                        maxRentTime: pod.resourceGroupPool?.maxRentTime || 0
                                                     } : {
                                                         id: pod.resourceGroup?.id || '',
                                                         name: pod.resourceGroup?.name || '',
-                                                        isStateless: false
+                                                        isStateless: false,
+                                                        maxRentTime: pod.resourceGroup?.maxRentTime || 0
                                                     }}
                                                     course={{
                                                         id: pod.course.id || '',

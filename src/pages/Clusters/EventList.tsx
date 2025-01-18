@@ -22,11 +22,18 @@ type EventListProps = {
 const columns = (
   t: TFunction,
   handleSort: (column: string) => void,
-  chooseSortingArrow: (column: string) => JSX.Element
+  chooseSortingArrow: (column: string) => React.ReactNode
 ): ColumnDef<EventGeneralDto>[] => [
   {
     accessorKey: "message",
-    header: t("events.table.columns.message")
+    header: () => {
+      return (
+        <Button variant="ghost" onClick={() => handleSort("message")}>
+          {t("events.table.columns.message")}
+          {(chooseSortingArrow("message"))}
+        </Button>
+      );
+    }
   },
   {
     accessorKey: "severity",
@@ -70,8 +77,8 @@ const EventList: React.FC<EventListProps> = ({
 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);
-  const [ sortColumn, setSortColumn ] = useState<string | null>(null);
-  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc" | null>(null);
+  const [ sortColumn, setSortColumn ] = useState<string>("time");
+  const [ sortDirection, setSortDirection ] = useState<"asc" | "desc">("desc");
 
   const { events, isLoading } = useEvents({
     id: clusterId,
