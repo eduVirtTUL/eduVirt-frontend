@@ -28,9 +28,10 @@ import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDetailsModal";
+// import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDetailsModal";
 import { useDialog } from "@/stores/dialogStore";
 import BounceLoader from "react-spinners/BounceLoader";
+import {RouteHandle} from "@/AuthGuard";
 
 const VnicProfilesPage: React.FC = () => {
   const { vnicProfiles, isLoading } = useVnicProfiles();
@@ -247,7 +248,7 @@ const VnicProfilesPage: React.FC = () => {
     // return <LoaderIcon className="animate-spin size-10" />;
     return (
         <>
-          <ShowVnicProfileDetailsModal/>
+          {/*<ShowVnicProfileDetailsModal/>*/}
           <PageHeader title="Vnic profiles"/>
 
           <div className="pb-5">
@@ -265,7 +266,7 @@ const VnicProfilesPage: React.FC = () => {
 
   return (
       <>
-        <ShowVnicProfileDetailsModal/>
+        {/*<ShowVnicProfileDetailsModal/>*/}
         <PageHeader title="Vnic profiles"/>
 
         <div className="pb-5">
@@ -284,3 +285,11 @@ const VnicProfilesPage: React.FC = () => {
 };
 
 export default VnicProfilesPage;
+
+export const handle: RouteHandle = {
+  roles: ["administrator"],
+};
+
+export const meta = () => {
+  return [{ title: "Kanapka" }];
+};

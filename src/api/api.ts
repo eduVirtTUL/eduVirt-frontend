@@ -11807,8 +11807,8 @@ export class VmControllerApi extends BaseAPI {
 export const VnicProfileControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @param {string} vnicProfileId 
+         *
+         * @param {string} vnicProfileId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11829,7 +11829,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11840,7 +11840,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
+         *
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11858,7 +11858,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11869,7 +11869,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
+         *
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11887,7 +11887,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11898,12 +11898,13 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} id 
+         *
+         * @param {string} id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getVnicProfileFromPool: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            console.log("DUPA")
             // verify required parameter 'id' is not null or undefined
             assertParamExists('getVnicProfileFromPool', 'id', id)
             const localVarPath = `/resources/vnic-profiles/eduvirt/{id}`
@@ -11920,7 +11921,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11931,11 +11932,12 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
+         *
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getVnicProfilesFromPool: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            console.log("CHUJEEE KURWY ODDAJCE MI")
             const localVarPath = `/resources/vnic-profiles/eduvirt`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11949,7 +11951,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11960,8 +11962,8 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} vnicProfileId 
+         *
+         * @param {string} vnicProfileId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11982,7 +11984,7 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};

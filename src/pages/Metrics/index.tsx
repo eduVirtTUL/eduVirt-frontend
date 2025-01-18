@@ -30,7 +30,6 @@ import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimplePagination from "@/components/SimplePagination";
-import { useNavigate } from "react-router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { getCategory } from "@/utils/unitUtils.js";
 import { RouteHandle } from "@/AuthGuard";
@@ -93,7 +92,6 @@ const columns = (
 
 const MetricsPage: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const [ pageNumber, setPageNumber ] = useState<number>(0);
   const [ pageSize ] = useState<number>(10);

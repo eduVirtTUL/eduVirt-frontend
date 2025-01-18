@@ -1,26 +1,26 @@
-import { VlansRangeControllerApi } from "@/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { keys } from "../../keys";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {toast} from "sonner";
+import {keys} from "../../keys";
+import {privateAxios} from "@/data/privateAxios";
+import {useTranslation} from "react-i18next";
 
 export const useRemoveVlansRange = () => {
-  const queryClient = useQueryClient();
-  const { mutate, mutateAsync } = useMutation({
-    mutationKey: ["removeVlansRange"],
-    mutationFn: async (vlansRangeId: string) => {
-      const controller = new VlansRangeControllerApi();
-      const response = await controller.removeVlansRange(vlansRangeId);
-      return response.data;
-    },
-    onSuccess: () => {
-      // Force to refetch vlans ranges
-      queryClient.invalidateQueries({ queryKey: [keys.VLANS_RANGE] });
-      toast.success("VLANs range removed successfully!");
-    },
-    onError: () => {
-      toast.error("Failed to remove VLANs range!");
-    },
-  });
+    const {t} = useTranslation();
+    const queryClient = useQueryClient();
+    const {mutate, mutateAsync} = useMutation({
+        mutationKey: ["removeVlansRange"],
+        mutationFn: async (vlansRangeId: string) => {
+            const response = await privateAxios.delete<void>(
+                `/resources/vnic-profiles/vlans-range/${vlansRangeId}/remove`
+            );
+            return response.data;
+        },
+        onSuccess: () => {
+            // Force to refetch vlans ranges
+            queryClient.invalidateQueries({queryKey: [keys.VLANS_RANGE]});
+            toast.success(t("vlansRange.remove.success"));
+        }
+    });
 
-  return { removeVlansRange: mutate, removeVlansRangeAsync: mutateAsync };
+    return {removeVlansRange: mutate, removeVlansRangeAsync: mutateAsync};
 };

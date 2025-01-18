@@ -3,6 +3,7 @@ import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
 import { Role } from "@/stores/userStore";
+import michal from "@/i18n/pl/michal";
 
 const menu = {
   courses: "Przedmioty",
@@ -162,6 +163,7 @@ const pageTitles = {
   clusterMetricValues: 'Klaster - Metryki - eduVirt',
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
+  vlansRanges: "Zakresy VLANów - eduVirt",
 };
 
 export default {
@@ -190,4 +192,5 @@ export default {
   ...adam,
   ...piotrek,
   ...bartek,
+  ...michal,
 };
