@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
 import {
-    ArrowUpDown,
+    ArrowUpDown, CalendarIcon,
     Copy,
     FileCheck2,
     FileX2,
@@ -42,6 +42,7 @@ import {useDeleteTeam} from "@/data/team/useDeleteTeam";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
+import {Link} from "react-router";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -266,6 +267,14 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         >
                             <FileX2 className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.manageStatelessPods")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link to={`/reservations/teams/${row.original.id}`}>
+                                <DropdownMenuItem>
+                                    <CalendarIcon className="h-4 w-4 mr-2" />
+                                    {t("coursePageB.teamsTable.dropdownMenu.reservations")}
+                                </DropdownMenuItem>
+                            </Link>
                         </DropdownMenuItem>
                         {isTeamBased && (
                             <DropdownMenuItem
