@@ -27,3 +27,4 @@ dist-ssr
 
 openapitools.json
 /src/api/.openapi-generator
+tsconfig.tsbuildinfo

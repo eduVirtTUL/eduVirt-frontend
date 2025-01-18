@@ -71,7 +71,7 @@ const AuthCallback: React.FC = () => {
   if (!token) {
     removeCookie("access_token");
     localStorage.removeItem("token");
-    window.location.href = "http://localhost:8080/auth/login";
+    window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
   } else {
     privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
       params: {
