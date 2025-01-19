@@ -1,7 +1,6 @@
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import {Link} from "react-router-dom";
 import {Calendar} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
@@ -30,9 +29,6 @@ export function PodCard({id, resourceGroup, course}: PodCardProps) {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const { count } = usePodReservationCount({courseId: course.id, podId: id});
-
-    console.log(`Max rent: ${resourceGroup.maxRent}`);
-    console.log(`Count: ${count}`);
 
     return (
         <Card className="h-auto mx-2 w-auto transition-all duration-200 hover:shadow-lg hover:border-primary/50">

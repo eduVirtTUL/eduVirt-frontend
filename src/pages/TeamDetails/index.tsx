@@ -264,7 +264,7 @@ const TeamDetailsPage: React.FC = () => {
                                                         id: pod.resourceGroupPool?.id || '',
                                                         name: pod.resourceGroupPool?.name || '',
                                                         isStateless: true,
-                                                        maxRent: pod.resourceGroupPool?.maxRent || 0,
+                                                        maxRent: pod.maxRent || 0,
                                                         maxRentTime: pod.resourceGroupPool?.maxRentTime || 6
                                                     } : {
                                                         id: pod.resourceGroup?.id || '',
