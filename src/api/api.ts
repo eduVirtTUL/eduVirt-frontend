@@ -1361,6 +1361,12 @@ export interface PodStatelessDetailsDto {
      * @memberof PodStatelessDetailsDto
      */
     'team'?: TeamDto;
+    /**
+     * 
+     * @type {number}
+     * @memberof PodStatelessDetailsDto
+     */
+    'maxRent'?: number;
 }
 /**
  * 
@@ -1472,6 +1478,25 @@ export interface ReservationDto {
      * @memberof ReservationDto
      */
     'end'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationTimeframeModifiersDto
+ */
+export interface ReservationTimeframeModifiersDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationTimeframeModifiersDto
+     */
+    'startTimeDelay'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationTimeframeModifiersDto
+     */
+    'endTimeHastening'?: number;
 }
 /**
  * 
@@ -4003,13 +4028,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7217,13 +7243,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7258,13 +7285,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7638,6 +7666,118 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
+         * This endpoint can be used to find reservations made, by the team that the currently authenticated user belongs to, for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window for the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnRgPoolReservationsInGivenCourse: async (courseId: string, rgPoolId: string, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getOwnRgPoolReservationsInGivenCourse', 'courseId', courseId)
+            // verify required parameter 'rgPoolId' is not null or undefined
+            assertParamExists('getOwnRgPoolReservationsInGivenCourse', 'rgPoolId', rgPoolId)
+            // verify required parameter 'start' is not null or undefined
+            assertParamExists('getOwnRgPoolReservationsInGivenCourse', 'start', start)
+            // verify required parameter 'end' is not null or undefined
+            assertParamExists('getOwnRgPoolReservationsInGivenCourse', 'end', end)
+            const localVarPath = `/reservations/courses/{courseId}/resource-group-pools/{rgPoolId}/period/own`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"rgPoolId"}}`, encodeURIComponent(String(rgPoolId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (start !== undefined) {
+                localVarQueryParameter['start'] = (start as any instanceof Date) ?
+                    (start as any).toISOString() :
+                    start;
+            }
+
+            if (end !== undefined) {
+                localVarQueryParameter['end'] = (end as any instanceof Date) ?
+                    (end as any).toISOString() :
+                    end;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint can be used to find reservations made by the team, that the currently authenticated user is a part of, for given resource group in the given course in certain time window. 
+         * @summary Get reservation for the resource group in course in given time window, that belong to the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnRgReservationsInGivenCourse: async (courseId: string, rgId: string, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getOwnRgReservationsInGivenCourse', 'courseId', courseId)
+            // verify required parameter 'rgId' is not null or undefined
+            assertParamExists('getOwnRgReservationsInGivenCourse', 'rgId', rgId)
+            // verify required parameter 'start' is not null or undefined
+            assertParamExists('getOwnRgReservationsInGivenCourse', 'start', start)
+            // verify required parameter 'end' is not null or undefined
+            assertParamExists('getOwnRgReservationsInGivenCourse', 'end', end)
+            const localVarPath = `/reservations/courses/{courseId}/resource-groups/{rgId}/period/own`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"rgId"}}`, encodeURIComponent(String(rgId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (start !== undefined) {
+                localVarQueryParameter['start'] = (start as any instanceof Date) ?
+                    (start as any).toISOString() :
+                    start;
+            }
+
+            if (end !== undefined) {
+                localVarQueryParameter['end'] = (end as any instanceof Date) ?
+                    (end as any).toISOString() :
+                    end;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
          * @summary Get reservation of the given POD in given course
          * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
@@ -7734,6 +7874,36 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             assertParamExists('getReservationDetails', 'reservationId', reservationId)
             const localVarPath = `/reservations/{reservationId}`
                 .replace(`{${"reservationId"}}`, encodeURIComponent(String(reservationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint can be used to fetch anticipated reservation start time delay and reservation end time hastening.
+         * @summary Get anticipated reservation start time delay and reservation end time hastening
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getReservationGlobalTimeframeModifiers: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/reservations/timeframe-modifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -7963,6 +8133,38 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * This endpoint can be used to find reservations made, by the team that the currently authenticated user belongs to, for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window for the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOwnRgPoolReservationsInGivenCourse(courseId: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReservationDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOwnRgPoolReservationsInGivenCourse(courseId, rgPoolId, start, end, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getOwnRgPoolReservationsInGivenCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint can be used to find reservations made by the team, that the currently authenticated user is a part of, for given resource group in the given course in certain time window. 
+         * @summary Get reservation for the resource group in course in given time window, that belong to the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOwnRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReservationDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOwnRgReservationsInGivenCourse(courseId, rgId, start, end, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getOwnRgReservationsInGivenCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
          * @summary Get reservation of the given POD in given course
          * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
@@ -8002,6 +8204,18 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReservationDetails(reservationId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getReservationDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint can be used to fetch anticipated reservation start time delay and reservation end time hastening.
+         * @summary Get anticipated reservation start time delay and reservation end time hastening
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getReservationGlobalTimeframeModifiers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReservationTimeframeModifiersDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getReservationGlobalTimeframeModifiers(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getReservationGlobalTimeframeModifiers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -8113,6 +8327,32 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getHistoricReservationsForTeam(teamId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
+         * This endpoint can be used to find reservations made, by the team that the currently authenticated user belongs to, for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window for the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnRgPoolReservationsInGivenCourse(courseId: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ReservationDto>> {
+            return localVarFp.getOwnRgPoolReservationsInGivenCourse(courseId, rgPoolId, start, end, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint can be used to find reservations made by the team, that the currently authenticated user is a part of, for given resource group in the given course in certain time window. 
+         * @summary Get reservation for the resource group in course in given time window, that belong to the team currently authenticated user is a part of
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ReservationDto>> {
+            return localVarFp.getOwnRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
          * @summary Get reservation of the given POD in given course
          * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
@@ -8144,6 +8384,15 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
          */
         getReservationDetails(reservationId: string, options?: RawAxiosRequestConfig): AxiosPromise<ReservationDetailsDto> {
             return localVarFp.getReservationDetails(reservationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint can be used to fetch anticipated reservation start time delay and reservation end time hastening.
+         * @summary Get anticipated reservation start time delay and reservation end time hastening
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getReservationGlobalTimeframeModifiers(options?: RawAxiosRequestConfig): AxiosPromise<ReservationTimeframeModifiersDto> {
+            return localVarFp.getReservationGlobalTimeframeModifiers(options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint can be used to find reservations made for given resource group pool in the given course in given time window.
@@ -8260,6 +8509,36 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
+     * This endpoint can be used to find reservations made, by the team that the currently authenticated user belongs to, for given resource group pool in the given course in given time window.
+     * @summary Get reservation for the resource group pool in course in given time window for the team currently authenticated user is a part of
+     * @param {string} courseId Identifier of the course, which contains the resource group pool.
+     * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+     * @param {string} start Start of the time window, which the searched reservations overlap with.
+     * @param {string} end End of the time window, which the searched reservations overlap with
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getOwnRgPoolReservationsInGivenCourse(courseId: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getOwnRgPoolReservationsInGivenCourse(courseId, rgPoolId, start, end, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint can be used to find reservations made by the team, that the currently authenticated user is a part of, for given resource group in the given course in certain time window. 
+     * @summary Get reservation for the resource group in course in given time window, that belong to the team currently authenticated user is a part of
+     * @param {string} courseId Identifier of the course, which contains the resource group.
+     * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+     * @param {string} start Start of the time window, which the searched reservations overlap with.
+     * @param {string} end End of the time window, which the searched reservations overlap with
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getOwnRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getOwnRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
      * @summary Get reservation of the given POD in given course
      * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
@@ -8296,6 +8575,17 @@ export class ReservationControllerApi extends BaseAPI {
      */
     public getReservationDetails(reservationId: string, options?: RawAxiosRequestConfig) {
         return ReservationControllerApiFp(this.configuration).getReservationDetails(reservationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint can be used to fetch anticipated reservation start time delay and reservation end time hastening.
+     * @summary Get anticipated reservation start time delay and reservation end time hastening
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getReservationGlobalTimeframeModifiers(options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getReservationGlobalTimeframeModifiers(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8504,13 +8794,14 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8757,13 +9048,14 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8803,11 +9095,12 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9263,13 +9556,14 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9598,13 +9892,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9644,11 +9939,12 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9793,13 +10089,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10546,13 +10843,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
