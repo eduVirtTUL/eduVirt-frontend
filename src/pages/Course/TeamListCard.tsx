@@ -61,7 +61,27 @@ interface TeamsTableProps {
     setSearchType: (type: SearchType) => void;
     sortOrder: "ASC" | "DESC";
     setSortOrder: (order: "ASC" | "DESC") => void;
+    emailPrefixes?: string[];
+    onRemoveEmailPrefix?: (email: string) => void;
 }
+
+const TableSkeleton = () => (
+    <div className="space-y-3">
+        <div className="flex items-center space-x-4 py-4">
+            <div className="h-4 w-[30%] bg-muted animate-pulse rounded"/>
+            <div className="h-4 w-[40%] bg-muted animate-pulse rounded"/>
+            <div className="h-4 w-[20%] bg-muted animate-pulse rounded"/>
+        </div>
+        {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex items-center space-x-4 py-4">
+                <div className="h-4 w-[25%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[45%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[15%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[10%] bg-muted animate-pulse rounded"/>
+            </div>
+        ))}
+    </div>
+);
 
 const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
@@ -78,6 +98,8 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      setSearchType,
                                                      sortOrder,
                                                      setSortOrder,
+                                                     emailPrefixes,
+                                                     onRemoveEmailPrefix,
                                                  }) => {
     const {t} = useTranslation();
     const {open} = useDialog();
@@ -314,83 +336,110 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             <Card>
                 <CardHeader/>
                 <CardContent>
-                    <div className="flex flex-row gap-2 mb-5">
-                        <Select
-                            value={searchType}
-                            onValueChange={(value: SearchType) => setSearchType(value)}
-                        >
-                            <SelectTrigger className="w-[200px]">
-                                <SelectValue placeholder={t("teamsList.searchType.placeholder")}/>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="TEAM_NAME">{t("teamsList.searchType.teamName")}</SelectItem>
-                                <SelectItem value="STUDENT_NAME">{t("teamsList.searchType.studentName")}</SelectItem>
-                                <SelectItem value="STUDENT_EMAIL">{t("teamsList.searchType.studentEmail")}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Input
-                            placeholder={t("teamsList.searchPlaceholder")}
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                        <Button onClick={() => setSearch("")}>
-                            <XIcon/>
-                            {t("teamsList.clear")}
-                        </Button>
-                    </div>
+                    {emailPrefixes && emailPrefixes.length > 0 ? (
+                        <div className="mb-4">
+                            <p className="text-sm text-muted-foreground mb-2">
+                                {t("teamsList.searchResults")}:
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {emailPrefixes.map(email => (
+                                    <Badge key={email} variant="secondary">
+                                        {email}
+                                        {onRemoveEmailPrefix && (
+                                            <XIcon
+                                                className="ml-2 h-3 w-3 cursor-pointer"
+                                                onClick={() => onRemoveEmailPrefix(email)}
+                                            />
+                                        )}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-row gap-2 mb-5">
+                            <Select
+                                value={searchType}
+                                onValueChange={(value: SearchType) => setSearchType(value)}
+                            >
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder={t("teamsList.searchType.placeholder")}/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="TEAM_NAME">{t("teamsList.searchType.teamName")}</SelectItem>
+                                    <SelectItem
+                                        value="STUDENT_NAME">{t("teamsList.searchType.studentName")}</SelectItem>
+                                    <SelectItem
+                                        value="STUDENT_EMAIL">{t("teamsList.searchType.studentEmail")}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Input
+                                placeholder={t("teamsList.searchPlaceholder")}
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <Button onClick={() => setSearch("")}>
+                                <XIcon/>
+                                {t("teamsList.clear")}
+                            </Button>
+                        </div>
+                    )}
                     <div className="[&_.inactive-row]:opacity-60">
-                        {!isLoading && teams && (
-                            <>
-                                <DataTable
-                                    columns={columns}
-                                    data={teams}
-                                />
-                                {teams.length > 0 && totalPages && totalPages > 1 && (
-                                    <div className="mt-4">
-                                        <Pagination>
-                                            <PaginationContent>
-                                                {pageNumber > 0 && (
-                                                    <>
-                                                        <PaginationItem>
-                                                            <PaginationPrevious
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            />
-                                                        </PaginationItem>
-                                                        <PaginationItem>
-                                                            <PaginationLink
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            >
-                                                                {pageNumber}
-                                                            </PaginationLink>
-                                                        </PaginationItem>
-                                                    </>
-                                                )}
-                                                <PaginationItem>
-                                                    <PaginationLink isActive>
-                                                        {pageNumber + 1}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                                {totalPages > pageNumber + 1 && (
+                        {isLoading ? (
+                            <TableSkeleton/>
+                        ) : (
+                            teams && (
+                                <>
+                                    <DataTable
+                                        columns={columns}
+                                        data={teams}
+                                    />
+                                    {teams.length > 0 && totalPages && totalPages > 1 && (
+                                        <div className="mt-4">
+                                            <Pagination>
+                                                <PaginationContent>
+                                                    {pageNumber > 0 && (
+                                                        <>
+                                                            <PaginationItem>
+                                                                <PaginationPrevious
+                                                                    onClick={() => setPageNumber(pageNumber - 1)}
+                                                                />
+                                                            </PaginationItem>
+                                                            <PaginationItem>
+                                                                <PaginationLink
+                                                                    onClick={() => setPageNumber(pageNumber - 1)}
+                                                                >
+                                                                    {pageNumber}
+                                                                </PaginationLink>
+                                                            </PaginationItem>
+                                                        </>
+                                                    )}
                                                     <PaginationItem>
-                                                        <PaginationLink
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
-                                                        >
-                                                            {pageNumber + 2}
+                                                        <PaginationLink isActive>
+                                                            {pageNumber + 1}
                                                         </PaginationLink>
                                                     </PaginationItem>
-                                                )}
-                                                {totalPages !== pageNumber + 1 && (
-                                                    <PaginationItem>
-                                                        <PaginationNext
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
-                                                        />
-                                                    </PaginationItem>
-                                                )}
-                                            </PaginationContent>
-                                        </Pagination>
-                                    </div>
-                                )}
-                            </>
+                                                    {totalPages > pageNumber + 1 && (
+                                                        <PaginationItem>
+                                                            <PaginationLink
+                                                                onClick={() => setPageNumber(pageNumber + 1)}
+                                                            >
+                                                                {pageNumber + 2}
+                                                            </PaginationLink>
+                                                        </PaginationItem>
+                                                    )}
+                                                    {totalPages !== pageNumber + 1 && (
+                                                        <PaginationItem>
+                                                            <PaginationNext
+                                                                onClick={() => setPageNumber(pageNumber + 1)}
+                                                            />
+                                                        </PaginationItem>
+                                                    )}
+                                                </PaginationContent>
+                                            </Pagination>
+                                        </div>
+                                    )}
+                                </>
+                            )
                         )}
                     </div>
                 </CardContent>

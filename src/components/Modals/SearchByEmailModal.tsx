@@ -28,6 +28,27 @@ export function SearchByEmailModal({ open, onOpenChange, onSearch }: SearchByEma
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text');
+    const newEmails = pastedText
+      .split(/[,\s]+/)
+      .map(email => email.trim())
+      .filter(email => email && !emails.includes(email));
+    
+    if (newEmails.length > 0) {
+      setEmails(prev => [...prev, ...newEmails]);
+    }
+  };
+
+  const handleModalClose = (open: boolean) => {
+    if (!open) {
+      setEmails([]);
+      setCurrentInput("");
+    }
+    onOpenChange(open);
+  };
+
   const removeEmail = (emailToRemove: string) => {
     setEmails(emails.filter(email => email !== emailToRemove));
   };
@@ -39,7 +60,7 @@ export function SearchByEmailModal({ open, onOpenChange, onSearch }: SearchByEma
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleModalClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("searchByEmail.title")}</DialogTitle>
@@ -61,6 +82,7 @@ export function SearchByEmailModal({ open, onOpenChange, onSearch }: SearchByEma
               value={currentInput}
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
+              onPaste={handlePaste}
               className="flex-1"
             />
             <Button 

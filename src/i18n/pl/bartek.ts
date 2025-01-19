@@ -35,6 +35,7 @@ const teamsList = {
         studentName: "Student",
         studentEmail: "E-mail studenta",
     },
+    searchResults: "Numery indeksów studentów"
 };
 
 const joinTeamModal = {
@@ -107,7 +108,7 @@ const coursePageB = {
       button: "Zespoły",
       title: "Zespoły przedmiotu",
       noTeams: "Brak zespołów",
-      students: "Studenci",
+      students: "Dodaj studenta",
       createTeam: "Utwórz zespół",
       edit: "Edytuj",
       columns: {

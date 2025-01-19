@@ -8,7 +8,7 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {SearchIcon, UserCog, XIcon} from "lucide-react";
+import {SearchIcon, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
@@ -53,6 +53,11 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         setPageNumber(0);
     };
 
+    const handleRemoveEmailPrefix = (emailToRemove: string) => {
+        setEmailPrefixes(current => current.filter(email => email !== emailToRemove));
+    };
+
+
     return (
         <>
             <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
@@ -78,7 +83,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     <CreateTeamModal courseId={id}/>
                 ) : (
                     <Button variant="secondary" onClick={() => open("manageCourseUsers")}>
-                        <UserCog className="h-4 w-4 mr-2"/>
+                        <UserPlus className="h-4 w-4 mr-2"/>
                         {t("coursePageB.teamsTable.students")}
                     </Button>
                 )}
@@ -98,6 +103,8 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 setSearchType={setSearchType}
                 sortOrder={sortOrder}
                 setSortOrder={setSortOrder}
+                emailPrefixes={emailPrefixes}
+                onRemoveEmailPrefix={handleRemoveEmailPrefix}
             />
             <SearchByEmailModal
                 open={emailSearchOpen}
