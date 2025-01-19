@@ -137,7 +137,9 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
     )
 }
 
-const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps) => {
+const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
+    open, onOpenChange, teamId
+}) => {
     const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const [selectedResource, setSelectedResource] = useState<string | null>(null)
@@ -256,42 +258,46 @@ const StatefulPodDrawer = ({open, onOpenChange, teamId}: StatefulPodDrawerProps)
                                                 <Skeleton className="h-12 w-full"/>
                                             </div>
                                         ) : (
-                                            <Table>
-                                                <TableHeader>
-                                                    <TableRow>
-                                                        <TableHead>{t("statefulPodManagement.resourceGroup")}</TableHead>
-                                                        <TableHead>{t("statefulPodManagement.maxRent")}</TableHead>
-                                                        <TableHead className="w-[100px]"></TableHead>
-                                                    </TableRow>
-                                                </TableHeader>
-                                                <TableBody>
-                                                    {podsArray?.map((pod) => (
-                                                        <TableRow key={pod.id}>
-                                                            <TableCell>{pod.resourceGroup?.name}</TableCell>
-                                                            <TableCell>{pod.maxRent}</TableCell>
-                                                            <TableCell>
-                                                                <Button
-                                                                    variant="destructive"
-                                                                    size="sm"
-                                                                    disabled={isDeleting}
-                                                                    onClick={() => handleClickPodDelete(pod.id!)}
-                                                                >
-                                                                    <Trash2 className="h-4 w-4"/>
-                                                                    {t('statefulPodManagement.delete.button')}
-                                                                </Button>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                    {!podsArray?.length && (
-                                                        <TableRow>
-                                                            <TableCell colSpan={3}
-                                                                       className="text-center text-muted-foreground">
-                                                                {t('statefulPodManagement.noPods')}
-                                                            </TableCell>
-                                                        </TableRow>
+                                            <>
+                                                <Table>
+                                                    {podsArray.length > 0 && (
+                                                        <TableHeader>
+                                                            <TableRow>
+                                                                <TableHead>{t("statefulPodManagement.resourceGroup")}</TableHead>
+                                                                <TableHead>{t("statefulPodManagement.maxRent")}</TableHead>
+                                                                <TableHead className="w-[100px]"></TableHead>
+                                                            </TableRow>
+                                                        </TableHeader>
                                                     )}
-                                                </TableBody>
-                                            </Table>
+                                                    <TableBody>
+                                                        {podsArray?.map((pod) => (
+                                                            <TableRow key={pod.id}>
+                                                                <TableCell>{pod.resourceGroup?.name}</TableCell>
+                                                                <TableCell>{pod.maxRent}</TableCell>
+                                                                <TableCell>
+                                                                    <Button
+                                                                        variant="destructive"
+                                                                        size="sm"
+                                                                        disabled={isDeleting}
+                                                                        onClick={() => handleClickPodDelete(pod.id!)}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4"/>
+                                                                        {t('statefulPodManagement.delete.button')}
+                                                                    </Button>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                        {!podsArray?.length && (
+                                                            <TableRow>
+                                                                <TableCell colSpan={3}
+                                                                        className="text-center text-muted-foreground py-4">
+                                                                    {t('statefulPodManagement.noPods')}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        )}
+                                                    </TableBody>
+                                                </Table>
+                                            </>
                                         )}
                                     </ScrollArea>
                                 </CardContent>

@@ -138,13 +138,15 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                         </div>
                                     ) : (
                                         <Table>
-                                            <TableHeader>
-                                                <TableRow>
-                                                    <TableHead></TableHead>
-                                                    <TableHead>{t("statelessPodManagement.resourceGroupPool")}</TableHead>
-                                                    <TableHead className="w-[100px]"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
+                                            {podsArray.length > 0 && (
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead></TableHead>
+                                                        <TableHead>{t("statelessPodManagement.resourceGroupPool")}</TableHead>
+                                                        <TableHead className="w-[100px]"></TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                            )}
                                             <TableBody>
                                                 {podsArray?.map((pod, index) => (
                                                     <TableRow key={pod.id}>

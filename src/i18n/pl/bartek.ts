@@ -1,3 +1,5 @@
+import { create } from "domain";
+
 const courseType = {
     solo: "Solo",
     teamBased: "Zespołowy",
@@ -26,6 +28,14 @@ const teamsList = {
         noTeams: "Nie jesteś obecnie członkiem żadnego zespołu",
     },
     viewDetails: "Wyświetl szczegóły",
+    searchPlaceholder: "Szukaj zespołu...",
+    clear: "Wyczyść",
+    searchType: {
+        placeholder: "Typ wyszukiwania",
+        teamName: "Nazwa zespołu",
+        studentName: "Student",
+        studentEmail: "E-mail studenta",
+    },
 };
 
 const joinTeamModal = {
@@ -92,17 +102,20 @@ const coursePageB = {
     courseAccessKeyCard: {
         title: "Klucz dostępu",
         keyCopiedToast: "Klucz dostępu do kursu został skopiowany do schowka",
-        button: "Utwórz klucz",
+        button: "Utwórz klucz dostępu",
     },
     teamsTable: {
-      title: "Zespoły",
+      button: "Zespoły",
+      title: "Zespoły przedmiotu",
       noTeams: "Brak zespołów",
       students: "Studenci",
+      createTeam: "Utwórz zespół",
       edit: "Edytuj",
       columns: {
             name: "Nazwa",
             status: "Status",
-            members: "Członkowie",
+            member: "Student",
+            members: "Studenci",
             noMembers: "Zespół jest pusty",
             maxSize: "Rozmiar",
             operations: "Operacje",
@@ -114,7 +127,7 @@ const coursePageB = {
       },
       dropdownMenu: {
             editTeam: "Edytuj",
-            manageUsers: "Członkowie",
+            manageUsers: "Studenci",
             manageStatefulPods: "Pody stanowe",
             manageStatelessPods: "Pody bezstanowe",
             reservations: "Rezerwacje",
@@ -123,7 +136,7 @@ const coursePageB = {
                 confirmation: {
                     title : "Usuń zespół",
                     description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
-            }
+            },
         }
       },
     },
@@ -157,7 +170,7 @@ const statefulPodManagementDrawer = {
     createPod: "Utwórz pod",
     noPods: "Zespół nie posiada żadnych przypisanych podów",
     resourceGroup: "Grupa zasobów",
-    maxRent: "Maksymalna liczba rezerwacji",
+    maxRent: "Maksymalna liczba rezerwacji poda",
     alerts: {
         hasAssociatedPod: "Ta grupa zasobów posiada przypisany pod",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",

@@ -1,23 +1,26 @@
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import {ColumnDef} from "@tanstack/react-table";
-import {ArrowUpDown, ChevronLeft, ChevronRight, ExternalLink} from "lucide-react"
+import {ArrowDown, ArrowUp, ArrowUpDown, XIcon} from "lucide-react"
 import {Button} from "@/components/ui/button";
-import {Link, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUsersTeams} from "@/data/team/useUsersTeams";
-import {StatusDot} from "@/components/StatusDot";
 import JoinTeamModal from "@/components/Modals/JoinTeamModal";
 import {Skeleton} from "@/components/ui/skeleton";
 import {useTranslation} from "react-i18next";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
 } from "@/components/ui/pagination";
 import {RouteHandle} from "@/AuthGuard";
-import i18next from "i18next";
+import {t} from "i18next";
+import React from "react";
+import { useDebounce } from "use-debounce";
+import { Input } from "@/components/ui/input";
 
 interface TeamWithCourseDto {
     id: string;
@@ -36,10 +39,16 @@ interface TeamWithCourseDto {
 const TeamsPage = () => {
     const {t} = useTranslation();
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     const pageNumber = parseInt(searchParams.get("page") ?? "0", 10);
     const pageSize = parseInt(searchParams.get("size") ?? "10", 10);
-    const {teams, isLoading} = useUsersTeams(pageNumber, pageSize);
+    const sort = (searchParams.get("sort") ?? "ASC") as "ASC" | "DESC";
+    const [search, setSearch] = React.useState("");
+    const [searchValue] = useDebounce(search, 500);
+    
+    const {teams, isLoading} = useUsersTeams(pageNumber, pageSize, searchValue, sort);
+
 
     if (isLoading) {
         return (
@@ -72,27 +81,21 @@ const TeamsPage = () => {
 
     const columns: ColumnDef<TeamWithCourseDto>[] = [
         {
-            accessorKey: "active",
-            header: t('teamsList.table.columns.status'),
-            cell: ({row}) => (
-                <div className="flex items-center">
-                    <StatusDot active={row.original.active}/>
-                    <span className="ml-2">
-            {row.original.active ? t('activeStatus.active') : t('activeStatus.inactive')}
-          </span>
-                </div>
-            ),
-        },
-        {
             accessorKey: "name",
-            header: ({column}) => (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="w-full justify-start pl-2"
+            header: () => (
+                <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                        const newSort = sort === "ASC" ? "DESC" : "ASC";
+                        navigate(`/teams?page=${pageNumber}&size=${pageSize}&sort=${newSort}`);
+                    }}
                 >
                     {t('teamsList.table.columns.name')}
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    {sort === "ASC" ? (
+                        <ArrowUp className="ml-2 h-4 w-4" />
+                    ) : (
+                        <ArrowDown className="ml-2 h-4 w-4" />
+                    )}
                 </Button>
             ),
         },
@@ -100,87 +103,86 @@ const TeamsPage = () => {
             accessorKey: "course.name",
             header: t('teamsList.table.columns.course'),
         },
-        {
-            id: "actions",
-            cell: ({row}) => (
-                <div className="flex justify-end">
-                    <Link
-                        to={`/teams/${row.original.id}`}
-                        className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
-                    >
-                        <ExternalLink className="h-4 w-4"/>
-                        <span className="sr-only">{t("teamsList.viewDetails")}</span>
-                    </Link>
-                </div>
-            ),
-        },
     ];
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
-                <PageHeader title={t('teamsList.title')}/>
-                <div className="pb-10">
-                    <JoinTeamModal/>
-                </div>
+            <PageHeader title={t('teamsList.title')} />
+            <div className="pb-5">
+                <JoinTeamModal />
+            </div>
+            <div className="flex flex-row gap-2 mb-5">
+                <Input
+                    placeholder={t("teamsList.searchPlaceholder")}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <Button
+                    onClick={() => {
+                        setSearch("");
+                    }}
+                >
+                    <XIcon />
+                    {t("teamsList.clear")}
+                </Button>
             </div>
             <div className="[&_.inactive-row]:opacity-60">
-                {/* @ts-expect-error this doesn't impact the page */}
-                <DataTable columns={columns} data={teams?.items ?? []}/>
+                <DataTable
+                    columns={columns}
+                    // @ts-expect-error API types mismatch with local types
+                    data={teams?.items ?? []}
+                    onRowClick={(row) => {
+                        navigate(`/teams/${row.original.id}`);
+                    }}
+                />
             </div>
             <div className="mt-4">
-                <Pagination>
-                    <PaginationContent>
-                        {pageNumber > 0 && (
-                            <PaginationItem>
-                                <Button variant="ghost" asChild>
-                                    <Link to={`/teams?page=${pageNumber - 1}&size=${pageSize}`}>
-                                        <ChevronLeft className="h-4 w-4"/>
-                                        <span>Previous</span>
-                                    </Link>
-                                </Button>
-                            </PaginationItem>
-                        )}
-
-                        {pageNumber > 0 && (
-                            <PaginationItem>
-                                <PaginationLink
-                                    href={`/teams?page=${pageNumber - 1}&size=${pageSize}`}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        )}
-                        <PaginationItem>
-                            <PaginationLink
-                                href={`/teams?page=${pageNumber}&size=${pageSize}`}
-                                isActive
-                            >
-                                {pageNumber + 1}
-                            </PaginationLink>
-                        </PaginationItem>
-                        {(teams?.page?.totalPages ?? 0) > pageNumber + 1 && (
+                {teams?.items?.length !== 0 && (
+                    <Pagination>
+                        <PaginationContent>
+                            {pageNumber > 0 && (
+                                <>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            href={`/teams?page=${pageNumber - 1}&size=${pageSize}`}
+                                        />
+                                    </PaginationItem>
+                                    <PaginationItem>
+                                        <PaginationLink
+                                            href={`/teams?page=${pageNumber - 1}&size=${pageSize}`}
+                                        >
+                                            {pageNumber}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                </>
+                            )}
                             <PaginationItem>
                                 <PaginationLink
-                                    href={`/teams?page=${pageNumber + 1}&size=${pageSize}`}
+                                    href={`/teams?page=${pageNumber}&size=${pageSize}`}
+                                    isActive
                                 >
-                                    {pageNumber + 2}
+                                    {pageNumber + 1}
                                 </PaginationLink>
                             </PaginationItem>
-                        )}
-                        <PaginationItem>
-                            <PaginationEllipsis/>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <Button variant="ghost" asChild>
-                                <Link to={`/teams?page=${pageNumber + 1}&size=${pageSize}`}>
-                                    <span>Next</span>
-                                    <ChevronRight className="h-4 w-4"/>
-                                </Link>
-                            </Button>
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+                            {(teams?.page?.totalPages ?? 0) > pageNumber + 1 && (
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href={`/teams?page=${pageNumber + 1}&size=${pageSize}`}
+                                    >
+                                        {pageNumber + 2}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            )}
+                            {teams?.page?.totalPages !== pageNumber + 1 && (
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href={`/teams?page=${pageNumber + 1}&size=${pageSize}`}
+                                    />
+                                </PaginationItem>
+                            )}
+                        </PaginationContent>
+                    </Pagination>
+                )}
             </div>
         </div>
     );
@@ -193,5 +195,5 @@ export const handle: RouteHandle = {
 };
 
 export const meta = () => {
-    return [{ title: i18next.t("pageTitles.teams") }];
+    return [{ title: t("pageTitles.teams") }];
 };

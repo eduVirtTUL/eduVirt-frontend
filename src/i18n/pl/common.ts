@@ -163,6 +163,7 @@ const pageTitles = {
   clusterMetricValues: 'Klaster - Metryki - eduVirt',
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
+  courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
   vlansRanges: "Zakresy VLANów - eduVirt",
   vnicProfiles: "Segmenty prywatne - eduVirt",
 };

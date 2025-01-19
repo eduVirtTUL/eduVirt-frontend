@@ -42,7 +42,7 @@ const ReservationPage: React.FC<Route.ComponentProps> = ({
         </TabsList>
         <TabsContent value="general">
           {reservation ? (
-            <ReservationInfo reservation={reservation} />
+              <ReservationInfo reservation={reservation} />
           ) : (
             <>
               <CardContent className="flex flex-col items-center space-y-4 p-6 w-3/4 mx-auto">

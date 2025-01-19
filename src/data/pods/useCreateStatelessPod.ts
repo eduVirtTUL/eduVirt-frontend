@@ -1,4 +1,4 @@
-import {CreatePodStatelessDto, PodStatelessControllerApi, PodStatelessDto} from "@/api";
+import {CreatePodStatelessDto, PodStatelessDto} from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";

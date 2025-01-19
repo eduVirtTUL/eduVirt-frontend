@@ -18,6 +18,7 @@ export default [
         index("./pages/Courses/index.tsx"),
         route(":id", "./pages/Course/index.tsx"),
         route(":id/limits", "./pages/CourseLimits/index.tsx"),
+        route(":id/teams", "./pages/Course/TeamsInCoursePage.tsx"),
       ]),
 
       ...prefix("rg", [
