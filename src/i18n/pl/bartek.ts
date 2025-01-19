@@ -1,4 +1,3 @@
-import { create } from "domain";
 
 const courseType = {
     solo: "Solo",
@@ -119,7 +118,7 @@ const coursePageB = {
             noMembers: "Zespół jest pusty",
             maxSize: "Rozmiar",
             operations: "Operacje",
-            accessKey:{
+            accessKey: {
                 label: "Klucz dostępu",
                 copy: "Kopiuj",
                 copied: "Klucz dostępu do zespołu został skopiowany do schowka",
@@ -136,16 +135,24 @@ const coursePageB = {
                 confirmation: {
                     title : "Usuń zespół",
                     description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
-            },
+            }},
+            removeStudent: "Usuń studenta z przedmiotu",
         }
       },
-    },
+    
     teachersCard: {
         title: "Nauczyciele",
         noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
         manageTeachers: "Zarządzaj",
+    },
+    courseTeamsPage: {
+        searchByEmail:{
+            button: "Wyszukaj studentów po numerze indeksu",
+            clear: "Wyczyść wyszukiwanie",
+        }
     }
 }
+
 
 const createCourseKeyModal = {
     title: "Utwórz klucz dostępu do kursu",
@@ -305,6 +312,11 @@ const createTeamModal = {
     }
 };
 
+const searchByEmailModal = {
+    title: "Wyszukaj studentów po numerze indeksu",
+    search: "Wyszukaj",
+}
+
 const deleteTeamModal = {
     
 }
@@ -329,4 +341,5 @@ export default {
     manageCourseUsers: manageCourseUsersModal,
     deleteTeam: deleteTeamModal,
     manageTeachers: manageTeachersModal,
+    searchByEmail: searchByEmailModal,
 };

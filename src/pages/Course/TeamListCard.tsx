@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {TeamAccessKeyDto, TeamDto, UserDto} from "@/api";
+import {TeamAccessKeyDto, TeamDto, TeamWithKeyDto, UserDto} from "@/api";
 import {useTranslation} from "react-i18next";
 import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
@@ -14,6 +14,7 @@ import {
     PencilIcon,
     SmilePlus,
     TrashIcon,
+    UserMinusIcon,
     XIcon,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
@@ -43,10 +44,12 @@ import {toast} from "sonner";
 import {useTeam} from "@/data/team/useTeam";
 import {SearchType} from "@/data/team/useCoursesTeams";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {useRemoveStudentFromCourse} from "@/data/team/users/useRemoveStudentFromCourse";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
-    teams?: { items: TeamDto[]; page?: { totalPages: number } };
+    teams?: TeamWithKeyDto[];
+    totalPages?: number;
     isLoading: boolean;
     pageNumber: number;
     setPageNumber: (page: number) => void;
@@ -63,6 +66,7 @@ interface TeamsTableProps {
 const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
                                                      teams,
+                                                     totalPages,
                                                      isLoading,
                                                      pageNumber,
                                                      setPageNumber,
@@ -100,6 +104,23 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
 
     const handleEditClick = (team: TeamDto) => {
         setEditingTeamId(team.id ?? null);
+    };
+
+    const [userToRemove, setUserToRemove] = useState<{ user: UserDto; teamId: string } | null>(null);
+    const {removeStudentFromCourse} = useRemoveStudentFromCourse();
+
+    const handleRemoveStudent = async () => {
+        if (!userToRemove?.user.email) return;
+
+        try {
+            await removeStudentFromCourse({
+                courseId,
+                email: userToRemove.user.email
+            });
+            setUserToRemove(null);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -255,6 +276,21 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                             <CalendarIcon className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.reservations")}
                         </DropdownMenuItem>
+                        {!isTeamBased && row.original.users?.[0] && (
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setUserToRemove({
+                                        user: row.original.users[0],
+                                        teamId: row.original.id
+                                    });
+                                    open("confirmation");
+                                }}
+                                className="text-destructive"
+                            >
+                                <UserMinusIcon className="h-4 w-4 mr-2"/>
+                                {t("coursePageB.teamsTable.dropdownMenu.removeStudent")}
+                            </DropdownMenuItem>
+                        )}
                         {isTeamBased && (
                             <DropdownMenuItem
                                 onClick={() => {
@@ -303,13 +339,13 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </div>
                     <div className="[&_.inactive-row]:opacity-60">
-                        {!isLoading && teams?.items && (
+                        {!isLoading && teams && (
                             <>
                                 <DataTable
                                     columns={columns}
-                                    data={teams.items}
+                                    data={teams}
                                 />
-                                {teams.items.length > 0 && teams.page && (
+                                {teams.length > 0 && totalPages && totalPages > 1 && (
                                     <div className="mt-4">
                                         <Pagination>
                                             <PaginationContent>
@@ -334,7 +370,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                         {pageNumber + 1}
                                                     </PaginationLink>
                                                 </PaginationItem>
-                                                {teams.page.totalPages > pageNumber + 1 && (
+                                                {totalPages > pageNumber + 1 && (
                                                     <PaginationItem>
                                                         <PaginationLink
                                                             onClick={() => setPageNumber(pageNumber + 1)}
@@ -343,7 +379,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                         </PaginationLink>
                                                     </PaginationItem>
                                                 )}
-                                                {teams.page.totalPages !== pageNumber + 1 && (
+                                                {totalPages !== pageNumber + 1 && (
                                                     <PaginationItem>
                                                         <PaginationNext
                                                             onClick={() => setPageNumber(pageNumber + 1)}
@@ -392,7 +428,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                 name: user.userName || user.email || ''
                             })) ?? []
                         }}
-                        existingNames={teams?.items
+                        existingNames={teams
                             ?.filter(t => t.id !== editingTeamId)
                             .map(t => t.name!)
                             .filter(Boolean) ?? []}
@@ -434,6 +470,14 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     header={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.title")}
                     text={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.description", {team: teamToDelete.name})}
                     onConfirm={handleDeleteTeam}
+                />
+            )}
+
+            {userToRemove && (
+                <ConfirmationDialog
+                    header={t("manageCourseUsers.delete.title")}
+                    text={t("manageCourseUsers.delete.description")}
+                    onConfirm={handleRemoveStudent}
                 />
             )}
         </>

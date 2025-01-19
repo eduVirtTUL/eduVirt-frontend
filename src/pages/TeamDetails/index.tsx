@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTeam} from "@/data/team/useTeam";
-import {useCourse} from "@/data/course/useCourse";
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam";
 import {useStatelessPodsForTeam} from "@/data/pods/useStatelessPodsForTeam";
 import PageHeader from "@/components/PageHeader";
@@ -25,9 +24,10 @@ import { t } from "i18next";
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
     const {team, isLoading} = useTeam(id ?? "");
-    const {course} = useCourse(team?.course?.id ?? "");
     const {statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
     const {statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
+    console.log("statefulPods", statefulPods);
+    console.log("statelessPods", statelessPods);
     const [isMembersOpen, setIsMembersOpen] = useState(() => {
         const saved = localStorage.getItem('teamMembersCollapsible');
         return saved ? JSON.parse(saved) : true;
@@ -36,7 +36,7 @@ const TeamDetailsPage: React.FC = () => {
     const navigate = useNavigate();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const teamMembers = team?.users ?? [];
-    const isTeamBased = course?.courseType === "TEAM_BASED";
+    const isTeamBased = team?.course?.courseType === "TEAM_BASED";
     const {open} = useDialog();
     const {t} = useTranslation();
 
@@ -59,6 +59,7 @@ const TeamDetailsPage: React.FC = () => {
         };
 
         checkAuthorization();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [team, isLoading, navigate]);
 
     useEffect(() => {
@@ -124,7 +125,7 @@ const TeamDetailsPage: React.FC = () => {
                         <CardContent>
                             <div className="grid grid-cols-2 gap-2">
                                 <ValueDisplay
-                                    value={course?.name ?? ""}
+                                    value={team?.course?.name ?? ""}
                                     label={t("teamDetails.detailsCard.courseName")}
                                 />
                                 <div className="flex items-center gap-2">
@@ -148,7 +149,7 @@ const TeamDetailsPage: React.FC = () => {
                                 </div>
                                 <div className="col-span-2">
                                     <ValueDisplay
-                                        value={course?.description ?? ""}
+                                        value={team?.course?.description ?? ""}
                                         label={t("teamDetails.detailsCard.courseDescription")}
                                     />
                                 </div>
