@@ -288,7 +288,12 @@ const courses = {
 const reservations = {
   title: 'Rezerwacje',
   altName: 'Rezerwacje',
-  calendar: 'Kalendarz',
+  calendar: {
+    name: 'Kalendarz',
+    team: 'Zespół',
+    system: 'Przerwa administracyjna systemu',
+    cluster: 'Przerwa administracyjna klastra'
+  },
   active: 'Aktywne rezerwacje',
   table: {
     openMenu: 'Otwórz menu',

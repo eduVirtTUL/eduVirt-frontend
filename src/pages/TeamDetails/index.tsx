@@ -264,12 +264,14 @@ const TeamDetailsPage: React.FC = () => {
                                                         id: pod.resourceGroupPool?.id || '',
                                                         name: pod.resourceGroupPool?.name || '',
                                                         isStateless: true,
-                                                        maxRentTime: pod.resourceGroupPool?.maxRentTime || 0
+                                                        maxRent: pod.resourceGroupPool?.maxRent || 0,
+                                                        maxRentTime: pod.resourceGroupPool?.maxRentTime || 6
                                                     } : {
                                                         id: pod.resourceGroup?.id || '',
                                                         name: pod.resourceGroup?.name || '',
                                                         isStateless: false,
-                                                        maxRentTime: pod.resourceGroup?.maxRentTime || 0
+                                                        maxRent: pod.maxRent || 0,
+                                                        maxRentTime: pod.resourceGroup?.maxRentTime || 6
                                                     }}
                                                     course={{
                                                         id: pod.course.id || '',
