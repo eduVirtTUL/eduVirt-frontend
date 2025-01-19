@@ -1,7 +1,7 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {CheckIcon, Plus, XCircleIcon} from "lucide-react";
 import {useCreateTeam} from "@/data/team/useCreateTeam";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
@@ -58,15 +58,6 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
     const {createBatchTeams} = useCreateBatchTeams();
     const {t} = useTranslation();
 
-    const generateUniqueKey = (teamName: string) => {
-        const MAX_LENGTH = 20;
-        const RANDOM_LENGTH = 8;
-        const sanitizedName = teamName.toLowerCase().replace(/\s+/g, '-');
-        const truncatedName = sanitizedName.slice(0, MAX_LENGTH - RANDOM_LENGTH - 1);
-        const randomSuffix = Math.random().toString(36).substring(2, 2 + RANDOM_LENGTH);
-        return `${truncatedName}-${randomSuffix}`;
-    };
-
     const singleForm = useForm<SingleTeamForm>({
         resolver: zodResolver(singleTeamSchema),
         defaultValues: {
@@ -84,14 +75,6 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
             teamSize: 3
         }
     })
-
-    useEffect(() => {
-        const teamName = singleForm.watch("teamName")
-        if (teamName) {
-            singleForm.setValue("key", generateUniqueKey(teamName))
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [singleForm.watch("teamName")])
 
     const onSingleSubmit = (data: SingleTeamForm) => {
         createTeam({

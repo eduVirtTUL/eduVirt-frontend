@@ -1711,12 +1711,6 @@ export interface TeamDto {
     'name'?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof TeamDto
-     */
-    'active'?: boolean;
-    /**
-     * 
      * @type {number}
      * @memberof TeamDto
      */
@@ -1746,12 +1740,6 @@ export interface TeamWithCourseDto {
      * @memberof TeamWithCourseDto
      */
     'name'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TeamWithCourseDto
-     */
-    'active'?: boolean;
     /**
      * 
      * @type {number}
@@ -1789,12 +1777,6 @@ export interface TeamWithKeyDto {
      * @memberof TeamWithKeyDto
      */
     'name'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TeamWithKeyDto
-     */
-    'active'?: boolean;
     /**
      * 
      * @type {number}
@@ -1932,12 +1914,6 @@ export interface UpdateTeamDto {
      * @memberof UpdateTeamDto
      */
     'maxSize'?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateTeamDto
-     */
-    'active': boolean;
 }
 /**
  * 

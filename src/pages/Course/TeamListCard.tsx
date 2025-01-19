@@ -18,7 +18,6 @@ import {
     XIcon,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
-import {StatusDot} from "@/components/StatusDot";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {
     Pagination,
@@ -32,7 +31,6 @@ import {useDialog} from "@/stores/dialogStore";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {EditTeamModal} from "@/components/Modals/EditTeamModal";
-import {SoloTeamEditModal} from "@/components/Modals/SoloTeamEditModal";
 import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
 import {ManageSoloCourseUsersModal} from "@/components/Modals/ManageSoloCoursesTeamModal";
 import {useDeleteTeam} from "@/data/team/useDeleteTeam";
@@ -237,20 +235,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 },
             ]
             : []),
-        {
-            accessorKey: "active",
-            header: t("coursePageB.teamsTable.columns.status"),
-            cell: ({row}) => (
-                <div className="flex items-center">
-                    <StatusDot active={row.original.active}/>
-                    <span className="ml-2">
-            {row.original.active
-                ? t("activeStatus.active")
-                : t("activeStatus.inactive")}
-          </span>
-                </div>
-            ),
-        },
+
         {
             id: "actions",
             cell: ({row}) => (
@@ -261,18 +246,20 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
-                            <PencilIcon className="h-4 w-4 mr-2"/>
-                            {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
-                        </DropdownMenuItem>
                         {isTeamBased && (
-                            <DropdownMenuItem onClick={() => {
-                                setSelectedTeamForUsers(row.original);
-                                open("manageTeamUsers");
-                            }}>
-                                <SmilePlus className="h-4 w-4 mr-2"/>
-                                {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
-                            </DropdownMenuItem>
+                            <>
+                                <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
+                                    <PencilIcon className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {
+                                    setSelectedTeamForUsers(row.original);
+                                    open("manageTeamUsers");
+                                }}>
+                                    <SmilePlus className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
+                                </DropdownMenuItem>
+                            </>
                         )}
                         <DropdownMenuItem
                             onClick={() => {
@@ -462,39 +449,24 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 />
             )}
             {editingTeam && editingTeamId && editingTeamEtag && (
-                isTeamBased ? (
-                    <EditTeamModal
-                        open={true}
-                        onOpenChange={(open) => !open && setEditingTeamId(null)}
-                        team={{
-                            id: editingTeamId,
-                            name: editingTeam.name ?? "",
-                            maxSize: editingTeam.maxSize ?? 0,
-                            active: editingTeam.active ?? false,
-                            etag: editingTeamEtag,
-                            users: editingTeam.users?.map(user => ({
-                                id: user.id!,
-                                name: user.userName || user.email || ''
-                            })) ?? []
-                        }}
-                        existingNames={teams
-                            ?.filter(t => t.id !== editingTeamId)
-                            .map(t => t.name!)
-                            .filter(Boolean) ?? []}
-                    />
-                ) : (
-                    <SoloTeamEditModal
-                        open={true}
-                        onOpenChange={(open) => !open && setEditingTeamId(null)}
-                        team={{
-                            id: editingTeamId,
-                            active: editingTeam.active ?? false,
-                            etag: editingTeamEtag,
-                            name: editingTeam.name ?? "",
-                            maxSize: editingTeam.maxSize ?? 0
-                        }}
-                    />
-                )
+                <EditTeamModal
+                    open={true}
+                    onOpenChange={(open) => !open && setEditingTeamId(null)}
+                    team={{
+                        id: editingTeamId,
+                        name: editingTeam.name ?? "",
+                        maxSize: editingTeam.maxSize ?? 0,
+                        etag: editingTeamEtag,
+                        users: editingTeam.users?.map(user => ({
+                            id: user.id!,
+                            name: user.userName || user.email || ''
+                        })) ?? []
+                    }}
+                    existingNames={teams
+                        ?.filter(t => t.id !== editingTeamId)
+                        .map(t => t.name!)
+                        .filter(Boolean) ?? []}
+                />
             )}
 
             {selectedTeamForUsers && (

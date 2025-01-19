@@ -230,6 +230,13 @@ const editTeamModal = {
     active: "Status Aktywności",
     activeDescription: "Gdy zespół jest dezaktywowany, studenci nie mogą dołącząć do zespołu oraz rezerwować przypisane do niego zasoby",
     success: "Zespół został zaktualizowany pomyślnie",
+    validation: {
+        teamNameMin: "Nazwa zespołu jest wymagana",
+        teamNameMax: "Nazwa zespołu nie może przekraczać 50 znaków",
+        teamNameRegex: "Nazwa zespołu może zawierać tylko litery, cyfry, spacje i znaki specjalne: - _",
+        maxSizeMin: "Maksymalna liczba studentów w zespole musi być większa lub równa 2",
+        maxSizeMax: "Maksymalna liczba studentów w zespole nie może przekraczać 10",
+    }      
 };
 
 const manageTeamUsersModal = {
