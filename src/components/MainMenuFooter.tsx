@@ -117,7 +117,7 @@ const MainMenuFooter: React.FC = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                localStorage.removeItem("token");
+                localStorage.removeItem("token");            
                 nav("/login");
               }}
             >

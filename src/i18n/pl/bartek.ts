@@ -140,7 +140,6 @@ const coursePageB = {
             removeStudent: "Usuń studenta z przedmiotu",
         }
       },
-    
     teachersCard: {
         title: "Nauczyciele",
         noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
@@ -150,7 +149,9 @@ const coursePageB = {
         searchByEmail:{
             button: "Wyszukaj studentów po numerze indeksu",
             clear: "Wyczyść wyszukiwanie",
-        }
+        },
+        removeStudentFromCourseSuccess: "Student został usunięty z przedmiotu",
+        removeStudentFromTeamSuccess: "Student został usunięty z zespołu",
     }
 }
 
@@ -294,8 +295,8 @@ const createTeamModal = {
     name: "Nazwa zespołu",
     key: "Klucz do zespołu",
     maxSize: "Maksymalna liczba studentów w zespole",
-    baseTeamName: "Bazowa nazwa zespołu",
-    baseTeamNameDescription: "Zespoły zostaną utworzone z tą nazwą i kolejnym numerem",
+    prefix: "Prefix nazwy zespołu",
+    prefixDescription: "Zespoły zostaną utworzone z danym prefixem i kolejnym numerem",
     teamCount: "Liczba utworzonych zespołów",
     validation: {
         teamNameMin: "Nazwa zespołu jest wymagana",
@@ -308,8 +309,9 @@ const createTeamModal = {
         maxSizeMax: "Maksymalna liczba studentów w zespole nie może przekraczać 10",
         teamCountMin: "Liczba zespołów musi być większa od 1",
         teamCountMax: "Liczba zespołów nie może przekraczać 10",
-        baseTeamNameMin: "Bazowa nazwa zespołu jest wymagana",
-        baseTeamNameMax: "Podstawowa nazwa zespołu nie może przekraczać 40 znaków",
+        prefixMin: "Prefix jest wymagany",
+        prefixMax: "Prefix nie może przekraczać 40 znaków",
+        prefixRegex: "Prefix może zawierać tylko litery, cyfry",
     }
 };
 

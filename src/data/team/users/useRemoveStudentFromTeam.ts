@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useRemoveStudentFromTeam = () => {
   const queryClient = useQueryClient();
@@ -18,7 +19,9 @@ export const useRemoveStudentFromTeam = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: [keys.TEAM]});
-      toast.success("Student removed from team");
+      queryClient.invalidateQueries({queryKey: [keys.USER]});
+      queryClient.invalidateQueries({queryKey: [keys.COURSE]});
+      toast.success(t("coursePageB.courseTeamsPage.removeStudentFromTeamSuccess"));
     },
   });
 

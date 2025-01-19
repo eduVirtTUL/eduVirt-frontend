@@ -18,8 +18,8 @@ import {PodCard} from "@/components/PodCard";
 import ValueDisplay from "@/components/ValueDisplay";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {useTranslation} from "react-i18next";
-import { RouteHandle } from "@/AuthGuard";
-import { t } from "i18next";
+import {RouteHandle} from "@/AuthGuard";
+import {t} from "i18next";
 
 const TeamDetailsPage: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -108,14 +108,16 @@ const TeamDetailsPage: React.FC = () => {
                                 <div className="flex flex-row items-center justify-between">
                                     <span>{t("teamDetails.detailsCard.title")}</span>
                                     <div className="flex flex-row items-center justify-start gap-2">
-                                        <Button
-                                            variant="destructive"
-                                            onClick={handleLeaveTeamClick}
-                                            className="flex items-center gap-2"
-                                        >
-                                            <LogOut className="h-4 w-4"/>
-                                            {t("teamDetails.leaveTeam.button")}
-                                        </Button>
+                                        {isTeamBased && (
+                                            <Button
+                                                variant="destructive"
+                                                onClick={handleLeaveTeamClick}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <LogOut className="h-4 w-4"/>
+                                                {t("teamDetails.leaveTeam.button")}
+                                            </Button>
+                                        )}
                                     </div>
                                 </div>
                             </CardTitle>
@@ -305,5 +307,5 @@ export const handle: RouteHandle = {
 };
 
 export const meta = () => {
-    return [{ title: t("pageTitles.team") }];
+    return [{title: t("pageTitles.team")}];
 };
