@@ -14,6 +14,7 @@ import {
     PencilIcon,
     SmilePlus,
     TrashIcon,
+    UserMinusIcon,
     XIcon,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
@@ -43,6 +44,7 @@ import {toast} from "sonner";
 import {useTeam} from "@/data/team/useTeam";
 import {SearchType} from "@/data/team/useCoursesTeams";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {useRemoveStudentFromCourse} from "@/data/team/users/useRemoveStudentFromCourse";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -64,7 +66,7 @@ interface TeamsTableProps {
 const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
                                                      teams,
-                                                    totalPages,
+                                                     totalPages,
                                                      isLoading,
                                                      pageNumber,
                                                      setPageNumber,
@@ -102,6 +104,23 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
 
     const handleEditClick = (team: TeamDto) => {
         setEditingTeamId(team.id ?? null);
+    };
+
+    const [userToRemove, setUserToRemove] = useState<{ user: UserDto; teamId: string } | null>(null);
+    const {removeStudentFromCourse} = useRemoveStudentFromCourse();
+
+    const handleRemoveStudent = async () => {
+        if (!userToRemove?.user.email) return;
+
+        try {
+            await removeStudentFromCourse({
+                courseId,
+                email: userToRemove.user.email
+            });
+            setUserToRemove(null);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -257,6 +276,21 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                             <CalendarIcon className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.reservations")}
                         </DropdownMenuItem>
+                        {!isTeamBased && row.original.users?.[0] && (
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setUserToRemove({
+                                        user: row.original.users[0],
+                                        teamId: row.original.id
+                                    });
+                                    open("confirmation");
+                                }}
+                                className="text-destructive"
+                            >
+                                <UserMinusIcon className="h-4 w-4 mr-2"/>
+                                {t("coursePageB.teamsTable.dropdownMenu.removeStudent")}
+                            </DropdownMenuItem>
+                        )}
                         {isTeamBased && (
                             <DropdownMenuItem
                                 onClick={() => {
@@ -305,60 +339,60 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </div>
                     <div className="[&_.inactive-row]:opacity-60">
-                    {!isLoading && teams && (
-                        <>
-                            <DataTable
-                                columns={columns}
-                                data={teams}
-                            />
-                            {teams.length > 0 && totalPages && totalPages > 1 && (
-                                <div className="mt-4">
-                                    <Pagination>
-                                        <PaginationContent>
-                                            {pageNumber > 0 && (
-                                                <>
-                                                    <PaginationItem>
-                                                        <PaginationPrevious
-                                                            onClick={() => setPageNumber(pageNumber - 1)}
-                                                        />
-                                                    </PaginationItem>
-                                                    <PaginationItem>
-                                                        <PaginationLink
-                                                            onClick={() => setPageNumber(pageNumber - 1)}
-                                                        >
-                                                            {pageNumber}
-                                                        </PaginationLink>
-                                                    </PaginationItem>
-                                                </>
-                                            )}
-                                            <PaginationItem>
-                                                <PaginationLink isActive>
-                                                    {pageNumber + 1}
-                                                </PaginationLink>
-                                            </PaginationItem>
-                                            {totalPages > pageNumber + 1 && (
+                        {!isLoading && teams && (
+                            <>
+                                <DataTable
+                                    columns={columns}
+                                    data={teams}
+                                />
+                                {teams.length > 0 && totalPages && totalPages > 1 && (
+                                    <div className="mt-4">
+                                        <Pagination>
+                                            <PaginationContent>
+                                                {pageNumber > 0 && (
+                                                    <>
+                                                        <PaginationItem>
+                                                            <PaginationPrevious
+                                                                onClick={() => setPageNumber(pageNumber - 1)}
+                                                            />
+                                                        </PaginationItem>
+                                                        <PaginationItem>
+                                                            <PaginationLink
+                                                                onClick={() => setPageNumber(pageNumber - 1)}
+                                                            >
+                                                                {pageNumber}
+                                                            </PaginationLink>
+                                                        </PaginationItem>
+                                                    </>
+                                                )}
                                                 <PaginationItem>
-                                                    <PaginationLink
-                                                        onClick={() => setPageNumber(pageNumber + 1)}
-                                                    >
-                                                        {pageNumber + 2}
+                                                    <PaginationLink isActive>
+                                                        {pageNumber + 1}
                                                     </PaginationLink>
                                                 </PaginationItem>
-                                            )}
-                                            {totalPages !== pageNumber + 1 && (
-                                                <PaginationItem>
-                                                    <PaginationNext
-                                                        onClick={() => setPageNumber(pageNumber + 1)}
-                                                    />
-                                                </PaginationItem>
-                                            )}
-                                        </PaginationContent>
-                                    </Pagination>
-                                </div>
-                            )}
-                        </>
-                    )}
-                </div>
+                                                {totalPages > pageNumber + 1 && (
+                                                    <PaginationItem>
+                                                        <PaginationLink
+                                                            onClick={() => setPageNumber(pageNumber + 1)}
+                                                        >
+                                                            {pageNumber + 2}
+                                                        </PaginationLink>
+                                                    </PaginationItem>
+                                                )}
+                                                {totalPages !== pageNumber + 1 && (
+                                                    <PaginationItem>
+                                                        <PaginationNext
+                                                            onClick={() => setPageNumber(pageNumber + 1)}
+                                                        />
+                                                    </PaginationItem>
+                                                )}
+                                            </PaginationContent>
+                                        </Pagination>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
                 </CardContent>
             </Card>
 
@@ -436,6 +470,14 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     header={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.title")}
                     text={t("coursePageB.teamsTable.dropdownMenu.deleteTeam.confirmation.description", {team: teamToDelete.name})}
                     onConfirm={handleDeleteTeam}
+                />
+            )}
+
+            {userToRemove && (
+                <ConfirmationDialog
+                    header={t("manageCourseUsers.delete.title")}
+                    text={t("manageCourseUsers.delete.description")}
+                    onConfirm={handleRemoveStudent}
                 />
             )}
         </>

@@ -135,10 +135,11 @@ const coursePageB = {
                 confirmation: {
                     title : "Usuń zespół",
                     description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
-            },
+            }},
+            removeStudent: "Usuń studenta z przedmiotu",
         }
       },
-    },
+    
     teachersCard: {
         title: "Nauczyciele",
         noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
@@ -151,6 +152,7 @@ const coursePageB = {
         }
     }
 }
+
 
 const createCourseKeyModal = {
     title: "Utwórz klucz dostępu do kursu",
