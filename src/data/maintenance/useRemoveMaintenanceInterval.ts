@@ -10,8 +10,8 @@ export const useRemoveMaintenanceInterval = () => {
   const { mutate, mutateAsync } = useMutation({
     mutationKey: [ "removeMaintenanceInterval" ],
     mutationFn: async (id: string) => {
-      const response = await privateAxios.post<void>(
-        `/maintenance-intervals/${id}`
+      const response = await privateAxios.delete<void>(
+          `/maintenance-intervals/${id}`
       );
       return response.data;
     },
