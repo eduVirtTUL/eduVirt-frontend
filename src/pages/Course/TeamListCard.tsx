@@ -126,7 +126,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
         setEditingTeamId(team.id ?? null);
     };
 
-    const [userToRemove, setUserToRemove] = useState<{ user: UserDto; teamId: string } | null>(null);
+    const [userToRemove, setUserToRemove] = useState<{ user: UserDto } | null>(null);
     const {removeStudentFromCourse} = useRemoveStudentFromCourse();
 
     const handleRemoveStudent = async () => {
@@ -235,7 +235,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 },
             ]
             : []),
-
         {
             id: "actions",
             cell: ({row}) => (
@@ -290,7 +289,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                 onClick={() => {
                                     setUserToRemove({
                                         user: row.original.users[0],
-                                        teamId: row.original.id
                                     });
                                     open("confirmation");
                                 }}

@@ -701,6 +701,19 @@ export interface EditVmDto {
 /**
  * 
  * @export
+ * @interface EmailDto
+ */
+export interface EmailDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailDto
+     */
+    'email': string;
+}
+/**
+ * 
+ * @export
  * @interface EventGeneralDto
  */
 export interface EventGeneralDto {
@@ -3283,15 +3296,15 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addStudentToCourse: async (courseId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addStudentToCourse: async (courseId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('addStudentToCourse', 'courseId', courseId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('addStudentToCourse', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('addStudentToCourse', 'emailDto', emailDto)
             const localVarPath = `/course/{courseId}/add-student`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3305,15 +3318,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3323,15 +3335,15 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addTeacherToCourse: async (courseId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addTeacherToCourse: async (courseId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('addTeacherToCourse', 'courseId', courseId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('addTeacherToCourse', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('addTeacherToCourse', 'emailDto', emailDto)
             const localVarPath = `/course/{courseId}/add-teacher`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3345,15 +3357,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3878,15 +3889,15 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeStudentFromCourse: async (courseId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeStudentFromCourse: async (courseId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('removeStudentFromCourse', 'courseId', courseId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('removeStudentFromCourse', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('removeStudentFromCourse', 'emailDto', emailDto)
             const localVarPath = `/course/{courseId}/remove-student`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3900,15 +3911,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3918,15 +3928,15 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeTeacherFromCourse: async (courseId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeTeacherFromCourse: async (courseId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('removeTeacherFromCourse', 'courseId', courseId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('removeTeacherFromCourse', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('removeTeacherFromCourse', 'emailDto', emailDto)
             const localVarPath = `/course/{courseId}/remove-teacher`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3940,15 +3950,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4046,12 +4055,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addStudentToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addStudentToCourse(courseId, email, options);
+        async addStudentToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addStudentToCourse(courseId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.addStudentToCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4059,12 +4068,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addTeacherToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addTeacherToCourse(courseId, email, options);
+        async addTeacherToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addTeacherToCourse(courseId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.addTeacherToCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4242,12 +4251,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeStudentFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeStudentFromCourse(courseId, email, options);
+        async removeStudentFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeStudentFromCourse(courseId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.removeStudentFromCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4255,12 +4264,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeTeacherFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeTeacherFromCourse(courseId, email, options);
+        async removeTeacherFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeTeacherFromCourse(courseId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.removeTeacherFromCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4304,22 +4313,22 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addStudentToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.addStudentToCourse(courseId, email, options).then((request) => request(axios, basePath));
+        addStudentToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addStudentToCourse(courseId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addTeacherToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.addTeacherToCourse(courseId, email, options).then((request) => request(axios, basePath));
+        addTeacherToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addTeacherToCourse(courseId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4455,22 +4464,22 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeStudentFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.removeStudentFromCourse(courseId, email, options).then((request) => request(axios, basePath));
+        removeStudentFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.removeStudentFromCourse(courseId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} courseId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeTeacherFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.removeTeacherFromCourse(courseId, email, options).then((request) => request(axios, basePath));
+        removeTeacherFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.removeTeacherFromCourse(courseId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4505,25 +4514,25 @@ export class CourseControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} courseId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public addStudentToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).addStudentToCourse(courseId, email, options).then((request) => request(this.axios, this.basePath));
+    public addStudentToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).addStudentToCourse(courseId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} courseId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public addTeacherToCourse(courseId: string, email: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).addTeacherToCourse(courseId, email, options).then((request) => request(this.axios, this.basePath));
+    public addTeacherToCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).addTeacherToCourse(courseId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4686,25 +4695,25 @@ export class CourseControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} courseId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public removeStudentFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).removeStudentFromCourse(courseId, email, options).then((request) => request(this.axios, this.basePath));
+    public removeStudentFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).removeStudentFromCourse(courseId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} courseId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public removeTeacherFromCourse(courseId: string, email: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).removeTeacherFromCourse(courseId, email, options).then((request) => request(this.axios, this.basePath));
+    public removeTeacherFromCourse(courseId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).removeTeacherFromCourse(courseId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

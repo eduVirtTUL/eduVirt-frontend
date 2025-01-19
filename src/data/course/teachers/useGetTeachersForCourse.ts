@@ -10,7 +10,6 @@ export const useGetTeachersForCourse = (courseId: string) => {
       const response = await privateAxios.get<UserDto[]>(
         `/course/${courseId}/teachers`
       );
-
       return response.data;
     },
   });

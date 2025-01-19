@@ -79,6 +79,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 onConfirm={() => {
                     deleteCourseAsync(id);
                 }}
+                name="deleteCourseConfirmation"
             />
             <ConfirmationDialog
                 header={t("coursePage.resetAction.confirmation")}
@@ -121,7 +122,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                             <RefreshCcw/>
                             {t("coursePage.reset")}
                         </Button>
-                        <Button variant="destructive" onClick={() => open("confirmation")}>
+                        <Button variant="destructive" onClick={() => open("deleteCourseConfirmation")}>
                             <Trash2Icon/>
                             {t("coursePage.delete")}
                         </Button>
@@ -183,38 +184,39 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                 }
                             />
                             {!isTeamBased && (
-    <>
-        {(isCourseAccessKeyLoading || !courseAccessKey) ? (
-            <div className="col-span-2">
-                {isCourseAccessKeyLoading ? (
-                    <Skeleton className="h-9 w-32" />
-                ) : (
-                    <Button variant="destructive" size="sm" onClick={() => open("createCourseKey")}>
-                        <KeyRound />
-                        {t("coursePageB.courseAccessKeyCard.button")}
-                    </Button>
-                )}
-            </div>
-        ) : (
-            <ValueDisplay
-                className="col-span-2"
-                label={t("coursePageB.courseAccessKeyCard.title")}
-                value={
-                    <div className="flex items-center gap-2 text-destructive">
-                        {courseAccessKey.keyValue}
-                        <Copy
-                            className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                            onClick={async () => {
-                                await navigator.clipboard.writeText(courseAccessKey.keyValue || "");
-                                toast.success(t("coursePageB.courseAccessKeyCard.keyCopiedToast"));
-                            }}
-                        />
-                    </div>
-                }
-            />
-        )}
-    </>
-)}
+                                <>
+                                    {(isCourseAccessKeyLoading || !courseAccessKey) ? (
+                                        <div className="col-span-2">
+                                            {isCourseAccessKeyLoading ? (
+                                                <Skeleton className="h-9 w-32"/>
+                                            ) : (
+                                                <Button variant="destructive" size="sm"
+                                                        onClick={() => open("createCourseKey")}>
+                                                    <KeyRound/>
+                                                    {t("coursePageB.courseAccessKeyCard.button")}
+                                                </Button>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <ValueDisplay
+                                            className="col-span-2"
+                                            label={t("coursePageB.courseAccessKeyCard.title")}
+                                            value={
+                                                <div className="flex items-center gap-2 text-destructive">
+                                                    {courseAccessKey.keyValue}
+                                                    <Copy
+                                                        className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                                                        onClick={async () => {
+                                                            await navigator.clipboard.writeText(courseAccessKey.keyValue || "");
+                                                            toast.success(t("coursePageB.courseAccessKeyCard.keyCopiedToast"));
+                                                        }}
+                                                    />
+                                                </div>
+                                            }
+                                        />
+                                    )}
+                                </>
+                            )}
                         </div>
                     </CardContent>
                 </Card>
@@ -228,7 +230,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => open("manageTeachers")}
+                                            onClick={() => open("manageTeachersModal")}
                                         >
                                             <UserCog className="h-4 w-4 mr-2"/>
                                             {t("coursePageB.teachersCard.manageTeachers")}

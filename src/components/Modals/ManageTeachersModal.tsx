@@ -37,7 +37,7 @@ const addTeacherSchema = z.object({
 type AddTeacherForm = z.infer<typeof addTeacherSchema>;
 
 export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModalProps) {
-    const { isOpen, close, open} = useDialog();
+    const { isOpen, close, open } = useDialog();
     const { t } = useTranslation();
     const { removeTeacherFromCourse } = useRemoveTeachersFromCourse();
     const { addTeacherToCourse } = useAddTeachersToCourse();
@@ -87,7 +87,7 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
 
     return (
         <>
-            <Dialog open={isOpen("manageTeachers")} onOpenChange={(open) => !open && close()}>
+            <Dialog open={isOpen("manageTeachersModal")} onOpenChange={(open) => !open && close()}>
                 <DialogContent className="max-w-2xl">
                     <DialogHeader>
                         <DialogTitle>

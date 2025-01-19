@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { EmailDto } from "@/api";
 import { t } from "i18next";
 
 export const useRemoveStudentFromCourse = () => {
@@ -9,10 +10,11 @@ export const useRemoveStudentFromCourse = () => {
 
   const { mutateAsync: removeStudentFromCourse } = useMutation({
     mutationFn: async ({ courseId, email }: { courseId: string; email: string }) => {
-      const response = await privateAxios.post<void>(
-        `/course/${courseId}/remove-student?email=${encodeURIComponent(email)}`
+      const emailDto: EmailDto = { email };
+      await privateAxios.post<void>(
+        `/course/${courseId}/remove-student`,
+        emailDto
       );
-      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
