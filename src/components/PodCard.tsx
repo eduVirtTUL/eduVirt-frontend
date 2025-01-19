@@ -1,11 +1,10 @@
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
+import {Link} from "react-router-dom";
 import {Calendar} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
-import {usePodReservationCount} from "@/data/reservation/getPodReservationCount";
-import {useNavigate} from "react-router";
 
 interface PodCardProps {
     id: string;
@@ -14,7 +13,6 @@ interface PodCardProps {
         name: string;
         isStateless: boolean;
         maxRentTime: number;
-        maxRent: number;
     };
     course: {
         id: string;
@@ -23,12 +21,11 @@ interface PodCardProps {
         courseType: string;
         clusterId: string;
     };
+    maxRent?: number;
 }
 
-export function PodCard({id, resourceGroup, course}: PodCardProps) {
+export function PodCard({id, resourceGroup, course, maxRent}: PodCardProps) {
     const {t} = useTranslation();
-    const { count } = usePodReservationCount({courseId: course.id, podId: id});
-    const navigate = useNavigate();
 
     return (
         <Card className="h-auto mx-2 w-auto transition-all duration-200 hover:shadow-lg hover:border-primary/50">
@@ -44,9 +41,9 @@ export function PodCard({id, resourceGroup, course}: PodCardProps) {
                         >
                             {resourceGroup.isStateless ? t("podType.stateless") : t("podType.stateful")}
                         </Badge>
-                        {!resourceGroup.isStateless && resourceGroup.maxRent && (
+                        {!resourceGroup.isStateless && maxRent && (
                             <Badge variant="secondary">
-                                {t("podCard.maxRent")}: {resourceGroup.maxRent}
+                                {t("podCard.maxRent")}: {maxRent}
                             </Badge>
                         )}
                     </div>
@@ -59,24 +56,26 @@ export function PodCard({id, resourceGroup, course}: PodCardProps) {
                     </div>
                 </div>
                 <div className="pt-4 mt-auto">
-                    <Button
-                        className="w-full gap-2 transition-all hover:scale-[1.02]"
-                        variant="default"
-                        disabled={count !== undefined ? resourceGroup.maxRent != 0 && count >= resourceGroup.maxRent : true}
-                        onClick={() => navigate(
-                            resourceGroup.isStateless ?
-                                `/reservations/calendar/resource-group-pool/${resourceGroup.id}` :
-                                `/reservations/calendar/resource-group/${resourceGroup.id}`, { state: {
-                                    clusterId: course.clusterId,
-                                    courseId: course.id,
-                                    podId: id,
-                                    maxRentTime: resourceGroup.maxRentTime
-                                }}
-                            )}
+                    <Link
+                        to={resourceGroup.isStateless ?
+                            `/reservations/calendar/resource-group-pool/${resourceGroup.id}` :
+                            `/reservations/calendar/resource-group/${resourceGroup.id}`
+                        }
+                        state={{
+                            clusterId: course.clusterId,
+                            courseId: course.id,
+                            podId: id,
+                            maxRentTime: resourceGroup.maxRentTime
+                        }}
+                    >
+                        <Button
+                            className="w-full gap-2 transition-all hover:scale-[1.02]"
+                            variant="default"
                         >
                             <Calendar className="h-4 w-4"/>
                             {t("podCard.makeAReservation")}
-                    </Button>
+                        </Button>
+                    </Link>
                 </div>
             </CardContent>
         </Card>

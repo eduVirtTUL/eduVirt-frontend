@@ -18,6 +18,7 @@ export const useAddTeachersToCourse = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: [keys.COURSE]});
+      queryClient.invalidateQueries({queryKey: [keys.TEACHER]});
       toast.success("Teacher added to course");
     }
   });

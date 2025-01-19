@@ -15,6 +15,9 @@ interface SoloTeamEditModalProps {
     team: {
         id: string;
         active: boolean;
+        etag: string;
+        name: string;
+        maxSize: number;
     };
 }
 
@@ -34,9 +37,16 @@ export function SoloTeamEditModal({ open, onOpenChange, team }: SoloTeamEditModa
     });
 
     async function onSubmit(values: z.infer<typeof soloTeamSchema>) {
+
+        console.log(values);
+        console.table(team)
+
         await updateTeam({
             id: team.id,
-            active: values.active
+            active: values.active,
+            etag: team.etag,
+            name: team.name,
+            maxSize: team.maxSize,
         });
         onOpenChange(false);
     }

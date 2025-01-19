@@ -3,18 +3,32 @@ import { keys } from "../keys";
 import { PageDtoTeamWithCourseDto } from "@/api";
 import { privateAxios } from "@/data/privateAxios";
 
-export const useUsersTeams = (pageNumber?: number, pageSize?: number) => {
+export const useUsersTeams = (
+  pageNumber?: number,
+  pageSize?: number,
+  search?: string,
+  sortOrder?: "ASC" | "DESC"
+) => {
   const { data, isLoading } = useQuery({
-    queryKey: [keys.TEAM, pageNumber, pageSize],
+    queryKey: [
+      keys.TEAM,
+      pageNumber,
+      pageSize,
+      search,
+      sortOrder
+    ],
     queryFn: async () => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("pageNumber", pageNumber?.toString() ?? "")
-      searchParams.append("pageSize", pageSize?.toString() ?? "")
-
       const response = await privateAxios.get<PageDtoTeamWithCourseDto>(
-        `/teams/student`, { params: searchParams }
+        `/teams/student`,
+        {
+          params: {
+            page: pageNumber,
+            size: pageSize,
+            search,
+            sort: sortOrder
+          }
+        }
       );
-
       return response.data;
     },
   });

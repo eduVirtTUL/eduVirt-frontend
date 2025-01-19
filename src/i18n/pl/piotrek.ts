@@ -244,8 +244,6 @@ const maintenanceIntervals = {
     causeDescription: 'Ogólnie sformułowana przyczyna przerwy administracyjnej.',
     description: 'Opis',
     descriptionDescription: 'Bardziej szczegółowa informacja o przyczynie przerwy administracyjnej.',
-    startTime: 'Początek',
-    startTimeDescription: 'Początek przerwy administracyjnej wyznacza moment, w którym funkcjonalności oferowane prze system oVirt przestaną być dostępne.',
     duration: 'Długość przerwy (godziny)',
     durationDescription: 'Długość przerwy w godzinach od momentu wybranego w kalendarzu, w ramach którego nie będzie dostępna funkcjonalność systemu.',
     success: 'Przerwa administracyjna została utworzona pomyślnie',

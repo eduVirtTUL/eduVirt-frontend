@@ -6,13 +6,17 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
-import {CheckIcon, XCircleIcon} from "lucide-react"
+import {CheckIcon, KeyRound, XCircleIcon} from "lucide-react"
 import {useTranslation} from "react-i18next"
 import {t} from "i18next";
 import {useJoinTeamOrCourse} from "@/data/team/users/useJoinTeamOrCourse";
 
 const joinTeamSchema = z.object({
-    teamKey: z.string().min(4, t("joinTeam.validation.keyMinLength")).max(20, t("joinTeam.validation.keyMaxLength")).regex(/^[a-zA-Z0-9\s\-_]+$/, t("joinTeam.validation.keyRegex"))
+    teamKey: z.string()
+    .min(4, t("joinTeam.validation.keyMinLength"))
+    .max(20, t("joinTeam.validation.keyMaxLength"))
+    // eslint-disable-next-line no-useless-escape
+    .regex(/^[a-zA-Z0-9\s\_\-]+$/, t("joinTeam.validation.keyRegex"))
 });
 
 const JoinTeamModal = () => {
@@ -28,6 +32,7 @@ const JoinTeamModal = () => {
     });
 
     const onSubmit = (values: z.infer<typeof joinTeamSchema>) => {
+        console.log(values.teamKey);
         joinTeam(values.teamKey);
         setOpen(false);
         form.reset();
@@ -36,7 +41,10 @@ const JoinTeamModal = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>{t("joinTeam.button")}</Button>
+                <Button>
+                    <KeyRound/>
+                    {t("joinTeam.button")}
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
