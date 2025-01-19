@@ -62,8 +62,6 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
             return;
         }
 
-        console.table(values);
-
         await updateTeam({
             id: team.id,
             name: values.name,

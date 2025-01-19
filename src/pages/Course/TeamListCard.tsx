@@ -88,7 +88,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     });
 
     const handleEditClick = (team: TeamDto) => {
-        setEditingTeamId(team.id);
+        setEditingTeamId(team.id ?? null);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -394,7 +394,9 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         team={{
                             id: editingTeamId,
                             active: editingTeam.active ?? false,
-                            etag: editingTeamEtag
+                            etag: editingTeamEtag,
+                            name: editingTeam.name ?? "",
+                            maxSize: editingTeam.maxSize ?? 0
                         }}
                     />
                 )
