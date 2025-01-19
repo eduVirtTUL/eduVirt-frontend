@@ -196,6 +196,18 @@ const ClusterIntervalList: React.FC = () => {
   if (isLoading || nextLoading) {
     return (
       <>
+        <div className="flex justify-start">
+          <Button
+            variant="outline"
+            size="icon"
+            className="mr-5"
+            onClick={() => (navigate(-1))}
+          >
+            <Undo2/>
+          </Button>
+          <PageHeader title={t("maintenanceIntervals.cluster.title")}/>
+        </div>
+
         <div className="p-3 flex flex-row items-center justify-between">
           <Skeleton className="h-8 w-[100px]" />
           <div className={"flex flex-row space-x-3"}>

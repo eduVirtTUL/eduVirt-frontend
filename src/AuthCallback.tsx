@@ -69,9 +69,9 @@ const AuthCallback: React.FC = () => {
   }, [token, set, changeActiveRole]);
 
   if (!token) {
-    removeCookie("access_token");
+    removeCookie("access_token", { domain: "localhost", path: "/"});
     localStorage.removeItem("token");
-    window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
+    window.location.href = import.meta.env.VITE_API_LOCATION + "auth/login";
   } else {
     privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
       params: {
