@@ -29,8 +29,7 @@ import {
 } from "@/components/ui/pagination";
 import {useDialog} from "@/stores/dialogStore";
 import {Input} from "@/components/ui/input";
-import {useDebounce} from "use-debounce";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import {EditTeamModal} from "@/components/Modals/EditTeamModal";
 import {SoloTeamEditModal} from "@/components/Modals/SoloTeamEditModal";
 import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
@@ -42,6 +41,8 @@ import StatelessPodDrawer from "./StatelessPodDrawer";
 import {useNavigate} from "react-router";
 import {toast} from "sonner";
 import {useTeam} from "@/data/team/useTeam";
+import {SearchType} from "@/data/team/useCoursesTeams";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -51,6 +52,12 @@ interface TeamsTableProps {
     setPageNumber: (page: number) => void;
     courseId: string;
     courseName: string;
+    search: string;
+    setSearch: (search: string) => void;
+    searchType: SearchType;
+    setSearchType: (type: SearchType) => void;
+    sortOrder: "ASC" | "DESC";
+    setSortOrder: (order: "ASC" | "DESC") => void;
 }
 
 const TeamListCard: React.FC<TeamsTableProps> = ({
@@ -61,13 +68,17 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      setPageNumber,
                                                      courseId,
                                                      courseName,
+                                                     search,
+                                                     setSearch,
+                                                     searchType,
+                                                     setSearchType,
+                                                     sortOrder,
+                                                     setSortOrder,
                                                  }) => {
     const {t} = useTranslation();
     const {open} = useDialog();
     const {deleteTeam} = useDeleteTeam();
 
-    const [search, setSearch] = React.useState("");
-    const [searchValue] = useDebounce(search, 500);
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
     const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
     const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
@@ -95,10 +106,10 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     const columns: ColumnDef<any, any>[] = [
         {
             accessorKey: "name",
-            header: ({column}) => (
+            header: () => (
                 <Button
                     variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() => setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC")}
                     className="w-full justify-start pl-2"
                 >
                     {t("coursePageB.teamsTable.columns.name")}
@@ -262,44 +273,43 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
         },
     ];
 
-    const filteredTeams = useMemo(() => {
-        if (!teams?.items || !searchValue) return teams?.items;
-
-        return teams.items.filter(team =>
-            team.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
-            team.users?.some(user =>
-                (user.userName || user.email || '')
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-            )
-        );
-    }, [teams?.items, searchValue]);
-
     return (
         <>
             <Card>
                 <CardHeader/>
                 <CardContent>
                     <div className="flex flex-row gap-2 mb-5">
+                        <Select
+                            value={searchType}
+                            onValueChange={(value: SearchType) => setSearchType(value)}
+                        >
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder={t("teamsList.searchType.placeholder")}/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="TEAM_NAME">{t("teamsList.searchType.teamName")}</SelectItem>
+                                <SelectItem value="STUDENT_NAME">{t("teamsList.searchType.studentName")}</SelectItem>
+                                <SelectItem value="STUDENT_EMAIL">{t("teamsList.searchType.studentEmail")}</SelectItem>
+                            </SelectContent>
+                        </Select>
                         <Input
                             placeholder={t("teamsList.searchPlaceholder")}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <Button
-                            onClick={() => {
-                                setSearch("");
-                            }}
-                        >
+                        <Button onClick={() => setSearch("")}>
                             <XIcon/>
                             {t("teamsList.clear")}
                         </Button>
                     </div>
                     <div className="[&_.inactive-row]:opacity-60">
-                        {!isLoading && teams && (
+                        {!isLoading && teams?.items && (
                             <>
-                                <DataTable columns={columns} data={filteredTeams ?? []}/>
-                                {filteredTeams?.length !== 0 && (
+                                <DataTable
+                                    columns={columns}
+                                    data={teams.items}
+                                />
+                                {teams.items.length > 0 && teams.page && (
                                     <div className="mt-4">
                                         <Pagination>
                                             <PaginationContent>
@@ -324,7 +334,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                         {pageNumber + 1}
                                                     </PaginationLink>
                                                 </PaginationItem>
-                                                {(teams?.page?.totalPages ?? 0) > pageNumber + 1 && (
+                                                {teams.page.totalPages > pageNumber + 1 && (
                                                     <PaginationItem>
                                                         <PaginationLink
                                                             onClick={() => setPageNumber(pageNumber + 1)}
@@ -333,7 +343,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                         </PaginationLink>
                                                     </PaginationItem>
                                                 )}
-                                                {teams?.page?.totalPages !== pageNumber + 1 && (
+                                                {teams.page.totalPages !== pageNumber + 1 && (
                                                     <PaginationItem>
                                                         <PaginationNext
                                                             onClick={() => setPageNumber(pageNumber + 1)}

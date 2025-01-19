@@ -10079,10 +10079,13 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
          * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
+         * @param {string} [search] 
+         * @param {string} [searchType] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByCourse: async (courseId: string, pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getTeamsByCourse: async (courseId: string, pageNumber?: number, pageSize?: number, search?: string, searchType?: string, sort?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('getTeamsByCourse', 'courseId', courseId)
             const localVarPath = `/teams/course/{courseId}`
@@ -10104,6 +10107,18 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
+            }
+
+            if (searchType !== undefined) {
+                localVarQueryParameter['searchType'] = searchType;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
             }
 
 
@@ -10399,11 +10414,14 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
          * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
+         * @param {string} [search] 
+         * @param {string} [searchType] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithKeyDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByCourse(courseId, pageNumber, pageSize, options);
+        async getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, search?: string, searchType?: string, sort?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithKeyDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByCourse(courseId, pageNumber, pageSize, search, searchType, sort, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.getTeamsByCourse']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10536,11 +10554,14 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
          * @param {string} courseId 
          * @param {number} [pageNumber] 
          * @param {number} [pageSize] 
+         * @param {string} [search] 
+         * @param {string} [searchType] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithKeyDto> {
-            return localVarFp.getTeamsByCourse(courseId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, search?: string, searchType?: string, sort?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithKeyDto> {
+            return localVarFp.getTeamsByCourse(courseId, pageNumber, pageSize, search, searchType, sort, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -10665,12 +10686,15 @@ export class TeamControllerApi extends BaseAPI {
      * @param {string} courseId 
      * @param {number} [pageNumber] 
      * @param {number} [pageSize] 
+     * @param {string} [search] 
+     * @param {string} [searchType] 
+     * @param {string} [sort] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).getTeamsByCourse(courseId, pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, search?: string, searchType?: string, sort?: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).getTeamsByCourse(courseId, pageNumber, pageSize, search, searchType, sort, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

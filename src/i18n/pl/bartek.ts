@@ -30,6 +30,12 @@ const teamsList = {
     viewDetails: "Wyświetl szczegóły",
     searchPlaceholder: "Szukaj zespołu...",
     clear: "Wyczyść",
+    searchType: {
+        placeholder: "Typ wyszukiwania",
+        teamName: "Nazwa zespołu",
+        studentName: "Student",
+        studentEmail: "E-mail studenta",
+    },
 };
 
 const joinTeamModal = {
