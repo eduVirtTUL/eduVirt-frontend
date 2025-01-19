@@ -26,8 +26,6 @@ const TeamDetailsPage: React.FC = () => {
     const {team, isLoading} = useTeam(id ?? "");
     const {statefulPods, isLoading: isLoadingStatefulPods} = useStatefulPodsForTeam(id ?? "");
     const {statelessPods, isLoading: isLoadingStatelessPods} = useStatelessPodsForTeam(id ?? "");
-    console.log("statefulPods", statefulPods);
-    console.log("statelessPods", statelessPods);
     const [isMembersOpen, setIsMembersOpen] = useState(() => {
         const saved = localStorage.getItem('teamMembersCollapsible');
         return saved ? JSON.parse(saved) : true;
