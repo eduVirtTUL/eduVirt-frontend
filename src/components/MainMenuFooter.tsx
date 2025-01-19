@@ -21,14 +21,12 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeProvider";
 import { useUser } from "@/stores/userStore";
-import { useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
 const MainMenuFooter: React.FC = () => {
   const { t } = useTranslation();
   const { setTheme, theme } = useTheme();
   const { roles, activeRole, changeActiveRole, name } = useUser();
-  const nav = useNavigate();
   const queryClient = useQueryClient();
 
   return (
@@ -118,7 +116,7 @@ const MainMenuFooter: React.FC = () => {
             <DropdownMenuItem
               onClick={() => {
                 localStorage.removeItem("token");
-                nav("/login");
+                window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/logout";
               }}
             >
               <span>{t("menu.signOut")}</span>
