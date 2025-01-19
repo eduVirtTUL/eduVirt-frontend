@@ -27,7 +27,8 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { resourceGroupPool } = useResourceGroupPool(id);
-  const { createStatelessResourceGroupAsync } = useCreateStatelessResourceGroup();
+  const { createStatelessResourceGroupAsync } =
+    useCreateStatelessResourceGroup();
 
   const { courseId, clusterId } = location.state || {};
 
@@ -67,9 +68,14 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           </Button>
           <Button
             variant="secondary"
-            onClick={() => navigate(`/reservations/calendar/resource-group-pool/presentation/${id}`, {
-              state: { clusterId, courseId }
-            })}
+            onClick={() =>
+              navigate(
+                `/reservations/calendar/resource-group-pool/presentation/${id}`,
+                {
+                  state: { clusterId, courseId },
+                }
+              )
+            }
           >
             <CalendarIcon />
             {t("resourceGroupPoolPage.calendar")}
@@ -85,9 +91,14 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           <div className="flex flex-row items-center justify-end gap-2 pb-5">
             <Button
               variant="secondary"
-              onClick={() => navigate(`/reservations/calendar/resource-group-pool/presentation/${id}`, {
-                state: { clusterId, courseId }
-              })}
+              onClick={() =>
+                navigate(
+                  `/reservations/calendar/resource-group-pool/presentation/${id}`,
+                  {
+                    state: { clusterId, courseId },
+                  }
+                )
+              }
             >
               <CalendarIcon />
               {t("resourceGroupPoolPage.calendar")}
@@ -137,10 +148,12 @@ const ResourceGroupPoolPage: React.FC<Route.ComponentProps> = ({
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {activeRole === "teacher" && (
-              <Button onClick={() => open("createResourceGroup")}>
-                <PlusIcon />
-                {t("resourceGroupPoolPage.createResourceGroup")}
-              </Button>
+              <div className="flex flex-row items-start">
+                <Button onClick={() => open("createResourceGroup")}>
+                  <PlusIcon />
+                  {t("resourceGroupPoolPage.createResourceGroup")}
+                </Button>
+              </div>
             )}
             <div className="grid grid-cols-4 gap-4">
               {resourceGroupPool?.resourceGroups?.map((rg) => (
