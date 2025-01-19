@@ -10280,13 +10280,16 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} id 
+         * @param {string} ifMatch 
          * @param {UpdateTeamDto} updateTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTeam: async (id: string, updateTeamDto: UpdateTeamDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateTeam: async (id: string, ifMatch: string, updateTeamDto: UpdateTeamDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateTeam', 'id', id)
+            // verify required parameter 'ifMatch' is not null or undefined
+            assertParamExists('updateTeam', 'ifMatch', ifMatch)
             // verify required parameter 'updateTeamDto' is not null or undefined
             assertParamExists('updateTeam', 'updateTeamDto', updateTeamDto)
             const localVarPath = `/teams/{id}`
@@ -10306,6 +10309,9 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10457,12 +10463,13 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
+         * @param {string} ifMatch 
          * @param {UpdateTeamDto} updateTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateTeam(id: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TeamWithCourseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTeam(id, updateTeamDto, options);
+        async updateTeam(id: string, ifMatch: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TeamWithCourseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTeam(id, ifMatch, updateTeamDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.updateTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10578,12 +10585,13 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
         /**
          * 
          * @param {string} id 
+         * @param {string} ifMatch 
          * @param {UpdateTeamDto} updateTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTeam(id: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig): AxiosPromise<TeamWithCourseDto> {
-            return localVarFp.updateTeam(id, updateTeamDto, options).then((request) => request(axios, basePath));
+        updateTeam(id: string, ifMatch: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig): AxiosPromise<TeamWithCourseDto> {
+            return localVarFp.updateTeam(id, ifMatch, updateTeamDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -10716,13 +10724,14 @@ export class TeamControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} id 
+     * @param {string} ifMatch 
      * @param {UpdateTeamDto} updateTeamDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public updateTeam(id: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).updateTeam(id, updateTeamDto, options).then((request) => request(this.axios, this.basePath));
+    public updateTeam(id: string, ifMatch: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).updateTeam(id, ifMatch, updateTeamDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -23,7 +23,8 @@ interface EditTeamModalProps {
         name: string;
         maxSize: number;
         active: boolean;
-        users: UserDto[];  // Changed from string[] to UserDto[]
+        users: UserDto[];
+        etag: string;
     };
     existingNames: string[];
 }
@@ -61,11 +62,14 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
             return;
         }
 
+        console.table(values);
+
         await updateTeam({
             id: team.id,
             name: values.name,
             maxSize: values.maxSize,
-            active: values.active
+            active: values.active,
+            etag: team.etag
         });
         onOpenChange(false);
     }

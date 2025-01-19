@@ -130,7 +130,7 @@ const coursePageB = {
                 confirmation: {
                     title : "Usuń zespół",
                     description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
-            }
+            },
         }
       },
     },

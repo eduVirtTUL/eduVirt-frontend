@@ -10,7 +10,6 @@ import {
     Copy,
     FileCheck2,
     FileX2,
-    Info,
     MoreHorizontal,
     PencilIcon,
     SmilePlus,
@@ -18,7 +17,6 @@ import {
     XIcon,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {StatusDot} from "@/components/StatusDot";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {
@@ -42,7 +40,8 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
 import {useNavigate} from "react-router";
-import { toast } from "sonner";
+import {toast} from "sonner";
+import {useTeam} from "@/data/team/useTeam";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -70,7 +69,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     const [search, setSearch] = React.useState("");
     const [searchValue] = useDebounce(search, 500);
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
-    const [editingTeam, setEditingTeam] = useState<TeamDto | null>(null);
     const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
     const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
@@ -82,6 +80,15 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             await deleteTeam(teamToDelete.id);
             setTeamToDelete(null);
         }
+    };
+
+    const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
+    const {team: editingTeam, etag: editingTeamEtag} = useTeam(editingTeamId ?? '', {
+        enabled: !!editingTeamId
+    });
+
+    const handleEditClick = (team: TeamDto) => {
+        setEditingTeamId(team.id);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,22 +119,8 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             cell: ({row}: { row: Row<TeamDto> }) => {
                 const users = row.original.users || [];
 
-                if (!isTeamBased) {
-                    const user = users[0];
-                    return user ? (
-                        <div className="flex flex-col">
-                            <span>
-                                {user.firstName && user.lastName
-                                    ? `${user.firstName} ${user.lastName}`
-                                    : user.userName || user.email}
-                            </span>
-                            {user.email && user.email !== user.userName && (
-                                <span className="text-xs text-muted-foreground mt-1">
-                                    {user.email}
-                                </span>
-                            )}
-                        </div>
-                    ) : (
+                if (users.length === 0) {
+                    return (
                         <span className="text-muted-foreground">
                             {t("coursePageB.teamsTable.columns.noMembers")}
                         </span>
@@ -135,33 +128,22 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 }
 
                 return (
-                    <Popover>
-                        <PopoverTrigger>
-                            <div className="flex items-center gap-2 cursor-pointer">
-                                <span>{users.length}</span>
-                                <Info className="h-4 w-4 text-muted-foreground"/>
-                            </div>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <div className="space-y-2">
-                                {users.length === 0 ? (
-                                    <div className="text-muted-foreground text-center">
-                                        {t("coursePageB.teamsTable.columns.noMembers")}
-                                    </div>
-                                ) : (
-                                    users.map((user: UserDto) => (
-                                        <div key={user.id}>
-                                            <Badge variant="secondary">
-                                                {user.firstName && user.lastName
-                                                    ? `${user.firstName} ${user.lastName}`
-                                                    : user.userName || user.email}
-                                            </Badge>
-                                        </div>
-                                    ))
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+                        {users.map((user: UserDto) => (
+                            <div key={user.id} className="flex flex-col min-w-[150px]">
+                                <span className="truncate">
+                                    {user.firstName && user.lastName
+                                        ? `${user.firstName} ${user.lastName}`
+                                        : user.userName || user.email}
+                                </span>
+                                {user.email && user.email !== user.userName && (
+                                    <span className="text-xs text-muted-foreground mt-1 truncate">
+                                        {user.email}
+                                    </span>
                                 )}
                             </div>
-                        </PopoverContent>
-                    </Popover>
+                        ))}
+                    </div>
                 );
             },
         },
@@ -181,21 +163,21 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 {
                     accessorKey: "keyValue",
                     header: t("coursePageB.teamsTable.columns.accessKey.label"),
-                    
+
                     cell: ({row}: { row: Row<TeamAccessKeyDto> }) => (
                         <div className="flex items-center gap-2">
-                            <Badge variant="secondary">{row.original.keyValue}</Badge>
+                            <Badge variant="default">{row.original.keyValue}</Badge>
                             <Copy
-                                    className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            row.original.keyValue || ""
-                                        );
-                                        toast.success(
-                                            t("coursePageB.teamsTable.columns.accessKey.copied")
-                                        );
-                                    }}
-                                />
+                                className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                                onClick={() => {
+                                    navigator.clipboard.writeText(
+                                        row.original.keyValue || ""
+                                    );
+                                    toast.success(
+                                        t("coursePageB.teamsTable.columns.accessKey.copied")
+                                    );
+                                }}
+                            />
                         </div>
                     ),
                 },
@@ -225,7 +207,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => setEditingTeam(row.original)}>
+                        <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
                             <PencilIcon className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
                         </DropdownMenuItem>
@@ -384,36 +366,35 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     courseId={courseId}
                 />
             )}
-
-            {editingTeam && editingTeam.id && (
+            {editingTeam && editingTeamId && editingTeamEtag && (
                 isTeamBased ? (
                     <EditTeamModal
-                        open={!!editingTeam}
-                        onOpenChange={(open) => !open && setEditingTeam(null)}
+                        open={true}
+                        onOpenChange={(open) => !open && setEditingTeamId(null)}
                         team={{
-                            id: editingTeam.id,
+                            id: editingTeamId,
                             name: editingTeam.name ?? "",
                             maxSize: editingTeam.maxSize ?? 0,
                             active: editingTeam.active ?? false,
-                            users: (editingTeam.users ?? []).map(user => ({
+                            etag: editingTeamEtag,
+                            users: editingTeam.users?.map(user => ({
                                 id: user.id!,
                                 name: user.userName || user.email || ''
-                            })),
+                            })) ?? []
                         }}
-                        existingNames={
-                            teams?.items
-                                ?.filter((t) => t.id !== editingTeam.id)
-                                .map((t) => t.name)
-                                .filter((name): name is string => name !== undefined) ?? []
-                        }
+                        existingNames={teams?.items
+                            ?.filter(t => t.id !== editingTeamId)
+                            .map(t => t.name!)
+                            .filter(Boolean) ?? []}
                     />
                 ) : (
                     <SoloTeamEditModal
-                        open={!!editingTeam}
-                        onOpenChange={(open) => !open && setEditingTeam(null)}
+                        open={true}
+                        onOpenChange={(open) => !open && setEditingTeamId(null)}
                         team={{
-                            id: editingTeam.id,
+                            id: editingTeamId,
                             active: editingTeam.active ?? false,
+                            etag: editingTeamEtag
                         }}
                     />
                 )
