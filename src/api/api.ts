@@ -1345,10 +1345,10 @@ export interface PodStatelessDetailsDto {
     'id'?: string;
     /**
      * 
-     * @type {ResourceGroupPoolDto}
+     * @type {ResourceGroupPoolWithMaxRentTimeDto}
      * @memberof PodStatelessDetailsDto
      */
-    'resourceGroupPool'?: ResourceGroupPoolDto;
+    'resourceGroupPool'?: ResourceGroupPoolWithMaxRentTimeDto;
     /**
      * 
      * @type {CourseBasicDto}
@@ -1559,6 +1559,37 @@ export interface ResourceGroupPoolDto {
      * @memberof ResourceGroupPoolDto
      */
     'description'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ResourceGroupPoolWithMaxRentTimeDto
+ */
+export interface ResourceGroupPoolWithMaxRentTimeDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceGroupPoolWithMaxRentTimeDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceGroupPoolWithMaxRentTimeDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceGroupPoolWithMaxRentTimeDto
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceGroupPoolWithMaxRentTimeDto
+     */
+    'maxRentTime'?: number;
 }
 /**
  * 
@@ -2364,7 +2395,8 @@ export class AccessKeyControllerApi extends BaseAPI {
 export const ClusterControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the clusters from the oVirt engine instance.
+         * @summary Get all available clusters in the oVirt engine instance
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2402,8 +2434,9 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch detailed information about certain cluster, identified with the given identifier.
+         * @summary Get detailed information about certain cluster
+         * @param {string} id Identifier of the cluster, which detailed information is to be found in the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2435,8 +2468,9 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all events that occurred in certain cluster in the oVirt system.
+         * @summary Get all events that occurred in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2477,8 +2511,9 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the nodes of certain cluster (hosts) from the oVirt engine instance.
+         * @summary Get all nodes of certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which nodes are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2519,8 +2554,9 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the networks, which as located in certain clusters datacenter in the oVirt system.
+         * @summary Get all networks, which certain cluster has the access to in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which networks are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2562,8 +2598,9 @@ export const ClusterControllerApiAxiosParamCreator = function (configuration?: C
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get detailed info on all virtual machines that are located in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which virtual machines are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2615,7 +2652,8 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ClusterControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the clusters from the oVirt engine instance.
+         * @summary Get all available clusters in the oVirt engine instance
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2627,8 +2665,9 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch detailed information about certain cluster, identified with the given identifier.
+         * @summary Get detailed information about certain cluster
+         * @param {string} id Identifier of the cluster, which detailed information is to be found in the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2639,8 +2678,9 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all events that occurred in certain cluster in the oVirt system.
+         * @summary Get all events that occurred in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2652,8 +2692,9 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the nodes of certain cluster (hosts) from the oVirt engine instance.
+         * @summary Get all nodes of certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which nodes are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2665,8 +2706,9 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the networks, which as located in certain clusters datacenter in the oVirt system.
+         * @summary Get all networks, which certain cluster has the access to in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which networks are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2679,8 +2721,9 @@ export const ClusterControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get detailed info on all virtual machines that are located in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which virtual machines are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2703,7 +2746,8 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
     const localVarFp = ClusterControllerApiFp(configuration)
     return {
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the clusters from the oVirt engine instance.
+         * @summary Get all available clusters in the oVirt engine instance
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2712,8 +2756,9 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
             return localVarFp.findAllClusters(pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch detailed information about certain cluster, identified with the given identifier.
+         * @summary Get detailed information about certain cluster
+         * @param {string} id Identifier of the cluster, which detailed information is to be found in the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2721,8 +2766,9 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
             return localVarFp.findClusterById(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all events that occurred in certain cluster in the oVirt system.
+         * @summary Get all events that occurred in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2731,8 +2777,9 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
             return localVarFp.findEventsByClusterId(id, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the nodes of certain cluster (hosts) from the oVirt engine instance.
+         * @summary Get all nodes of certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which nodes are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2741,8 +2788,9 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
             return localVarFp.findHostInfoByClusterId(id, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the networks, which as located in certain clusters datacenter in the oVirt system.
+         * @summary Get all networks, which certain cluster has the access to in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which networks are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2752,8 +2800,9 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
             return localVarFp.findNetworksByClusterId(id, page, size, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get detailed info on all virtual machines that are located in certain cluster in the oVirt engine instance
+         * @param {string} id Identifier of the cluster, which virtual machines are to be found in the oVirt system.
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
@@ -2773,7 +2822,8 @@ export const ClusterControllerApiFactory = function (configuration?: Configurati
  */
 export class ClusterControllerApi extends BaseAPI {
     /**
-     * 
+     * This endpoint can be used by the administrator to fetch all the clusters from the oVirt engine instance.
+     * @summary Get all available clusters in the oVirt engine instance
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2784,8 +2834,9 @@ export class ClusterControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used by the administrator to fetch detailed information about certain cluster, identified with the given identifier.
+     * @summary Get detailed information about certain cluster
+     * @param {string} id Identifier of the cluster, which detailed information is to be found in the oVirt system.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterControllerApi
@@ -2795,8 +2846,9 @@ export class ClusterControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used by the administrator to fetch all events that occurred in certain cluster in the oVirt system.
+     * @summary Get all events that occurred in certain cluster in the oVirt engine instance
+     * @param {string} id Identifier of the cluster, which events are to be found in the oVirt system.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2807,8 +2859,9 @@ export class ClusterControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used by the administrator to fetch all the nodes of certain cluster (hosts) from the oVirt engine instance.
+     * @summary Get all nodes of certain cluster in the oVirt engine instance
+     * @param {string} id Identifier of the cluster, which nodes are to be found in the oVirt system.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2819,8 +2872,9 @@ export class ClusterControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used by the administrator to fetch all the networks, which as located in certain clusters datacenter in the oVirt system.
+     * @summary Get all networks, which certain cluster has the access to in the oVirt engine instance
+     * @param {string} id Identifier of the cluster, which networks are to be found in the oVirt system.
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {*} [options] Override http request option.
@@ -2832,8 +2886,9 @@ export class ClusterControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+     * @summary Get detailed info on all virtual machines that are located in certain cluster in the oVirt engine instance
+     * @param {string} id Identifier of the cluster, which virtual machines are to be found in the oVirt system.
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {*} [options] Override http request option.
@@ -2854,9 +2909,10 @@ export class ClusterControllerApi extends BaseAPI {
 export const ClusterMetricControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMetricValueDto} createMetricValueDto 
+         * This endpoint can be used by the administrator to create a new metric value for given cluster.
+         * @summary Create a value for certain metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value will be created for.
+         * @param {CreateMetricValueDto} createMetricValueDto Data transfer object containing essential information about created metric value, which in fact is identifier of the metric, which the value is created for, and the actual value of the metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2893,9 +2949,10 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric value, that was defined for given cluster, which exists in the oVirt system
+         * @summary Remove value defined for given metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value to be removed is defined for.
+         * @param {string} metricId Identifier of the metric, which is value is to be removed for given cluster.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2930,17 +2987,18 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the metric values defined for given cluster.
+         * @summary Get all values of the metrics, that were defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric values will be fetched for.
          * @param {Pageable} pageable 
-         * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllMetricValues: async (pageable: Pageable, clusterId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pageable' is not null or undefined
-            assertParamExists('getAllMetricValues', 'pageable', pageable)
+        getAllMetricValues: async (clusterId: string, pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clusterId' is not null or undefined
             assertParamExists('getAllMetricValues', 'clusterId', clusterId)
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getAllMetricValues', 'pageable', pageable)
             const localVarPath = `/clusters/{clusterId}/metrics`
                 .replace(`{${"clusterId"}}`, encodeURIComponent(String(clusterId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2972,10 +3030,11 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
-         * @param {ValueDto} valueDto 
+         * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
+         * @summary Update certain metric value for given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
+         * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3025,9 +3084,10 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
     const localVarAxiosParamCreator = ClusterMetricControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMetricValueDto} createMetricValueDto 
+         * This endpoint can be used by the administrator to create a new metric value for given cluster.
+         * @summary Create a value for certain metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value will be created for.
+         * @param {CreateMetricValueDto} createMetricValueDto Data transfer object containing essential information about created metric value, which in fact is identifier of the metric, which the value is created for, and the actual value of the metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3038,9 +3098,10 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric value, that was defined for given cluster, which exists in the oVirt system
+         * @summary Remove value defined for given metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value to be removed is defined for.
+         * @param {string} metricId Identifier of the metric, which is value is to be removed for given cluster.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3051,23 +3112,25 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the metric values defined for given cluster.
+         * @summary Get all values of the metrics, that were defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric values will be fetched for.
          * @param {Pageable} pageable 
-         * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllMetricValues(pageable: Pageable, clusterId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoMetricValueDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMetricValues(pageable, clusterId, options);
+        async getAllMetricValues(clusterId: string, pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoMetricValueDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMetricValues(clusterId, pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.getAllMetricValues']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
-         * @param {ValueDto} valueDto 
+         * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
+         * @summary Update certain metric value for given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
+         * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3088,9 +3151,10 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
     const localVarFp = ClusterMetricControllerApiFp(configuration)
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMetricValueDto} createMetricValueDto 
+         * This endpoint can be used by the administrator to create a new metric value for given cluster.
+         * @summary Create a value for certain metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value will be created for.
+         * @param {CreateMetricValueDto} createMetricValueDto Data transfer object containing essential information about created metric value, which in fact is identifier of the metric, which the value is created for, and the actual value of the metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3098,9 +3162,10 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
             return localVarFp.createMetricValue(clusterId, createMetricValueDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric value, that was defined for given cluster, which exists in the oVirt system
+         * @summary Remove value defined for given metric for cluster
+         * @param {string} clusterId Identifier of the cluster, which the value to be removed is defined for.
+         * @param {string} metricId Identifier of the metric, which is value is to be removed for given cluster.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3108,20 +3173,22 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
             return localVarFp.deleteMetric1(clusterId, metricId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the metric values defined for given cluster.
+         * @summary Get all values of the metrics, that were defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric values will be fetched for.
          * @param {Pageable} pageable 
-         * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllMetricValues(pageable: Pageable, clusterId: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoMetricValueDto> {
-            return localVarFp.getAllMetricValues(pageable, clusterId, options).then((request) => request(axios, basePath));
+        getAllMetricValues(clusterId: string, pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoMetricValueDto> {
+            return localVarFp.getAllMetricValues(clusterId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
-         * @param {ValueDto} valueDto 
+         * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
+         * @summary Update certain metric value for given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
+         * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3139,9 +3206,10 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
  */
 export class ClusterMetricControllerApi extends BaseAPI {
     /**
-     * 
-     * @param {string} clusterId 
-     * @param {CreateMetricValueDto} createMetricValueDto 
+     * This endpoint can be used by the administrator to create a new metric value for given cluster.
+     * @summary Create a value for certain metric for cluster
+     * @param {string} clusterId Identifier of the cluster, which the value will be created for.
+     * @param {CreateMetricValueDto} createMetricValueDto Data transfer object containing essential information about created metric value, which in fact is identifier of the metric, which the value is created for, and the actual value of the metric.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
@@ -3151,9 +3219,10 @@ export class ClusterMetricControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} clusterId 
-     * @param {string} metricId 
+     * This endpoint can be used by the administrator to remove certain metric value, that was defined for given cluster, which exists in the oVirt system
+     * @summary Remove value defined for given metric for cluster
+     * @param {string} clusterId Identifier of the cluster, which the value to be removed is defined for.
+     * @param {string} metricId Identifier of the metric, which is value is to be removed for given cluster.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
@@ -3163,22 +3232,24 @@ export class ClusterMetricControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * This endpoint can be used by the administrator to fetch all the metric values defined for given cluster.
+     * @summary Get all values of the metrics, that were defined for the given cluster
+     * @param {string} clusterId Identifier of the cluster, which the metric values will be fetched for.
      * @param {Pageable} pageable 
-     * @param {string} clusterId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
      */
-    public getAllMetricValues(pageable: Pageable, clusterId: string, options?: RawAxiosRequestConfig) {
-        return ClusterMetricControllerApiFp(this.configuration).getAllMetricValues(pageable, clusterId, options).then((request) => request(this.axios, this.basePath));
+    public getAllMetricValues(clusterId: string, pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return ClusterMetricControllerApiFp(this.configuration).getAllMetricValues(clusterId, pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {string} clusterId 
-     * @param {string} metricId 
-     * @param {ValueDto} valueDto 
+     * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
+     * @summary Update certain metric value for given cluster
+     * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
+     * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+     * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
@@ -3384,11 +3455,12 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
-         * @param {string} id 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to establish availability of certain resource group in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group, which availability is to be established.
+         * @param {string} rgId Identifier of the resource group, which availability is to be established by the web application.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3439,23 +3511,24 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to establish availability of certain resource group pool in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group pool in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group pool, which availability is to be established.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroupPool: async (id: string, rgPoolId: string, start: string, end: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        findResourcesAvailabilityForResourceGroupPool: async (id: string, start: string, end: string, rgPoolId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'id', id)
-            // verify required parameter 'rgPoolId' is not null or undefined
-            assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'rgPoolId', rgPoolId)
             // verify required parameter 'start' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'start', start)
             // verify required parameter 'end' is not null or undefined
             assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'end', end)
+            // verify required parameter 'rgPoolId' is not null or undefined
+            assertParamExists('findResourcesAvailabilityForResourceGroupPool', 'rgPoolId', rgPoolId)
             const localVarPath = `/course/{id}/resource-group-pools/{rgPoolId}/availability`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"rgPoolId"}}`, encodeURIComponent(String(rgPoolId)));
@@ -4021,11 +4094,12 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to establish availability of certain resource group in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group, which availability is to be established.
+         * @param {string} rgId Identifier of the resource group, which availability is to be established by the web application.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4036,16 +4110,17 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to establish availability of certain resource group pool in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group pool in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group pool, which availability is to be established.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options);
+        async findResourcesAvailabilityForResourceGroupPool(id: string, start: string, end: string, rgPoolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourcesAvailabilityDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findResourcesAvailabilityForResourceGroupPool(id, start, end, rgPoolId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.findResourcesAvailabilityForResourceGroupPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4262,11 +4337,12 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.deleteCourse(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to establish availability of certain resource group in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group, which availability is to be established.
+         * @param {string} rgId Identifier of the resource group, which availability is to be established by the web application.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4274,16 +4350,17 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.findResourcesAvailabilityForResourceGroup(id, rgId, start, end, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to establish availability of certain resource group pool in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+         * @summary Check availability of certain resource group pool in given course during specified time window
+         * @param {string} id Identifier of the course, which contains the resource group pool, which availability is to be established.
+         * @param {string} start Start of the time window, which the availability will be established for.
+         * @param {string} end End of the time window, which the availability will be established for.
          * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
-            return localVarFp.findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options).then((request) => request(axios, basePath));
+        findResourcesAvailabilityForResourceGroupPool(id: string, start: string, end: string, rgPoolId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourcesAvailabilityDto>> {
+            return localVarFp.findResourcesAvailabilityForResourceGroupPool(id, start, end, rgPoolId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4471,11 +4548,12 @@ export class CourseControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
-     * @param {string} rgId 
-     * @param {string} start 
-     * @param {string} end 
+     * This endpoint can be used to establish availability of certain resource group in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+     * @summary Check availability of certain resource group in given course during specified time window
+     * @param {string} id Identifier of the course, which contains the resource group, which availability is to be established.
+     * @param {string} rgId Identifier of the resource group, which availability is to be established by the web application.
+     * @param {string} start Start of the time window, which the availability will be established for.
+     * @param {string} end End of the time window, which the availability will be established for.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
@@ -4485,17 +4563,18 @@ export class CourseControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used to establish availability of certain resource group pool in given course during specified time window. That endpoint is specifically used by the calendar component in the UI.
+     * @summary Check availability of certain resource group pool in given course during specified time window
+     * @param {string} id Identifier of the course, which contains the resource group pool, which availability is to be established.
+     * @param {string} start Start of the time window, which the availability will be established for.
+     * @param {string} end End of the time window, which the availability will be established for.
      * @param {string} rgPoolId 
-     * @param {string} start 
-     * @param {string} end 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseControllerApi
      */
-    public findResourcesAvailabilityForResourceGroupPool(id: string, rgPoolId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
-        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroupPool(id, rgPoolId, start, end, options).then((request) => request(this.axios, this.basePath));
+    public findResourcesAvailabilityForResourceGroupPool(id: string, start: string, end: string, rgPoolId: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).findResourcesAvailabilityForResourceGroupPool(id, start, end, rgPoolId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5052,9 +5131,10 @@ export class CourseMetricControllerApi extends BaseAPI {
 export const MaintenanceIntervalControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the given cluster.
+         * @summary Create a new maintenance interval for cluster
+         * @param {string} clusterId Identifier of the cluster, which the new maintenance interval will be created for.
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5091,8 +5171,9 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             };
         },
         /**
-         * 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the entire oVirt system (for situation where no cluster will be available).
+         * @summary Create a new system maintenance interval
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5126,8 +5207,9 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             };
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to finish / remove certain maintenance interval (depending on the time of the invocation of this method). If this method is invoked after the start of the maintenance interval, it marks the reservation as finished and changes its end time. In the latter case, it removes the maintenance interval from the database altogether.
+         * @summary Finish / remove certain maintenance interval.
+         * @param {string} intervalId Identifier of the maintenance interval, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5143,7 +5225,7 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -5159,14 +5241,17 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             };
         },
         /**
-         * 
+         * This endpoint can be used to fetch either active or inactive maintenance intervals, defined for given cluster (or system, if the cluster identifier is null) (that includes pagination and sorting as well).
+         * @summary Get maintenance intervals (either active or inactive) for cluster / system
+         * @param {boolean} active Status of the reservations that are to be fetched from the database, expressed as boolean value. If true then active intervals are fetched, in the other case inactive intervals are fetched.
          * @param {Pageable} pageable 
-         * @param {string} [clusterId] 
-         * @param {boolean} [active] 
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If that identifier is not defined, then maintenance intervals for system are fetched instead.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllMaintenanceIntervals: async (pageable: Pageable, clusterId?: string, active?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllMaintenanceIntervals: async (active: boolean, pageable: Pageable, clusterId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'active' is not null or undefined
+            assertParamExists('getAllMaintenanceIntervals', 'active', active)
             // verify required parameter 'pageable' is not null or undefined
             assertParamExists('getAllMaintenanceIntervals', 'pageable', pageable)
             const localVarPath = `/maintenance-intervals`;
@@ -5181,18 +5266,18 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (pageable !== undefined) {
-                for (const [key, value] of Object.entries(pageable)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
             if (clusterId !== undefined) {
                 localVarQueryParameter['clusterId'] = clusterId;
             }
 
             if (active !== undefined) {
                 localVarQueryParameter['active'] = active;
+            }
+
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
             }
 
 
@@ -5207,8 +5292,9 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             };
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to fetch detailed information about certain maintenance interval, identified with the given identifier.
+         * @summary Get detailed information about certain maintenance interval
+         * @param {string} intervalId Identifier of the maintenance interval, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5240,10 +5326,11 @@ export const MaintenanceIntervalControllerApiAxiosParamCreator = function (confi
             };
         },
         /**
-         * 
-         * @param {string} start 
-         * @param {string} end 
-         * @param {string} [clusterId] 
+         * This endpoint can be used to fetch maintenance intervals, defined for certain cluster / system in the specified time window.
+         * @summary Get maintenance intervals for the cluster / system in given time window.
+         * @param {string} start Timestamp of the start of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} end Timestamp of the end of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If not provided, then maintenance intervals for system are fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5302,9 +5389,10 @@ export const MaintenanceIntervalControllerApiFp = function(configuration?: Confi
     const localVarAxiosParamCreator = MaintenanceIntervalControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the given cluster.
+         * @summary Create a new maintenance interval for cluster
+         * @param {string} clusterId Identifier of the cluster, which the new maintenance interval will be created for.
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5315,8 +5403,9 @@ export const MaintenanceIntervalControllerApiFp = function(configuration?: Confi
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the entire oVirt system (for situation where no cluster will be available).
+         * @summary Create a new system maintenance interval
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5327,8 +5416,9 @@ export const MaintenanceIntervalControllerApiFp = function(configuration?: Confi
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to finish / remove certain maintenance interval (depending on the time of the invocation of this method). If this method is invoked after the start of the maintenance interval, it marks the reservation as finished and changes its end time. In the latter case, it removes the maintenance interval from the database altogether.
+         * @summary Finish / remove certain maintenance interval.
+         * @param {string} intervalId Identifier of the maintenance interval, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5339,22 +5429,24 @@ export const MaintenanceIntervalControllerApiFp = function(configuration?: Confi
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * This endpoint can be used to fetch either active or inactive maintenance intervals, defined for given cluster (or system, if the cluster identifier is null) (that includes pagination and sorting as well).
+         * @summary Get maintenance intervals (either active or inactive) for cluster / system
+         * @param {boolean} active Status of the reservations that are to be fetched from the database, expressed as boolean value. If true then active intervals are fetched, in the other case inactive intervals are fetched.
          * @param {Pageable} pageable 
-         * @param {string} [clusterId] 
-         * @param {boolean} [active] 
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If that identifier is not defined, then maintenance intervals for system are fetched instead.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllMaintenanceIntervals(pageable: Pageable, clusterId?: string, active?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoMaintenanceIntervalDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMaintenanceIntervals(pageable, clusterId, active, options);
+        async getAllMaintenanceIntervals(active: boolean, pageable: Pageable, clusterId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoMaintenanceIntervalDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMaintenanceIntervals(active, pageable, clusterId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MaintenanceIntervalControllerApi.getAllMaintenanceIntervals']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to fetch detailed information about certain maintenance interval, identified with the given identifier.
+         * @summary Get detailed information about certain maintenance interval
+         * @param {string} intervalId Identifier of the maintenance interval, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5365,10 +5457,11 @@ export const MaintenanceIntervalControllerApiFp = function(configuration?: Confi
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} start 
-         * @param {string} end 
-         * @param {string} [clusterId] 
+         * This endpoint can be used to fetch maintenance intervals, defined for certain cluster / system in the specified time window.
+         * @summary Get maintenance intervals for the cluster / system in given time window.
+         * @param {string} start Timestamp of the start of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} end Timestamp of the end of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If not provided, then maintenance intervals for system are fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5389,9 +5482,10 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
     const localVarFp = MaintenanceIntervalControllerApiFp(configuration)
     return {
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the given cluster.
+         * @summary Create a new maintenance interval for cluster
+         * @param {string} clusterId Identifier of the cluster, which the new maintenance interval will be created for.
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5399,8 +5493,9 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
             return localVarFp.createNewClusterMaintenanceInterval(clusterId, createMaintenanceIntervalDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+         * This endpoint can be used by the administrator to create a new maintenance interval for the entire oVirt system (for situation where no cluster will be available).
+         * @summary Create a new system maintenance interval
+         * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5408,8 +5503,9 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
             return localVarFp.createNewSystemMaintenanceInterval(createMaintenanceIntervalDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to finish / remove certain maintenance interval (depending on the time of the invocation of this method). If this method is invoked after the start of the maintenance interval, it marks the reservation as finished and changes its end time. In the latter case, it removes the maintenance interval from the database altogether.
+         * @summary Finish / remove certain maintenance interval.
+         * @param {string} intervalId Identifier of the maintenance interval, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5417,19 +5513,21 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
             return localVarFp.finishMaintenanceInterval(intervalId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * This endpoint can be used to fetch either active or inactive maintenance intervals, defined for given cluster (or system, if the cluster identifier is null) (that includes pagination and sorting as well).
+         * @summary Get maintenance intervals (either active or inactive) for cluster / system
+         * @param {boolean} active Status of the reservations that are to be fetched from the database, expressed as boolean value. If true then active intervals are fetched, in the other case inactive intervals are fetched.
          * @param {Pageable} pageable 
-         * @param {string} [clusterId] 
-         * @param {boolean} [active] 
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If that identifier is not defined, then maintenance intervals for system are fetched instead.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllMaintenanceIntervals(pageable: Pageable, clusterId?: string, active?: boolean, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoMaintenanceIntervalDto> {
-            return localVarFp.getAllMaintenanceIntervals(pageable, clusterId, active, options).then((request) => request(axios, basePath));
+        getAllMaintenanceIntervals(active: boolean, pageable: Pageable, clusterId?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoMaintenanceIntervalDto> {
+            return localVarFp.getAllMaintenanceIntervals(active, pageable, clusterId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} intervalId 
+         * This endpoint can be used to fetch detailed information about certain maintenance interval, identified with the given identifier.
+         * @summary Get detailed information about certain maintenance interval
+         * @param {string} intervalId Identifier of the maintenance interval, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5437,10 +5535,11 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
             return localVarFp.getMaintenanceInterval(intervalId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} start 
-         * @param {string} end 
-         * @param {string} [clusterId] 
+         * This endpoint can be used to fetch maintenance intervals, defined for certain cluster / system in the specified time window.
+         * @summary Get maintenance intervals for the cluster / system in given time window.
+         * @param {string} start Timestamp of the start of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} end Timestamp of the end of the time window, which the searched maintenance intervals overlaps with.
+         * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If not provided, then maintenance intervals for system are fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5458,9 +5557,10 @@ export const MaintenanceIntervalControllerApiFactory = function (configuration?:
  */
 export class MaintenanceIntervalControllerApi extends BaseAPI {
     /**
-     * 
-     * @param {string} clusterId 
-     * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+     * This endpoint can be used by the administrator to create a new maintenance interval for the given cluster.
+     * @summary Create a new maintenance interval for cluster
+     * @param {string} clusterId Identifier of the cluster, which the new maintenance interval will be created for.
+     * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
@@ -5470,8 +5570,9 @@ export class MaintenanceIntervalControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto 
+     * This endpoint can be used by the administrator to create a new maintenance interval for the entire oVirt system (for situation where no cluster will be available).
+     * @summary Create a new system maintenance interval
+     * @param {CreateMaintenanceIntervalDto} createMaintenanceIntervalDto Data transfer object containing essential information about created maintenance interval, like the time window during which the maintenance interval take effect, its cause and more descriptive description (if provided at all).
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
@@ -5481,8 +5582,9 @@ export class MaintenanceIntervalControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} intervalId 
+     * This endpoint can be used to finish / remove certain maintenance interval (depending on the time of the invocation of this method). If this method is invoked after the start of the maintenance interval, it marks the reservation as finished and changes its end time. In the latter case, it removes the maintenance interval from the database altogether.
+     * @summary Finish / remove certain maintenance interval.
+     * @param {string} intervalId Identifier of the maintenance interval, which is to be finished or removed (depending on the current time).
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
@@ -5492,21 +5594,23 @@ export class MaintenanceIntervalControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * This endpoint can be used to fetch either active or inactive maintenance intervals, defined for given cluster (or system, if the cluster identifier is null) (that includes pagination and sorting as well).
+     * @summary Get maintenance intervals (either active or inactive) for cluster / system
+     * @param {boolean} active Status of the reservations that are to be fetched from the database, expressed as boolean value. If true then active intervals are fetched, in the other case inactive intervals are fetched.
      * @param {Pageable} pageable 
-     * @param {string} [clusterId] 
-     * @param {boolean} [active] 
+     * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If that identifier is not defined, then maintenance intervals for system are fetched instead.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
      */
-    public getAllMaintenanceIntervals(pageable: Pageable, clusterId?: string, active?: boolean, options?: RawAxiosRequestConfig) {
-        return MaintenanceIntervalControllerApiFp(this.configuration).getAllMaintenanceIntervals(pageable, clusterId, active, options).then((request) => request(this.axios, this.basePath));
+    public getAllMaintenanceIntervals(active: boolean, pageable: Pageable, clusterId?: string, options?: RawAxiosRequestConfig) {
+        return MaintenanceIntervalControllerApiFp(this.configuration).getAllMaintenanceIntervals(active, pageable, clusterId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {string} intervalId 
+     * This endpoint can be used to fetch detailed information about certain maintenance interval, identified with the given identifier.
+     * @summary Get detailed information about certain maintenance interval
+     * @param {string} intervalId Identifier of the maintenance interval, which detailed information is to be found in the database.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
@@ -5516,10 +5620,11 @@ export class MaintenanceIntervalControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} start 
-     * @param {string} end 
-     * @param {string} [clusterId] 
+     * This endpoint can be used to fetch maintenance intervals, defined for certain cluster / system in the specified time window.
+     * @summary Get maintenance intervals for the cluster / system in given time window.
+     * @param {string} start Timestamp of the start of the time window, which the searched maintenance intervals overlaps with.
+     * @param {string} end Timestamp of the end of the time window, which the searched maintenance intervals overlaps with.
+     * @param {string} [clusterId] Identifier of the cluster, which the maintenance intervals are to be fetched from the database. If not provided, then maintenance intervals for system are fetched.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MaintenanceIntervalControllerApi
@@ -5538,8 +5643,9 @@ export class MaintenanceIntervalControllerApi extends BaseAPI {
 export const MetricControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @param {CreateMetricDto} createMetricDto 
+         * This endpoint can be used by the administrator to create a new metric.
+         * @summary Create a new metric
+         * @param {CreateMetricDto} createMetricDto Data transfer object containing essential information about created metric, which in fact is only the name of the created metric, and its category (which is used by the frontend application for selecting correct set of units).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5573,8 +5679,9 @@ export const MetricControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric, and all the values associated with that metric for every cluster in the oVirt system
+         * @summary Remove metric
+         * @param {string} metricId Identifier of the metric, which is to be removed.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5606,7 +5713,8 @@ export const MetricControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch a list of metrics, which could be used to defined a value for course / cluster (including dividing them into pages).
+         * @summary Get all metric
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5654,8 +5762,9 @@ export const MetricControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = MetricControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @param {CreateMetricDto} createMetricDto 
+         * This endpoint can be used by the administrator to create a new metric.
+         * @summary Create a new metric
+         * @param {CreateMetricDto} createMetricDto Data transfer object containing essential information about created metric, which in fact is only the name of the created metric, and its category (which is used by the frontend application for selecting correct set of units).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5666,8 +5775,9 @@ export const MetricControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric, and all the values associated with that metric for every cluster in the oVirt system
+         * @summary Remove metric
+         * @param {string} metricId Identifier of the metric, which is to be removed.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5678,7 +5788,8 @@ export const MetricControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch a list of metrics, which could be used to defined a value for course / cluster (including dividing them into pages).
+         * @summary Get all metric
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5700,8 +5811,9 @@ export const MetricControllerApiFactory = function (configuration?: Configuratio
     const localVarFp = MetricControllerApiFp(configuration)
     return {
         /**
-         * 
-         * @param {CreateMetricDto} createMetricDto 
+         * This endpoint can be used by the administrator to create a new metric.
+         * @summary Create a new metric
+         * @param {CreateMetricDto} createMetricDto Data transfer object containing essential information about created metric, which in fact is only the name of the created metric, and its category (which is used by the frontend application for selecting correct set of units).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5709,8 +5821,9 @@ export const MetricControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.createNewMetric(createMetricDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to remove certain metric, and all the values associated with that metric for every cluster in the oVirt system
+         * @summary Remove metric
+         * @param {string} metricId Identifier of the metric, which is to be removed.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5718,7 +5831,8 @@ export const MetricControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.deleteMetric2(metricId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch a list of metrics, which could be used to defined a value for course / cluster (including dividing them into pages).
+         * @summary Get all metric
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5737,8 +5851,9 @@ export const MetricControllerApiFactory = function (configuration?: Configuratio
  */
 export class MetricControllerApi extends BaseAPI {
     /**
-     * 
-     * @param {CreateMetricDto} createMetricDto 
+     * This endpoint can be used by the administrator to create a new metric.
+     * @summary Create a new metric
+     * @param {CreateMetricDto} createMetricDto Data transfer object containing essential information about created metric, which in fact is only the name of the created metric, and its category (which is used by the frontend application for selecting correct set of units).
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MetricControllerApi
@@ -5748,8 +5863,9 @@ export class MetricControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} metricId 
+     * This endpoint can be used by the administrator to remove certain metric, and all the values associated with that metric for every cluster in the oVirt system
+     * @summary Remove metric
+     * @param {string} metricId Identifier of the metric, which is to be removed.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MetricControllerApi
@@ -5759,7 +5875,8 @@ export class MetricControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * This endpoint can be used by the administrator to fetch a list of metrics, which could be used to defined a value for course / cluster (including dividing them into pages).
+     * @summary Get all metric
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7272,10 +7389,10 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
     return {
         /**
          * This endpoint can be used to create a new reservation for the team they are a part of.
-         * @summary Create new reservation
-         * @param {string} courseId 
-         * @param {string} podId 
-         * @param {CreateReservationDto} createReservationDto 
+         * @summary Create a new reservation
+         * @param {string} courseId Identifier of the course, which the reserved POD belongs to.
+         * @param {string} podId Identifier of the POD, which is to be reserved.
+         * @param {CreateReservationDto} createReservationDto Data transfer object containing essential information about created reservation, like the start and end time of the reservation, information whether resources in given resource group should be started automatically and notification time, which is a time before the end of reservation, which the notification about the end of the reservation is sent.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7315,8 +7432,9 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to finish / remove certain reservation (depending on the time of the invocation of this method). If this method is invoked after the start of the reservation, it marks the reservation as finished and changes its end time. In the latter case, it removes the reservation from the database altogether.
+         * @summary Finish / remove certain reservation.
+         * @param {string} reservationId Identifier of the reservation, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7348,8 +7466,9 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find active reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get active reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7390,8 +7509,9 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find active reservations made by the team, identified with given identifier.
+         * @summary Get active reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7432,8 +7552,9 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find historical reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get historical reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7474,8 +7595,9 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find historical reservations made by the team, identified with given identifier.
+         * @summary Get historical reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7516,20 +7638,21 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
+         * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
+         * @summary Get reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
+         * @param {string} podId Identifier of the POD, which the reservation are to be fetched from the database for.
          * @param {Pageable} pageable 
-         * @param {string} courseId 
-         * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPreviousReservations: async (pageable: Pageable, courseId: string, podId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pageable' is not null or undefined
-            assertParamExists('getPreviousReservations', 'pageable', pageable)
+        getPreviousReservations: async (courseId: string, podId: string, pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('getPreviousReservations', 'courseId', courseId)
             // verify required parameter 'podId' is not null or undefined
             assertParamExists('getPreviousReservations', 'podId', podId)
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getPreviousReservations', 'pageable', pageable)
             const localVarPath = `/reservations/course/{courseId}/pods/{podId}/previous`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
                 .replace(`{${"podId"}}`, encodeURIComponent(String(podId)));
@@ -7562,8 +7685,47 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to total number of reservations made for given POD by the team currently authenticated user is a part of.
+         * @summary Get number of all the reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which total number of reservations is to be fetch for.
+         * @param {string} podId Identifier of the POD, which the total number of reservation is checked for.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPreviousReservationsCount: async (courseId: string, podId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getPreviousReservationsCount', 'courseId', courseId)
+            // verify required parameter 'podId' is not null or undefined
+            assertParamExists('getPreviousReservationsCount', 'podId', podId)
+            const localVarPath = `/reservations/course/{courseId}/pods/{podId}/previous/count`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"podId"}}`, encodeURIComponent(String(podId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint can be used to fetch detailed information about certain reservation, identified with the given identifier.
+         * @summary Get detailed information about certain reservation
+         * @param {string} reservationId Identifier of the reservation, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7595,11 +7757,12 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7650,11 +7813,12 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
             };
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group in the given course in certain time window.
+         * @summary Get reservation for the resource group in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7704,35 +7868,6 @@ export const ReservationControllerApiAxiosParamCreator = function (configuration
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getWindowLength: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/reservations/window-length`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -7745,10 +7880,10 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
     return {
         /**
          * This endpoint can be used to create a new reservation for the team they are a part of.
-         * @summary Create new reservation
-         * @param {string} courseId 
-         * @param {string} podId 
-         * @param {CreateReservationDto} createReservationDto 
+         * @summary Create a new reservation
+         * @param {string} courseId Identifier of the course, which the reserved POD belongs to.
+         * @param {string} podId Identifier of the POD, which is to be reserved.
+         * @param {CreateReservationDto} createReservationDto Data transfer object containing essential information about created reservation, like the start and end time of the reservation, information whether resources in given resource group should be started automatically and notification time, which is a time before the end of reservation, which the notification about the end of the reservation is sent.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7759,8 +7894,9 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to finish / remove certain reservation (depending on the time of the invocation of this method). If this method is invoked after the start of the reservation, it marks the reservation as finished and changes its end time. In the latter case, it removes the reservation from the database altogether.
+         * @summary Finish / remove certain reservation.
+         * @param {string} reservationId Identifier of the reservation, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7771,8 +7907,9 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find active reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get active reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7784,8 +7921,9 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find active reservations made by the team, identified with given identifier.
+         * @summary Get active reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7797,8 +7935,9 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find historical reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get historical reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7810,8 +7949,9 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find historical reservations made by the team, identified with given identifier.
+         * @summary Get historical reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7823,22 +7963,38 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
+         * @summary Get reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
+         * @param {string} podId Identifier of the POD, which the reservation are to be fetched from the database for.
          * @param {Pageable} pageable 
-         * @param {string} courseId 
-         * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPreviousReservations(pageable: Pageable, courseId: string, podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPreviousReservations(pageable, courseId, podId, options);
+        async getPreviousReservations(courseId: string, podId: string, pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPreviousReservations(courseId, podId, pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getPreviousReservations']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to total number of reservations made for given POD by the team currently authenticated user is a part of.
+         * @summary Get number of all the reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which total number of reservations is to be fetch for.
+         * @param {string} podId Identifier of the POD, which the total number of reservation is checked for.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPreviousReservationsCount(courseId: string, podId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPreviousReservationsCount(courseId, podId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getPreviousReservationsCount']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * This endpoint can be used to fetch detailed information about certain reservation, identified with the given identifier.
+         * @summary Get detailed information about certain reservation
+         * @param {string} reservationId Identifier of the reservation, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7849,11 +8005,12 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7864,11 +8021,12 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group in the given course in certain time window.
+         * @summary Get reservation for the resource group in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7876,17 +8034,6 @@ export const ReservationControllerApiFp = function(configuration?: Configuration
             const localVarAxiosArgs = await localVarAxiosParamCreator.getRgReservationsInGivenCourse(courseId, rgId, start, end, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getRgReservationsInGivenCourse']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getWindowLength(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getWindowLength(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReservationControllerApi.getWindowLength']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -7901,10 +8048,10 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
     return {
         /**
          * This endpoint can be used to create a new reservation for the team they are a part of.
-         * @summary Create new reservation
-         * @param {string} courseId 
-         * @param {string} podId 
-         * @param {CreateReservationDto} createReservationDto 
+         * @summary Create a new reservation
+         * @param {string} courseId Identifier of the course, which the reserved POD belongs to.
+         * @param {string} podId Identifier of the POD, which is to be reserved.
+         * @param {CreateReservationDto} createReservationDto Data transfer object containing essential information about created reservation, like the start and end time of the reservation, information whether resources in given resource group should be started automatically and notification time, which is a time before the end of reservation, which the notification about the end of the reservation is sent.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7912,8 +8059,9 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.createNewReservationForPod(courseId, podId, createReservationDto, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to finish / remove certain reservation (depending on the time of the invocation of this method). If this method is invoked after the start of the reservation, it marks the reservation as finished and changes its end time. In the latter case, it removes the reservation from the database altogether.
+         * @summary Finish / remove certain reservation.
+         * @param {string} reservationId Identifier of the reservation, which is to be finished or removed (depending on the current time).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7921,8 +8069,9 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.finishReservation(reservationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find active reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get active reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7931,8 +8080,9 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getActiveReservations(courseId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find active reservations made by the team, identified with given identifier.
+         * @summary Get active reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the active reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7941,8 +8091,9 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getActiveReservationsForTeam(teamId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} courseId 
+         * This endpoint can be used to find historical reservations made by the team, that currently authenticated user is a part of, in the given course.
+         * @summary Get historical reservations for the certain course, that the currently authenticated user is a part of.
+         * @param {string} courseId Identifier of the course, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7951,8 +8102,9 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getHistoricReservations(courseId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} teamId 
+         * This endpoint can be used by teachers and administrators to find historical reservations made by the team, identified with given identifier.
+         * @summary Get historical reservations for the certain team.
+         * @param {string} teamId Identifier of the team, which the historical reservations should be fetched for.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7961,19 +8113,32 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getHistoricReservationsForTeam(teamId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
+         * @summary Get reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
+         * @param {string} podId Identifier of the POD, which the reservation are to be fetched from the database for.
          * @param {Pageable} pageable 
-         * @param {string} courseId 
-         * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPreviousReservations(pageable: Pageable, courseId: string, podId: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
-            return localVarFp.getPreviousReservations(pageable, courseId, podId, options).then((request) => request(axios, basePath));
+        getPreviousReservations(courseId: string, podId: string, pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getPreviousReservations(courseId, podId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} reservationId 
+         * This endpoint can be used to total number of reservations made for given POD by the team currently authenticated user is a part of.
+         * @summary Get number of all the reservation of the given POD in given course
+         * @param {string} courseId Identifier of the course, which contains the POD, which total number of reservations is to be fetch for.
+         * @param {string} podId Identifier of the POD, which the total number of reservation is checked for.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPreviousReservationsCount(courseId: string, podId: string, options?: RawAxiosRequestConfig): AxiosPromise<number> {
+            return localVarFp.getPreviousReservationsCount(courseId, podId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint can be used to fetch detailed information about certain reservation, identified with the given identifier.
+         * @summary Get detailed information about certain reservation
+         * @param {string} reservationId Identifier of the reservation, which detailed information is to be found in the database.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7981,11 +8146,12 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getReservationDetails(reservationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgPoolId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group pool in the given course in given time window.
+         * @summary Get reservation for the resource group pool in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group pool.
+         * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7993,24 +8159,17 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
             return localVarFp.getRgPoolReservationsInGivenCourse(courseId, rgPoolId, start, end, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} courseId 
-         * @param {string} rgId 
-         * @param {string} start 
-         * @param {string} end 
+         * This endpoint can be used to find reservations made for given resource group in the given course in certain time window.
+         * @summary Get reservation for the resource group in course in given time window
+         * @param {string} courseId Identifier of the course, which contains the resource group.
+         * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+         * @param {string} start Start of the time window, which the searched reservations overlap with.
+         * @param {string} end End of the time window, which the searched reservations overlap with
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ReservationDto>> {
             return localVarFp.getRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getWindowLength(options?: RawAxiosRequestConfig): AxiosPromise<number> {
-            return localVarFp.getWindowLength(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8024,10 +8183,10 @@ export const ReservationControllerApiFactory = function (configuration?: Configu
 export class ReservationControllerApi extends BaseAPI {
     /**
      * This endpoint can be used to create a new reservation for the team they are a part of.
-     * @summary Create new reservation
-     * @param {string} courseId 
-     * @param {string} podId 
-     * @param {CreateReservationDto} createReservationDto 
+     * @summary Create a new reservation
+     * @param {string} courseId Identifier of the course, which the reserved POD belongs to.
+     * @param {string} podId Identifier of the POD, which is to be reserved.
+     * @param {CreateReservationDto} createReservationDto Data transfer object containing essential information about created reservation, like the start and end time of the reservation, information whether resources in given resource group should be started automatically and notification time, which is a time before the end of reservation, which the notification about the end of the reservation is sent.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
@@ -8037,8 +8196,9 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} reservationId 
+     * This endpoint can be used to finish / remove certain reservation (depending on the time of the invocation of this method). If this method is invoked after the start of the reservation, it marks the reservation as finished and changes its end time. In the latter case, it removes the reservation from the database altogether.
+     * @summary Finish / remove certain reservation.
+     * @param {string} reservationId Identifier of the reservation, which is to be finished or removed (depending on the current time).
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
@@ -8048,8 +8208,9 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} courseId 
+     * This endpoint can be used to find active reservations made by the team, that currently authenticated user is a part of, in the given course.
+     * @summary Get active reservations for the certain course, that the currently authenticated user is a part of.
+     * @param {string} courseId Identifier of the course, which the active reservations should be fetched for.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8060,8 +8221,9 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} teamId 
+     * This endpoint can be used by teachers and administrators to find active reservations made by the team, identified with given identifier.
+     * @summary Get active reservations for the certain team.
+     * @param {string} teamId Identifier of the team, which the active reservations should be fetched for.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8072,8 +8234,9 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} courseId 
+     * This endpoint can be used to find historical reservations made by the team, that currently authenticated user is a part of, in the given course.
+     * @summary Get historical reservations for the certain course, that the currently authenticated user is a part of.
+     * @param {string} courseId Identifier of the course, which the historical reservations should be fetched for.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8084,8 +8247,9 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} teamId 
+     * This endpoint can be used by teachers and administrators to find historical reservations made by the team, identified with given identifier.
+     * @summary Get historical reservations for the certain team.
+     * @param {string} teamId Identifier of the team, which the historical reservations should be fetched for.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8096,21 +8260,36 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * This endpoint can be used to find reservations made for given POD by the team currently authenticated user is a part of (including pagination).
+     * @summary Get reservation of the given POD in given course
+     * @param {string} courseId Identifier of the course, which contains the POD, which reservations are to be fetch for.
+     * @param {string} podId Identifier of the POD, which the reservation are to be fetched from the database for.
      * @param {Pageable} pageable 
-     * @param {string} courseId 
-     * @param {string} podId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
      */
-    public getPreviousReservations(pageable: Pageable, courseId: string, podId: string, options?: RawAxiosRequestConfig) {
-        return ReservationControllerApiFp(this.configuration).getPreviousReservations(pageable, courseId, podId, options).then((request) => request(this.axios, this.basePath));
+    public getPreviousReservations(courseId: string, podId: string, pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getPreviousReservations(courseId, podId, pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @param {string} reservationId 
+     * This endpoint can be used to total number of reservations made for given POD by the team currently authenticated user is a part of.
+     * @summary Get number of all the reservation of the given POD in given course
+     * @param {string} courseId Identifier of the course, which contains the POD, which total number of reservations is to be fetch for.
+     * @param {string} podId Identifier of the POD, which the total number of reservation is checked for.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationControllerApi
+     */
+    public getPreviousReservationsCount(courseId: string, podId: string, options?: RawAxiosRequestConfig) {
+        return ReservationControllerApiFp(this.configuration).getPreviousReservationsCount(courseId, podId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint can be used to fetch detailed information about certain reservation, identified with the given identifier.
+     * @summary Get detailed information about certain reservation
+     * @param {string} reservationId Identifier of the reservation, which detailed information is to be found in the database.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
@@ -8120,11 +8299,12 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} courseId 
-     * @param {string} rgPoolId 
-     * @param {string} start 
-     * @param {string} end 
+     * This endpoint can be used to find reservations made for given resource group pool in the given course in given time window.
+     * @summary Get reservation for the resource group pool in course in given time window
+     * @param {string} courseId Identifier of the course, which contains the resource group pool.
+     * @param {string} rgPoolId Identifier of the resource group pool, which the reservations are to be fetched for.
+     * @param {string} start Start of the time window, which the searched reservations overlap with.
+     * @param {string} end End of the time window, which the searched reservations overlap with
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
@@ -8134,27 +8314,18 @@ export class ReservationControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} courseId 
-     * @param {string} rgId 
-     * @param {string} start 
-     * @param {string} end 
+     * This endpoint can be used to find reservations made for given resource group in the given course in certain time window.
+     * @summary Get reservation for the resource group in course in given time window
+     * @param {string} courseId Identifier of the course, which contains the resource group.
+     * @param {string} rgId Identifier of the resource group, which the reservations are to be fetched for.
+     * @param {string} start Start of the time window, which the searched reservations overlap with.
+     * @param {string} end End of the time window, which the searched reservations overlap with
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReservationControllerApi
      */
     public getRgReservationsInGivenCourse(courseId: string, rgId: string, start: string, end: string, options?: RawAxiosRequestConfig) {
         return ReservationControllerApiFp(this.configuration).getRgReservationsInGivenCourse(courseId, rgId, start, end, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ReservationControllerApi
-     */
-    public getWindowLength(options?: RawAxiosRequestConfig) {
-        return ReservationControllerApiFp(this.configuration).getWindowLength(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -10294,6 +10465,61 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {Array<string>} emailPrefixes 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {string} [sort] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchTeamsByEmails: async (courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('searchTeamsByEmails', 'courseId', courseId)
+            // verify required parameter 'emailPrefixes' is not null or undefined
+            assertParamExists('searchTeamsByEmails', 'emailPrefixes', emailPrefixes)
+            const localVarPath = `/teams/course/{courseId}/search-emails`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (emailPrefixes) {
+                localVarQueryParameter['emailPrefixes'] = emailPrefixes;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['pageNumber'] = pageNumber;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {string} ifMatch 
          * @param {UpdateTeamDto} updateTeamDto 
@@ -10480,6 +10706,22 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {Array<string>} emailPrefixes 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {string} [sort] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithKeyDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.searchTeamsByEmails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {string} ifMatch 
          * @param {UpdateTeamDto} updateTeamDto 
@@ -10602,6 +10844,19 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
          */
         removeStudentFromTeam(teamId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.removeStudentFromTeam(teamId, email, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {Array<string>} emailPrefixes 
+         * @param {number} [pageNumber] 
+         * @param {number} [pageSize] 
+         * @param {string} [sort] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithKeyDto> {
+            return localVarFp.searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -10743,6 +10998,21 @@ export class TeamControllerApi extends BaseAPI {
      */
     public removeStudentFromTeam(teamId: string, email: string, options?: RawAxiosRequestConfig) {
         return TeamControllerApiFp(this.configuration).removeStudentFromTeam(teamId, email, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {Array<string>} emailPrefixes 
+     * @param {number} [pageNumber] 
+     * @param {number} [pageSize] 
+     * @param {string} [sort] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TeamControllerApi
+     */
+    public searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11297,8 +11567,9 @@ export class VlansRangeControllerApi extends BaseAPI {
 export const VmControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch all events that occurred in certain virtual machine in the oVirt system.
+         * @summary Get all events that were registered for certain virtual machine in the oVirt engine instance
+         * @param {string} id Identifier of the virtual machines, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11339,8 +11610,9 @@ export const VmControllerApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch cpus and memory that is required by certain virtual machine. In this case cpus are returned in pieces, and memory size is returned in bytes.
+         * @summary Get resources required by certain virtual machine
+         * @param {string} id Identifier of the virtual machine, which required resources are to be fetched from the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11372,7 +11644,8 @@ export const VmControllerApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get all virtual machines that are located in certain cluster in the oVirt engine instance
          * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11477,8 +11750,9 @@ export const VmControllerApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VmControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch all events that occurred in certain virtual machine in the oVirt system.
+         * @summary Get all events that were registered for certain virtual machine in the oVirt engine instance
+         * @param {string} id Identifier of the virtual machines, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11490,8 +11764,9 @@ export const VmControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch cpus and memory that is required by certain virtual machine. In this case cpus are returned in pieces, and memory size is returned in bytes.
+         * @summary Get resources required by certain virtual machine
+         * @param {string} id Identifier of the virtual machine, which required resources are to be fetched from the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11502,7 +11777,8 @@ export const VmControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get all virtual machines that are located in certain cluster in the oVirt engine instance
          * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11547,8 +11823,9 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
     const localVarFp = VmControllerApiFp(configuration)
     return {
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch all events that occurred in certain virtual machine in the oVirt system.
+         * @summary Get all events that were registered for certain virtual machine in the oVirt engine instance
+         * @param {string} id Identifier of the virtual machines, which events are to be found in the oVirt system.
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11557,8 +11834,9 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
             return localVarFp.findEventsForVm(id, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} id 
+         * This endpoint can be used to fetch cpus and memory that is required by certain virtual machine. In this case cpus are returned in pieces, and memory size is returned in bytes.
+         * @summary Get resources required by certain virtual machine
+         * @param {string} id Identifier of the virtual machine, which required resources are to be fetched from the oVirt system.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11566,7 +11844,8 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
             return localVarFp.findVmRequiredResources(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+         * @summary Get all virtual machines that are located in certain cluster in the oVirt engine instance
          * @param {string} clusterId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11602,8 +11881,9 @@ export const VmControllerApiFactory = function (configuration?: Configuration, b
  */
 export class VmControllerApi extends BaseAPI {
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used to fetch all events that occurred in certain virtual machine in the oVirt system.
+     * @summary Get all events that were registered for certain virtual machine in the oVirt engine instance
+     * @param {string} id Identifier of the virtual machines, which events are to be found in the oVirt system.
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -11614,8 +11894,9 @@ export class VmControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} id 
+     * This endpoint can be used to fetch cpus and memory that is required by certain virtual machine. In this case cpus are returned in pieces, and memory size is returned in bytes.
+     * @summary Get resources required by certain virtual machine
+     * @param {string} id Identifier of the virtual machine, which required resources are to be fetched from the oVirt system.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VmControllerApi
@@ -11625,7 +11906,8 @@ export class VmControllerApi extends BaseAPI {
     }
 
     /**
-     * 
+     * This endpoint can be used by the administrator to fetch all the virtual machines assigned to certain cluster in the oVirt system.
+     * @summary Get all virtual machines that are located in certain cluster in the oVirt engine instance
      * @param {string} clusterId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

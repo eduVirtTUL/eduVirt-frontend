@@ -8,10 +8,12 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {UserCog} from "lucide-react";
+import {SearchIcon, UserCog, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
+import { useCoursesTeamsByEmail } from "@/data/team/useCoursesTeamsByEmail";
+import { SearchByEmailModal } from "@/components/Modals/SearchByEmailModal";
 
 const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
@@ -35,10 +37,43 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         sortOrder
     );
 
+    const [emailSearchOpen, setEmailSearchOpen] = useState(false);
+    const [emailPrefixes, setEmailPrefixes] = useState<string[]>([]);
+    
+    const { teams: teamsByEmail, isLoading: isLoadingEmails } = useCoursesTeamsByEmail(
+        id,
+        emailPrefixes,
+        pageNumber,
+        pageSize,
+        sortOrder
+    );
+
+    const handleEmailSearch = (emails: string[]) => {
+        setEmailPrefixes(emails);
+        setPageNumber(0);
+    };
+
     return (
         <>
             <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end gap-2 mb-4">
+                {emailPrefixes.length > 0 ? (
+                    <Button 
+                        variant="outline" 
+                        onClick={() => setEmailPrefixes([])}
+                    >
+                        <XIcon className="h-4 w-4 mr-2" />
+                        {t("coursePageB.courseTeamsPage.searchByEmail.clear")}
+                    </Button>
+                ) : (
+                    <Button 
+                        variant="outline" 
+                        onClick={() => setEmailSearchOpen(true)}
+                    >
+                        <SearchIcon />
+                        {t("coursePageB.courseTeamsPage.searchByEmail.button")}
+                    </Button>
+                )}
                 {isTeamBased ? (
                     <CreateTeamModal courseId={id}/>
                 ) : (
@@ -50,11 +85,9 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             </div>
             <TeamListCard
                 isTeamBased={isTeamBased}
-                teams={teams ? {
-                    items: teams.items,
-                    page: teams.page ? {totalPages: teams.page.totalPages ?? 0} : undefined
-                } : undefined}
-                isLoading={isLoading}
+                teams={emailPrefixes.length > 0 ? teamsByEmail?.items : teams?.items}
+                totalPages={emailPrefixes.length > 0 ? teamsByEmail?.page?.totalPages : teams?.page?.totalPages}
+                isLoading={emailPrefixes.length > 0 ? isLoadingEmails : isLoading}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
                 courseId={id}
@@ -65,6 +98,11 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 setSearchType={setSearchType}
                 sortOrder={sortOrder}
                 setSortOrder={setSortOrder}
+            />
+            <SearchByEmailModal
+                open={emailSearchOpen}
+                onOpenChange={setEmailSearchOpen}
+                onSearch={handleEmailSearch}
             />
         </>
     );

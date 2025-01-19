@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {TeamAccessKeyDto, TeamDto, UserDto} from "@/api";
+import {TeamAccessKeyDto, TeamDto, TeamWithKeyDto, UserDto} from "@/api";
 import {useTranslation} from "react-i18next";
 import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
@@ -46,7 +46,8 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 
 interface TeamsTableProps {
     isTeamBased: boolean;
-    teams?: { items: TeamDto[]; page?: { totalPages: number } };
+    teams?: TeamWithKeyDto[];
+    totalPages?: number;
     isLoading: boolean;
     pageNumber: number;
     setPageNumber: (page: number) => void;
@@ -63,6 +64,7 @@ interface TeamsTableProps {
 const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
                                                      teams,
+                                                    totalPages,
                                                      isLoading,
                                                      pageNumber,
                                                      setPageNumber,
@@ -303,60 +305,60 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </div>
                     <div className="[&_.inactive-row]:opacity-60">
-                        {!isLoading && teams?.items && (
-                            <>
-                                <DataTable
-                                    columns={columns}
-                                    data={teams.items}
-                                />
-                                {teams.items.length > 0 && teams.page && (
-                                    <div className="mt-4">
-                                        <Pagination>
-                                            <PaginationContent>
-                                                {pageNumber > 0 && (
-                                                    <>
-                                                        <PaginationItem>
-                                                            <PaginationPrevious
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            />
-                                                        </PaginationItem>
-                                                        <PaginationItem>
-                                                            <PaginationLink
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            >
-                                                                {pageNumber}
-                                                            </PaginationLink>
-                                                        </PaginationItem>
-                                                    </>
-                                                )}
-                                                <PaginationItem>
-                                                    <PaginationLink isActive>
-                                                        {pageNumber + 1}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                                {teams.page.totalPages > pageNumber + 1 && (
+                    {!isLoading && teams && (
+                        <>
+                            <DataTable
+                                columns={columns}
+                                data={teams}
+                            />
+                            {teams.length > 0 && totalPages && totalPages > 1 && (
+                                <div className="mt-4">
+                                    <Pagination>
+                                        <PaginationContent>
+                                            {pageNumber > 0 && (
+                                                <>
                                                     <PaginationItem>
-                                                        <PaginationLink
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
-                                                        >
-                                                            {pageNumber + 2}
-                                                        </PaginationLink>
-                                                    </PaginationItem>
-                                                )}
-                                                {teams.page.totalPages !== pageNumber + 1 && (
-                                                    <PaginationItem>
-                                                        <PaginationNext
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
+                                                        <PaginationPrevious
+                                                            onClick={() => setPageNumber(pageNumber - 1)}
                                                         />
                                                     </PaginationItem>
-                                                )}
-                                            </PaginationContent>
-                                        </Pagination>
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
+                                                    <PaginationItem>
+                                                        <PaginationLink
+                                                            onClick={() => setPageNumber(pageNumber - 1)}
+                                                        >
+                                                            {pageNumber}
+                                                        </PaginationLink>
+                                                    </PaginationItem>
+                                                </>
+                                            )}
+                                            <PaginationItem>
+                                                <PaginationLink isActive>
+                                                    {pageNumber + 1}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                            {totalPages > pageNumber + 1 && (
+                                                <PaginationItem>
+                                                    <PaginationLink
+                                                        onClick={() => setPageNumber(pageNumber + 1)}
+                                                    >
+                                                        {pageNumber + 2}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            )}
+                                            {totalPages !== pageNumber + 1 && (
+                                                <PaginationItem>
+                                                    <PaginationNext
+                                                        onClick={() => setPageNumber(pageNumber + 1)}
+                                                    />
+                                                </PaginationItem>
+                                            )}
+                                        </PaginationContent>
+                                    </Pagination>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
                 </CardContent>
             </Card>
 
@@ -392,7 +394,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                 name: user.userName || user.email || ''
                             })) ?? []
                         }}
-                        existingNames={teams?.items
+                        existingNames={teams
                             ?.filter(t => t.id !== editingTeamId)
                             .map(t => t.name!)
                             .filter(Boolean) ?? []}
