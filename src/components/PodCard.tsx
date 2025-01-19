@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button";
 import {Calendar} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
-import {usePodReservationCount} from "@/data/reservation/getPodReservationCount";
+import {usePodReservationCount} from "@/data/reservation/usePodReservationCount";
 import {useNavigate} from "react-router";
 
 interface PodCardProps {

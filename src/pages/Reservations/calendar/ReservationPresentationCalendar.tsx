@@ -1,8 +1,5 @@
 import EventCalendar from "@/components/EventCalendar";
-import { TFunction } from "i18next";
 import MaintenanceIntervalModal from "@/components/Modals/MaintenanceIntervalModal";
-import { Button } from "@/components/ui/button";
-import { Undo2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import FullCalendar from "@fullcalendar/react";
 import "../../../styles/fullcalendar-shadcn.css";
@@ -31,7 +28,6 @@ type TimeRange = {
 }
 
 type ReservationPresentationCalendarProps = {
-  t: TFunction,
   calendarRef:  React.MutableRefObject<FullCalendar | null>,
   currentRange: TimeRange,
   setCurrentRange: React.Dispatch<React.SetStateAction<TimeRange>>,
@@ -52,7 +48,7 @@ type ReservationPresentationCalendarProps = {
 }
 
 const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarProps> = ({
-  t, calendarRef, currentRange, setCurrentRange,
+  calendarRef, currentRange, setCurrentRange,
   select, allowSelect, window, windowLoading, allowEvent, resources, resourcesLoading,
   reservations, reservationsLoading, intervals, intervalsLoading
 }) => {
@@ -143,15 +139,6 @@ const ReservationPresentationCalendar: React.FC<ReservationPresentationCalendarP
 
   return (
     <>
-      <div className="flex justify-start">
-        <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
-          <Undo2/>
-        </Button>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          {t("reservations.altName")}
-        </h3>
-      </div>
-
       {clickedInterval && <MaintenanceIntervalModal intervalId={clickedInterval} />}
 
       <EventCalendar

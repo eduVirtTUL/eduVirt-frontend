@@ -8,13 +8,14 @@ type UseReservationsParams = {
   resourceGroup: string;
   start: string | null;
   end: string | null;
+  own: boolean;
 }
 
 export const useResourceGroupReservations = ({
-  course, resourceGroup, start, end
+  course, resourceGroup, start, end, own
 }: UseReservationsParams) => {
   const { data, isLoading } = useQuery({
-    queryKey: [ keys.RESERVATIONS, course, resourceGroup, start, end ],
+    queryKey: [ keys.RESERVATIONS, course, resourceGroup, start, end, own ],
     queryFn: async() => {
       if (start == null || end == null) return [];
 
@@ -23,9 +24,15 @@ export const useResourceGroupReservations = ({
       searchParams.append("start", start);
       searchParams.append("end", end);
 
-      const response = await privateAxios.get<ReservationDto[]>(
-        `/reservations/courses/${course}/resource-groups/${resourceGroup}/period`, { params: searchParams }
-      );
+      let response;
+      if (own)
+        response = await privateAxios.get<ReservationDto[]>(
+           `/reservations/courses/${course}/resource-groups/${resourceGroup}/period/own`, { params: searchParams }
+        );
+      else
+        response = await privateAxios.get<ReservationDto[]>(
+           `/reservations/courses/${course}/resource-groups/${resourceGroup}/period`, { params: searchParams }
+        );
 
       if (response.status === 204) return [];
       return response.data;
