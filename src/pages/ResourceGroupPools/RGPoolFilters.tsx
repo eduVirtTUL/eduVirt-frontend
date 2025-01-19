@@ -60,20 +60,20 @@ const RGPoolFilters: React.FC = () => {
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-1/2 p-0">
-            <Command className="w-full">
+          <PopoverContent className="p-0">
+            <Command>
               <CommandInput
                 placeholder={t("resourceGroupPools.filters.searchCourse")}
               />
               <CommandList>
-                <CommandEmpty className="w-full">
+                <CommandEmpty>
                   {t("resourceGroupPools.filters.noCourses")}
                 </CommandEmpty>
                 <CommandGroup>
                   {courses?.items?.map((course) => (
                     <CommandItem
                       key={course.id}
-                      value={course.id}
+                      value={course.name}
                       onSelect={(currentValue) => {
                         setFilters({ name, courseId: currentValue });
                         setOpen(false);
