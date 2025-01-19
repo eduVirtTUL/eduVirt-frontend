@@ -2,7 +2,7 @@ import { Route } from "../+types/index";
 import { useTranslation } from "react-i18next";
 import ReservationPresentationCalendar from "@/pages/Reservations/calendar/ReservationPresentationCalendar";
 import {useLocation, useNavigate} from "react-router";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import FullCalendar from "@fullcalendar/react";
 import { useWindowLength } from "@/data/reservation/useWindowLength";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
@@ -10,6 +10,8 @@ import { useResourceGroupAvailability } from "@/data/reservation/useResourceGrou
 import { useResourceGroupReservations } from "@/data/reservation/useResourceGroupReservations";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
+import {Button} from "@/components/ui/button";
+import {Undo2} from "lucide-react";
 
 type TimeRange = {
   start: string | null,
@@ -35,7 +37,8 @@ const RgPresentationCalendar: React.FC<Route.ComponentProps> = ({ params: { id }
     course: courseId!,
     resourceGroup: id!,
     start: currentRange.start,
-    end: currentRange.end
+    end: currentRange.end,
+    own: false
   });
 
   useEffect(() => {
@@ -44,8 +47,16 @@ const RgPresentationCalendar: React.FC<Route.ComponentProps> = ({ params: { id }
 
   return (
     <>
+      <div className="flex justify-start">
+        <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
+          <Undo2/>
+        </Button>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+          {t("reservations.altName")}
+        </h3>
+      </div>
+
       <ReservationPresentationCalendar
-        t={t}
         calendarRef={calendarRef}
         currentRange={currentRange}
         setCurrentRange={setCurrentRange}

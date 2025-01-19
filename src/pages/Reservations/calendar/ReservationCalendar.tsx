@@ -9,7 +9,6 @@ import CreateReservationModal from "@/components/Modals/CreateReservationModal";
 import { useDialog } from "@/stores/dialogStore";
 import { ReservationDto, ResourcesAvailabilityDto } from "@/api";
 import { useMaintenanceIntervalsInTimePeriod } from "@/data/maintenance/useMaintenanceIntervalsInTimePeriod";
-import { useTranslation } from "react-i18next";
 import ReservationPresentationCalendar from "@/pages/Reservations/calendar/ReservationPresentationCalendar";
 import { useWindowLength } from "@/data/reservation/useWindowLength";
 
@@ -34,7 +33,6 @@ type ReservationCalendarProps = {
 const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
   clusterId, courseId, podId, currentRange, setCurrentRange, reservations, reservationsLoading, resources, resourcesLoading, maxRentTime
 }) => {
-  const { t } = useTranslation();
   const { open } = useDialog();
 
   const calendarRef = useRef<FullCalendar | null>(null);
@@ -158,7 +156,6 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
       />
 
       <ReservationPresentationCalendar
-        t={t}
         window={length ?? 10}
         windowLoading={windowLoading}
         calendarRef={calendarRef}

@@ -288,7 +288,12 @@ const courses = {
 const reservations = {
   title: 'Rezerwacje',
   altName: 'Rezerwacje',
-  calendar: 'Kalendarz',
+  calendar: {
+    name: 'Kalendarz',
+    team: 'Zespół',
+    system: 'Przerwa administracyjna systemu',
+    cluster: 'Przerwa administracyjna klastra'
+  },
   active: 'Aktywne rezerwacje',
   table: {
     openMenu: 'Otwórz menu',
@@ -303,6 +308,7 @@ const reservations = {
     stateful: 'Stanowa',
     showDetails: 'Więcej informacji',
   },
+  ownReservations: 'Wyświetl moje rezerwacje',
   details: {
     title: 'Rezerwacja ',
     tabs: {
@@ -342,7 +348,7 @@ const reservations = {
   createReservation: {
     title: 'Utwórz nową rezerwację',
     startTime: 'Początek rezerwacji',
-    startTimeDescription: 'Początek rezerwacji wyznacza przybliżony moment (zależny od czasu uruchomienia zasobów) od któego możliwe będzie wykorzsytanie funkcjonalności oferowanej przez system oVirt.',
+    startTimeDescription: 'Początek rezerwacji wyznacza przybliżony moment (zależny od czasu uruchomienia zasobów) od którego możliwe będzie wykorzystanie funkcjonalności oferowanej przez system oVirt.',
     duration: 'Długość rezerwacji (godziny)',
     durationDescription: 'Długość rezerwacji, od momentu wybranego w ramach kalendarza, w godzinach.',
     automaticStartup: 'Uruchom zasoby w ramach PODa automatycznie',
