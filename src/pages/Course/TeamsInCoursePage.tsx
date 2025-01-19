@@ -2,7 +2,6 @@ import {useTranslation} from "react-i18next";
 import {useCourse} from "@/data/course/useCourse";
 import React, {useState} from "react";
 import {useCourseTeams} from "@/data/team/useCoursesTeams";
-import {useTeamsInCourseAccessKeys} from "@/data/access-key/useTeamsInCourseAccessKeys";
 import TeamListCard from "./TeamListCard";
 import PageHeader from "@/components/PageHeader";
 import { Route } from "./+types";
@@ -23,15 +22,11 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const pageSize = 10;
     
     const {teams, isLoading} = useCourseTeams(id, pageNumber, pageSize);
-    const teamQueries = useTeamsInCourseAccessKeys(
-        teams?.items.map((team) => team.id!) ?? [],
-        isTeamBased
-    );
 
     return (
         <>
             <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
-            <div className="flex justify-beginning mb-4">
+            <div className="flex justify-end mb-4">
                 {isTeamBased ? (
                     <CreateTeamModal courseId={id}/>
                 ) : (
@@ -48,15 +43,6 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     page: teams.page ? { totalPages: teams.page.totalPages ?? 0 } : undefined
                 } : undefined}
                 isLoading={isLoading}
-                teamQueries={teamQueries.map(query => ({
-                    isLoading: query.isLoading,
-                    data: query.data ? {
-                        id: query.data.id,
-                        key: query.data.key ? {
-                            keyValue: query.data.key.keyValue ?? ''
-                        } : undefined
-                    } : undefined
-                }))}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
                 courseId={id}

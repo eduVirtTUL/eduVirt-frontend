@@ -15,7 +15,8 @@ const joinTeamSchema = z.object({
     teamKey: z.string()
     .min(4, t("joinTeam.validation.keyMinLength"))
     .max(20, t("joinTeam.validation.keyMaxLength"))
-    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("joinTeam.validation.keyRegex"))
+    // eslint-disable-next-line no-useless-escape
+    .regex(/^[a-zA-Z0-9\s\_\-]+$/, t("joinTeam.validation.keyRegex"))
 });
 
 const JoinTeamModal = () => {

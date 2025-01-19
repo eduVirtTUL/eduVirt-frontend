@@ -1166,25 +1166,6 @@ export interface PageDtoReservationDto {
 /**
  * 
  * @export
- * @interface PageDtoTeamDto
- */
-export interface PageDtoTeamDto {
-    /**
-     * 
-     * @type {Array<TeamDto>}
-     * @memberof PageDtoTeamDto
-     */
-    'items'?: Array<TeamDto>;
-    /**
-     * 
-     * @type {PageInfoDto}
-     * @memberof PageDtoTeamDto
-     */
-    'page'?: PageInfoDto;
-}
-/**
- * 
- * @export
  * @interface PageDtoTeamWithCourseDto
  */
 export interface PageDtoTeamWithCourseDto {
@@ -1198,6 +1179,25 @@ export interface PageDtoTeamWithCourseDto {
      * 
      * @type {PageInfoDto}
      * @memberof PageDtoTeamWithCourseDto
+     */
+    'page'?: PageInfoDto;
+}
+/**
+ * 
+ * @export
+ * @interface PageDtoTeamWithKeyDto
+ */
+export interface PageDtoTeamWithKeyDto {
+    /**
+     * 
+     * @type {Array<TeamWithKeyDto>}
+     * @memberof PageDtoTeamWithKeyDto
+     */
+    'items'?: Array<TeamWithKeyDto>;
+    /**
+     * 
+     * @type {PageInfoDto}
+     * @memberof PageDtoTeamWithKeyDto
      */
     'page'?: PageInfoDto;
 }
@@ -1702,6 +1702,49 @@ export interface TeamWithCourseDto {
      * @memberof TeamWithCourseDto
      */
     'course'?: CourseBasicDto;
+}
+/**
+ * 
+ * @export
+ * @interface TeamWithKeyDto
+ */
+export interface TeamWithKeyDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamWithKeyDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamWithKeyDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TeamWithKeyDto
+     */
+    'active'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamWithKeyDto
+     */
+    'maxSize'?: number;
+    /**
+     * 
+     * @type {Array<UserDto>}
+     * @memberof TeamWithKeyDto
+     */
+    'users'?: Array<UserDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamWithKeyDto
+     */
+    'keyValue'?: string;
 }
 /**
  * 
@@ -10076,12 +10119,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {string} [search] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByStudent: async (pageNumber?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getTeamsByStudent: async (page?: number, size?: number, search?: string, sort?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/teams/student`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10094,12 +10139,20 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (pageNumber !== undefined) {
-                localVarQueryParameter['pageNumber'] = pageNumber;
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
             }
 
-            if (pageSize !== undefined) {
-                localVarQueryParameter['pageSize'] = pageSize;
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
             }
 
 
@@ -10343,7 +10396,7 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamDto>> {
+        async getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithKeyDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByCourse(courseId, pageNumber, pageSize, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.getTeamsByCourse']?.[localVarOperationServerIndex]?.url;
@@ -10351,13 +10404,15 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {string} [search] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTeamsByStudent(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithCourseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByStudent(pageNumber, pageSize, options);
+        async getTeamsByStudent(page?: number, size?: number, search?: string, sort?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithCourseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamsByStudent(page, size, search, sort, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.getTeamsByStudent']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10477,18 +10532,20 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamDto> {
+        getTeamsByCourse(courseId: string, pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithKeyDto> {
             return localVarFp.getTeamsByCourse(courseId, pageNumber, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {number} [size] 
+         * @param {string} [search] 
+         * @param {string} [sort] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTeamsByStudent(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithCourseDto> {
-            return localVarFp.getTeamsByStudent(pageNumber, pageSize, options).then((request) => request(axios, basePath));
+        getTeamsByStudent(page?: number, size?: number, search?: string, sort?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithCourseDto> {
+            return localVarFp.getTeamsByStudent(page, size, search, sort, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -10610,14 +10667,16 @@ export class TeamControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {number} [pageNumber] 
-     * @param {number} [pageSize] 
+     * @param {number} [page] 
+     * @param {number} [size] 
+     * @param {string} [search] 
+     * @param {string} [sort] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public getTeamsByStudent(pageNumber?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).getTeamsByStudent(pageNumber, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public getTeamsByStudent(page?: number, size?: number, search?: string, sort?: string, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).getTeamsByStudent(page, size, search, sort, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

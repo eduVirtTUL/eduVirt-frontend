@@ -21,10 +21,18 @@ const singleTeamSchema = z.object({
   teamName: z.string()
     .min(1, t("createTeam.validation.teamNameMin"))
     .max(50, t("createTeam.validation.teamNameMax"))
-    .regex(/^[a-zA-Z0-9\s\-_]+$/, t("createTeam.validation.teamNameRegex")),
-  key: z.string().min(4, t("createTeam.validation.keyMinLength")).max(20, t("createTeam.validation.keyMaxLength")).regex(/^[a-zA-Z0-9]+$/, t("createTeam.validation.keyRegex")),
-  maxSize: z.number().min(2, t("createTeam.validation.maxSizeMin")).max(10, t("createTeam.validation.maxSizeMax"))
+    // eslint-disable-next-line no-useless-escape
+    .regex(/^[a-zA-Z0-9\s\_\-]+$/, t("createTeam.validation.teamNameRegex")),
+  key: z.string()
+    .min(4, t("createTeam.validation.keyMinLength"))
+    .max(20, t("createTeam.validation.keyMaxLength"))
+    // eslint-disable-next-line no-useless-escape
+    .regex(/^[a-zA-Z0-9\_\-]+$/, t("createTeam.validation.keyRegex")),
+  maxSize: z.number()
+    .min(2, t("createTeam.validation.maxSizeMin"))
+    .max(10, t("createTeam.validation.maxSizeMax"))
 })
+
 
 const bulkTeamSchema = z.object({
   baseTeamName: z.string()

@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {TeamDto, UserDto} from "@/api";
+import {TeamAccessKeyDto, TeamDto, UserDto} from "@/api";
 import {useTranslation} from "react-i18next";
 import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {Skeleton} from "@/components/ui/skeleton";
 import {StatusDot} from "@/components/StatusDot";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {
@@ -30,7 +29,6 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import {toast} from "sonner";
 import {useDialog} from "@/stores/dialogStore";
 import {Input} from "@/components/ui/input";
 import {useDebounce} from "use-debounce";
@@ -44,12 +42,12 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import StatefulPodDrawer from "./StatefulPodDrawer";
 import StatelessPodDrawer from "./StatelessPodDrawer";
 import {useNavigate} from "react-router";
+import { toast } from "sonner";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
     teams?: { items: TeamDto[]; page?: { totalPages: number } };
     isLoading: boolean;
-    teamQueries: { isLoading: boolean; data?: { id: string; key?: { keyValue: string } } }[];
     pageNumber: number;
     setPageNumber: (page: number) => void;
     courseId: string;
@@ -60,7 +58,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
                                                      teams,
                                                      isLoading,
-                                                     teamQueries,
                                                      pageNumber,
                                                      setPageNumber,
                                                      courseId,
@@ -184,34 +181,23 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 {
                     accessorKey: "keyValue",
                     header: t("coursePageB.teamsTable.columns.accessKey.label"),
-                    //@ts-expect-error this doesn't impact the page
-                    cell: ({row}) => {
-                        const teamId = row.original.id;
-                        const query = teamQueries.find((q) => q.data?.id === teamId);
-
-                        if (query?.isLoading) {
-                            return <Skeleton className="h-4 w-20"/>;
-                        }
-
-                        return (
-                            <div className="flex items-center gap-2">
-                                <Badge variant="secondary">
-                                    {query?.data?.key?.keyValue}
-                                </Badge>
-                                <Copy
+                    
+                    cell: ({row}: { row: Row<TeamAccessKeyDto> }) => (
+                        <div className="flex items-center gap-2">
+                            <Badge variant="secondary">{row.original.keyValue}</Badge>
+                            <Copy
                                     className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                                     onClick={() => {
                                         navigator.clipboard.writeText(
-                                            query?.data?.key?.keyValue || ""
+                                            row.original.keyValue || ""
                                         );
                                         toast.success(
                                             t("coursePageB.teamsTable.columns.accessKey.copied")
                                         );
                                     }}
                                 />
-                            </div>
-                        );
-                    },
+                        </div>
+                    ),
                 },
             ]
             : []),
