@@ -51,7 +51,7 @@ const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
 
           <Link
             target="_blank"
-            to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-general;name=${cluster?.name}`}
+            to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-general;name=${cluster?.name}`}
           >
             <ExternalLinkIcon/>
             {t("clusters.details.ovirt.cluster")}

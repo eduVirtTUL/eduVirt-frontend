@@ -100,7 +100,7 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId, clusterName }) => 
 
             <Link
               target="_blank"
-              to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-logical_networks;name=${clusterName}`}
+              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-logical_networks;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.network")}

@@ -145,7 +145,7 @@ const HostList: React.FC<HostListProps> = ({
 
             <Link
               target="_blank"
-              to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-hosts;name=${clusterName}`}
+              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-hosts;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.host")}
