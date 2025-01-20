@@ -117,7 +117,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                                                 >
                                                     <Link
                                                         target="_blank"
-                                                        to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm.name}`}
+                                                        to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm.name}`}
                                                     >
                                                         <ExternalLink className="h-3 w-3"/>
                                                         <span

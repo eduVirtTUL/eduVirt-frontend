@@ -11,6 +11,7 @@ import { useTeam } from "@/data/team/useTeam";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Info } from "lucide-react";
 import { useUser } from "@/stores/userStore";
+import {useReservationTimeframeModifiers} from "@/data/reservation/useReservationTimeframeModifiers";
 
 type ReservationDetailsProps = {
   reservation: ReservationDetailsDto,
@@ -27,6 +28,8 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
   const user = useUser();
 
   const { finishReservationAsync } = useFinishReservation();
+
+  const { modifiers, isLoading: isLoadingModifiers } = useReservationTimeframeModifiers();
 
   const handleReservationFinish = async () => {
     if (reservation.id !== undefined) {
@@ -66,9 +69,9 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
           },
           {
             label: t("reservations.details.general.start"),
-            popOver: {
-              content: t("reservations.details.general.startInfo")
-            },
+            // popOver: {
+            //   content: t("reservations.details.general.startInfo")
+            // },
             value: new Date(reservation.start + 'Z').toLocaleString()
           },
           {
@@ -108,7 +111,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
                   <PopoverContent side="left" className="w-80">
                     <p className="text-sm">
                       {/* @ts-expect-error this doesn't impact the page */}
-                      {t(field.popOver.content, { delayTime: 0 })}
+                      {isLoadingModifiers ? "" : t(field.popOver.content, { delayTime: modifiers.endTimeHastening })}
                     </p>
                   </PopoverContent>
                 </Popover>

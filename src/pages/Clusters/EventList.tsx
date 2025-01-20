@@ -182,7 +182,7 @@ const EventList: React.FC<EventListProps> = ({
 
             <Link
               target="_blank"
-              to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
+              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.event")}

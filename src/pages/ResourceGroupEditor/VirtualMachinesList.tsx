@@ -128,7 +128,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 >
                                   <Link
                                     target="_blank"
-                                    to={`https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
+                                    to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
                                   >
                                     <ExternalLinkIcon />
                                     {t(

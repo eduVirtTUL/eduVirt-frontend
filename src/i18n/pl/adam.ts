@@ -103,7 +103,7 @@ const resourceGroupPoolPage = {
   },
   type: "Pula grup zasobów",
   openEditor: "Otwórz edytor",
-  calendar: "Rezerwacje"
+  calendar: "Rezerwacje",
 };
 
 const createResourceGroupModal = {
@@ -165,12 +165,17 @@ const courseStatefulResourceGroups = {
   createResourceGroup: "Utwórz grupę zasobów",
   openEditor: "Otwórz edytor",
   calendar: "Rezerwacje",
+  noGroups: "Brak grup zasobów",
+  noGroupsDescription:
+    "Ten przedmiot nie posiada żadnych stanowych grup zasobów.",
 };
 
 const coursePools = {
   title: "Pule grup zasobów",
   createPool: "Utwórz pulę",
   openPool: "Otwórz pulę",
+  noPools: "Brak pul grup zasobów",
+  noPoolsDescription: "Ten przedmiot nie posiada żadnych pul grup zasobów.",
 };
 
 const editResourceGroupPoolModal = {
