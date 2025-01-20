@@ -353,7 +353,14 @@ const searchByEmailModal = {
       },
       noTeams: "Brak zespołów do wyświetlenia",
       loading: "Ładowanie...",
-      noResourceGroups: "Brak dostępnych pul zasobów"
+      noResourceGroups: "Brak dostępnych pul zasobów",
+      searchPlaceholder: "Szukaj po imieniu, nazwisku lub emailu...",
+        filterByPod: "Filtruj po statusie",
+        filters: {
+            all: "Wszystkie zespoły",
+            withPod: "Zespoły z PODem",
+            withoutPod: "Zespoły bez PODa"
+        }
     }
   
 
