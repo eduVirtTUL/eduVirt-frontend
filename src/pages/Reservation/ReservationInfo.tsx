@@ -132,12 +132,12 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
       {authorized && new Date(reservation.end + 'Z') > new Date() &&
         <div className={"flex items-center justify-center"}>
           <Button
-              variant="destructive"
-              onClick={() => handleReservationFinish()}
+            variant="destructive"
+            onClick={() => handleReservationFinish()}
           >
-            {new Date(reservation.start + 'Z') > new Date() ?
-                t("reservations.details.general.removeReservation") :
-                t("reservations.details.general.finishReservation")
+            {new Date(reservation.start + 'Z') < new Date() && new Date() < new Date(reservation.end + 'Z') ?
+              t("reservations.details.general.finishReservation") :
+              t("reservations.details.general.removeReservation")
             }
           </Button>
         </div>

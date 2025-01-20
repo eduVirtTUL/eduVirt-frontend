@@ -20,8 +20,10 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeProvider";
-import { useUser } from "@/stores/userStore";
+import { Language, useUser } from "@/stores/userStore";
 import { useQueryClient } from "@tanstack/react-query";
+import i18n from "@/i18n";
+import {privateAxios} from "@/data/privateAxios";
 
 const MainMenuFooter: React.FC = () => {
   const { t } = useTranslation();
@@ -111,6 +113,33 @@ const MainMenuFooter: React.FC = () => {
                 </DropdownMenuPortal>
               </DropdownMenuSub>
             )}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                {t("menu.languages.title")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  {(Array.of("en", "pl") as Language[]).map((language) => (
+                    <DropdownMenuCheckboxItem
+                      key={language}
+                      checked={language === i18n.language}
+                      onClick={() => {
+                        localStorage.setItem('language', language);
+                        i18n.changeLanguage(language);
+                        privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
+                          params: {
+                            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                            language: language ?? '',
+                          }
+                        });
+                      }}
+                    >
+                      <span>{t(`languages.${language}`)}</span>
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
 
             <DropdownMenuSeparator />
             <DropdownMenuItem

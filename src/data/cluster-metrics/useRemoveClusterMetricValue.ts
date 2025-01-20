@@ -11,7 +11,7 @@ export const useRemoveClusterMetricValue = (id: string) => {
     mutationKey: [ "removeClusterMetricValue" ],
     mutationFn: async (metricId: string) => {
       const response = await privateAxios.delete<void>(
-        `/cluster/${id}/metric/${metricId}`
+        `/clusters/${id}/metrics/${metricId}`
       );
       return response.data;
     },

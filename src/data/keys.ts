@@ -17,6 +17,7 @@ export const keys = {
   VLANS_RANGE: "vlansRange",
   VM_EVENTS: "vmEvents",
   TEAM: "team",
+  TIME_WINDOW: "timeWindow",
   ACCESS_KEY: "accessKey",
   POD: "pod",
   STATELESS_POD: "statelessPod",
