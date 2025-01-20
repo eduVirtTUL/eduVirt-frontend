@@ -67,7 +67,7 @@ const teamDetails = {
     },
     course: "Przedmiot:",
     status: "Status:",
-    teamMembers: "Członkowie zespołu",
+    teamMembers: "Studenci w zespole",
     teamEmpty: "Zespół jest pusty",
     assignedPods: "Pody przypisane do zespołu",
     noPods: "Ten zespół nie posiada żadnych przypisanych podów",
@@ -135,7 +135,7 @@ const coursePageB = {
                 button : "Usuń zespół",
                 confirmation: {
                     title : "Usuń zespół",
-                    description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy członkowie stracą dostęp do zasobów przypisanych do tego zespołu.",    
+                    description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy studenci w tym zespole stracą dostęp do przypisanych zasobów",    
             }},
             removeStudent: "Usuń studenta z przedmiotu",
         }
@@ -241,7 +241,7 @@ const editTeamModal = {
 };
 
 const manageTeamUsersModal = {
-    title: "Członkowie zespołu ",
+    title: "Studenci w zespole ",
     remove: "Usuń",
     add: "Dodaj",
     noUsers: "Ten zespół jest pusty",
@@ -333,6 +333,7 @@ const searchByEmailModal = {
 
 
     const podManagement = {
+      button: "Pody bezstanowe w kursie",
       title: "Zarządzanie podami bezstanowymi",
       resourcePools: "Pule zasobów",
       search: "Szukaj zespołów...",
@@ -360,6 +361,15 @@ const searchByEmailModal = {
             all: "Wszystkie zespoły",
             withPod: "Zespoły z PODem",
             withoutPod: "Zespoły bez PODa"
+        },
+        selectPoolPrompt: "Wybierz pulę grup zasobów z listy po lewej stronie",
+        confirmCreate: {
+            description: "Czy na pewno chcesz utworzyć PODy bezstanowe dla zaznaczonych zespołów z wybraną pulą grup zasobów?",
+            title: "Tworzenie PODów bezstanowych"
+        },
+        confirmDelete: {
+            description: "Czy na pewno chcesz usunąć PODy bezstanowe dla zaznaczonych zespołów?",
+            title: "Usuwanie PODów bezstanowych"
         }
     }
   

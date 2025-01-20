@@ -8,7 +8,7 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {SearchIcon, Settings2, UserPlus, XIcon} from "lucide-react";
+import {FileX2, SearchIcon, Settings2, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
@@ -67,11 +67,12 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
             <div className="flex justify-end gap-2 mb-4">
                 <Button
+                    className="mr-auto"
                     variant="outline"
                     onClick={() => setBulkPodManagerOpen(true)}
                 >
-                    <Settings2 className="h-4 w-4 mr-2"/>
-                    {/*{t("coursePageB.bulkPodManagement")}*/}
+                    <FileX2 className="h-4 w-4 mr-2"/>
+                    {t("podManagement.button")}
                 </Button>
 
                 {emailPrefixes.length > 0 ? (

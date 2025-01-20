@@ -27,7 +27,9 @@ export type DialogType =
   | "showMaintenanceInterval"
   | "manageCourseUsers"
   | "manageTeamUsers"
-  | "manageTeachersModal";
+  | "manageTeachersModal"
+  | "createStatelessPodsBatch"
+  | "deleteStatelessPodsBatch";
 
 type DialogStore = {
   opened?: DialogType;
