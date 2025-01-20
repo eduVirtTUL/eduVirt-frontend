@@ -135,6 +135,36 @@ const errorKeys = {
   "reservations.error.stateless.pod.not.assigned": "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
 
   networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
+
+  "course.invalid.type": "Nieprawidłowy typ przedmiotu",
+  "teacher.already.in.course": "Nauczyciel już jest przypisany do przedmiotu",
+  "teacher.not.in.course": "Nauczyciel nie jest przypisany do przedmiotu",
+  "course.no.teachers": "Przedmiot nie posiada przypisanych nauczycieli",
+  "user.not.found": "Nie znaleziono użytkownika",
+  "user.not.authorized": "Użytkownik nie ma uprawnień",
+  "user.name.already.exists": "Nazwa użytkownika jest już zajęta",
+  "team.not.found": "Nie znaleziono zespołu",
+  "team.not.found.in.course": "Nie znaleziono zespołu w przedmiocie",
+  "team.already.exists": "Zespół o podanej nazwie już istnieje",
+  "team.not.active": "Zespół nie jest aktywny",
+  "team.user.not.member": "Użytkownik nie jest członkiem zespołu",
+  "team.user.already.member": "Użytkownik jest już członkiem zespołu",
+  "team.validation.exception": "Błąd walidacji zespołu",
+  "incorrect.team.type.exception": "Nieprawidłowy typ zespołu",
+  "team.size.exception": "Rozmiar zespołu przekracza limit",
+  "team.conflict.exception": "Konflikt zespołów",
+  "pod.not.found": "Nie znaleziono PODa",
+  "pod.already.exists": "POD o podanej nazwie już istnieje",
+  "pod.invalid.type": "Nieprawidłowy typ PODa",
+  "access.key.not.found.exception": "Nie znaleziono klucza dostępu",
+  "access.key.already.exists": "Klucz dostępu już istnieje",
+  "access.key.invalid.format": "Nieprawidłowy format klucza dostępu",
+  "access.key.invalid.type": "Nieprawidłowy typ klucza dostępu",
+  "access.key.duplicate": "Zduplikowany klucz dostępu",
+  "access.key.could.not.be.generated": "Nie można było wygenerować klucza dostępu",
+  "teacher.self.modification.exception": "Nauczyciel nie może zarządzać sobą w przedmiocie",
+
+  //@ts-expect-error - missing keys
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
