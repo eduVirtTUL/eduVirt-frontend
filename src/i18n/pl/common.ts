@@ -164,7 +164,6 @@ const errorKeys = {
   "access.key.could.not.be.generated": "Nie można było wygenerować klucza dostępu",
   "teacher.self.modification.exception": "Nauczyciel nie może zarządzać sobą w przedmiocie",
 
-  //@ts-expect-error - missing keys
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {

@@ -13,7 +13,7 @@ import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
 import { useCoursesTeamsByEmail } from "@/data/team/useCoursesTeamsByEmail";
-import { SearchByEmailModal } from "@/components/Modals/SearchByEmailModal";
+import { SearchStudentsInCourseModal } from "@/components/Modals/SearchStudentsInCourseModal";
 
 const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
@@ -106,7 +106,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 emailPrefixes={emailPrefixes}
                 onRemoveEmailPrefix={handleRemoveEmailPrefix}
             />
-            <SearchByEmailModal
+            <SearchStudentsInCourseModal
                 open={emailSearchOpen}
                 onOpenChange={setEmailSearchOpen}
                 onSearch={handleEmailSearch}

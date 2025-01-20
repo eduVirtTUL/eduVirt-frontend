@@ -325,6 +325,9 @@ const createTeamModal = {
 const searchByEmailModal = {
     title: "Wyszukaj studentów po numerze indeksu",
     search: "Wyszukaj",
+    placeholder: "Enter student identifier...",
+    description1: "Aby dodać numer indeksu studenta do wyszukiwania, wpisz wartość w pole tekstowe i naciśnij Enter lub Spację. Możesz usunąć numer indeksu klikając na przycisk X.",
+    description2: "Aby wprowadzić wiele wartości jednocześnie, oddziel je przecinkiem lub spacją i wklej ze schowka.",
 }
 
 const deleteTeamModal = {
