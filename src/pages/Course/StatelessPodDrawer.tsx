@@ -28,6 +28,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const {courseResourceGroupPools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId)
     const {statelessPods = [], isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId)
+    console.log(statelessPods)
     const {createStatelessPod} = useCreateStatelessPod()
     const {deleteStatelessPod, isPending: isDeleting} = useDeleteStatelessPod()
     const {open: openDialog} = useDialog()
@@ -112,7 +113,7 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                         </Table>
                                     )}
                                 </ScrollArea>
-                                <div className="flex justify-center mt-4">
+                                <div className="flex justify-end mt-4">
                                     <Button
                                         onClick={handleSubmit}
                                         className="w-32"
@@ -141,16 +142,14 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                             {podsArray.length > 0 && (
                                                 <TableHeader>
                                                     <TableRow>
-                                                        <TableHead></TableHead>
                                                         <TableHead>{t("statelessPodManagement.resourceGroupPool")}</TableHead>
                                                         <TableHead className="w-[100px]"></TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                             )}
                                             <TableBody>
-                                                {podsArray?.map((pod, index) => (
+                                                {podsArray?.map((pod) => (
                                                     <TableRow key={pod.id}>
-                                                        <TableCell>{`${index + 1}.`}</TableCell>
                                                         <TableCell>
                                                             {courseResourceGroupPools?.find(p => p.id === pod.resourceGroupPool?.id)?.name}
                                                         </TableCell>

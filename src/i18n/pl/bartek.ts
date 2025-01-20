@@ -178,6 +178,7 @@ const statefulPodManagementDrawer = {
     teamPods: "Pody stanowe zespołu",
     createPod: "Utwórz pod",
     noPods: "Zespół nie posiada żadnych przypisanych podów",
+    noResourceGroups: "Nie znaleziono żadnych grup zasobów w tym przedmiocie",
     resourceGroup: "Grupa zasobów",
     maxRent: "Maksymalna liczba rezerwacji poda",
     alerts: {
@@ -323,16 +324,38 @@ const createTeamModal = {
 };
 
 const searchByEmailModal = {
-    title: "Wyszukaj studentów po numerze indeksu",
+    title: "Wyszukaj studentów po numerach indeksów",
     search: "Wyszukaj",
     placeholder: "Enter student identifier...",
     description1: "Aby dodać numer indeksu studenta do wyszukiwania, wpisz wartość w pole tekstowe i naciśnij Enter lub Spację. Możesz usunąć numer indeksu klikając na przycisk X.",
     description2: "Aby wprowadzić wiele wartości jednocześnie, oddziel je przecinkiem lub spacją i wklej ze schowka.",
 }
 
-const deleteTeamModal = {
-    
-}
+
+    const podManagement = {
+      title: "Zarządzanie podami bezstanowymi",
+      resourcePools: "Pule zasobów",
+      search: "Szukaj zespołów...",
+      createPods: "Utwórz PODy",
+      deletePods: "Usuń PODy",
+      createSuccess: "Pomyślnie utworzono PODy",
+      deleteSuccess: "Pomyślnie usunięto PODy",
+      createError: "Błąd podczas tworzenia PODów",
+      deleteError: "Błąd podczas usuwania PODów",
+      columns: {
+        name: "Nazwa zespołu",
+        members: "Student",
+        status: "Czy istnieje POD"
+      },
+      status: {
+        hasPod: "Tak",
+        noPod: "Nie"
+      },
+      noTeams: "Brak zespołów do wyświetlenia",
+      loading: "Ładowanie...",
+      noResourceGroups: "Brak dostępnych pul zasobów"
+    }
+  
 
 export default {
     podType,
@@ -352,7 +375,8 @@ export default {
     createCourseKey: createCourseKeyModal,
     manageTeamUsers: manageTeamUsersModal,
     manageCourseUsers: manageCourseUsersModal,
-    deleteTeam: deleteTeamModal,
+    // deleteTeam: deleteTeamModal,
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
+    podManagement,
 };
