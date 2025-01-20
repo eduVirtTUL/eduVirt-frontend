@@ -5,10 +5,10 @@ import { useCreateStatefulResourceGroup } from "@/data/course/resourceGroups/use
 import { useStatefulResourceGroups } from "@/data/course/resourceGroups/useStatefulResourceGroups";
 import { useDialog } from "@/stores/dialogStore";
 import { useUser } from "@/stores/userStore";
-import {CalendarIcon, PlusIcon} from "lucide-react";
+import { CalendarIcon, CircleOffIcon, PlusIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {Link, useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 
 type StatefulResourceGroupsProps = {
   courseId: string;
@@ -16,7 +16,8 @@ type StatefulResourceGroupsProps = {
 };
 
 const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
-  courseId, clusterId
+  courseId,
+  clusterId,
 }) => {
   const { t } = useTranslation();
   const { open } = useDialog();
@@ -46,6 +47,15 @@ const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
               </Button>
             </div>
           )}
+          {statefulResourceGroups?.length === 0 && (
+            <div className="text-muted-foreground flex flex-col justify-center items-center">
+              <CircleOffIcon />
+              <span>{t("courseStatefulResourceGroups.noGroups")}</span>
+              <span>
+                {t("courseStatefulResourceGroups.noGroupsDescription")}
+              </span>
+            </div>
+          )}
           <div className="grid grid-cols-4 gap-4">
             {statefulResourceGroups?.map((rg) => (
               <Card key={rg.id}>
@@ -62,9 +72,14 @@ const StatefulResourceGroups: React.FC<StatefulResourceGroupsProps> = ({
                     <Button
                       variant="secondary"
                       className="text-wrap"
-                      onClick={() => navigate(`/reservations/calendar/resource-group/presentation/${rg.id}`, {
-                        state: { clusterId: clusterId, courseId: courseId}
-                      })}
+                      onClick={() =>
+                        navigate(
+                          `/reservations/calendar/resource-group/presentation/${rg.id}`,
+                          {
+                            state: { clusterId: clusterId, courseId: courseId },
+                          }
+                        )
+                      }
                     >
                       <CalendarIcon />
                       {t("courseStatefulResourceGroups.calendar")}

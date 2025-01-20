@@ -35,7 +35,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           <DialogDescription>{text}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-row justify-between">
-          <Button onClick={close} variant="secondary">
+          <Button onClick={close} variant="secondary" autoFocus={isOpen(name)}>
             <CircleXIcon />
             {t("no")}
           </Button>
