@@ -44,8 +44,8 @@ const VmInfo: React.FC<UseVmInfoProps> = ({
           <Link
             target="_blank"
             to={(activeRole === "teacher" || activeRole === "administrator") ?
-              `https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/webadmin/?locale=en_US#vms-general;name=${vm.name}` :
-              `https://vteste1.vlab.it.p.lodz.pl/ovirt-engine/web-ui/vm/${vm.id}`
+              `${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm.name}` :
+              `${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/web-ui/vm/${vm.id}`
             }
           >
             <ExternalLinkIcon/>
