@@ -10,6 +10,7 @@ type UserStore = {
   changeActiveRole: (role: Role) => void;
 };
 
+export type Language = "pl" | "en";
 export type Role = "administrator" | "teacher" | "student";
 
 export const useUser = create(

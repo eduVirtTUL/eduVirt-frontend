@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { CheckIcon, XCircleIcon } from "lucide-react";
 
 type CreateMaintenanceIntervalModalProps = {
@@ -41,8 +41,7 @@ const createMaintenanceIntervalSchema = (t: TFunction) =>
       .max(256, t("maintenanceIntervals.validation.description.too.long"))
       .optional(),
     duration: z.coerce.number()
-      .min(1, t("maintenanceIntervals.validation.duration.too.short"))
-      .max(24, t("maintenanceIntervals.validation.duration.too.long")),
+      .min(1, t("maintenanceIntervals.validation.duration.too.short")),
   });
 
 type CreateMaintenanceIntervalSchema = z.infer<
@@ -149,16 +148,29 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
                 control={form.control}
                 name="duration"
                 render={({ field }) => (
-                  <FormItem className="space-y-4">
-                    <FormLabel>* {t("maintenanceIntervals.createMaintenanceInterval.duration")}</FormLabel>
-                    <FormControl>
-                      <Input {...field} type={"number"} />
-                    </FormControl>
-                    <FormDescription>
-                      {t("maintenanceIntervals.createMaintenanceInterval.durationDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
+                  <>
+                    <FormItem className="space-y-4">
+                      <FormLabel>{t("maintenanceIntervals.createMaintenanceInterval.startTime")}</FormLabel>
+                      <FormControl>
+                        {start && <Input value={start.toLocaleTimeString(i18next.language)} disabled={true}/>}
+                      </FormControl>
+                      <FormDescription>
+                        {t("maintenanceIntervals.createMaintenanceInterval.startTimeDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+
+                    <FormItem className="space-y-4">
+                      <FormLabel>* {t("maintenanceIntervals.createMaintenanceInterval.duration")}</FormLabel>
+                      <FormControl>
+                        <Input {...field} type={"number"} />
+                      </FormControl>
+                      <FormDescription>
+                        {t("maintenanceIntervals.createMaintenanceInterval.durationDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  </>
                 )}
               />
               <div className="flex flex-row justify-between">

@@ -74,7 +74,8 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
 
   useEffect(() => {
     if (start && end) {
-      const calculatedDuration = (end.valueOf() - start.valueOf()) / (60000);
+      let calculatedDuration = (end.valueOf() - start.valueOf()) / (60000);
+      calculatedDuration = calculatedDuration < maxRentTime * 60 ? calculatedDuration : maxRentTime * 60;
       form.reset({
         reservationDuration: calculatedDuration >= 2 * length ? calculatedDuration : 2 * length,
         automaticStartup: true,
@@ -141,7 +142,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
                   <FormLabel>* {t("reservations.createReservation.duration")}</FormLabel>
                   <FormControl>
                     <RentTimeSelector
-                      value={field.value.toString()}
+                      value={field.value < maxRentTime * 60 ? field.value.toString() : (maxRentTime * 60).toString()}
                       onChange={(newValue) => {
                         const selectedDuration = parseInt(newValue, 10);
                         const newEnd = new Date(start.getTime() + selectedDuration * 60000);
