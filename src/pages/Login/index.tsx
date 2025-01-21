@@ -5,9 +5,11 @@ import { Navigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import i18next from "i18next";
+import {useTranslation} from "react-i18next";
 
 const LoginPage: React.FC = () => {
   const isExpired = React.useRef(false);
+  const { t } = useTranslation();
 
   const token = localStorage.getItem("token");
 
@@ -32,7 +34,7 @@ const LoginPage: React.FC = () => {
               window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
             }}
           >
-            Login using oVirt SSO
+            {t("loginUsingSSO")}
           </Button>
         </CardContent>
       </Card>

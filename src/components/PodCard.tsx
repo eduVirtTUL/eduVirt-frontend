@@ -44,9 +44,13 @@ export function PodCard({id, resourceGroup, course}: PodCardProps) {
                         >
                             {resourceGroup.isStateless ? t("podType.stateless") : t("podType.stateful")}
                         </Badge>
-                        {resourceGroup.maxRent && (
+                        {resourceGroup.maxRent && resourceGroup.maxRent > 0 ? (
                             <Badge variant="secondary">
-                                {t("podCard.maxRent")}: {resourceGroup.maxRent}
+                                {t("podCard.availableRents")}: {(count !== undefined && resourceGroup.maxRent - count >= 0) ? resourceGroup.maxRent - count : 0}
+                            </Badge>
+                        ) : (
+                            <Badge variant="secondary">
+                                {t("podCard.noRentLimit")}
                             </Badge>
                         )}
                     </div>

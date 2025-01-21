@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CardContent } from "@/components/ui/card";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { EventGeneralDto } from "@/api";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ const columns = (
     cell: (registeredAt) => {
       const value = registeredAt.getValue() as string;
       const actualTime = new Date(value + 'Z');
-      return actualTime.toLocaleString();
+      return actualTime.toLocaleString(i18next.language);
     },
   },
 ];

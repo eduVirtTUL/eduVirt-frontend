@@ -193,6 +193,7 @@ export default {
   requiredFieldDescription: "(*) - pole wymagane",
   houres: "godz.",
   genericError: "Wystąpił błąd!",
+  loginUsingSSO: "Zaloguj się z wykorzystaniem SSO systemu oVirt",
   menu,
   units,
   general,

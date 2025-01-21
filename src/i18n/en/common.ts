@@ -179,6 +179,7 @@ export default {
     requiredFieldDescription: "(*) - field value required",
     houres: "h",
     genericError: "Some error occurred!",
+    loginUsingSSO: "Login using oVirt SSO",
     menu,
     units,
     general,
