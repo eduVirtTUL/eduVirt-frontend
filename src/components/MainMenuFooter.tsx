@@ -24,6 +24,7 @@ import { Language, useUser } from "@/stores/userStore";
 import { useQueryClient } from "@tanstack/react-query";
 import i18n from "@/i18n";
 import {privateAxios} from "@/data/privateAxios";
+import { appEnv } from "@/environment";
 
 const MainMenuFooter: React.FC = () => {
   const { t } = useTranslation();
@@ -145,7 +146,7 @@ const MainMenuFooter: React.FC = () => {
             <DropdownMenuItem
               onClick={() => {
                 localStorage.removeItem("token");
-                window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/logout";
+                window.location.href = appEnv.apiUrl + "/auth/logout";
               }}
             >
               <span>{t("menu.signOut")}</span>

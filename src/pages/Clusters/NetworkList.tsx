@@ -11,6 +11,7 @@ import SimplePagination from "@/components/SimplePagination";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ExternalLinkIcon } from "lucide-react";
+import { appEnv } from "@/environment";
 
 type NetworkListProps = {
     clusterId: string;
@@ -100,7 +101,7 @@ const NetworkList: React.FC<NetworkListProps> = ({ clusterId, clusterName }) => 
 
             <Link
               target="_blank"
-              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-logical_networks;name=${clusterName}`}
+              to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#clusters-logical_networks;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.network")}

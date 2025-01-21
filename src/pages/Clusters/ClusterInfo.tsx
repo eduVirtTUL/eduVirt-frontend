@@ -7,6 +7,7 @@ import { CardContent } from "@/components/ui/card";
 import { Link } from "react-router";
 import { ExternalLinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { appEnv } from "@/environment";
 
 type ClusterDetailsProps = {
     cluster: ClusterDetailsDto;
@@ -51,7 +52,7 @@ const ClusterInfo: React.FC<ClusterDetailsProps> = ({cluster}) => {
 
           <Link
             target="_blank"
-            to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-general;name=${cluster?.name}`}
+            to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#clusters-general;name=${cluster?.name}`}
           >
             <ExternalLinkIcon/>
             {t("clusters.details.ovirt.cluster")}

@@ -22,6 +22,7 @@ import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router"
 import MaxRentModal from "./MaxRentModal"
+import { appEnv } from "@/environment"
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -117,7 +118,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                                                 >
                                                     <Link
                                                         target="_blank"
-                                                        to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm.name}`}
+                                                        to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#vms-general;name=${vm.name}`}
                                                     >
                                                         <ExternalLink className="h-3 w-3"/>
                                                         <span
