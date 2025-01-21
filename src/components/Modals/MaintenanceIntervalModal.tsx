@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon, TrashIcon, XCircleIcon } from "lucide-react";
 import { useUser } from "@/stores/userStore";
 import { useRemoveMaintenanceInterval } from "@/data/maintenance/useRemoveMaintenanceInterval";
+import i18next from "i18next";
 
 type MaintenanceIntervalModal = {
     intervalId: string;
@@ -55,8 +56,8 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
             {label: t("maintenanceIntervals.details.description"), value: interval?.description},
             {label: t("maintenanceIntervals.details.type"), value: interval?.type},
             {label: t("maintenanceIntervals.details.clusterId"), value: interval?.clusterId},
-            {label: t("maintenanceIntervals.details.beginAt"), value: interval?.beginAt ? new Date(interval?.beginAt + 'Z').toLocaleString() : ''},
-            {label: t("maintenanceIntervals.details.endAt"), value: interval?.endAt ? new Date(interval?.endAt + 'Z').toLocaleString() : ''},
+            {label: t("maintenanceIntervals.details.beginAt"), value: interval?.beginAt ? new Date(interval?.beginAt + 'Z').toLocaleString(i18next.language) : ''},
+            {label: t("maintenanceIntervals.details.endAt"), value: interval?.endAt ? new Date(interval?.endAt + 'Z').toLocaleString(i18next.language) : ''},
           ].map((field, index) => (
             <div key={index} className="flex items-center w-full">
               <Label className="w-48 text-left mr-4">{field.label}</Label>
