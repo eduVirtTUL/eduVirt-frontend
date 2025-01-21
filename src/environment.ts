@@ -5,7 +5,7 @@ export interface Environment {
 }
 
 function getConfigFromWindow(): Partial<Environment> {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && import.meta.env.PROD ) {
     //Do not allow basename from window 
     const { basename, ...rest } = (window as any).env || {};
     return rest;
