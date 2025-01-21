@@ -12,6 +12,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLinkIcon } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { getBaseUnit, getBaseUnitValue, UnitDefinition } from "@/utils/unitUtils.js";
+import { appEnv } from "@/environment";
 
 type HostListProps = {
   clusterId: string;
@@ -145,7 +146,7 @@ const HostList: React.FC<HostListProps> = ({
 
             <Link
               target="_blank"
-              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-hosts;name=${clusterName}`}
+              to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#clusters-hosts;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.host")}

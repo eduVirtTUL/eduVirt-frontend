@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { Role, useUser } from "./stores/userStore";
 import { Navigate } from "react-router";
 import { privateAxios } from "@/data/privateAxios";
+import { appEnv } from "./environment";
 
 const roleOrder: { role: Role; index: number }[] = [
   { role: "administrator", index: 0 },
@@ -71,7 +72,7 @@ const AuthCallback: React.FC = () => {
   if (!token) {
     removeCookie("access_token");
     localStorage.removeItem("token");
-    window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
+    window.location.href = appEnv.apiUrl + "/auth/login";
   } else {
     privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
       params: {

@@ -12,6 +12,7 @@ import EditVmModal from "./modals/EditVmModal";
 import React from "react";
 import { useDialog } from "@/stores/dialogStore";
 import { useUser } from "@/stores/userStore";
+import { appEnv } from "@/environment";
 
 type VirtualMachinesListProps = {
   id: string;
@@ -128,7 +129,7 @@ const VirtualMachinesList: React.FC<VirtualMachinesListProps> = ({
                                 >
                                   <Link
                                     target="_blank"
-                                    to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
+                                    to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#vms-general;name=${vm?.name}`}
                                   >
                                     <ExternalLinkIcon />
                                     {t(

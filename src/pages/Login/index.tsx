@@ -5,7 +5,8 @@ import { Navigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import i18next from "i18next";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { appEnv } from "@/environment";
 
 const LoginPage: React.FC = () => {
   const isExpired = React.useRef(false);
@@ -31,7 +32,7 @@ const LoginPage: React.FC = () => {
           <img src={logo} className="w-60" />
           <Button
             onClick={() => {
-              window.location.href = import.meta.env.VITE_API_LOCATION + "/auth/login";
+              window.location.href = appEnv.apiUrl + "/auth/login";
             }}
           >
             {t("loginUsingSSO")}

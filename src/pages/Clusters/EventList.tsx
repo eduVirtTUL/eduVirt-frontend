@@ -13,6 +13,7 @@ import SimplePagination from "@/components/SimplePagination";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
+import { appEnv } from "@/environment";
 
 type EventListProps = {
   clusterId: string;
@@ -182,7 +183,7 @@ const EventList: React.FC<EventListProps> = ({
 
             <Link
               target="_blank"
-              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
+              to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.event")}
