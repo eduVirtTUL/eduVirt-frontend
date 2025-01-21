@@ -14,6 +14,7 @@ export const keys = {
   RESOURCE_GROUP: "resourceGroup",
   RESERVATIONS: "reservations",
   VNIC_PROFILE: "vnicProfile",
+  VNIC_PROFILE_DETAIL: "vnicProfileDetail",
   VLANS_RANGE: "vlansRange",
   VM_EVENTS: "vmEvents",
   TEAM: "team",
