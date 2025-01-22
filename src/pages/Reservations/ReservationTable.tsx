@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import {ExternalLink, Undo2} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ColumnDef } from "@tanstack/react-table";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import PageHeader from "@/components/PageHeader";
 import { Switch } from "@/components/ui/switch";
@@ -80,7 +80,7 @@ const columns = (
     cell: (start) => {
       const value = start.getValue() as string;
       const startTime = new Date(value + 'Z');
-      return startTime.toLocaleString();
+      return startTime.toLocaleString(i18next.language);
     },
   },
   {
@@ -96,7 +96,7 @@ const columns = (
     cell: (end) => {
       const value = end.getValue() as string;
       const endTime = new Date(value + 'Z');
-      return endTime.toLocaleString();
+      return endTime.toLocaleString(i18next.language);
     },
   },
   {

@@ -8,6 +8,7 @@ import { Link } from "react-router";
 import { ExternalLinkIcon } from "lucide-react";
 import { getBaseUnit } from "@/utils/unitUtils.js";
 import {useUser} from "@/stores/userStore";
+import { appEnv } from "@/environment";
 
 type UseVmInfoProps = {
   vm: VmDto
@@ -44,8 +45,8 @@ const VmInfo: React.FC<UseVmInfoProps> = ({
           <Link
             target="_blank"
             to={(activeRole === "teacher" || activeRole === "administrator") ?
-              `${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#vms-general;name=${vm.name}` :
-              `${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/web-ui/vm/${vm.id}`
+              `${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#vms-general;name=${vm.name}` :
+              `${appEnv.ovirtEngineUrl}/web-ui/vm/${vm.id}`
             }
           >
             <ExternalLinkIcon/>

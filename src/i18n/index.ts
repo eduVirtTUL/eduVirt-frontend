@@ -1,10 +1,12 @@
 import { initReactI18next } from "react-i18next";
+import detector from "i18next-browser-languagedetector";
 import i18next from "i18next";
 import pl from "./pl/common";
+import en from "./en/common";
 
 export const defaultNS = "common";
 
-i18next.use(initReactI18next).init({
+i18next.use(detector).use(initReactI18next).init({
   debug: true,
   fallbackLng: "pl",
   defaultNS,
@@ -13,7 +15,15 @@ i18next.use(initReactI18next).init({
       common: pl,
       keys: pl,
     },
+    en: {
+      common: en,
+      keys: en,
+    }
   },
+  detection: {
+    order: ["localStorage", "navigator"],
+    caches: ["localStorage"]
+  }
 });
 
 export default i18next;

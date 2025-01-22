@@ -45,7 +45,7 @@ const hosts = {
   table: {
     columns: {
       name: 'Nazwa',
-      domainName: 'Nazwa domenowa',
+      domainName: 'Adres',
       cpuCount: 'Liczba CPU',
       memorySize: 'Rozmiar RAM'
     }
@@ -242,6 +242,8 @@ const maintenanceIntervals = {
     title: 'Utwórz nową przerwę administracyjną',
     cause: 'Przyczyna',
     causeDescription: 'Ogólnie sformułowana przyczyna przerwy administracyjnej.',
+    startTime: 'Początek',
+    startTimeDescription: 'Początek przerwy administracyjnej wyznacza moment, w którym funkcjonalności oferowane przez system oVirt przestaną być dostępne.',
     description: 'Opis',
     descriptionDescription: 'Bardziej szczegółowa informacja o przyczynie przerwy administracyjnej.',
     duration: 'Długość przerwy (godziny)',
@@ -269,7 +271,6 @@ const maintenanceIntervals = {
     "cause.required": 'Powód przerwy administracyjnej stanowi pole obowiązkowe',
     "description.too.long": 'Opis przerwy administracyjnej nie może przekroczyć długości 256 znaków',
     "duration.too.short": 'Minimalna długość przerwy to godzina',
-    "duration.too.long": 'Maksymalna długość przerwy nie może przekroczyć 24 godzin',
   },
 }
 

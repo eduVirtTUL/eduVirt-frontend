@@ -1,8 +1,8 @@
-import { ErrorKey } from "./../../data/privateAxios";
+import { ErrorKey } from "@/data/privateAxios";
 import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
-import { Role } from "@/stores/userStore";
+import {Language, Role} from "@/stores/userStore";
 import michal from "@/i18n/pl/michal";
 
 const menu = {
@@ -23,6 +23,11 @@ const menu = {
     system: "Systemowy",
     title: "Motyw",
   },
+  languages: {
+    title: "Język",
+    pl: "Polski",
+    en: "Angielski",
+  },
   accessLevel: {
     title: "Poziom dostępu",
     administator: "Administrator",
@@ -30,6 +35,11 @@ const menu = {
     student: "Student",
   },
 };
+
+const languages = {
+  pl: "Polski",
+  en: "Angielski",
+} satisfies { [key in Language]: string }
 
 const roles = {
   administrator: "Administrator",
@@ -110,9 +120,8 @@ const errorKeys = {
   "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
   "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",
   "maintenanceIntervals.error.not.found": "Wybrana przerwa administracyjna nie została znaleziona",
-  "maintenanceIntervals.error.too.long": "Wskazna długość przerwy administracyjnej przekracza dopuszczalne maksiumum",
   "maintenanceIntervals.error.invalid.time.window": "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
-  "maintenanceIntervals.error.begin.at.past": "Przerwa administracyjna musi zaczynać się w przyszłości",
+  "maintenanceIntervals.error.begin.too.early": "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",
   "maintenanceIntervals.error.conflict": "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
   "maintenanceIntervals.error.already.finished": "Wybrana przerwa administracyjna już się zakończyła",
 
@@ -213,10 +222,12 @@ export default {
   requiredFieldDescription: "(*) - pole wymagane",
   houres: "godz.",
   genericError: "Wystąpił błąd!",
+  loginUsingSSO: "Zaloguj się z wykorzystaniem SSO systemu oVirt",
   menu,
   units,
   general,
   errorKeys,
+  languages,
   roles,
   notFoundPage,
   pageTitles,

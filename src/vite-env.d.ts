@@ -2,8 +2,8 @@
 
 interface ImportMetaEnv {
     readonly VITE_BASENAME: string,
-    readonly VITE_API_LOCATION: string,
-    readonly VITE_OVIRT_ENGINE_LOCATION: string,
+    readonly VITE_API_URL: string,
+    readonly VITE_OVIRT_ENGINE_URL: string,
   }
   
   interface ImportMeta {

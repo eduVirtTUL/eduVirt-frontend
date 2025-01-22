@@ -83,6 +83,8 @@ const podCard = {
     description: "Opis przedmiotu",
     makeAReservation: "Rezerwuj",
     maxRent: "Maksymalna liczba rezerwacji",
+    availableRents: "Liczba dostępnych wypożyczeń",
+    noRentLimit: "Brak limitu wypożyczeń"
 }
 
 const createCourseModalB = {

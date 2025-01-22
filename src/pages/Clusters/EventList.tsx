@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { EventGeneralDto } from "@/api";
 import { CardContent } from "@/components/ui/card";
@@ -13,6 +13,7 @@ import SimplePagination from "@/components/SimplePagination";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
+import { appEnv } from "@/environment";
 
 type EventListProps = {
   clusterId: string;
@@ -64,7 +65,7 @@ const columns = (
     cell: (registeredAt) => {
       const value = registeredAt.getValue() as string;
       const actualTime = new Date(value + 'Z');
-      return actualTime.toLocaleString();
+      return actualTime.toLocaleString(i18next.language);
     },
   },
 ];
@@ -182,7 +183,7 @@ const EventList: React.FC<EventListProps> = ({
 
             <Link
               target="_blank"
-              to={`${import.meta.env.VITE_OVIRT_ENGINE_LOCATION}/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
+              to={`${appEnv.ovirtEngineUrl}/webadmin/?locale=en_US#clusters-events;name=${clusterName}`}
             >
               <ExternalLinkIcon/>
               {t("clusters.details.ovirt.event")}
