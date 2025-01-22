@@ -15,7 +15,7 @@ export const useDeleteTeam = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: [keys.TEAM]});
-      toast.success("Team successfully deleted");
+      toast.success("Zespół został usunięty pomyślnie");
     },
   });
 

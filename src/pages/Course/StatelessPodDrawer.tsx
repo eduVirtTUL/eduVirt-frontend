@@ -28,7 +28,6 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const {courseResourceGroupPools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId)
     const {statelessPods = [], isLoading: isLoadingStateless} = useStatelessPodsForTeam(teamId)
-    console.log(statelessPods)
     const {createStatelessPod} = useCreateStatelessPod()
     const {deleteStatelessPod, isPending: isDeleting} = useDeleteStatelessPod()
     const {open: openDialog} = useDialog()

@@ -159,13 +159,6 @@ export function BulkStatelessPodManager({
 
         const hasPodsCount = selectedTeamsData.filter(t => t.hasPod).length;
 
-        console.log({
-            selectedTeams,
-            selectedTeamsData,
-            hasPodsCount,
-            totalSelected: selectedTeamsData.length
-        });
-
         if (hasPodsCount === 0) return 'create';
         if (hasPodsCount === selectedTeamsData.length) return 'delete';
         return 'mixed';

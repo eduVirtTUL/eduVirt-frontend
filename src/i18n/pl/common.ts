@@ -151,7 +151,7 @@ const errorKeys = {
   "team.user.already.member": "Użytkownik jest już członkiem zespołu",
   "team.validation.exception": "Błąd walidacji zespołu",
   "incorrect.team.type.exception": "Nieprawidłowy typ zespołu",
-  "team.size.exception": "Rozmiar zespołu przekracza limit",
+  "user.already.in.course.exception": "Student znajduje się już w tym przedmiocie",
   "team.conflict.exception": "Konflikt zespołów",
   "pod.not.found": "Nie znaleziono PODa",
   "pod.already.exists": "POD o podanej nazwie już istnieje",

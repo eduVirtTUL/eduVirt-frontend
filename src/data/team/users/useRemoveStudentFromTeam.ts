@@ -7,23 +7,21 @@ import { t } from "i18next";
 export const useRemoveStudentFromTeam = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync: removeStudentFromTeam} = useMutation({
-    mutationFn: async ({teamId, email}: { teamId: string; email: string }) => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("email", email);
-
+  const { mutateAsync: removeStudentFromTeam } = useMutation({
+    mutationFn: async ({ teamId, email }: { teamId: string; email: string }) => {
       const response = await privateAxios.post<void>(
-        `/teams/${teamId}/remove-student`, { params: searchParams }
+        `/teams/${teamId}/remove-student?email=${encodeURIComponent(email)}`
       );
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: [keys.TEAM]});
-      queryClient.invalidateQueries({queryKey: [keys.USER]});
-      queryClient.invalidateQueries({queryKey: [keys.COURSE]});
+    onSuccess: (_, { teamId }) => {
+      queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
+      queryClient.invalidateQueries({ queryKey: [keys.TEAM, teamId] });
+      queryClient.invalidateQueries({ queryKey: [keys.USER] });
+      queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
       toast.success(t("coursePageB.courseTeamsPage.removeStudentFromTeamSuccess"));
     },
   });
 
-  return {removeStudentFromTeam};
+  return { removeStudentFromTeam };
 };

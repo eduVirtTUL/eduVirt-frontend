@@ -6,22 +6,22 @@ import { privateAxios } from "@/data/privateAxios";
 export const useAddStudentToTeam = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync: addStudentToTeam} = useMutation({
-    mutationFn: async ({teamId, email}: { teamId: string; email: string }) => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("email", email);
-
-      const response = await privateAxios.post(
-        `/teams/${teamId}/add-student`, { params: searchParams }
+  const { mutateAsync: addStudentToTeam } = useMutation({
+    mutationFn: async ({ teamId, email }: { teamId: string; email: string }) => {
+      const response = await privateAxios.post<void>(
+        `/teams/${teamId}/add-student?email=${encodeURIComponent(email)}`
       );
-
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: [keys.TEAM]});
-      toast.success("Student added to team");
+    onSuccess: (_, { teamId }) => {
+      queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
+      queryClient.invalidateQueries({ queryKey: [keys.TEAM, teamId] });
+      toast.success("Dodano studenta do zespołu");
     },
+    onError: () => {
+      toast.error("Nie udało się dodać studenta do zespołu");
+    }
   });
 
-  return {addStudentToTeam};
+  return { addStudentToTeam };
 };

@@ -8,7 +8,7 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {FileX2, SearchIcon, Settings2, UserPlus, XIcon} from "lucide-react";
+import {FileX2, SearchIcon, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";

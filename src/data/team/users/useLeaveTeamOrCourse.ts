@@ -8,17 +8,14 @@ export const useLeaveTeamOrCourse = () => {
 
   const { mutate: leaveTeam } = useMutation({
     mutationFn: async (teamId: string) => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("teamId", teamId);
-
       const response = await privateAxios.post<void>(
-        `/teams/leave`, { params: searchParams }
+        `/teams/leave?teamId=${teamId}`
       );
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Team left successfully!");
+      toast.success("Opuszczono zespół pomyślnie");
     },
   });
 

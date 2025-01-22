@@ -32,7 +32,6 @@ const JoinTeamModal = () => {
     });
 
     const onSubmit = (values: z.infer<typeof joinTeamSchema>) => {
-        console.log(values.teamKey);
         joinTeam(values.teamKey);
         setOpen(false);
         form.reset();

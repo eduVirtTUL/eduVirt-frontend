@@ -17,7 +17,7 @@ export const useAddStudentToCourse = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Student added to course");
+      toast.success("Dodano studenta do przedmiotu");
     },
   });
 

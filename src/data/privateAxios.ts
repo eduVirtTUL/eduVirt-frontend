@@ -62,7 +62,7 @@ export type ErrorKey =
 | "team.user.already.member"
 | "team.validation.exception"
 | "incorrect.team.type.exception"
-| "team.size.exception"
+| "user.already.in.course.exception"
 | "team.conflict.exception"
 | "pod.not.found"
 | "pod.already.exists"

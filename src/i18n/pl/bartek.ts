@@ -56,7 +56,7 @@ const teamDetails = {
     leaveTeam: {
         button: "Opuść zespół",
         confirmHeader: "Opuść zespół",
-        confirmText: "Czy na pewno chcesz opuścić ten zespół? Po opuszczeniu zespołu stracisz możliwość dokonywania rezerwacji podów przypisanych do tego zespołu.",
+        confirmText: "Czy na pewno chcesz opuścić ten zespół? Po opuszczeniu zespołu stracisz możliwość dokonywania rezerwacji PODów przypisanych do tego zespołu.",
     },
     detailsCard: {
         title: "Szczegóły zespołu",
@@ -69,8 +69,8 @@ const teamDetails = {
     status: "Status:",
     teamMembers: "Studenci w zespole",
     teamEmpty: "Zespół jest pusty",
-    assignedPods: "Pody przypisane do zespołu",
-    noPods: "Ten zespół nie posiada żadnych przypisanych podów",
+    assignedPods: "PODy przypisane do zespołu",
+    noPods: "Ten zespół nie posiada żadnych przypisanych PODów",
     error: {
         notInTeam: "Aby wyświetlić szczegóły zespołu, musisz być jego członkiem",
         teamNotFound: "Nie znaleziono zespołu",
@@ -89,7 +89,7 @@ const createCourseModalB = {
     teamBased: {
         title: "Typ przedmiotu",
         description: {
-            solo: "Utworzony przedmiot będzie typu 'Solo'. Zespoły w kursie będą tworzone automatycznie w miarę dołączania studentów oraz będą maksymalnie jednoosobowe.",
+            solo: "Utworzony przedmiot będzie typu 'Solo'. Zespoły tworzone będą automatycznie w miarę dołączania studentów oraz będą maksymalnie jednoosobowe.",
             teamBased: "Utworzony przedmiot będzie typu 'Zespołowy'. Zespoły będą tworzone ręcznie oraz będą minimum dwuosobowe.",
         }
     }
@@ -101,7 +101,7 @@ const coursePageB = {
     },
     courseAccessKeyCard: {
         title: "Klucz dostępu",
-        keyCopiedToast: "Klucz dostępu do kursu został skopiowany do schowka",
+        keyCopiedToast: "Klucz dostępu do przedmiotu został skopiowany do schowka",
         button: "Utwórz klucz dostępu",
     },
     teamsTable: {
@@ -128,8 +128,8 @@ const coursePageB = {
       dropdownMenu: {
             editTeam: "Edytuj",
             manageUsers: "Studenci",
-            manageStatefulPods: "Pody stanowe",
-            manageStatelessPods: "Pody bezstanowe",
+            manageStatefulPods: "PODy stanowe",
+            manageStatelessPods: "PODy bezstanowe",
             reservations: "Rezerwacje",
             deleteTeam: {
                 button : "Usuń zespół",
@@ -157,7 +157,7 @@ const coursePageB = {
 
 
 const createCourseKeyModal = {
-    title: "Utwórz klucz dostępu do kursu",
+    title: "Utwórz klucz dostępu do przedmiotu",
     keyLabel: "Klucz",
     description: {
         title: "Wymagania:",
@@ -173,45 +173,45 @@ const createCourseKeyModal = {
 }
 
 const statefulPodManagementDrawer = {
-    title: "Pody stanowe - ",
+    title: "PODy stanowe - ",
     resourceGroups: "Grupy zasobów",
-    teamPods: "Pody stanowe zespołu",
-    createPod: "Utwórz pod",
-    noPods: "Zespół nie posiada żadnych przypisanych podów",
+    teamPods: "PODy stanowe zespołu",
+    createPod: "Utwórz POD",
+    noPods: "Zespół nie posiada żadnych przypisanych PODów",
     noResourceGroups: "Nie znaleziono żadnych grup zasobów w tym przedmiocie",
     resourceGroup: "Grupa zasobów",
-    maxRent: "Maksymalna liczba rezerwacji poda",
+    maxRent: "Maksymalna liczba rezerwacji PODa",
     alerts: {
-        hasAssociatedPod: "Ta grupa zasobów posiada przypisany pod",
+        hasAssociatedPod: "Ta grupa zasobów posiada przypisany POD",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",
     },
     delete: {
         button: "Usuń",
-        confirmHeader: "Usuń pod",
-        confirmText: "Czy na pewno chcesz usunąć ten pod? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego poda.",
+        confirmHeader: "Usuń POD",
+        confirmText: "Czy na pewno chcesz usunąć ten POD? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
     },
     addMaxRentTimeModal: {
-        title: "Dokończ tworzenie poda",
-        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego poda",
+        title: "Dokończ tworzenie PODa",
+        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego PODa",
         maxRent: "Maksymalna liczba rezerwacji",
         success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
     }
 };
 
 const statelessPodManagementDrawer = {
-    title: "Pody bezstanowe - ",
+    title: "PODy bezstanowe - ",
     resourceGroupPools: "Pule grup zasobów",
-    teamPods: "Pody bezstanowe zespołu",
-    createPod: "Utwórz pod",
-    noPods: "Zespół nie posiada żadnych przypisanych podów",
+    teamPods: "PODy bezstanowe zespołu",
+    createPod: "Utwórz POD",
+    noPods: "Zespół nie posiada żadnych przypisanych PODów",
     resourceGroupPool: "Pula grup zasobów",
     alerts: {
-        hasAssociatedPod: "Ta pula grup zasobów posiada przypisany pod",
+        hasAssociatedPod: "Ta pula grup zasobów posiada przypisany POD",
     },
     delete: {
         button: "Usuń",
-        confirmHeader: "Usuń pod",
-        confirmText: "Czy na pewno chcesz usunąć ten pod? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego poda.",
+        confirmHeader: "Usuń POD",
+        confirmText: "Czy na pewno chcesz usunąć ten POD? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
     },
 }
 
@@ -246,9 +246,9 @@ const manageTeamUsersModal = {
     add: "Dodaj",
     noUsers: "Ten zespół jest pusty",
     delete: {
-        title: "Usuń użytkownika",
+        title: "Usuń studenta",
         title2: "z zespołu",
-        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć tego użytkownika z zespołu?",
+        description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć tego studenta z zespołu?",
     },
     addUser: {
         email: "Adres e-mail",
@@ -257,12 +257,12 @@ const manageTeamUsersModal = {
 }
 
 const manageCourseUsersModal = {
-    title : "Studenci w przedmiocie",
+    title : "Dodaj studenta do przedmiotu",
     remove: "Usuń",
     add: "Dodaj",
     noUsers: "Ten przedmiot nie posiada żadnych studentów",
     delete: {
-        title: "Usuń użytkownika",
+        title: "Usuń studenta z przedmiotu",
         title2: "z zespołu",
         description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego studenta. Czy na pewno chcesz usunąć tego studenta z przedmiotu?",
     },
@@ -333,16 +333,16 @@ const searchByEmailModal = {
 
 
     const podManagement = {
-      button: "Pody bezstanowe w kursie",
-      title: "Zarządzanie podami bezstanowymi",
+      button: "PODy bezstanowe w przedmiocie",
+      title: "Zarządzanie PODami bezstanowymi",
       resourcePools: "Pule zasobów",
       search: "Szukaj zespołów...",
       createPods: "Utwórz PODy",
       deletePods: "Usuń PODy",
       createSuccess: "Pomyślnie utworzono PODy",
       deleteSuccess: "Pomyślnie usunięto PODy",
-      createError: "Błąd podczas tworzenia PODów",
-      deleteError: "Błąd podczas usuwania PODów",
+      createError: "Błąd PODczas tworzenia PODów",
+      deleteError: "Błąd PODczas usuwania PODów",
       columns: {
         name: "Nazwa zespołu",
         members: "Student",
