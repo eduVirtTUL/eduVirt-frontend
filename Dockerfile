@@ -17,7 +17,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=build /eduVirt/build/client /usr/share/nginx/html/eduVirt
 
-# COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /eduVirt
 COPY docker/entrypoint.sh ./
