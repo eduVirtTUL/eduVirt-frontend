@@ -47,7 +47,14 @@ export type ErrorKey =
   | "reservations.error.notification.time.too.long"
   | "reservations.error.reservation.count.exceeded"
   | "reservations.error.stateful.pod.not.assigned"
-  | "reservations.error.stateless.pod.not.assigned";
+  | "reservations.error.stateless.pod.not.assigned"
+  | "ovirt.vnic.profile.not.found"
+  | "eduvirt.vnic.profile.not.found"
+  | "vnic.profile.already.exists"
+  | "vlans.range.not.found"
+  | "vlans.range.invalid.definition"
+  | "vlans.range.conflicting.range"
+  | "general.error.connection.open.error";
 
 export type ErrorResponse = {
   message: string;

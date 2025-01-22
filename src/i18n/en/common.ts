@@ -1,6 +1,7 @@
 import { ErrorKey } from "@/data/privateAxios";
 import piotrek from "./piotrek";
 import {Language, Role} from "@/stores/userStore";
+import michal from "./michal";
 
 const menu = {
     courses: "Courses",
@@ -129,6 +130,14 @@ const errorKeys = {
     "reservations.error.stateful.pod.not.assigned": "The selected stateful POD is not assigned to your team",
     "reservations.error.stateless.pod.not.assigned": "The selected stateless POD is not assigned to your team",
 
+    "ovirt.vnic.profile.not.found": "The selected vNIC profile is not available in oVirt. Please refresh the page",
+    "eduvirt.vnic.profile.not.found": "The selected vNIC profile is not available in eduVirt. Please refresh the page",
+    "vnic.profile.already.exists": "The selected vNIC profile is already in the pool. Please refresh the page",
+    "vlans.range.not.found": "The selected VLAN range was not found",
+    "vlans.range.invalid.definition": "The VLAN range was defined incorrectly",
+    "vlans.range.conflicting.range": "The boundaries of the newly created VLAN range overlap with an existing range",
+    "general.error.connection.open.error": "There was a problem connecting to oVirt",
+
     networkAlreadyExists: "A network with the given name already exists",
 } satisfies { [key in ErrorKey]: string };
 
@@ -189,4 +198,5 @@ export default {
     notFoundPage,
     pageTitles,
     ...piotrek,
+    ...michal,
 };
