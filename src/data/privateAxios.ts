@@ -1,4 +1,3 @@
-import App from "@/App";
 import { appEnv } from "@/environment";
 import axios, { AxiosError } from "axios";
 
@@ -93,7 +92,10 @@ export type ErrorResponse = {
 export type CustomAxiosError = AxiosError<ErrorResponse>;
 
 export const privateAxios = axios.create({
-  baseURL: (typeof window !== 'undefined') ? appEnv.apiUrl : import.meta.env.VITE_API_LOCATION,
+  baseURL:
+    typeof window !== "undefined"
+      ? appEnv.apiUrl
+      : import.meta.env.VITE_API_LOCATION,
 });
 
 privateAxios.interceptors.request.use((config) => {
