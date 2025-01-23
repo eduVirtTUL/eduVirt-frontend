@@ -19,9 +19,10 @@ import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {useTranslation} from "react-i18next"
 import {Link, useParams} from "react-router"
-import { appEnv } from "@/environment"
+import {appEnv} from "@/environment"
 import {useStatefulPodsForCourse} from "@/data/pods/useStatefulPodsForCourse"
 import {useStatefulResourceGroups} from "@/data/course/resourceGroups/useStatefulResourceGroups"
+import MaxRentModal from "@/components/Modals/MaxRentModal";
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -317,8 +318,14 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                 </DrawerContent>
             </Drawer>
 
+            <MaxRentModal
+                open={showMaxRentModal}
+                onOpenChange={setShowMaxRentModal}
+                onSubmit={handleCreatePod}
+            />
+
             <ConfirmationDialog
-                name="deleteStatefulPod" 
+                name="deleteStatefulPod"
                 header={t('statefulPodManagement.delete.confirmHeader')}
                 text={t('statefulPodManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}

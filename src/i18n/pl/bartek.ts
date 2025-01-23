@@ -193,6 +193,12 @@ const statefulPodManagementDrawer = {
         confirmText: "Czy na pewno chcesz usunąć ten POD stanowy? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
         success: "POD stanowy został usunięty pomyślnie",
     },
+    addMaxRentTimeModal: {
+        title: "Dokończ tworzenie PODa",
+        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego PODa",
+        maxRent: "Maksymalna liczba rezerwacji",
+        success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
+    }
 };
 
 const statelessPodManagementDrawer = {
