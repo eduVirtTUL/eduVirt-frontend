@@ -22,11 +22,10 @@ const AuthGuard: React.FC = () => {
 
   const { exp } = jwtDecode(token);
   const isExpired = Date.now() >= exp! * 1000;
-  if (!isExpired) {
+  if (isExpired) {
+    localStorage.removeItem("token");
     return <Navigate to={"/"} />;
   }
-
-  localStorage.removeItem("token");
 
   if (
     !routeHandle ||
