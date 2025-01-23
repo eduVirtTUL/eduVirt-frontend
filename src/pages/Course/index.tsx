@@ -90,6 +90,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
         onConfirm={() => {
           deleteCourseAsync(id);
         }}
+        name="deleteCourseConfirmation"
       />
       <ConfirmationDialog
         header={t("coursePage.resetAction.confirmation")}
@@ -132,7 +133,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
               <RefreshCcw />
               {t("coursePage.reset")}
             </Button>
-            <Button variant="destructive" onClick={() => open("confirmation")}>
+              <Button variant="destructive" onClick={() => open("deleteCourseConfirmation")}>
               <Trash2Icon />
               {t("coursePage.delete")}
             </Button>
@@ -282,7 +283,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({ params: { id } }) => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => open("manageTeachers")}
+                      onClick={() => open("manageTeachersModal")}
                     >
                       <UserCog className="h-4 w-4 mr-2" />
                       {t("coursePageB.teachersCard.manageTeachers")}

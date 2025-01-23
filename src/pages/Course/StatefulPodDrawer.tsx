@@ -6,13 +6,11 @@ import {useState} from "react"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Skeleton} from "@/components/ui/skeleton"
-import {useResourceGroups} from "@/data/resourceGroup/useResourceGroups"
 import {useStatefulPodsForTeam} from "@/data/pods/useStatefulPodsForTeam"
 import {useResourceGroupVms} from "@/data/resourceGroup/useResourceGroupVms"
 import {AlertTriangle, ChevronDown, ChevronRight, CircleAlert, ExternalLink, PlusIcon, Trash2} from "lucide-react"
 import {cn} from "@/lib/utils"
 import {Badge} from "@/components/ui/badge"
-import {useResourceGroupsWithPods} from "@/data/resourceGroup/useResourceGroupsWithPods"
 import {ResourceGroupDto} from "@/api"
 import {useTeam} from "@/data/team/useTeam"
 import {useCreateStatefulPod} from "@/data/pods/useCreateStatefulPod"
@@ -20,9 +18,10 @@ import {useDeleteStatefulPod} from "@/data/pods/useDeleteStatefulPod"
 import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {useTranslation} from "react-i18next"
-import {Link} from "react-router"
-import MaxRentModal from "./MaxRentModal"
+import {Link, useParams} from "react-router"
 import { appEnv } from "@/environment"
+import {useStatefulPodsForCourse} from "@/data/pods/useStatefulPodsForCourse"
+import {useStatefulResourceGroups} from "@/data/course/resourceGroups/useStatefulResourceGroups"
 
 interface StatefulPodDrawerProps {
     open: boolean
@@ -139,19 +138,21 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }
 
 const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
-    open, onOpenChange, teamId
-}) => {
-    const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId)
-    const {team, isLoading: isLoadingTeam} = useTeam(teamId)
-    const [selectedResource, setSelectedResource] = useState<string | null>(null)
-    const {resourceGroups, isLoading: isLoadingRG} = useResourceGroups()
-    const {createStatefulPod} = useCreateStatefulPod()
-    const {resourceGroupsWithPods} = useResourceGroupsWithPods()
-    const {deleteStatefulPod, isPending: isDeleting} = useDeleteStatefulPod()
-    const {open: openDialog} = useDialog()
+                                                                 open, onOpenChange, teamId
+                                                             }) => {
+    const {id: courseId} = useParams<{ id: string }>();
+    const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId);
+    const {team, isLoading: isLoadingTeam} = useTeam(teamId);
+    const [selectedResource, setSelectedResource] = useState<string | null>(null);
+    const {statefulResourceGroups, isLoading: isLoadingRG} = useStatefulResourceGroups(courseId!);
+    const {createStatefulPod} = useCreateStatefulPod();
+    const {deleteStatefulPod, isPending: isDeleting} = useDeleteStatefulPod();
+    const {open: openDialog} = useDialog();
     const [podToDelete, setPodToDelete] = useState<string | null>(null);
     const {t} = useTranslation();
     const [showMaxRentModal, setShowMaxRentModal] = useState(false);
+
+    const {pods: coursePods, isLoading: isLoadingCoursePods} = useStatefulPodsForCourse(courseId!);
 
     const podsArray = Array.isArray(statefulPods) ? statefulPods : []; // To assure that statefulPods is an array when 204 response is returned
 
@@ -161,7 +162,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
 
     const handleCreatePod = (maxRent: number) => {
         createStatefulPod({
-            teamId, 
+            teamId,
             resourceGroupId: selectedResource!,
             maxRent
         });
@@ -170,7 +171,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
 
     const handleClickPodDelete = (podId: string) => {
         setPodToDelete(podId);
-        openDialog("confirmation");
+        openDialog("deleteStatefulPod");
     };
 
     const handleConfirmPodDelete = () => {
@@ -181,8 +182,8 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
     }
 
     const hasAssignedPod = (rgId: string) => {
-        return resourceGroupsWithPods?.some(rg => rg.id === rgId) ?? false;
-    }
+        return coursePods?.some(pod => pod.resourceGroup?.id === rgId) ?? false;
+    };
 
     return (
         <>
@@ -205,7 +206,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                                 </CardHeader>
                                 <CardContent>
                                     <ScrollArea className="h-[50vh]">
-                                        {isLoadingRG ? (
+                                        {isLoadingRG || isLoadingCoursePods ? (
                                             <div className="space-y-2">
                                                 <Skeleton className="h-12 w-full"/>
                                                 <Skeleton className="h-12 w-full"/>
@@ -213,23 +214,31 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                                         ) : (
                                             <Table>
                                                 <TableBody>
-                                                    {(Array.isArray(resourceGroups) ? resourceGroups : [])
-                                                        ?.filter(rg => !rg.stateless)
-                                                        .map((rg) => (
-                                                            <CollapsibleRow
-                                                                key={rg.id}
-                                                                rg={rg}
-                                                                checked={selectedResource === rg.id}
-                                                                onCheckedChange={(checked) => {
-                                                                    if (checked) {
-                                                                        setSelectedResource(rg.id!)
-                                                                    } else {
-                                                                        setSelectedResource(null)
-                                                                    }
-                                                                }}
-                                                                hasPod={hasAssignedPod(rg.id!)}
-                                                            />
-                                                        ))}
+                                                    {(Array.isArray(statefulResourceGroups) ? statefulResourceGroups : []).length > 0 ? (
+                                                        (Array.isArray(statefulResourceGroups) ? statefulResourceGroups : [])
+                                                            .map((rg) => (
+                                                                <CollapsibleRow
+                                                                    key={rg.id}
+                                                                    rg={rg}
+                                                                    checked={selectedResource === rg.id}
+                                                                    onCheckedChange={(checked) => {
+                                                                        if (checked) {
+                                                                            setSelectedResource(rg.id!)
+                                                                        } else {
+                                                                            setSelectedResource(null)
+                                                                        }
+                                                                    }}
+                                                                    hasPod={hasAssignedPod(rg.id!)}
+                                                                />
+                                                            ))
+                                                    ) : (
+                                                        <TableRow>
+                                                            <TableCell colSpan={2}
+                                                                       className="text-center text-muted-foreground py-4">
+                                                                {t('statefulPodManagement.noResourceGroups')}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )}
                                                 </TableBody>
                                             </Table>
                                         )}
@@ -291,7 +300,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                                                         {!podsArray?.length && (
                                                             <TableRow>
                                                                 <TableCell colSpan={3}
-                                                                        className="text-center text-muted-foreground py-4">
+                                                                           className="text-center text-muted-foreground py-4">
                                                                     {t('statefulPodManagement.noPods')}
                                                                 </TableCell>
                                                             </TableRow>
@@ -308,13 +317,8 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                 </DrawerContent>
             </Drawer>
 
-            <MaxRentModal
-                open={showMaxRentModal}
-                onOpenChange={setShowMaxRentModal}
-                onSubmit={handleCreatePod}
-            />
-
             <ConfirmationDialog
+                name="deleteStatefulPod" 
                 header={t('statefulPodManagement.delete.confirmHeader')}
                 text={t('statefulPodManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}

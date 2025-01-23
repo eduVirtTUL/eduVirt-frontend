@@ -3,6 +3,7 @@ import { create } from "zustand";
 export type DialogType =
   | "detachNetwork"
   | "resetCourseConfirmation"
+  | "deleteCourseConfirmation"
   | "editCourse"
   | "editResourceGroupPool"
   | "editResourceGroup"
@@ -26,7 +27,10 @@ export type DialogType =
   | "showMaintenanceInterval"
   | "manageCourseUsers"
   | "manageTeamUsers"
-  | "manageTeachers";
+  | "manageTeachersModal"
+  | "createStatelessPodsBatch"
+  | "deleteStatelessPodsBatch"
+  | "deleteStatefulPod";
 
 type DialogStore = {
   opened?: DialogType;

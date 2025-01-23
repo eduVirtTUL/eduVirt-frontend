@@ -2,13 +2,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useUpdateTeam } from "@/data/team/useUpdateTeam"
-import { CheckIcon, XCircleIcon } from "lucide-react"
+import { SaveIcon, XCircleIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { t } from "i18next"
 
 interface UserDto {
     id: string;
@@ -22,7 +22,6 @@ interface EditTeamModalProps {
         id: string;
         name: string;
         maxSize: number;
-        active: boolean;
         users: UserDto[];
         etag: string;
     };
@@ -30,9 +29,13 @@ interface EditTeamModalProps {
 }
 
 const editTeamSchema = z.object({
-    name: z.string().min(1, "Team name is required"),
-    maxSize: z.number().min(2, "Team size must be at least 2"),
-    active: z.boolean()
+    name: z.string()
+    .min(1, t("editTeam.validation.teamNameMin"))
+    .max(50, t("editTeam.validation.teamNameMin"))
+    .regex(/^[a-zA-Z0-9 ]+$/, t("editTeam.validation.teamNameRegex")),
+    maxSize: z.number()
+    .min(2, t("editTeam.validation.maxSizeMin"))
+    .max(10, t("editTeam.validation.maxSizeMax"))
 })
 
 export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditTeamModalProps) {
@@ -44,8 +47,7 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
         resolver: zodResolver(editTeamSchema),
         defaultValues: {
             name: team.name,
-            maxSize: team.maxSize,
-            active: team.active
+            maxSize: team.maxSize
         }
     });
 
@@ -66,7 +68,6 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
             id: team.id,
             name: values.name,
             maxSize: values.maxSize,
-            active: values.active,
             etag: team.etag
         });
         onOpenChange(false);
@@ -116,42 +117,27 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="active"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>{t("editTeam.active")}</FormLabel>
-                                    <FormControl>
-                                        <Switch 
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormDescription>
-                                        {t("editTeam.activeDescription")}
-                                    </FormDescription>
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex flex-row justify-between">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={() => {
-                                    form.reset();
-                                    onOpenChange(false);
-                                }}
-                            >
-                                <XCircleIcon />
-                                {t("cancel")}
-                            </Button>
-                            <Button type="submit">
-                                <CheckIcon />
-                                {t("save")}
-                            </Button>
-                        </div>
+                        />                   
+                         <div className="flex flex-row justify-between">
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                            form.reset();
+                            onOpenChange(false);
+                        }}
+                    >
+                        <XCircleIcon />
+                        {t("cancel")}
+                    </Button>
+                    <Button 
+                        type="submit"
+                        disabled={!form.formState.isDirty}
+                    >
+                        <SaveIcon />
+                        {t("save")}
+                    </Button>
+                </div>
                     </form>
                 </Form>
             </DialogContent>

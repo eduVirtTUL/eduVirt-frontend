@@ -18,7 +18,6 @@ import {
     XIcon,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge";
-import {StatusDot} from "@/components/StatusDot";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {
     Pagination,
@@ -32,7 +31,6 @@ import {useDialog} from "@/stores/dialogStore";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {EditTeamModal} from "@/components/Modals/EditTeamModal";
-import {SoloTeamEditModal} from "@/components/Modals/SoloTeamEditModal";
 import {ManageTeamUsersModal} from "@/components/Modals/ManageTeamUsersModal";
 import {ManageSoloCourseUsersModal} from "@/components/Modals/ManageSoloCoursesTeamModal";
 import {useDeleteTeam} from "@/data/team/useDeleteTeam";
@@ -61,7 +59,27 @@ interface TeamsTableProps {
     setSearchType: (type: SearchType) => void;
     sortOrder: "ASC" | "DESC";
     setSortOrder: (order: "ASC" | "DESC") => void;
+    emailPrefixes?: string[];
+    onRemoveEmailPrefix?: (email: string) => void;
 }
+
+const TableSkeleton = () => (
+    <div className="space-y-3">
+        <div className="flex items-center space-x-4 py-4">
+            <div className="h-4 w-[30%] bg-muted animate-pulse rounded"/>
+            <div className="h-4 w-[40%] bg-muted animate-pulse rounded"/>
+            <div className="h-4 w-[20%] bg-muted animate-pulse rounded"/>
+        </div>
+        {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex items-center space-x-4 py-4">
+                <div className="h-4 w-[25%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[45%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[15%] bg-muted animate-pulse rounded"/>
+                <div className="h-4 w-[10%] bg-muted animate-pulse rounded"/>
+            </div>
+        ))}
+    </div>
+);
 
 const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      isTeamBased,
@@ -78,6 +96,8 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      setSearchType,
                                                      sortOrder,
                                                      setSortOrder,
+                                                     emailPrefixes,
+                                                     onRemoveEmailPrefix,
                                                  }) => {
     const {t} = useTranslation();
     const {open} = useDialog();
@@ -106,7 +126,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
         setEditingTeamId(team.id ?? null);
     };
 
-    const [userToRemove, setUserToRemove] = useState<{ user: UserDto; teamId: string } | null>(null);
+    const [userToRemove, setUserToRemove] = useState<{ user: UserDto } | null>(null);
     const {removeStudentFromCourse} = useRemoveStudentFromCourse();
 
     const handleRemoveStudent = async () => {
@@ -216,20 +236,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             ]
             : []),
         {
-            accessorKey: "active",
-            header: t("coursePageB.teamsTable.columns.status"),
-            cell: ({row}) => (
-                <div className="flex items-center">
-                    <StatusDot active={row.original.active}/>
-                    <span className="ml-2">
-            {row.original.active
-                ? t("activeStatus.active")
-                : t("activeStatus.inactive")}
-          </span>
-                </div>
-            ),
-        },
-        {
             id: "actions",
             cell: ({row}) => (
                 <DropdownMenu>
@@ -239,18 +245,20 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
-                            <PencilIcon className="h-4 w-4 mr-2"/>
-                            {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
-                        </DropdownMenuItem>
                         {isTeamBased && (
-                            <DropdownMenuItem onClick={() => {
-                                setSelectedTeamForUsers(row.original);
-                                open("manageTeamUsers");
-                            }}>
-                                <SmilePlus className="h-4 w-4 mr-2"/>
-                                {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
-                            </DropdownMenuItem>
+                            <>
+                                <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
+                                    <PencilIcon className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.dropdownMenu.editTeam")}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {
+                                    setSelectedTeamForUsers(row.original);
+                                    open("manageTeamUsers");
+                                }}>
+                                    <SmilePlus className="h-4 w-4 mr-2"/>
+                                    {t("coursePageB.teamsTable.dropdownMenu.manageUsers")}
+                                </DropdownMenuItem>
+                            </>
                         )}
                         <DropdownMenuItem
                             onClick={() => {
@@ -281,7 +289,6 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                 onClick={() => {
                                     setUserToRemove({
                                         user: row.original.users[0],
-                                        teamId: row.original.id
                                     });
                                     open("confirmation");
                                 }}
@@ -314,83 +321,110 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
             <Card>
                 <CardHeader/>
                 <CardContent>
-                    <div className="flex flex-row gap-2 mb-5">
-                        <Select
-                            value={searchType}
-                            onValueChange={(value: SearchType) => setSearchType(value)}
-                        >
-                            <SelectTrigger className="w-[200px]">
-                                <SelectValue placeholder={t("teamsList.searchType.placeholder")}/>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="TEAM_NAME">{t("teamsList.searchType.teamName")}</SelectItem>
-                                <SelectItem value="STUDENT_NAME">{t("teamsList.searchType.studentName")}</SelectItem>
-                                <SelectItem value="STUDENT_EMAIL">{t("teamsList.searchType.studentEmail")}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Input
-                            placeholder={t("teamsList.searchPlaceholder")}
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                        <Button onClick={() => setSearch("")}>
-                            <XIcon/>
-                            {t("teamsList.clear")}
-                        </Button>
-                    </div>
+                    {emailPrefixes && emailPrefixes.length > 0 ? (
+                        <div className="mb-4">
+                            <p className="text-sm text-muted-foreground mb-2">
+                                {t("teamsList.searchResults")}:
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {emailPrefixes.map(email => (
+                                    <Badge key={email} variant="secondary">
+                                        {email}
+                                        {onRemoveEmailPrefix && (
+                                            <XIcon
+                                                className="ml-2 h-3 w-3 cursor-pointer"
+                                                onClick={() => onRemoveEmailPrefix(email)}
+                                            />
+                                        )}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-row gap-2 mb-5">
+                            <Select
+                                value={searchType}
+                                onValueChange={(value: SearchType) => setSearchType(value)}
+                            >
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder={t("teamsList.searchType.placeholder")}/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="TEAM_NAME">{t("teamsList.searchType.teamName")}</SelectItem>
+                                    <SelectItem
+                                        value="STUDENT_NAME">{t("teamsList.searchType.studentName")}</SelectItem>
+                                    <SelectItem
+                                        value="STUDENT_EMAIL">{t("teamsList.searchType.studentEmail")}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Input
+                                placeholder={t("teamsList.searchPlaceholder")}
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <Button onClick={() => setSearch("")}>
+                                <XIcon/>
+                                {t("teamsList.clear")}
+                            </Button>
+                        </div>
+                    )}
                     <div className="[&_.inactive-row]:opacity-60">
-                        {!isLoading && teams && (
-                            <>
-                                <DataTable
-                                    columns={columns}
-                                    data={teams}
-                                />
-                                {teams.length > 0 && totalPages && totalPages > 1 && (
-                                    <div className="mt-4">
-                                        <Pagination>
-                                            <PaginationContent>
-                                                {pageNumber > 0 && (
-                                                    <>
-                                                        <PaginationItem>
-                                                            <PaginationPrevious
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            />
-                                                        </PaginationItem>
-                                                        <PaginationItem>
-                                                            <PaginationLink
-                                                                onClick={() => setPageNumber(pageNumber - 1)}
-                                                            >
-                                                                {pageNumber}
-                                                            </PaginationLink>
-                                                        </PaginationItem>
-                                                    </>
-                                                )}
-                                                <PaginationItem>
-                                                    <PaginationLink isActive>
-                                                        {pageNumber + 1}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                                {totalPages > pageNumber + 1 && (
+                        {isLoading ? (
+                            <TableSkeleton/>
+                        ) : (
+                            teams && (
+                                <>
+                                    <DataTable
+                                        columns={columns}
+                                        data={teams}
+                                    />
+                                    {!emailPrefixes?.length && teams.length > 0 && totalPages && totalPages > 1 && (
+                                        <div className="mt-4">
+                                            <Pagination>
+                                                <PaginationContent>
+                                                    {pageNumber > 0 && (
+                                                        <>
+                                                            <PaginationItem>
+                                                                <PaginationPrevious
+                                                                    onClick={() => setPageNumber(pageNumber - 1)}
+                                                                />
+                                                            </PaginationItem>
+                                                            <PaginationItem>
+                                                                <PaginationLink
+                                                                    onClick={() => setPageNumber(pageNumber - 1)}
+                                                                >
+                                                                    {pageNumber}
+                                                                </PaginationLink>
+                                                            </PaginationItem>
+                                                        </>
+                                                    )}
                                                     <PaginationItem>
-                                                        <PaginationLink
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
-                                                        >
-                                                            {pageNumber + 2}
+                                                        <PaginationLink isActive>
+                                                            {pageNumber + 1}
                                                         </PaginationLink>
                                                     </PaginationItem>
-                                                )}
-                                                {totalPages !== pageNumber + 1 && (
-                                                    <PaginationItem>
-                                                        <PaginationNext
-                                                            onClick={() => setPageNumber(pageNumber + 1)}
-                                                        />
-                                                    </PaginationItem>
-                                                )}
-                                            </PaginationContent>
-                                        </Pagination>
-                                    </div>
-                                )}
-                            </>
+                                                    {totalPages > pageNumber + 1 && (
+                                                        <PaginationItem>
+                                                            <PaginationLink
+                                                                onClick={() => setPageNumber(pageNumber + 1)}
+                                                            >
+                                                                {pageNumber + 2}
+                                                            </PaginationLink>
+                                                        </PaginationItem>
+                                                    )}
+                                                    {totalPages !== pageNumber + 1 && (
+                                                        <PaginationItem>
+                                                            <PaginationNext
+                                                                onClick={() => setPageNumber(pageNumber + 1)}
+                                                            />
+                                                        </PaginationItem>
+                                                    )}
+                                                </PaginationContent>
+                                            </Pagination>
+                                        </div>
+                                    )}
+                                </>
+                            )
                         )}
                     </div>
                 </CardContent>
@@ -413,39 +447,24 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                 />
             )}
             {editingTeam && editingTeamId && editingTeamEtag && (
-                isTeamBased ? (
-                    <EditTeamModal
-                        open={true}
-                        onOpenChange={(open) => !open && setEditingTeamId(null)}
-                        team={{
-                            id: editingTeamId,
-                            name: editingTeam.name ?? "",
-                            maxSize: editingTeam.maxSize ?? 0,
-                            active: editingTeam.active ?? false,
-                            etag: editingTeamEtag,
-                            users: editingTeam.users?.map(user => ({
-                                id: user.id!,
-                                name: user.userName || user.email || ''
-                            })) ?? []
-                        }}
-                        existingNames={teams
-                            ?.filter(t => t.id !== editingTeamId)
-                            .map(t => t.name!)
-                            .filter(Boolean) ?? []}
-                    />
-                ) : (
-                    <SoloTeamEditModal
-                        open={true}
-                        onOpenChange={(open) => !open && setEditingTeamId(null)}
-                        team={{
-                            id: editingTeamId,
-                            active: editingTeam.active ?? false,
-                            etag: editingTeamEtag,
-                            name: editingTeam.name ?? "",
-                            maxSize: editingTeam.maxSize ?? 0
-                        }}
-                    />
-                )
+                <EditTeamModal
+                    open={true}
+                    onOpenChange={(open) => !open && setEditingTeamId(null)}
+                    team={{
+                        id: editingTeamId,
+                        name: editingTeam.name ?? "",
+                        maxSize: editingTeam.maxSize ?? 0,
+                        etag: editingTeamEtag,
+                        users: editingTeam.users?.map(user => ({
+                            id: user.id!,
+                            name: user.userName || user.email || ''
+                        })) ?? []
+                    }}
+                    existingNames={teams
+                        ?.filter(t => t.id !== editingTeamId)
+                        .map(t => t.name!)
+                        .filter(Boolean) ?? []}
+                />
             )}
 
             {selectedTeamForUsers && (

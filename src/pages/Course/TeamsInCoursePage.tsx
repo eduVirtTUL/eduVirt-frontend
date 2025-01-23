@@ -8,12 +8,13 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {SearchIcon, UserCog, XIcon} from "lucide-react";
+import {FileX2, SearchIcon, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
-import { useCoursesTeamsByEmail } from "@/data/team/useCoursesTeamsByEmail";
-import { SearchByEmailModal } from "@/components/Modals/SearchByEmailModal";
+import {useCoursesTeamsByEmail} from "@/data/team/useCoursesTeamsByEmail";
+import {SearchStudentsInCourseModal} from "@/components/Modals/SearchStudentsInCourseModal";
+import {BulkStatelessPodManager} from "./BulkStatelessPodManager";
 
 const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
@@ -36,41 +37,57 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         searchType,
         sortOrder
     );
+    console.table(teams);
 
     const [emailSearchOpen, setEmailSearchOpen] = useState(false);
     const [emailPrefixes, setEmailPrefixes] = useState<string[]>([]);
-    
-    const { teams: teamsByEmail, isLoading: isLoadingEmails } = useCoursesTeamsByEmail(
+
+    const {teams: teamsByEmail, isLoading: isLoadingEmails} = useCoursesTeamsByEmail(
         id,
         emailPrefixes,
-        pageNumber,
-        pageSize,
         sortOrder
     );
+
+    const [bulkPodManagerOpen, setBulkPodManagerOpen] = useState(false);
+
 
     const handleEmailSearch = (emails: string[]) => {
         setEmailPrefixes(emails);
         setPageNumber(0);
     };
 
+    const handleRemoveEmailPrefix = (emailToRemove: string) => {
+        setEmailPrefixes(current => current.filter(email => email !== emailToRemove));
+    };
+
+
     return (
         <>
             <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
             <div className="flex justify-end gap-2 mb-4">
+                <Button
+                    className="mr-auto"
+                    variant="outline"
+                    onClick={() => setBulkPodManagerOpen(true)}
+                >
+                    <FileX2 className="h-4 w-4 mr-2"/>
+                    {t("podManagement.button")}
+                </Button>
+
                 {emailPrefixes.length > 0 ? (
-                    <Button 
-                        variant="outline" 
+                    <Button
+                        variant="outline"
                         onClick={() => setEmailPrefixes([])}
                     >
-                        <XIcon className="h-4 w-4 mr-2" />
+                        <XIcon className="h-4 w-4 mr-2"/>
                         {t("coursePageB.courseTeamsPage.searchByEmail.clear")}
                     </Button>
                 ) : (
-                    <Button 
-                        variant="outline" 
+                    <Button
+                        variant="outline"
                         onClick={() => setEmailSearchOpen(true)}
                     >
-                        <SearchIcon />
+                        <SearchIcon/>
                         {t("coursePageB.courseTeamsPage.searchByEmail.button")}
                     </Button>
                 )}
@@ -78,15 +95,15 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     <CreateTeamModal courseId={id}/>
                 ) : (
                     <Button variant="secondary" onClick={() => open("manageCourseUsers")}>
-                        <UserCog className="h-4 w-4 mr-2"/>
+                        <UserPlus className="h-4 w-4 mr-2"/>
                         {t("coursePageB.teamsTable.students")}
                     </Button>
                 )}
             </div>
             <TeamListCard
                 isTeamBased={isTeamBased}
-                teams={emailPrefixes.length > 0 ? teamsByEmail?.items : teams?.items}
-                totalPages={emailPrefixes.length > 0 ? teamsByEmail?.page?.totalPages : teams?.page?.totalPages}
+                teams={emailPrefixes.length > 0 ? teamsByEmail : teams?.items}
+                totalPages={emailPrefixes.length > 0 ? undefined : teams?.page?.totalPages}
                 isLoading={emailPrefixes.length > 0 ? isLoadingEmails : isLoading}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
@@ -98,11 +115,20 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 setSearchType={setSearchType}
                 sortOrder={sortOrder}
                 setSortOrder={setSortOrder}
+                emailPrefixes={emailPrefixes}
+                onRemoveEmailPrefix={handleRemoveEmailPrefix}
             />
-            <SearchByEmailModal
+            <SearchStudentsInCourseModal
                 open={emailSearchOpen}
                 onOpenChange={setEmailSearchOpen}
                 onSearch={handleEmailSearch}
+            />
+            <BulkStatelessPodManager
+                open={bulkPodManagerOpen}
+                onOpenChange={setBulkPodManagerOpen}
+                courseId={id}
+                teams={teams?.items ?? []}
+                isLoading={isLoading}
             />
         </>
     );

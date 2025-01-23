@@ -183,7 +183,7 @@ export function ManageTeamUsersModal({ team }: ManageTeamUsersModalProps) {
                         userToRemove.firstName && userToRemove.lastName 
                             ? `${userToRemove.firstName} ${userToRemove.lastName}`
                             : userToRemove.userName || userToRemove.email
-                    }? ${t("manageTeamUsers.delete.title2")} ${team.name}`}
+                    } ${t("manageTeamUsers.delete.title2")} ${team.name}`}
                     text={t("manageTeamUsers.delete.description", {
                         user: userToRemove.firstName && userToRemove.lastName 
                             ? `${userToRemove.firstName} ${userToRemove.lastName}`

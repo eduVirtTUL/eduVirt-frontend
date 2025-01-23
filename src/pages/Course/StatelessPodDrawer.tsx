@@ -86,33 +86,44 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                     ) : (
                                         <Table>
                                             <TableBody>
-                                                {courseResourceGroupPools?.map((pool) => (
-                                                    <TableRow key={pool.id}>
-                                                        <TableCell>
-                                                            <Checkbox
-                                                                checked={selectedPool === pool.id || isPoolAssigned(pool.id!)}
-                                                                onCheckedChange={(checked) => {
-                                                                    if (checked) {
-                                                                        setSelectedPool(pool.id!)
-                                                                    } else {
-                                                                        setSelectedPool(null)
-                                                                    }
-                                                                }}
-                                                                disabled={isPoolAssigned(pool.id!)}
-                                                            />
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex items-center gap-2">
-                                                                <span>{pool.name}</span>
-                                                            </div>
+                                                {(courseResourceGroupPools ?? []).length > 0 ? (
+                                                    courseResourceGroupPools?.map((pool) => (
+                                                        <TableRow key={pool.id}>
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    checked={selectedPool === pool.id || isPoolAssigned(pool.id!)}
+                                                                    onCheckedChange={(checked) => {
+                                                                        if (checked) {
+                                                                            setSelectedPool(pool.id!)
+                                                                        } else {
+                                                                            setSelectedPool(null)
+                                                                        }
+                                                                    }}
+                                                                    disabled={isPoolAssigned(pool.id!)}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span>{pool.name}</span>
+                                                                </div>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                ) : (
+                                                    <TableRow>
+                                                        <TableCell
+                                                            colSpan={2}
+                                                            className="text-center text-muted-foreground py-4"
+                                                        >
+                                                            {t('statelessPodManagement.noResourceGroupPools')}
                                                         </TableCell>
                                                     </TableRow>
-                                                ))}
+                                                )}
                                             </TableBody>
                                         </Table>
                                     )}
                                 </ScrollArea>
-                                <div className="flex justify-center mt-4">
+                                <div className="flex justify-end mt-4">
                                     <Button
                                         onClick={handleSubmit}
                                         className="w-32"
@@ -141,16 +152,14 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                             {podsArray.length > 0 && (
                                                 <TableHeader>
                                                     <TableRow>
-                                                        <TableHead></TableHead>
                                                         <TableHead>{t("statelessPodManagement.resourceGroupPool")}</TableHead>
                                                         <TableHead className="w-[100px]"></TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                             )}
                                             <TableBody>
-                                                {podsArray?.map((pod, index) => (
+                                                {podsArray?.map((pod) => (
                                                     <TableRow key={pod.id}>
-                                                        <TableCell>{`${index + 1}.`}</TableCell>
                                                         <TableCell>
                                                             {courseResourceGroupPools?.find(p => p.id === pod.resourceGroupPool?.id)?.name}
                                                         </TableCell>

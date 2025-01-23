@@ -14,9 +14,9 @@ export const useCourseAccessKey = (id: string, options: UseCourseAccessKeyOption
       const response = await privateAxios.get<CourseAccessKeyDto>(
         `/access-keys/course/${id}`
       );
-
       return response.data;
     },
+    retry: false,
     enabled: options.enabled,
   });
 

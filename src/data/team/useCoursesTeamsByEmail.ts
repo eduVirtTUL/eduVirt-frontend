@@ -1,32 +1,28 @@
+import { SearchTeamsByEmailsDto, TeamWithKeyDto } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "../keys";
-import { privateAxios } from "@/data/privateAxios";
-import { PageDtoTeamWithKeyDto } from "@/api";
+import { privateAxios } from "../privateAxios";
 
 export const useCoursesTeamsByEmail = (
   courseId: string,
   emailPrefixes: string[],
-  pageNumber?: number,
-  pageSize?: number,
   sortOrder?: "ASC" | "DESC"
 ) => {
   const { data, isLoading } = useQuery({
-    queryKey: [keys.TEAM, "byEmail", courseId, emailPrefixes, pageNumber, pageSize, sortOrder],
+    queryKey: [keys.TEAM, "byEmail", courseId, emailPrefixes, sortOrder],
     queryFn: async () => {
-      const params = new URLSearchParams();
-      emailPrefixes.forEach(email => params.append("emailPrefixes", email));
-      if (pageNumber !== undefined) params.append("pageNumber", pageNumber.toString());
-      if (pageSize !== undefined) params.append("pageSize", pageSize.toString());
-      if (sortOrder) params.append("sort", sortOrder);
-
-      const response = await privateAxios.get<PageDtoTeamWithKeyDto>(
+      const searchDto: SearchTeamsByEmailsDto = {
+        emailPrefixes,
+        sort: sortOrder
+      };
+      
+      const response = await privateAxios.post<TeamWithKeyDto[]>(
         `/teams/course/${courseId}/search-emails`,
-        { params }
+        searchDto
       );
-
       return response.data;
     },
-    enabled: !!courseId && emailPrefixes.length > 0,
+    enabled: !!courseId && emailPrefixes.length > 0
   });
 
   return { teams: data, isLoading };

@@ -139,6 +139,38 @@ const errorKeys = {
     "general.error.connection.open.error": "There was a problem connecting to oVirt",
 
     networkAlreadyExists: "A network with the given name already exists",
+
+    "course.invalid.type": "Invalid course type",
+    "teacher.already.in.course": "The teacher is already assigned to the course",
+    "teacher.not.in.course": "The teacher is not assigned to the course",
+    "course.no.teachers": "The course has no assigned teachers",
+    "user.not.found": "User not found",
+    "user.not.authorized": "The user is not authorized",
+    "user.name.already.exists": "The username is already taken",
+    "team.not.found": "Team not found",
+    "team.not.found.in.course": "The team was not found in the course",
+    "team.already.exists": "A team with the given name already exists",
+    "team.not.active": "The team is not active",
+    "team.user.not.member": "The user is not a member of the team",
+    "team.user.already.member": "The user is already a member of the team",
+    "team.validation.exception": "Team validation error",
+    "incorrect.team.type.exception": "Incorrect team type",
+    "user.already.in.course.exception": "The user is already enrolled in the course",
+    "team.conflict.exception": "Team conflict",
+    "pod.not.found": "POD not found",
+    "pod.already.exists": "A POD with the given name already exists",
+    "pod.invalid.type": "Invalid POD type",
+    "access.key.not.found.exception": "Access key not found",
+    "access.key.already.exists": "The access key already exists",
+    "access.key.invalid.format": "Invalid access key format",
+    "access.key.invalid.type": "Invalid access key type",
+    "access.key.duplicate": "Duplicate access key",
+    "access.key.could.not.be.generated": "The access key could not be generated",
+    "teacher.self.modification.exception": "A teacher cannot manage themselves in the course",
+    "pod.deletion.exception": "The POD has active reservations and cannot be deleted",
+    "team.deletion.exception": "The team has assigned PODs - to delete the team, remove its assigned PODs first",
+
+
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {

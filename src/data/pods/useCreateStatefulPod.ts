@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useCreateStatefulPod = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const useCreateStatefulPod = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.POD] });
       queryClient.invalidateQueries({ queryKey: [keys.RESOURCE_GROUP, 'withPods'] })
-      toast.success("Stateful pod created successfully!");
+      toast.success(t("statefulPodManagement.success"));
     },
   });
 

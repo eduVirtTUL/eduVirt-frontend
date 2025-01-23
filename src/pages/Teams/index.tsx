@@ -1,7 +1,7 @@
 import PageHeader from "@/components/PageHeader";
 import DataTable from "@/components/DataTable";
 import {ColumnDef} from "@tanstack/react-table";
-import {ArrowDown, ArrowUp, ArrowUpDown, XIcon} from "lucide-react"
+import {ArrowDown, ArrowUp, XIcon} from "lucide-react"
 import {Button} from "@/components/ui/button";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUsersTeams} from "@/data/team/useUsersTeams";
@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input";
 interface TeamWithCourseDto {
     id: string;
     name: string;
-    active: boolean;
     maxSize: number;
     users: string[];
     course: {
