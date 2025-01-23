@@ -13,6 +13,8 @@ import { useUser } from "@/stores/userStore";
 import { useReservationTimeframeModifiers } from "@/data/reservation/useReservationTimeframeModifiers";
 import { Skeleton } from "@/components/ui/skeleton";
 import i18next from "i18next";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import {useDialog} from "@/stores/dialogStore";
 
 type ReservationDetailsProps = {
   reservation: ReservationDetailsDto | undefined,
@@ -22,6 +24,7 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
   reservation
 }) => {
   const { t } = useTranslation();
+  const { open } = useDialog();
   const navigate = useNavigate();
 
   const user = useUser();
@@ -62,6 +65,10 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
             value: reservation.id
           },
           {
+            label: t("reservations.details.general.rgId"),
+            value: reservation.resourceGroup?.id
+          },
+          {
             label: t("reservations.details.general.rgName"),
             value: reservation.resourceGroup?.name
           },
@@ -88,22 +95,12 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
             value: new Date(reservation.end + 'Z').toLocaleString(i18next.language)
           },
           {
-            label: t("reservations.details.general.teamId"),
+            label: t("reservations.details.general.team"),
             showButton: reservation.team?.users?.map((userDto) => userDto.id).includes(user.id),
             value: reservation.team?.id,
             link: {
               label: t("reservations.details.general.teamButton"),
               path: `/teams/${reservation.team?.id}`,
-            },
-          },
-          {
-            label: t("reservations.details.general.rgId"),
-            showButton: reservation.team?.users?.map((userDto) => userDto.id).includes(user.id) ||
-                user.activeRole === "teacher" || user.activeRole === "administrator",
-            value: reservation.resourceGroup?.id,
-            link: {
-              label: t("reservations.details.general.rgButton"),
-              path: `/rg/${reservation.resourceGroup?.id}`,
             },
           },
         ].map((field, index) => (
@@ -135,12 +132,25 @@ const ReservationInfo: React.FC<ReservationDetailsProps> = ({
         ))}
       </CardContent>
 
+      {new Date(reservation.start + 'Z') < new Date() && new Date() < new Date(reservation.end + 'Z') ?
+        <ConfirmationDialog
+          header={t("reservations.details.general.confirmation.finish.header")}
+          text={t("reservations.details.general.confirmation.finish.description")}
+          onConfirm={handleReservationFinish}
+        /> :
+        <ConfirmationDialog
+          header={t("reservations.details.general.confirmation.delete.header")}
+          text={t("reservations.details.general.confirmation.delete.description")}
+          onConfirm={handleReservationFinish}
+        />
+      }
+
       {(new Date() < new Date(reservation.end + 'Z') ||
         (user.activeRole === "teacher" || user.activeRole === "administrator")) &&
         <div className={"flex items-center justify-center"}>
           <Button
             variant="destructive"
-            onClick={() => handleReservationFinish()}
+            onClick={() => open("confirmation")}
           >
             {new Date(reservation.start + 'Z') < new Date() && new Date() < new Date(reservation.end + 'Z') ?
               t("reservations.details.general.finishReservation") :

@@ -117,6 +117,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
           <DialogTitle>{t("reservations.createReservation.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
+          <FormDescription>{t("requiredFieldDescription")}</FormDescription>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormField
               control={form.control}
