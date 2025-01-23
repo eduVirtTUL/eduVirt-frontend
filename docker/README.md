@@ -1,0 +1,5 @@
+| ENV                    | Description                                                                                                                                          | Default                            |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| API_URL                | Base URL which will be used for making api calls. Note that the request are made from the user's device. Keep the url without the slash at the end.  | http://localhost:8080/eduVirt/api  |
+| OVIRT_ENGINE_URL       | URL to the Ovirt instance. Keep the url with the slash at the end.                                                                                   | http://localhost:8080/             |
+| BACKEND_ADDRESS        | Address of the backend application. Expects the content to be served over http on port 8080.                                                         | localhost                          |

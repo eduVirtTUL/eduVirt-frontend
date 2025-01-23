@@ -1,1 +1,1 @@
-window.env={apiUrl: "${API_URL}",ovirtEngineUrl: "${OVIRT_ENGINE_LOCATION}"}
+window.env={apiUrl: "${API_URL}",ovirtEngineUrl: "${OVIRT_ENGINE_URL}"}
