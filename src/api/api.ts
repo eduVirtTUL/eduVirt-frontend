@@ -820,6 +820,19 @@ export interface JoinTeamKeyDto {
 /**
  * 
  * @export
+ * @interface LeaveTeamDto
+ */
+export interface LeaveTeamDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaveTeamDto
+     */
+    'teamId': string;
+}
+/**
+ * 
+ * @export
  * @interface MaintenanceIntervalDetailsDto
  */
 export interface MaintenanceIntervalDetailsDto {
@@ -1697,6 +1710,25 @@ export interface ResourcesDto {
      * @memberof ResourcesDto
      */
     'memorySize'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface SearchTeamsByEmailsDto
+ */
+export interface SearchTeamsByEmailsDto {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SearchTeamsByEmailsDto
+     */
+    'emailPrefixes': Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchTeamsByEmailsDto
+     */
+    'sort'?: string;
 }
 /**
  * 
@@ -4044,14 +4076,13 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -6566,7 +6597,7 @@ export const PodStatefulControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * Deletes a specific stateful pod
-         * @summary Delete pod
+         * @summary Delete stateful pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6691,7 +6722,7 @@ export const PodStatefulControllerApiFp = function(configuration?: Configuration
         },
         /**
          * Deletes a specific stateful pod
-         * @summary Delete pod
+         * @summary Delete stateful pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6750,7 +6781,7 @@ export const PodStatefulControllerApiFactory = function (configuration?: Configu
         },
         /**
          * Deletes a specific stateful pod
-         * @summary Delete pod
+         * @summary Delete stateful pod
          * @param {string} podId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6802,7 +6833,7 @@ export class PodStatefulControllerApi extends BaseAPI {
 
     /**
      * Deletes a specific stateful pod
-     * @summary Delete pod
+     * @summary Delete stateful pod
      * @param {string} podId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6882,6 +6913,42 @@ export const PodStatelessControllerApiAxiosParamCreator = function (configuratio
             };
         },
         /**
+         * Creates multiple stateless pods
+         * @summary Create pods batch
+         * @param {Array<CreatePodStatelessDto>} createPodStatelessDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStatelessPodsBatch: async (createPodStatelessDto: Array<CreatePodStatelessDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createPodStatelessDto' is not null or undefined
+            assertParamExists('createStatelessPodsBatch', 'createPodStatelessDto', createPodStatelessDto)
+            const localVarPath = `/pods/stateless/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createPodStatelessDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Deletes a specific stateless pod
          * @summary Delete pod
          * @param {string} podId 
@@ -6909,6 +6976,42 @@ export const PodStatelessControllerApiAxiosParamCreator = function (configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Deletes multiple stateless pods
+         * @summary Delete pods batch
+         * @param {Array<string>} requestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteStatelessPodsBatch: async (requestBody: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'requestBody' is not null or undefined
+            assertParamExists('deleteStatelessPodsBatch', 'requestBody', requestBody)
+            const localVarPath = `/pods/stateless/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -7041,6 +7144,19 @@ export const PodStatelessControllerApiFp = function(configuration?: Configuratio
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Creates multiple stateless pods
+         * @summary Create pods batch
+         * @param {Array<CreatePodStatelessDto>} createPodStatelessDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createStatelessPodsBatch(createPodStatelessDto: Array<CreatePodStatelessDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PodStatelessDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStatelessPodsBatch(createPodStatelessDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.createStatelessPodsBatch']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Deletes a specific stateless pod
          * @summary Delete pod
          * @param {string} podId 
@@ -7051,6 +7167,19 @@ export const PodStatelessControllerApiFp = function(configuration?: Configuratio
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPod(podId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.deleteStatelessPod']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Deletes multiple stateless pods
+         * @summary Delete pods batch
+         * @param {Array<string>} requestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteStatelessPodsBatch(requestBody: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteStatelessPodsBatch(requestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PodStatelessControllerApi.deleteStatelessPodsBatch']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -7113,6 +7242,16 @@ export const PodStatelessControllerApiFactory = function (configuration?: Config
             return localVarFp.createStatelessPod(createPodStatelessDto, options).then((request) => request(axios, basePath));
         },
         /**
+         * Creates multiple stateless pods
+         * @summary Create pods batch
+         * @param {Array<CreatePodStatelessDto>} createPodStatelessDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStatelessPodsBatch(createPodStatelessDto: Array<CreatePodStatelessDto>, options?: RawAxiosRequestConfig): AxiosPromise<Array<PodStatelessDto>> {
+            return localVarFp.createStatelessPodsBatch(createPodStatelessDto, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Deletes a specific stateless pod
          * @summary Delete pod
          * @param {string} podId 
@@ -7121,6 +7260,16 @@ export const PodStatelessControllerApiFactory = function (configuration?: Config
          */
         deleteStatelessPod(podId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteStatelessPod(podId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Deletes multiple stateless pods
+         * @summary Delete pods batch
+         * @param {Array<string>} requestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteStatelessPodsBatch(requestBody: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteStatelessPodsBatch(requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves all stateless pods for a specific course
@@ -7175,6 +7324,18 @@ export class PodStatelessControllerApi extends BaseAPI {
     }
 
     /**
+     * Creates multiple stateless pods
+     * @summary Create pods batch
+     * @param {Array<CreatePodStatelessDto>} createPodStatelessDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatelessControllerApi
+     */
+    public createStatelessPodsBatch(createPodStatelessDto: Array<CreatePodStatelessDto>, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).createStatelessPodsBatch(createPodStatelessDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Deletes a specific stateless pod
      * @summary Delete pod
      * @param {string} podId 
@@ -7184,6 +7345,18 @@ export class PodStatelessControllerApi extends BaseAPI {
      */
     public deleteStatelessPod(podId: string, options?: RawAxiosRequestConfig) {
         return PodStatelessControllerApiFp(this.configuration).deleteStatelessPod(podId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Deletes multiple stateless pods
+     * @summary Delete pods batch
+     * @param {Array<string>} requestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PodStatelessControllerApi
+     */
+    public deleteStatelessPodsBatch(requestBody: Array<string>, options?: RawAxiosRequestConfig) {
+        return PodStatelessControllerApiFp(this.configuration).deleteStatelessPodsBatch(requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7259,14 +7432,13 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7301,14 +7473,13 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8678,35 +8849,6 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAssignedStatefulResourceGroups: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resource-group/assigned`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8810,14 +8952,13 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8848,17 +8989,6 @@ export const ResourceGroupControllerApiFp = function(configuration?: Configurati
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteResourceGroup(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.deleteResourceGroup']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAssignedStatefulResourceGroups(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ResourceGroupDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssignedStatefulResourceGroups(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ResourceGroupControllerApi.getAssignedStatefulResourceGroups']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -8922,14 +9052,6 @@ export const ResourceGroupControllerApiFactory = function (configuration?: Confi
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAssignedStatefulResourceGroups(options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourceGroupDto>> {
-            return localVarFp.getAssignedStatefulResourceGroups(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8978,16 +9100,6 @@ export class ResourceGroupControllerApi extends BaseAPI {
      */
     public deleteResourceGroup(id: string, options?: RawAxiosRequestConfig) {
         return ResourceGroupControllerApiFp(this.configuration).deleteResourceGroup(id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ResourceGroupControllerApi
-     */
-    public getAssignedStatefulResourceGroups(options?: RawAxiosRequestConfig) {
-        return ResourceGroupControllerApiFp(this.configuration).getAssignedStatefulResourceGroups(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9064,14 +9176,13 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9111,12 +9222,11 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
-
-
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9572,14 +9682,13 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9908,14 +10017,13 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9955,12 +10063,11 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
-
-
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10105,14 +10212,13 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10381,15 +10487,15 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addStudentToTeam: async (teamId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addStudentToTeam: async (teamId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'teamId' is not null or undefined
             assertParamExists('addStudentToTeam', 'teamId', teamId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('addStudentToTeam', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('addStudentToTeam', 'emailDto', emailDto)
             const localVarPath = `/teams/{teamId}/add-student`
                 .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -10403,15 +10509,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10737,13 +10842,13 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {string} teamId 
+         * @param {LeaveTeamDto} leaveTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        leaveTeam: async (teamId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'teamId' is not null or undefined
-            assertParamExists('leaveTeam', 'teamId', teamId)
+        leaveTeam: async (leaveTeamDto: LeaveTeamDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'leaveTeamDto' is not null or undefined
+            assertParamExists('leaveTeam', 'leaveTeamDto', leaveTeamDto)
             const localVarPath = `/teams/leave`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10756,15 +10861,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (teamId !== undefined) {
-                localVarQueryParameter['teamId'] = teamId;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(leaveTeamDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10774,15 +10878,15 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeStudentFromTeam: async (teamId: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeStudentFromTeam: async (teamId: string, emailDto: EmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'teamId' is not null or undefined
             assertParamExists('removeStudentFromTeam', 'teamId', teamId)
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('removeStudentFromTeam', 'email', email)
+            // verify required parameter 'emailDto' is not null or undefined
+            assertParamExists('removeStudentFromTeam', 'emailDto', emailDto)
             const localVarPath = `/teams/{teamId}/remove-student`
                 .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -10796,15 +10900,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (email !== undefined) {
-                localVarQueryParameter['email'] = email;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10814,18 +10917,15 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {string} courseId 
-         * @param {Array<string>} emailPrefixes 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
-         * @param {string} [sort] 
+         * @param {SearchTeamsByEmailsDto} searchTeamsByEmailsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchTeamsByEmails: async (courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchTeamsByEmails: async (courseId: string, searchTeamsByEmailsDto: SearchTeamsByEmailsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('searchTeamsByEmails', 'courseId', courseId)
-            // verify required parameter 'emailPrefixes' is not null or undefined
-            assertParamExists('searchTeamsByEmails', 'emailPrefixes', emailPrefixes)
+            // verify required parameter 'searchTeamsByEmailsDto' is not null or undefined
+            assertParamExists('searchTeamsByEmails', 'searchTeamsByEmailsDto', searchTeamsByEmailsDto)
             const localVarPath = `/teams/course/{courseId}/search-emails`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -10835,31 +10935,18 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (emailPrefixes) {
-                localVarQueryParameter['emailPrefixes'] = emailPrefixes;
-            }
-
-            if (pageNumber !== undefined) {
-                localVarQueryParameter['pageNumber'] = pageNumber;
-            }
-
-            if (pageSize !== undefined) {
-                localVarQueryParameter['pageSize'] = pageSize;
-            }
-
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(searchTeamsByEmailsDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10894,14 +10981,13 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10925,12 +11011,12 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addStudentToTeam(teamId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addStudentToTeam(teamId, email, options);
+        async addStudentToTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addStudentToTeam(teamId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.addStudentToTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11042,12 +11128,12 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} teamId 
+         * @param {LeaveTeamDto} leaveTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async leaveTeam(teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.leaveTeam(teamId, options);
+        async leaveTeam(leaveTeamDto: LeaveTeamDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.leaveTeam(leaveTeamDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.leaveTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11055,12 +11141,12 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeStudentFromTeam(teamId: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeStudentFromTeam(teamId, email, options);
+        async removeStudentFromTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeStudentFromTeam(teamId, emailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.removeStudentFromTeam']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11068,15 +11154,12 @@ export const TeamControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} courseId 
-         * @param {Array<string>} emailPrefixes 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
-         * @param {string} [sort] 
+         * @param {SearchTeamsByEmailsDto} searchTeamsByEmailsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoTeamWithKeyDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options);
+        async searchTeamsByEmails(courseId: string, searchTeamsByEmailsDto: SearchTeamsByEmailsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TeamWithKeyDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchTeamsByEmails(courseId, searchTeamsByEmailsDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TeamControllerApi.searchTeamsByEmails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11108,12 +11191,12 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addStudentToTeam(teamId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.addStudentToTeam(teamId, email, options).then((request) => request(axios, basePath));
+        addStudentToTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.addStudentToTeam(teamId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -11198,35 +11281,32 @@ export const TeamControllerApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
-         * @param {string} teamId 
+         * @param {LeaveTeamDto} leaveTeamDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        leaveTeam(teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.leaveTeam(teamId, options).then((request) => request(axios, basePath));
+        leaveTeam(leaveTeamDto: LeaveTeamDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.leaveTeam(leaveTeamDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} teamId 
-         * @param {string} email 
+         * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeStudentFromTeam(teamId: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.removeStudentFromTeam(teamId, email, options).then((request) => request(axios, basePath));
+        removeStudentFromTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.removeStudentFromTeam(teamId, emailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} courseId 
-         * @param {Array<string>} emailPrefixes 
-         * @param {number} [pageNumber] 
-         * @param {number} [pageSize] 
-         * @param {string} [sort] 
+         * @param {SearchTeamsByEmailsDto} searchTeamsByEmailsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoTeamWithKeyDto> {
-            return localVarFp.searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options).then((request) => request(axios, basePath));
+        searchTeamsByEmails(courseId: string, searchTeamsByEmailsDto: SearchTeamsByEmailsDto, options?: RawAxiosRequestConfig): AxiosPromise<Array<TeamWithKeyDto>> {
+            return localVarFp.searchTeamsByEmails(courseId, searchTeamsByEmailsDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -11252,13 +11332,13 @@ export class TeamControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} teamId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public addStudentToTeam(teamId: string, email: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).addStudentToTeam(teamId, email, options).then((request) => request(this.axios, this.basePath));
+    public addStudentToTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).addStudentToTeam(teamId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11360,40 +11440,37 @@ export class TeamControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} teamId 
+     * @param {LeaveTeamDto} leaveTeamDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public leaveTeam(teamId: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).leaveTeam(teamId, options).then((request) => request(this.axios, this.basePath));
+    public leaveTeam(leaveTeamDto: LeaveTeamDto, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).leaveTeam(leaveTeamDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} teamId 
-     * @param {string} email 
+     * @param {EmailDto} emailDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public removeStudentFromTeam(teamId: string, email: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).removeStudentFromTeam(teamId, email, options).then((request) => request(this.axios, this.basePath));
+    public removeStudentFromTeam(teamId: string, emailDto: EmailDto, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).removeStudentFromTeam(teamId, emailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} courseId 
-     * @param {Array<string>} emailPrefixes 
-     * @param {number} [pageNumber] 
-     * @param {number} [pageSize] 
-     * @param {string} [sort] 
+     * @param {SearchTeamsByEmailsDto} searchTeamsByEmailsDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamControllerApi
      */
-    public searchTeamsByEmails(courseId: string, emailPrefixes: Array<string>, pageNumber?: number, pageSize?: number, sort?: string, options?: RawAxiosRequestConfig) {
-        return TeamControllerApiFp(this.configuration).searchTeamsByEmails(courseId, emailPrefixes, pageNumber, pageSize, sort, options).then((request) => request(this.axios, this.basePath));
+    public searchTeamsByEmails(courseId: string, searchTeamsByEmailsDto: SearchTeamsByEmailsDto, options?: RawAxiosRequestConfig) {
+        return TeamControllerApiFp(this.configuration).searchTeamsByEmails(courseId, searchTeamsByEmailsDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

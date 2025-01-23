@@ -3,14 +3,17 @@ import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
 import { t } from "i18next";
+import { EmailDto } from "@/api";
 
 export const useRemoveStudentFromTeam = () => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: removeStudentFromTeam } = useMutation({
     mutationFn: async ({ teamId, email }: { teamId: string; email: string }) => {
+      const emailDto: EmailDto = { email };
       const response = await privateAxios.post<void>(
-        `/teams/${teamId}/remove-student?email=${encodeURIComponent(email)}`
+        `/teams/${teamId}/remove-student`,
+        emailDto
       );
       return response.data;
     },

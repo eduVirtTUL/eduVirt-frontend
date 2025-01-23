@@ -1,3 +1,4 @@
+import { LeaveTeamDto } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
@@ -8,8 +9,10 @@ export const useLeaveTeamOrCourse = () => {
 
   const { mutate: leaveTeam } = useMutation({
     mutationFn: async (teamId: string) => {
+      const leaveTeamDto: LeaveTeamDto = { teamId };
       const response = await privateAxios.post<void>(
-        `/teams/leave?teamId=${teamId}`
+        `/teams/leave`,
+        leaveTeamDto
       );
       return response.data;
     },

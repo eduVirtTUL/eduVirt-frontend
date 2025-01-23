@@ -172,6 +172,8 @@ const errorKeys = {
   "access.key.duplicate": "Zduplikowany klucz dostępu",
   "access.key.could.not.be.generated": "Nie można było wygenerować klucza dostępu",
   "teacher.self.modification.exception": "Nauczyciel nie może zarządzać sobą w przedmiocie",
+  "pod.deletion.exception": "POD posiada aktywne rezerwacje i nie może zostać usunięty",
+  "team.deletion.exception": "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
 
 } satisfies { [key in ErrorKey]: string };
 

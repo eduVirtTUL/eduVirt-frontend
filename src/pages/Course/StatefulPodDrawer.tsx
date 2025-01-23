@@ -172,7 +172,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
 
     const handleClickPodDelete = (podId: string) => {
         setPodToDelete(podId);
-        openDialog("confirmation");
+        openDialog("deleteStatefulPod");
     };
 
     const handleConfirmPodDelete = () => {
@@ -325,6 +325,7 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
             />
 
             <ConfirmationDialog
+                name="deleteStatefulPod" 
                 header={t('statefulPodManagement.delete.confirmHeader')}
                 text={t('statefulPodManagement.delete.confirmText')}
                 onConfirm={() => handleConfirmPodDelete()}

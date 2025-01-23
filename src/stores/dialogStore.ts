@@ -29,7 +29,8 @@ export type DialogType =
   | "manageTeamUsers"
   | "manageTeachersModal"
   | "createStatelessPodsBatch"
-  | "deleteStatelessPodsBatch";
+  | "deleteStatelessPodsBatch"
+  | "deleteStatefulPod";
 
 type DialogStore = {
   opened?: DialogType;

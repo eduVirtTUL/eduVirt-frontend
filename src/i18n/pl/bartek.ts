@@ -48,7 +48,7 @@ const joinTeamModal = {
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
         keyRegex: "Klucz może zawierać tylko litery i cyfry",
     },
-    success: "Dołączono do zespołu!",
+    success: "Dołączono do zespołu",
 };
 
 const teamDetails = {
@@ -157,7 +157,6 @@ const coursePageB = {
     }
 }
 
-
 const createCourseKeyModal = {
     title: "Utwórz klucz dostępu do przedmiotu",
     keyLabel: "Klucz",
@@ -171,12 +170,12 @@ const createCourseKeyModal = {
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
         keyRegex: "Klucz może zawierać tylko litery i cyfry",
     },
-    success: "Klucz dostępu do przedmiotu został utworzony!",
+    success: "Klucz dostępu do przedmiotu został utworzony",
 }
 
 const statefulPodManagementDrawer = {
-    title: "PODy stanowe - ",
-    resourceGroups: "Grupy zasobów",
+    title: "PODy stanowe zespołu ",
+    resourceGroups: "Grupy zasobów w przedmiocie",
     teamPods: "PODy stanowe zespołu",
     createPod: "Utwórz POD",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
@@ -189,8 +188,8 @@ const statefulPodManagementDrawer = {
     },
     delete: {
         button: "Usuń",
-        confirmHeader: "Usuń POD",
-        confirmText: "Czy na pewno chcesz usunąć ten POD? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
+        confirmHeader: "Usuń POD stanowy",
+        confirmText: "Czy na pewno chcesz usunąć ten POD stanowy? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
     },
     addMaxRentTimeModal: {
         title: "Dokończ tworzenie PODa",
@@ -201,11 +200,12 @@ const statefulPodManagementDrawer = {
 };
 
 const statelessPodManagementDrawer = {
-    title: "PODy bezstanowe - ",
-    resourceGroupPools: "Pule grup zasobów",
+    title: "PODy bezstanowe zespołu ",
+    resourceGroupPools: "Pule grup zasobów w przedmiocie",
     teamPods: "PODy bezstanowe zespołu",
     createPod: "Utwórz POD",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
+    noResourceGroupPools: "Nie znaleziono żadnych pul grup zasobów w tym przedmiocie",
     resourceGroupPool: "Pula grup zasobów",
     alerts: {
         hasAssociatedPod: "Ta pula grup zasobów posiada przypisany POD",
@@ -275,9 +275,9 @@ const manageCourseUsersModal = {
 }
 
 const manageTeachersModal = {
-    title: "Nauczyciele przedmiotu",
-    current: "Obecni nauczyciele",
-    add: "Dodaj nauczyciela",
+    title: "Nauczyciele w przedmiocie",
+    current: "Usuń",
+    add: "Dodaj",
     remove: "Usuń",
     noTeachers: "Ten przedmiot nie posiada żadnych nauczycieli",
     addTeacher: {
@@ -305,8 +305,8 @@ const createTeamModal = {
     name: "Nazwa zespołu",
     key: "Klucz do zespołu",
     maxSize: "Maksymalna liczba studentów w zespole",
-    prefix: "Prefix nazwy zespołu",
-    prefixDescription: "Zespoły zostaną utworzone z danym prefixem i kolejnym numerem",
+    prefix: "Prefiks nazwy zespołu",
+    prefixDescription: "Nazwy zespołów zostaną utworzone z podanym prefiksem i kolejnym numerem, np. 'PodanyPrefiks-1'",
     teamCount: "Liczba utworzonych zespołów",
     validation: {
         teamNameMin: "Nazwa zespołu jest wymagana",
@@ -319,9 +319,9 @@ const createTeamModal = {
         maxSizeMax: "Maksymalna liczba studentów w zespole nie może przekraczać 10",
         teamCountMin: "Liczba zespołów musi być większa od 1",
         teamCountMax: "Liczba zespołów nie może przekraczać 10",
-        prefixMin: "Prefix jest wymagany",
-        prefixMax: "Prefix nie może przekraczać 40 znaków",
-        prefixRegex: "Prefix może zawierać tylko litery, cyfry",
+        prefixMin: "Prefiks jest wymagany",
+        prefixMax: "Prefiks nie może przekraczać 40 znaków",
+        prefixRegex: "Prefiks może zawierać tylko litery, cyfry",
     }
 };
 
@@ -329,8 +329,8 @@ const searchByEmailModal = {
     title: "Wyszukaj studentów po numerach indeksów",
     search: "Wyszukaj",
     placeholder: "Enter student identifier...",
-    description1: "Aby dodać numer indeksu studenta do wyszukiwania, wpisz wartość w pole tekstowe i naciśnij Enter lub Spację. Możesz usunąć numer indeksu klikając na przycisk X.",
-    description2: "Aby wprowadzić wiele wartości jednocześnie, oddziel je przecinkiem lub spacją i wklej ze schowka.",
+    description1: "Aby dodać numer indeksu studenta do wyszukiwania, wpisz wartość w pole tekstowe i naciśnij Enter lub Spację. Numer indeksu można usunąć klikając na symbol X.",
+    description2: "Aby wprowadzić numery indeksów wielu studentów jednocześnie, należy oddzielić je przecinkiem lub spacją i wkleić ze schowka.",
 }
 
 
@@ -394,7 +394,6 @@ export default {
     createCourseKey: createCourseKeyModal,
     manageTeamUsers: manageTeamUsersModal,
     manageCourseUsers: manageCourseUsersModal,
-    // deleteTeam: deleteTeamModal,
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
     podManagement,

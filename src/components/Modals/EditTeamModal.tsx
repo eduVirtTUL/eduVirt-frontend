@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useUpdateTeam } from "@/data/team/useUpdateTeam"
-import { CheckIcon, XCircleIcon } from "lucide-react"
+import { SaveIcon, XCircleIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { t } from "i18next"
 
@@ -118,23 +118,26 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
                                 </FormItem>
                             )}
                         />                   
-                        <div className="flex flex-row justify-between">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={() => {
-                                    form.reset();
-                                    onOpenChange(false);
-                                }}
-                            >
-                                <XCircleIcon />
-                                {t("cancel")}
-                            </Button>
-                            <Button type="submit">
-                                <CheckIcon />
-                                {t("save")}
-                            </Button>
-                        </div>
+                         <div className="flex flex-row justify-between">
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                            form.reset();
+                            onOpenChange(false);
+                        }}
+                    >
+                        <XCircleIcon />
+                        {t("cancel")}
+                    </Button>
+                    <Button 
+                        type="submit"
+                        disabled={!form.formState.isDirty}
+                    >
+                        <SaveIcon />
+                        {t("save")}
+                    </Button>
+                </div>
                     </form>
                 </Form>
             </DialogContent>

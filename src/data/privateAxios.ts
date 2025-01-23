@@ -75,6 +75,8 @@ export type ErrorKey =
   | "access.key.duplicate"
   | "access.key.could.not.be.generated"
   | "teacher.self.modification.exception"
+  | "pod.deletion.exception"
+  | "team.deletion.exception"
 
 export type ErrorResponse = {
   message: string;

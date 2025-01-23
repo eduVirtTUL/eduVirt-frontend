@@ -37,6 +37,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         searchType,
         sortOrder
     );
+    console.table(teams);
 
     const [emailSearchOpen, setEmailSearchOpen] = useState(false);
     const [emailPrefixes, setEmailPrefixes] = useState<string[]>([]);
@@ -44,8 +45,6 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {teams: teamsByEmail, isLoading: isLoadingEmails} = useCoursesTeamsByEmail(
         id,
         emailPrefixes,
-        pageNumber,
-        pageSize,
         sortOrder
     );
 
@@ -103,8 +102,8 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             </div>
             <TeamListCard
                 isTeamBased={isTeamBased}
-                teams={emailPrefixes.length > 0 ? teamsByEmail?.items : teams?.items}
-                totalPages={emailPrefixes.length > 0 ? teamsByEmail?.page?.totalPages : teams?.page?.totalPages}
+                teams={emailPrefixes.length > 0 ? teamsByEmail : teams?.items}
+                totalPages={emailPrefixes.length > 0 ? undefined : teams?.page?.totalPages}
                 isLoading={emailPrefixes.length > 0 ? isLoadingEmails : isLoading}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}

@@ -86,28 +86,39 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                     ) : (
                                         <Table>
                                             <TableBody>
-                                                {courseResourceGroupPools?.map((pool) => (
-                                                    <TableRow key={pool.id}>
-                                                        <TableCell>
-                                                            <Checkbox
-                                                                checked={selectedPool === pool.id || isPoolAssigned(pool.id!)}
-                                                                onCheckedChange={(checked) => {
-                                                                    if (checked) {
-                                                                        setSelectedPool(pool.id!)
-                                                                    } else {
-                                                                        setSelectedPool(null)
-                                                                    }
-                                                                }}
-                                                                disabled={isPoolAssigned(pool.id!)}
-                                                            />
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex items-center gap-2">
-                                                                <span>{pool.name}</span>
-                                                            </div>
+                                                {(courseResourceGroupPools ?? []).length > 0 ? (
+                                                    courseResourceGroupPools?.map((pool) => (
+                                                        <TableRow key={pool.id}>
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    checked={selectedPool === pool.id || isPoolAssigned(pool.id!)}
+                                                                    onCheckedChange={(checked) => {
+                                                                        if (checked) {
+                                                                            setSelectedPool(pool.id!)
+                                                                        } else {
+                                                                            setSelectedPool(null)
+                                                                        }
+                                                                    }}
+                                                                    disabled={isPoolAssigned(pool.id!)}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span>{pool.name}</span>
+                                                                </div>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                ) : (
+                                                    <TableRow>
+                                                        <TableCell
+                                                            colSpan={2}
+                                                            className="text-center text-muted-foreground py-4"
+                                                        >
+                                                            {t('statelessPodManagement.noResourceGroupPools')}
                                                         </TableCell>
                                                     </TableRow>
-                                                ))}
+                                                )}
                                             </TableBody>
                                         </Table>
                                     )}

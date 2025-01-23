@@ -378,7 +378,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                         columns={columns}
                                         data={teams}
                                     />
-                                    {teams.length > 0 && totalPages && totalPages > 1 && (
+                                    {!emailPrefixes?.length && teams.length > 0 && totalPages && totalPages > 1 && (
                                         <div className="mt-4">
                                             <Pagination>
                                                 <PaginationContent>
