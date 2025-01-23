@@ -1,0 +1,10 @@
+.env.development
+.github
+.git
+.gitignore
+.react-router
+build
+node_modules
+env-config.js
+*.md
+tsconfig.tsbuildinfo

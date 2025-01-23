@@ -1,5 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import {useVnicProfiles} from "@/data/network/useVnicProfiles";
+import {useVnicProfilesDetails} from "@/data/network/useVnicProfilesDetails";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool";
@@ -9,15 +10,13 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, MoreHorizontal,} from "lucide-react";
 import DataTable from "@/pages/VnicProfiles/DataTable";
 import {Column, ColumnDef, SortDirection} from "@tanstack/react-table";
-import {VnicProfileDto} from "@/api";
-import React from "react";
+import {VnicProfileDto, VnicProfilePoolMemberDto} from "@/api";
+import React, {useEffect} from "react";
 import {Label} from "@/components/ui/label";
 import {Popover, PopoverContent} from "@/components/ui/popover";
 import {PopoverTrigger} from "@radix-ui/react-popover";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Input} from "@/components/ui/input";
-// import ShowVnicProfileDetailsModal from "@/components/Modals/ShowVnicProfileDetailsModal";
-import {useDialog} from "@/stores/dialogStore";
 import BounceLoader from "react-spinners/BounceLoader";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
@@ -30,9 +29,14 @@ const VnicProfilesPage: React.FC = () => {
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
 
+    const [data, setData] = React.useState<VnicProfilePoolMemberDto[]>([]);
+    const {vnicProfilesDetails, isLoading: isLoadingDetails} = useVnicProfilesDetails();
+    useEffect(() => {
+        setData(vnicProfilesDetails ?? []);
+    }, [vnicProfilesDetails]);
+
     const [selectedFiltering, setSelectedFiltering] =
         React.useState<string>("allItems");
-    const {open} = useDialog();
 
     const handleAddVnicProfile = async (vnicProfileId?: string) => {
         if (vnicProfileId) {
@@ -65,6 +69,32 @@ const VnicProfilesPage: React.FC = () => {
             column.clearSorting();
         }
     };
+
+    const handleDto = (dto: VnicProfilePoolMemberDto | undefined) => {
+        if (!isLoadingDetails && dto) {
+            return (
+                <>
+                    <div className="w-80">
+                        <b>{t("vnicProfiles.pool.actions.details.props.id")}: </b>
+                        {dto?.id ?? null}
+                        <br/>
+                        <b>{t("vnicProfiles.pool.actions.details.props.name")}: </b>
+                        {dto?.name ?? null}
+                        <br/>
+                        <b>{t("vnicProfiles.pool.actions.details.props.inUse")}: </b>
+                        {dto.inUse ? t("yes") : t("no")}
+                        <br/>
+                    </div>
+                </>
+            );
+        }
+        return (
+            <>
+                ...
+            </>
+        );
+
+    }
 
     const columns: ColumnDef<VnicProfileDto>[] = [
         {
@@ -210,7 +240,7 @@ const VnicProfilesPage: React.FC = () => {
                                     disabled={vnicProfile.inPool}
                                     onClick={() => handleAddVnicProfile(vnicProfile.id)}
                                 >
-                                    Add to pool
+                                    {t("vnicProfiles.pool.actions.add.name")}
                                 </Button>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
@@ -222,18 +252,24 @@ const VnicProfilesPage: React.FC = () => {
                                         handleRemoveVnicProfileFromPool(vnicProfile.id)
                                     }
                                 >
-                                    Remove from pool
+                                    {t("vnicProfiles.pool.actions.remove.name")}
                                 </Button>
                             </DropdownMenuItem>
                             {/*TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)*/}
                             <DropdownMenuItem asChild>
-                                <Button
-                                    className={"h-full w-full"}
-                                    variant="ghost"
-                                    onClick={() => open("showVnicProfileDetails")}
-                                >
-                                    Show info
-                                </Button>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            className={"h-full w-full"}
+                                            variant="ghost"
+                                        >
+                                            {t("vnicProfiles.pool.actions.details.name")}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-100">
+                                        {handleDto(data.filter((dto) => dto.id === vnicProfile.id)[0])}
+                                    </PopoverContent>
+                                </Popover>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -243,10 +279,8 @@ const VnicProfilesPage: React.FC = () => {
     ];
 
     if (isLoading) {
-        // return <LoaderIcon className="animate-spin size-10" />;
         return (
             <>
-                {/*<ShowVnicProfileDetailsModal/>*/}
                 <PageHeader title={t("vnicProfiles.title")}/>
 
                 <div className="pb-5">
@@ -264,7 +298,6 @@ const VnicProfilesPage: React.FC = () => {
 
     return (
         <>
-            {/*<ShowVnicProfileDetailsModal/>*/}
             <PageHeader title={t("vnicProfiles.title")}/>
 
             <div className="pb-5">

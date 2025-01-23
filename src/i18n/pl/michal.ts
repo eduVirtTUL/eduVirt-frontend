@@ -17,15 +17,25 @@ const vnicProfiles = {
         },
         actions: {
             add: {
+                name: "Dodaj do puli",
                 success: "Vnic profil został pomyślnie dodany do puli",
                 error: "Nie udało się dodać vnic profilu do puli",
             },
             remove: {
+                name: "Usuń z puli",
                 success: "Vnic profil został pomyślnie usunięty z puli",
                 error: "Nie udało się usunąć vnic profilu z puli",
+            },
+            details: {
+                name: "Szczegóły",
+                props: {
+                    id: "ID",
+                    name: "Profil",
+                    inUse: "Czy w użyciu"
+                }
             }
         }
-    }
+    },
 }
 
 const vlansRange = {

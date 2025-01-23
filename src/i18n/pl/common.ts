@@ -143,6 +143,14 @@ const errorKeys = {
   "reservations.error.stateful.pod.not.assigned": "Wybrany POD stanowy nie jest przypisany do twojego zespołu",
   "reservations.error.stateless.pod.not.assigned": "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
 
+  "ovirt.vnic.profile.not.found": "Wybrany vnic profile nie jest dostępny w oVirt, proszę odśwież stronę",
+  "eduvirt.vnic.profile.not.found": "Wybrany vnic profile nie jest dostępny w eduVirt, proszę odśwież stronę",
+  "vnic.profile.already.exists": "Wybrany vnic profile aktualnie znajduje się już w puli, proszę odśwież stronę",
+  "vlans.range.not.found": "Wybrany zakres VLANów nie został odnaleziony",
+  "vlans.range.invalid.definition": "Zakres VLANów został niepoprawnie zdefiniowany",
+  "vlans.range.conflicting.range": "Ramy nowotworzonego zakresu VLANów pokrywają się z już istniejącym zakresem",
+  "general.error.connection.open.error": "Wystąpił problem z połączeniem do oVirta",
+
   networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 
   "course.invalid.type": "Nieprawidłowy typ przedmiotu",
