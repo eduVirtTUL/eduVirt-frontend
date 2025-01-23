@@ -170,7 +170,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
             </Button>
             <Button
               type="submit"
-              disabled={!form.formState.isValid && !form.formState.isDirty}
+              disabled={!form.formState.isValid}
             >
                 <SaveIcon />
               {t("clusterMetricValues.updateClusterMetricValue.save")}
