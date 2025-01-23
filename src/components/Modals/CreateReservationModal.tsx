@@ -168,7 +168,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
               name="notificationTime"
               render={({ field }) => (
                 <FormItem className="space-y-4">
-                  <FormLabel>{t("reservations.createReservation.notificationTime")}</FormLabel>
+                  <FormLabel>* {t("reservations.createReservation.notificationTime")}</FormLabel>
                   <FormControl>
                     <Input {...field} min="0" step="1" type={"number"} />
                   </FormControl>
