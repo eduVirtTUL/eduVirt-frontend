@@ -64,7 +64,10 @@ export type ErrorResponse = {
 export type CustomAxiosError = AxiosError<ErrorResponse>;
 
 export const privateAxios = axios.create({
-  baseURL: (typeof window !== 'undefined') ? appEnv.apiUrl : import.meta.env.VITE_API_LOCATION,
+  baseURL:
+    typeof window !== "undefined"
+      ? appEnv.apiUrl
+      : import.meta.env.VITE_API_LOCATION,
 });
 
 privateAxios.interceptors.request.use((config) => {
@@ -79,8 +82,8 @@ privateAxios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // localStorage.removeItem("token");
-      // window.location.reload();
+      localStorage.removeItem("token");
+      window.location.reload();
     }
     return Promise.reject(error);
   }

@@ -32,13 +32,13 @@ const AuthCallback: React.FC = () => {
 
     const roles = tokenPayload.groups
       .map((group) => {
-        if (group === "/ovirt-administrator") {
+        if (group === "/eduvirt-administrator") {
           return "administrator";
         }
-        if (group === "/teacher") {
+        if (group === "/eduvirt-teacher") {
           return "teacher";
         }
-        if (group === "/student") {
+        if (group === "/eduvirt-student") {
           return "student";
         }
         return undefined;
@@ -77,8 +77,8 @@ const AuthCallback: React.FC = () => {
     privateAxios.post<void>(`/auth/update-timezone-and-language`, null, {
       params: {
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        language: navigator.language.split("-")[0] ?? '',
-      }
+        language: navigator.language.split("-")[0] ?? "",
+      },
     });
   }
 
