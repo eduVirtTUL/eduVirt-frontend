@@ -1,4 +1,3 @@
-
 const courseType = {
     solo: "Solo",
     teamBased: "Zespołowy",
@@ -107,13 +106,13 @@ const coursePageB = {
         button: "Utwórz klucz dostępu",
     },
     teamsTable: {
-      button: "Zespoły",
-      title: "Zespoły przedmiotu",
-      noTeams: "Brak zespołów",
-      students: "Dodaj studenta",
-      createTeam: "Utwórz zespół",
-      edit: "Edytuj",
-      columns: {
+        button: "Zespoły",
+        title: "Zespoły przedmiotu",
+        noTeams: "Brak zespołów",
+        students: "Dodaj studenta",
+        createTeam: "Utwórz zespół",
+        edit: "Edytuj",
+        columns: {
             name: "Nazwa",
             status: "Status",
             member: "Student",
@@ -126,29 +125,30 @@ const coursePageB = {
                 copy: "Kopiuj",
                 copied: "Klucz dostępu do zespołu został skopiowany do schowka",
             }
-      },
-      dropdownMenu: {
+        },
+        dropdownMenu: {
             editTeam: "Edytuj",
             manageUsers: "Studenci",
             manageStatefulPods: "PODy stanowe",
             manageStatelessPods: "PODy bezstanowe",
             reservations: "Rezerwacje",
             deleteTeam: {
-                button : "Usuń zespół",
+                button: "Usuń zespół",
                 confirmation: {
-                    title : "Usuń zespół",
-                    description : "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy studenci w tym zespole stracą dostęp do przypisanych zasobów",    
-            }},
+                    title: "Usuń zespół",
+                    description: "Czy na pewno chcesz usunąć ten zespół? Po usunięciu zespołu, wszyscy studenci w tym zespole stracą dostęp do przypisanych zasobów",
+                }
+            },
             removeStudent: "Usuń studenta z przedmiotu",
         }
-      },
+    },
     teachersCard: {
         title: "Nauczyciele",
         noTeachers: "Ten przedmiot nie posiada żadnych przypisanych nauczycieli",
         manageTeachers: "Zarządzaj",
     },
     courseTeamsPage: {
-        searchByEmail:{
+        searchByEmail: {
             button: "Wyszukaj studentów po numerze indeksu",
             clear: "Wyczyść wyszukiwanie",
         },
@@ -178,6 +178,7 @@ const statefulPodManagementDrawer = {
     resourceGroups: "Grupy zasobów w przedmiocie",
     teamPods: "PODy stanowe zespołu",
     createPod: "Utwórz POD",
+    success: "POD stanowy został utworzony pomyślnie",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
     noResourceGroups: "Nie znaleziono żadnych grup zasobów w tym przedmiocie",
     resourceGroup: "Grupa zasobów",
@@ -190,13 +191,8 @@ const statefulPodManagementDrawer = {
         button: "Usuń",
         confirmHeader: "Usuń POD stanowy",
         confirmText: "Czy na pewno chcesz usunąć ten POD stanowy? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
+        success: "POD stanowy został usunięty pomyślnie",
     },
-    addMaxRentTimeModal: {
-        title: "Dokończ tworzenie PODa",
-        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tego PODa",
-        maxRent: "Maksymalna liczba rezerwacji",
-        success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
-    }
 };
 
 const statelessPodManagementDrawer = {
@@ -204,6 +200,7 @@ const statelessPodManagementDrawer = {
     resourceGroupPools: "Pule grup zasobów w przedmiocie",
     teamPods: "PODy bezstanowe zespołu",
     createPod: "Utwórz POD",
+    success: "POD bezstanowy został utworzony pomyślnie",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
     noResourceGroupPools: "Nie znaleziono żadnych pul grup zasobów w tym przedmiocie",
     resourceGroupPool: "Pula grup zasobów",
@@ -214,6 +211,7 @@ const statelessPodManagementDrawer = {
         button: "Usuń",
         confirmHeader: "Usuń POD",
         confirmText: "Czy na pewno chcesz usunąć ten POD? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
+        success: "POD bezstanowy został usunięty pomyślnie",
     },
 }
 
@@ -239,7 +237,7 @@ const editTeamModal = {
         teamNameRegex: "Nazwa zespołu może zawierać tylko litery, cyfry, spacje i znaki specjalne: - _",
         maxSizeMin: "Maksymalna liczba studentów w zespole musi być większa lub równa 2",
         maxSizeMax: "Maksymalna liczba studentów w zespole nie może przekraczać 10",
-    }      
+    }
 };
 
 const manageTeamUsersModal = {
@@ -259,7 +257,7 @@ const manageTeamUsersModal = {
 }
 
 const manageCourseUsersModal = {
-    title : "Dodaj studenta do przedmiotu",
+    title: "Dodaj studenta do przedmiotu",
     remove: "Usuń",
     add: "Dodaj",
     noUsers: "Ten przedmiot nie posiada żadnych studentów",
@@ -282,11 +280,13 @@ const manageTeachersModal = {
     noTeachers: "Ten przedmiot nie posiada żadnych nauczycieli",
     addTeacher: {
         email: "Adres e-mail",
-        description: "Wprowadź adres e-mail nauczyciela, którego chcesz dodać do przedmiotu"
+        description: "Wprowadź adres e-mail nauczyciela, którego chcesz dodać do przedmiotu",
+        success: "Nauczyciel został dodany do przedmiotu",
     },
     delete: {
         title: "Usuń nauczyciela {user} z przedmiotu {course}",
         description: "Czy na pewno chcesz usunąć tego nauczyciela z przedmiotu? Spowoduje to utratę dostępu do zarządzania przedmiotem dla tego użytkownika.",
+        success: "Nauczyciel został usunięty z przedmiotu",
     },
     success: {
         add: "Nauczyciel został dodany do przedmiotu",
@@ -333,48 +333,43 @@ const searchByEmailModal = {
     description2: "Aby wprowadzić numery indeksów wielu studentów jednocześnie, należy oddzielić je przecinkiem lub spacją i wkleić ze schowka.",
 }
 
-
-    const podManagement = {
-      button: "PODy bezstanowe w przedmiocie",
-      title: "Zarządzanie PODami bezstanowymi",
-      resourcePools: "Pule zasobów",
-      search: "Szukaj zespołów...",
-      createPods: "Utwórz PODy",
-      deletePods: "Usuń PODy",
-      createSuccess: "Pomyślnie utworzono PODy",
-      deleteSuccess: "Pomyślnie usunięto PODy",
-      createError: "Błąd PODczas tworzenia PODów",
-      deleteError: "Błąd PODczas usuwania PODów",
-      columns: {
+const podManagement = {
+    button: "PODy bezstanowe w przedmiocie",
+    title: "Zarządzanie PODami bezstanowymi",
+    resourcePools: "Pule zasobów",
+    search: "Szukaj zespołów...",
+    createPods: "Utwórz PODy",
+    deletePods: "Usuń PODy",
+    columns: {
         name: "Nazwa zespołu",
         members: "Student",
         status: "Czy istnieje POD"
-      },
-      status: {
+    },
+    status: {
         hasPod: "Tak",
         noPod: "Nie"
-      },
-      noTeams: "Brak zespołów do wyświetlenia",
-      loading: "Ładowanie...",
-      noResourceGroups: "Brak dostępnych pul zasobów",
-      searchPlaceholder: "Szukaj po imieniu, nazwisku lub emailu...",
-        filterByPod: "Filtruj po statusie",
-        filters: {
-            all: "Wszystkie zespoły",
-            withPod: "Zespoły z PODem",
-            withoutPod: "Zespoły bez PODa"
-        },
-        selectPoolPrompt: "Wybierz pulę grup zasobów z listy po lewej stronie",
-        confirmCreate: {
-            description: "Czy na pewno chcesz utworzyć PODy bezstanowe dla zaznaczonych zespołów z wybraną pulą grup zasobów?",
-            title: "Tworzenie PODów bezstanowych"
-        },
-        confirmDelete: {
-            description: "Czy na pewno chcesz usunąć PODy bezstanowe dla zaznaczonych zespołów?",
-            title: "Usuwanie PODów bezstanowych"
-        }
+    },
+    noTeams: "Brak zespołów do wyświetlenia",
+    loading: "Ładowanie...",
+    noResourceGroups: "Brak dostępnych pul zasobów",
+    searchPlaceholder: "Szukaj po imieniu, nazwisku lub emailu...",
+    filterByPod: "Filtruj po statusie",
+    filters: {
+        all: "Wszystkie zespoły",
+        withPod: "Zespoły z PODem",
+        withoutPod: "Zespoły bez PODa"
+    },
+    selectPoolPrompt: "Wybierz pulę grup zasobów z listy po lewej stronie",
+    confirmCreate: {
+        description: "Czy na pewno chcesz utworzyć PODy bezstanowe dla zaznaczonych zespołów z wybraną pulą grup zasobów?",
+        title: "Tworzenie PODów bezstanowych"
+    },
+    confirmDelete: {
+        description: "Czy na pewno chcesz usunąć PODy bezstanowe dla zaznaczonych zespołów?",
+        title: "Usuwanie PODów bezstanowych"
     }
-  
+}
+
 
 export default {
     podType,

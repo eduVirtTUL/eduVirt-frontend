@@ -2,6 +2,7 @@ import { toast } from "sonner";
 import { keys } from "../keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useDeleteStatelessPod = () => {
   const queryClient = useQueryClient();
@@ -35,7 +36,7 @@ export const useDeleteStatelessPod = () => {
         queryKey: [keys.STATELESS_POD] 
       });
       
-      toast.success("Stateless pod deleted successfully!");
+      toast.success(t("statelessPodManagement.delete.success"));
     },
   });
     

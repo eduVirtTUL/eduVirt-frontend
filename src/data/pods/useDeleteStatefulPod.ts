@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { keys } from "../keys";
 import { toast } from "sonner";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useDeleteStatefulPod = () => {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ export const useDeleteStatefulPod = () => {
       queryClient.invalidateQueries({ queryKey: [keys.POD] });
       queryClient.invalidateQueries({ queryKey: [keys.RESOURCE_GROUP, 'withPods'] });
       queryClient.invalidateQueries({ queryKey: keys.POD, id: podId });
-      toast.success("Stateful pod deleted successfully!");
+      toast.success(t("statefulPodManagement.delete.success"));
     }
   });
 
