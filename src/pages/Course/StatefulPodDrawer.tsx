@@ -19,7 +19,6 @@ import {useDialog} from "@/stores/dialogStore"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 import {useTranslation} from "react-i18next"
 import {Link, useParams} from "react-router"
-import MaxRentModal from "./MaxRentModal"
 import { appEnv } from "@/environment"
 import {useStatefulPodsForCourse} from "@/data/pods/useStatefulPodsForCourse"
 import {useStatefulResourceGroups} from "@/data/course/resourceGroups/useStatefulResourceGroups"
@@ -317,12 +316,6 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                     </div>
                 </DrawerContent>
             </Drawer>
-
-            <MaxRentModal
-                open={showMaxRentModal}
-                onOpenChange={setShowMaxRentModal}
-                onSubmit={handleCreatePod}
-            />
 
             <ConfirmationDialog
                 name="deleteStatefulPod" 

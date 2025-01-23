@@ -367,7 +367,9 @@ const podManagement = {
     confirmDelete: {
         description: "Czy na pewno chcesz usunąć PODy bezstanowe dla zaznaczonych zespołów?",
         title: "Usuwanie PODów bezstanowych"
-    }
+    },
+    createSuccess: "PODy bezstanowe zostały utworzone pomyślnie",
+    deleteSuccess: "PODy bezstanowe zostały usunięte pomyślnie",
 }
 
 
