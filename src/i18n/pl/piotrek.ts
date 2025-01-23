@@ -319,10 +319,11 @@ const reservations = {
     },
     general: {
       id: 'Identyfikator rezerwacji',
-      teamId: 'Zespół',
+      team: 'Zespół',
+      teamId: 'Identyfikator zespołu',
       teamButton: 'Przejdź do definicji zespołu w ramach systemu eduVirt',
       teamName: 'Nazwa zespołu',
-      rgId: 'Grupa zasobów',
+      rgId: 'Identyfikator grupy zasobów',
       rgButton: 'Przejdź do definicji grupy zasobów w ramach systemu eduVirt',
       rgName: 'Nazwa grupy zasobów',
       rgState: 'Stan grupy zasobów',
@@ -331,7 +332,17 @@ const reservations = {
       end: 'Koniec',
       endInfo: 'Z powodu konieczności wyłączenia zasobów w ramach danej grupy zasobów, faktyczny koniec rezerwacji następi wcześniej. Szacowany czas wyprzedzenia: {{delayTime}} minut.',
       finishReservation: 'Zakończ rezerwację',
-      removeReservation: 'Usuń rezerwację'
+      removeReservation: 'Usuń rezerwację',
+      confirmation: {
+        delete: {
+          header: 'Czy na pewno usunąć rezerwację?',
+          description: 'Usunięcie rezerwacji nie dokona wykorzystania próby. Możliwe będzie założenie nowej rezerwacji w miejsce rezerwacji usuwanej. Czy kontynuować?'
+        },
+        finish: {
+          header: 'Czy na pewno zakończyć obecną rezerwację?',
+          description: 'Zakończenie rezerwacji nastąpi natychmiastowo. Nie będzie możliwe odzystaknie wykorzystaniej próby. Czy mimo to kontynuować?'
+        }
+      }
     },
     rg: {
       vmId: 'Identyfikator maszyny wirtualnej',

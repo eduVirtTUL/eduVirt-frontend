@@ -112,6 +112,7 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <FormDescription>{t("requiredFieldDescription")}</FormDescription>
               <FormField
                 control={form.control}
                 name="cause"

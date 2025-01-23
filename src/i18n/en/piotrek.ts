@@ -319,10 +319,11 @@ const reservations = {
     },
     general: {
       id: 'Reservation identifier',
-      teamId: 'Team',
+      team: 'Team',
+      teamId: 'Team identifier',
       teamButton: 'Go to team definition in the eduVirt system',
       teamName: 'Team name',
-      rgId: 'Resource group',
+      rgId: 'Resource group identifier',
       rgButton: 'Go to resource group definition in the eduVirt system',
       rgName: 'Resource group name',
       rgState: 'Resource group state',
@@ -331,7 +332,17 @@ const reservations = {
       end: 'End',
       endInfo: 'Due to the need to shut down resources in the resource group, the actual reservation end will occur earlier. Estimated advance time: {{delayTime}} minutes.',
       finishReservation: 'Finish reservation',
-      removeReservation: 'Remove reservation'
+      removeReservation: 'Remove reservation',
+      confirmation: {
+        delete: {
+          header: 'Are you sure you want to delete the reservation?',
+          description: 'Deleting the reservation will not consume an attempt. It will be possible to create a new reservation in place of the deleted one. Do you want to continue?'
+        },
+        finish: {
+          header: 'Are you sure you want to finish the current reservation?',
+          description: 'Finishing the reservation will happen immediately. It will not be possible to recover the consumed attempt. Do you still want to continue?'
+        }
+      }
     },
     rg: {
       vmId: 'Virtual machine identifier',
