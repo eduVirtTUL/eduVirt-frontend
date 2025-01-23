@@ -117,6 +117,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
           <DialogTitle>{t("reservations.createReservation.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
+          <FormDescription>{t("requiredFieldDescription")}</FormDescription>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormField
               control={form.control}
@@ -167,7 +168,7 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
               name="notificationTime"
               render={({ field }) => (
                 <FormItem className="space-y-4">
-                  <FormLabel>{t("reservations.createReservation.notificationTime")}</FormLabel>
+                  <FormLabel>* {t("reservations.createReservation.notificationTime")}</FormLabel>
                   <FormControl>
                     <Input {...field} min="0" step="1" type={"number"} />
                   </FormControl>

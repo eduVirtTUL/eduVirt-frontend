@@ -24,7 +24,7 @@ import React, {useEffect} from "react";
 import { useUpdateClusterMetricValue } from "@/data/cluster-metrics/useUpdateClusterMetricValue";
 import { TFunction } from "i18next";
 import {
-    convertValue,
+    convertValue, getBaseUnit,
     getBaseUnitValue,
     getUnitsCategory,
     UnitDefinition
@@ -66,13 +66,15 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
   const form = useForm<UpdateClusterMetricValueSchema>({
     resolver: zodResolver(updateClusterMetricValueSchema(t)),
     defaultValues: {
-      value: metric.value,
+      value: getBaseUnitValue(metric.category!, metric.value!),
+      unit: getBaseUnit(metric.category!).symbol
     },
   });
 
   useEffect(() => {
     form.reset({
       value: getBaseUnitValue(metric.category!, metric.value!),
+      unit: getBaseUnit(metric.category!).symbol
     });
   }, [metric, form]);
 
@@ -100,6 +102,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={handleSubmit} className={"space-y-4"}>
+          <FormDescription>{t("requiredFieldDescription")}</FormDescription>
           <FormField
             control={form.control}
             name="value"
