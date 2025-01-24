@@ -183,6 +183,9 @@ const errorKeys = {
   "pod.deletion.exception": "POD posiada aktywne rezerwacje i nie może zostać usunięty",
   "team.deletion.exception": "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
 
+  "ovirt.vnic.profile.currently.in.use":
+      "Vnic profile znajduje się aktualnie w użyciu, co uniemożliwia wykonywania na nim operacji",
+
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
