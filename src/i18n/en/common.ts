@@ -3,6 +3,7 @@ import piotrek from "./piotrek";
 import { Language, Role } from "@/stores/userStore";
 import michal from "./michal";
 import adam from "./adam";
+import bartek from "./bartek";
 
 const menu = {
   courses: "Courses",
@@ -216,6 +217,7 @@ const errorKeys = {
     "The POD has active reservations and cannot be deleted",
   "team.deletion.exception":
     "The team has assigned PODs - to delete the team, remove its assigned PODs first",
+
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
@@ -278,4 +280,5 @@ export default {
   ...piotrek,
   ...michal,
   ...adam,
+  ...bartek,
 };

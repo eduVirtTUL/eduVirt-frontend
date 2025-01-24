@@ -11,12 +11,12 @@ const courseType = {
 const podType = {
     stateful: "Stanowy",
     stateless: "Bezstanowy"
-}
+};
 
 const activeStatus = {
     active: "Aktywny",
     inactive: "Nieaktywny",
-}
+};
 
 const teamsList = {
     title: "Twoje zespoły",
@@ -48,7 +48,7 @@ const joinTeamModal = {
     validation: {
         keyMinLength: "Klucz nie może być krótszy niż 4 znaki",
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
-        keyRegex: "Klucz może zawierać tylko litery i cyfry",
+        keyRegex: "Klucz może zawierać tylko litery, cyfry oraz znaki specjalne: _ -",
     },
     success: "Dołączono do zespołu",
 };
@@ -88,7 +88,7 @@ const podCard = {
     maxRent: "Maksymalna liczba rezerwacji",
     availableRents: "Liczba dostępnych wypożyczeń",
     noRentLimit: "Brak limitu wypożyczeń"
-}
+};
 
 const createCourseModalB = {
     teamBased: {
@@ -98,7 +98,7 @@ const createCourseModalB = {
             teamBased: "W przedmiocie zespołowym zespoły są tworzone ręcznie przez nauczycieli. Studenci pracują wspólnie w zespołach wieloosobowych."
         }
     }
-}
+};
 
 const coursePageB = {
     courseTypeCard: {
@@ -145,7 +145,7 @@ const coursePageB = {
                 }
             },
             removeStudent: "Usuń studenta z przedmiotu",
-        }
+        },
     },
     teachersCard: {
         title: "Nauczyciele",
@@ -159,8 +159,9 @@ const coursePageB = {
         },
         removeStudentFromCourseSuccess: "Student został usunięty z przedmiotu",
         removeStudentFromTeamSuccess: "Student został usunięty z zespołu",
+        statistics: "Statystyki rezerwacji",
     }
-}
+};
 
 const createCourseKeyModal = {
     title: "Utwórz klucz dostępu do przedmiotu",
@@ -177,7 +178,7 @@ const createCourseKeyModal = {
         keyRegex: "Klucz może zawierać tylko litery i cyfry",
     },
     success: "Klucz dostępu do przedmiotu został utworzony pomyślnie",
-}
+};
 
 const statefulPodManagementDrawer = {
     title: "PODy stanowe zespołu ",
@@ -225,7 +226,7 @@ const statelessPodManagementDrawer = {
         confirmText: "Czy na pewno chcesz usunąć ten POD? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
         success: "POD bezstanowy został usunięty pomyślnie",
     },
-}
+};
 
 const soloTeamEditModal = {
     title: "Edycja zespołu",
@@ -269,7 +270,7 @@ const manageTeamUsersModal = {
             email: "Nieprawidłowy format adresu e-mail"
         }
     }
-}
+};
 
 const manageCourseUsersModal = {
     title: "Dodaj studenta do przedmiotu",
@@ -290,7 +291,7 @@ const manageCourseUsersModal = {
             email: "Nieprawidłowy format adresu e-mail"
         }
     }
-}
+};
 
 const manageTeachersModal = {
     title: "Nauczyciele w przedmiocie",
@@ -319,7 +320,7 @@ const manageTeachersModal = {
         add: "Nie udało się dodać nauczyciela do przedmiotu",
         remove: "Nie udało się usunąć nauczyciela z przedmiotu"
     }
-}
+};
 
 const createTeamModal = {
     title: "Tworzenie zespołu",
@@ -359,7 +360,7 @@ const searchByEmailModal = {
     placeholder: "Enter student identifier...",
     description1: "Aby dodać numer indeksu studenta do wyszukiwania, wpisz wartość w pole tekstowe i naciśnij Enter lub Spację. Numer indeksu można usunąć klikając na symbol X.",
     description2: "Aby wprowadzić numery indeksów wielu studentów jednocześnie, należy oddzielić je przecinkiem lub spacją i wkleić ze schowka.",
-}
+};
 
 const podManagement = {
     button: "PODy bezstanowe",
@@ -398,8 +399,7 @@ const podManagement = {
     },
     createSuccess: "PODy bezstanowe zostały utworzone pomyślnie",
     deleteSuccess: "PODy bezstanowe zostały usunięte pomyślnie",
-}
-
+};
 
 export default {
     podType,

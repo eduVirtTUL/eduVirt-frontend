@@ -76,7 +76,10 @@ const JoinTeamModal = () => {
                                 <XCircleIcon/>
                                 {t("cancel")}
                             </Button>
-                            <Button type="submit">
+                            <Button 
+                                type="submit" 
+                                disabled={!form.formState.isValid || !form.formState.isDirty}
+                            >
                                 <CheckIcon/>
                                 {t("join")}
                             </Button>
