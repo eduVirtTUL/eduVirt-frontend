@@ -250,6 +250,7 @@ const resourceGroupEditor = {
   attachNetwork: {
     success: "Interface has been attached",
     error: "Failed to attach interface",
+    noNetworks: "No networks, go to the private segments tab to create one",
     segment: "Segment*",
   },
   detachNetwork: {

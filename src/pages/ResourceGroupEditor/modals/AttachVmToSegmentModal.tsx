@@ -27,7 +27,7 @@ import { useAttachNicToNetwork } from "@/data/resourceGroup/useAttachNicToNetwor
 import { useResourceGroupNetworks } from "@/data/resourceGroup/useResourceGroupNetworks";
 import { useResourceGroupEditorStore } from "@/stores/resourceGroupEditorStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ClipboardPenLineIcon } from "lucide-react";
+import { CircleOff, ClipboardPenLineIcon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -88,55 +88,62 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
             {t("resourceGroupEditor.interfaceList.attachTitle")}
           </DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
-            <FormField
-              control={form.control}
-              name="networkId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {t("resourceGroupEditor.attachNetwork.segment")}
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t(
-                            "resourceGroupEditor.interfaceList.selectPrivateSegment"
-                          )}
-                        ></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {networks?.map((net) => (
-                        <SelectItem
-                          key={net.id}
-                          value={(net.id ?? "").toString()}
-                        >
-                          {net.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <LoadingButton
-              loading={isPending}
-              type="submit"
-              className="self-end"
-            >
-              {t("save")}
-            </LoadingButton>
-          </form>
-        </Form>
+        {networks?.length === 0 ? (
+          <div className="text-muted-foreground flex flex-col items-center gap-2 pt-5">
+            <CircleOff className="w-8 h-8" />
+            <p>{t("resourceGroupEditor.attachNetwork.noNetworks")}</p>
+          </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+              <FormField
+                control={form.control}
+                name="networkId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {t("resourceGroupEditor.attachNetwork.segment")}
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t(
+                              "resourceGroupEditor.interfaceList.selectPrivateSegment"
+                            )}
+                          ></SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {networks?.map((net) => (
+                          <SelectItem
+                            key={net.id}
+                            value={(net.id ?? "").toString()}
+                          >
+                            {net.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <LoadingButton
+                loading={isPending}
+                type="submit"
+                className="self-end"
+              >
+                {t("save")}
+              </LoadingButton>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   );
