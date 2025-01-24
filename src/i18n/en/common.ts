@@ -212,7 +212,7 @@ const errorKeys = {
   "access.key.duplicate": "Duplicate access key",
   "access.key.could.not.be.generated": "The access key could not be generated",
   "teacher.self.modification.exception":
-    "A teacher cannot manage themselves in the course",
+    "A teacher cannot remove themselves from a course",
   "pod.deletion.exception":
     "The POD has active reservations and cannot be deleted",
   "team.deletion.exception":
