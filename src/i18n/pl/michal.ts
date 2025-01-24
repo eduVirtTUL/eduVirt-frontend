@@ -70,8 +70,13 @@ const createVlansRangeModal = {
     }
 }
 
+const ongoingReservations = {
+    title: "Trwające rezerwacje"
+}
+
 export default {
     vnicProfiles,
     vlansRange,
     createVlansRangeModal,
+    ongoingReservations
 };

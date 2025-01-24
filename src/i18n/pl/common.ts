@@ -56,15 +56,15 @@ const general = {
 
   error: {
     "not.authorized":
-      "Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.",
+        "Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.",
     "operation.not.implemented": "Wybrana operacja nie jest jeszcze dostępna.",
     "connection.open.error":
-      "Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.",
+        "Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.",
     "constraint.violation.exception":
-      "Podane dane nie spełniają wymogów składniowych",
+        "Podane dane nie spełniają wymogów składniowych",
     "optimistic.lock.exception": "Wystąpił błąd. Spróbuj ponownie!",
     "internal.server.error":
-      "W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.",
+        "W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.",
   },
 };
 
@@ -91,26 +91,26 @@ const units = {
 const errorKeys = {
   "course.not.found": "Nie znaleziono przedmiotu",
   noNetworkAvailable:
-    "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
+      "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
   "courseLimits.error.value.already.defined":
-    "Przedmiot posiada już tą metrykę",
+      "Przedmiot posiada już tą metrykę",
   "courseLimits.error.value.not.defined": "Przedmiot nie posiada tej metryki",
   "resource.group.not.found": "Nie znaleziono grupy zasobów",
   "resource.group.pool.not.found": "Nie znaleziono puli grup zasobów",
   courseAlreadyExists: "Przedmiot o podanej nazwie już istnieje",
   courseConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   courseMetricNetworksNotSufficient:
-    "W przedmiocie znajduje sie, która posiada więcej sieci niż wartość metryki.",
+      "W przedmiocie znajduje sie, która posiada więcej sieci niż wartość metryki.",
   rgAlreadyExists: "Grupa zasobów o podanej nazwie już istnieje",
   resourceGroupConflict:
-    "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+      "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   resourceGroupPoolAlreadyExists:
-    "Pula grup zasobów o podanej nazwie już istnieje",
+      "Pula grup zasobów o podanej nazwie już istnieje",
   rgPoolConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   virtualMachineAlreadyExists:
-    "Maszyna wirtualna o podanej nazwie już istnieje",
+      "Maszyna wirtualna o podanej nazwie już istnieje",
   virtualMachineClusterMismatch:
-    "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
+      "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
 
   "clusters.error.not.found": "Wybrany klaster nie został odnaleziony",
@@ -217,6 +217,7 @@ const pageTitles = {
   courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
   vlansRanges: "Zakresy VLANów - eduVirt",
   vnicProfiles: "Segmenty prywatne - eduVirt",
+  ongoingReservations: "Trwające rezerwacje - eduVirt",
 };
 
 export default {
