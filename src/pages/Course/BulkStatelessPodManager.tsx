@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
@@ -74,6 +74,10 @@ export function BulkStatelessPodManager({
     const {deleteStatelessPodsBatch} = useDeleteStatelessPodsBatch();
     const [podFilter, setPodFilter] = useState<'all' | 'withPod' | 'withoutPod'>('all');
     const {open: openDialog} = useDialog();
+
+    useEffect(() => {
+        setSelectedTeams([]);
+    }, [selectedPool]);
 
     const handleOpenChange = (open: boolean) => {
         if (!open) {
