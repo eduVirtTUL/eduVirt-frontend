@@ -1,9 +1,12 @@
 const courseType = {
-    solo: "Solo",
+    solo: "Jednoosobowy",
+    soloLowerCase: "jednoosobowy",
+    teamBasedLowerCase: "zespołowy",
     teamBased: "Zespołowy",
-    soloDescription: "W przedmiocie typu 'Solo', studenci pracują indywidualnie (zespoły są maksymalnie jednoosobowe)",
-    teamBasedDescription: "W przedmiocie zespołowym, studenci pracują w zespołach (zespoły są wieloosobowe)",
-}
+    soloDescription: "W tym typie przedmiotu studenci pracują indywidualnie - każdy student stanowi osobny jednoosobowy zespół.",
+    teamBasedDescription: "W tym typie przedmiotu studenci pracują grupowo - tworzone przez nauczyciela zespoły składają się z wielu osób.",
+    cannotBeChanged: "Typ przedmiotu nie może zostać zmieniony po utworzeniu przedmiotu.",
+};
 
 const podType = {
     stateful: "Stanowy",
@@ -56,9 +59,10 @@ const teamDetails = {
         button: "Opuść zespół",
         confirmHeader: "Opuść zespół",
         confirmText: "Czy na pewno chcesz opuścić ten zespół? Po opuszczeniu zespołu stracisz możliwość dokonywania rezerwacji PODów przypisanych do tego zespołu.",
+        success: "Opuszczono zespół pomyślnie",
     },
     detailsCard: {
-        title: "Szczegóły zespołu",
+        title: "Szczegóły",
         courseName: "Przedmiot",
         courseDescription: "Opis przedmiotu",
         courseStatus: "Status zespołu",
@@ -66,9 +70,9 @@ const teamDetails = {
     },
     course: "Przedmiot:",
     status: "Status:",
-    teamMembers: "Studenci w zespole",
+    teamMembers: "Studenci",
     teamEmpty: "Zespół jest pusty",
-    assignedPods: "PODy przypisane do zespołu",
+    assignedPods: "Przypisane PODy",
     noPods: "Ten zespół nie posiada żadnych przypisanych PODów",
     error: {
         notInTeam: "Aby wyświetlić szczegóły zespołu, musisz być jego członkiem",
@@ -90,8 +94,8 @@ const createCourseModalB = {
     teamBased: {
         title: "Typ przedmiotu",
         description: {
-            solo: "Utworzony przedmiot będzie typu 'Solo'. Zespoły tworzone będą automatycznie w miarę dołączania studentów oraz będą maksymalnie jednoosobowe.",
-            teamBased: "Utworzony przedmiot będzie typu 'Zespołowy'. Zespoły będą tworzone ręcznie oraz będą minimum dwuosobowe.",
+            solo: "W przedmiocie jednoosobowym zespoły są tworzone automatycznie podczas dołączania studentów. Każdy student pracuje indywidualnie w osobnym zespole.",
+            teamBased: "W przedmiocie zespołowym zespoły są tworzone ręcznie przez nauczycieli. Studenci pracują wspólnie w zespołach wieloosobowych."
         }
     }
 }
@@ -108,6 +112,7 @@ const coursePageB = {
     teamsTable: {
         button: "Zespoły",
         title: "Zespoły przedmiotu",
+        back: "Powrót do przedmiotu",
         noTeams: "Brak zespołów",
         students: "Dodaj studenta",
         createTeam: "Utwórz zespół",
@@ -118,7 +123,7 @@ const coursePageB = {
             member: "Student",
             members: "Studenci",
             noMembers: "Zespół jest pusty",
-            maxSize: "Rozmiar",
+            maxSize: "Maks. liczba studentów",
             operations: "Operacje",
             accessKey: {
                 label: "Klucz dostępu",
@@ -149,7 +154,7 @@ const coursePageB = {
     },
     courseTeamsPage: {
         searchByEmail: {
-            button: "Wyszukaj studentów po numerze indeksu",
+            button: "Wyszukaj studentów po numerach indeksu",
             clear: "Wyczyść wyszukiwanie",
         },
         removeStudentFromCourseSuccess: "Student został usunięty z przedmiotu",
@@ -159,18 +164,19 @@ const coursePageB = {
 
 const createCourseKeyModal = {
     title: "Utwórz klucz dostępu do przedmiotu",
-    keyLabel: "Klucz",
+    keyLabel: "Klucz dostępu",
     description: {
         title: "Wymagania:",
-        line1: "Klucz dostępu musi być unikalny wśród wszystkich przedmiotów",
-        line2: "Klucz dostępu musi mieć długość od 4 do 20 znaków (wyłącznie litery i cyfry)",
+        line2: "Klucz dostępu musi być unikalny wśród wszystkich przedmiotów",
+        line3: "Klucz dostępu musi mieć długość od 4 do 20 znaków (wyłącznie litery, cyfry i znaki specjalne _ -)",
+        line1: "Klucz dostępu jest niemodyfikowalny",
     },
     validation: {
         keyMinLength: "Klucz nie może być krótszy niż 4 znaki",
         keyMaxLength: "Klucz nie może być dłuższy niż 20 znaków",
         keyRegex: "Klucz może zawierać tylko litery i cyfry",
     },
-    success: "Klucz dostępu do przedmiotu został utworzony",
+    success: "Klucz dostępu do przedmiotu został utworzony pomyślnie",
 }
 
 const statefulPodManagementDrawer = {
@@ -180,11 +186,11 @@ const statefulPodManagementDrawer = {
     createPod: "Utwórz POD",
     success: "POD stanowy został utworzony pomyślnie",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
-    noResourceGroups: "Nie znaleziono żadnych grup zasobów w tym przedmiocie",
+    noResourceGroups: "Ten przedmiot nie posiada żadnych stanowych grup zasobów",
     resourceGroup: "Grupa zasobów",
     maxRent: "Maksymalna liczba rezerwacji PODa",
     alerts: {
-        hasAssociatedPod: "Ta grupa zasobów posiada przypisany POD",
+        hasAssociatedPod: "Ta grupa zasobów jest już przypisana do PODa",
         noVMs: "Ta grupa zasobów nie posiada żadnych maszyn wirtualnych.",
     },
     delete: {
@@ -193,6 +199,12 @@ const statefulPodManagementDrawer = {
         confirmText: "Czy na pewno chcesz usunąć ten POD stanowy? Zespół straci możliwość dokonywania rezerwacji zasobów przypisanych do tego PODa.",
         success: "POD stanowy został usunięty pomyślnie",
     },
+    addMaxRentTimeModal: {
+        title: "Dokończ tworzenie PODa stanowego",
+        description: "Ustaw maksymalną liczbę rezerwacji, które studenci mogą dokonać w ramach tworzonego PODa. Wartość ta nie może ulec zmianie.",
+        maxRent: "Maksymalna liczba rezerwacji",
+        success: "Maksymalna liczba rezerwacji została zaktualizowana pomyślnie",
+    }
 };
 
 const statelessPodManagementDrawer = {
@@ -202,10 +214,10 @@ const statelessPodManagementDrawer = {
     createPod: "Utwórz POD",
     success: "POD bezstanowy został utworzony pomyślnie",
     noPods: "Zespół nie posiada żadnych przypisanych PODów",
-    noResourceGroupPools: "Nie znaleziono żadnych pul grup zasobów w tym przedmiocie",
+    noResourceGroupPools: "Ten przedmiot nie posiada żadnych pul grup zasobów",
     resourceGroupPool: "Pula grup zasobów",
     alerts: {
-        hasAssociatedPod: "Ta pula grup zasobów posiada przypisany POD",
+        hasAssociatedPod: "Ta pula grup zasobów jest już przypisana do PODa",
     },
     delete: {
         button: "Usuń",
@@ -224,12 +236,10 @@ const soloTeamEditModal = {
 
 const editTeamModal = {
     title: "Edycja zespołu",
-    name: "Nazwa Zespołu",
-    nameDescription: "Wybierz unikalną nazwę dla zespołu",
-    maxSize: "Maksymalny Rozmiar",
-    maxSizeDescription: "Ustaw maksymalną liczbę członków zespołu",
-    active: "Status Aktywności",
-    activeDescription: "Gdy zespół jest dezaktywowany, studenci nie mogą dołącząć do zespołu oraz rezerwować przypisane do niego zasoby",
+    name: "Nazwa zespołu",
+    nameDescription: "Nowa nazwa zespołu musi być unikalna w ramach przedmiotu",
+    maxSize: "Maksymalna liczba studentów",
+    maxSizeDescription: "Maksymalna liczba studentów w zespole nie może być mniejsza niż obecna liczba studentów",
     success: "Zespół został zaktualizowany pomyślnie",
     validation: {
         teamNameMin: "Nazwa zespołu jest wymagana",
@@ -249,10 +259,15 @@ const manageTeamUsersModal = {
         title: "Usuń studenta",
         title2: "z zespołu",
         description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego zespołu. Czy na pewno chcesz usunąć tego studenta z zespołu?",
+        success: "Student został usunięty z zespołu pomyślnie",
     },
     addUser: {
         email: "Adres e-mail",
-        description: "Wprowadź adres e-mail studenta, którego chcesz dodać do zespołu",
+        description: "Adres e-mail studenta, którego ma zostać dodany do zespołu",
+        success: "Student został dodany do zespołu pomyślnie",
+        validation:{
+            email: "Nieprawidłowy format adresu e-mail"
+        }
     }
 }
 
@@ -262,13 +277,18 @@ const manageCourseUsersModal = {
     add: "Dodaj",
     noUsers: "Ten przedmiot nie posiada żadnych studentów",
     delete: {
-        title: "Usuń studenta z przedmiotu",
-        title2: "z zespołu",
+        title: "Usuń studenta",
+        title2: "z przedmiotu",
         description: "Akcja ta spowoduje brak możliwości dokonywania rezerwacji zasobów przypisanych do tego studenta. Czy na pewno chcesz usunąć tego studenta z przedmiotu?",
+        success: "Student został usunięty z przedmiotu pomyślnie",
     },
     addUser: {
         email: "Adres e-mail",
-        description: "Wprowadź adres e-mail studenta, którego chcesz dodać do przedmiotu",
+        description: "Adres e-mail studenta, którego ma zostać dodany do przedmiotu",
+        success: "Student został dodany do przedmiotu pomyślnie",
+        validation:{
+            email: "Nieprawidłowy format adresu e-mail"
+        }
     }
 }
 
@@ -282,10 +302,13 @@ const manageTeachersModal = {
         email: "Adres e-mail",
         description: "Wprowadź adres e-mail nauczyciela, którego chcesz dodać do przedmiotu",
         success: "Nauczyciel został dodany do przedmiotu",
+        validation:{
+            email: "Nieprawidłowy format adresu e-mail"
+        }
     },
     delete: {
-        title: "Usuń nauczyciela {user} z przedmiotu {course}",
-        description: "Czy na pewno chcesz usunąć tego nauczyciela z przedmiotu? Spowoduje to utratę dostępu do zarządzania przedmiotem dla tego użytkownika.",
+        title: "Usuń nauczyciela z przedmiotu",
+        description: "Akcja ta spowoduje to utratę dostępu do zarządzania przedmiotem dla tego nauczyciela. Czy na pewno chcesz usunąć tego nauczyciela z przedmiotu?",
         success: "Nauczyciel został usunięty z przedmiotu",
     },
     success: {
@@ -300,14 +323,16 @@ const manageTeachersModal = {
 
 const createTeamModal = {
     title: "Tworzenie zespołu",
-    singleTab: "Pojedynczy zespół",
-    bulkTab: "Wiele zespołów",
-    name: "Nazwa zespołu",
-    key: "Klucz do zespołu",
+    singleTab: "Ręczne",
+    bulkTab: "Automatyczne",
+    name: "Nazwa",
+    key: "Klucz dostępu",
+    keyDescription: "Pusta wartość tego pola spowoduje wygenerowanie losowego, unikalnego klucza dostępu do zespołu",
     maxSize: "Maksymalna liczba studentów w zespole",
     prefix: "Prefiks nazwy zespołu",
     prefixDescription: "Nazwy zespołów zostaną utworzone z podanym prefiksem i kolejnym numerem, np. 'PodanyPrefiks-1'",
     teamCount: "Liczba utworzonych zespołów",
+    keyCreatedAutomatically: "Unikalny klucz dostępu do każdego z utworzonych automatycznie zespołów zostanie wygenerowany automatycznie",
     validation: {
         teamNameMin: "Nazwa zespołu jest wymagana",
         teamNameMax: "Nazwa zespołu nie może przekraczać 50 znaków",
@@ -322,7 +347,10 @@ const createTeamModal = {
         prefixMin: "Prefiks jest wymagany",
         prefixMax: "Prefiks nie może przekraczać 40 znaków",
         prefixRegex: "Prefiks może zawierać tylko litery, cyfry",
-    }
+    },
+    success: "Zespół został utworzony pomyślnie",
+    batchSuccess: "Zespoły zostały utworzone pomyślnie",
+    deleteSuccess: "Zespół został usunięty pomyślnie",
 };
 
 const searchByEmailModal = {
@@ -334,7 +362,7 @@ const searchByEmailModal = {
 }
 
 const podManagement = {
-    button: "PODy bezstanowe w przedmiocie",
+    button: "PODy bezstanowe",
     title: "Zarządzanie PODami bezstanowymi",
     resourcePools: "Pule zasobów",
     search: "Szukaj zespołów...",
@@ -343,7 +371,7 @@ const podManagement = {
     columns: {
         name: "Nazwa zespołu",
         members: "Student",
-        status: "Czy istnieje POD"
+        status: "Czy posiada POD"
     },
     status: {
         hasPod: "Tak",
@@ -351,15 +379,15 @@ const podManagement = {
     },
     noTeams: "Brak zespołów do wyświetlenia",
     loading: "Ładowanie...",
-    noResourceGroups: "Brak dostępnych pul zasobów",
-    searchPlaceholder: "Szukaj po imieniu, nazwisku lub emailu...",
+    noResourceGroupPools: "Ten przedmiot nie posiada żadnych pul grup zasobów",
+    searchPlaceholder: "Szukaj po imieniu, nazwisku lub e-mailu...",
     filterByPod: "Filtruj po statusie",
     filters: {
         all: "Wszystkie zespoły",
         withPod: "Zespoły z PODem",
         withoutPod: "Zespoły bez PODa"
     },
-    selectPoolPrompt: "Wybierz pulę grup zasobów z listy po lewej stronie",
+    selectPoolPrompt: "Wybierz pulę grup zasobów z listy po lewej",
     confirmCreate: {
         description: "Czy na pewno chcesz utworzyć PODy bezstanowe dla zaznaczonych zespołów z wybraną pulą grup zasobów?",
         title: "Tworzenie PODów bezstanowych"

@@ -195,12 +195,15 @@ const CreateCourseModal: React.FC = () => {
                   <div className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">
-                        {t("createCourseB.teamBased.title")}
+                        {t("createCourseB.teamBased.title")}: {field.value === "TEAM_BASED" ? t("courseType.teamBasedLowerCase") : t("courseType.soloLowerCase")}
                       </FormLabel>
-                      <FormDescription className="">
+                      <FormDescription>
                         {field.value === "TEAM_BASED"
                           ? t("createCourseB.teamBased.description.teamBased")
                           : t("createCourseB.teamBased.description.solo")}
+                      </FormDescription>
+                      <FormDescription>
+                        {t("courseType.cannotBeChanged")}
                       </FormDescription>
                     </div>
                     <FormControl>

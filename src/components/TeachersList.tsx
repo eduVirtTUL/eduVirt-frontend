@@ -2,7 +2,12 @@ import { useGetTeachersForCourse } from "@/data/course/teachers/useGetTeachersFo
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "./ui/skeleton";
 
-export function TeachersList({ courseId }: { courseId: string }) {
+interface TeachersListProps {
+    courseId: string;
+    readOnly?: boolean;
+}
+
+const TeachersList: React.FC<TeachersListProps> = ({ courseId }) => {
     const { teachers, isLoading } = useGetTeachersForCourse(courseId);
     const { t } = useTranslation();
 

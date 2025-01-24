@@ -319,6 +319,19 @@ export type CreateCourseDtoCourseTypeEnum = typeof CreateCourseDtoCourseTypeEnum
 /**
  * 
  * @export
+ * @interface CreateCourseKeyDto
+ */
+export interface CreateCourseKeyDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCourseKeyDto
+     */
+    'keyValue'?: string;
+}
+/**
+ * 
+ * @export
  * @interface CreateMaintenanceIntervalDto
  */
 export interface CreateMaintenanceIntervalDto {
@@ -2230,15 +2243,15 @@ export const AccessKeyControllerApiAxiosParamCreator = function (configuration?:
         /**
          * 
          * @param {string} courseId 
-         * @param {string} courseKey 
+         * @param {CreateCourseKeyDto} createCourseKeyDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCourseKey: async (courseId: string, courseKey: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createCourseKey: async (courseId: string, createCourseKeyDto: CreateCourseKeyDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courseId' is not null or undefined
             assertParamExists('createCourseKey', 'courseId', courseId)
-            // verify required parameter 'courseKey' is not null or undefined
-            assertParamExists('createCourseKey', 'courseKey', courseKey)
+            // verify required parameter 'createCourseKeyDto' is not null or undefined
+            assertParamExists('createCourseKey', 'createCourseKeyDto', createCourseKeyDto)
             const localVarPath = `/access-keys/course/{courseId}`
                 .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2256,15 +2269,14 @@ export const AccessKeyControllerApiAxiosParamCreator = function (configuration?:
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (courseKey !== undefined) {
-                localVarQueryParameter['courseKey'] = courseKey;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createCourseKeyDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2358,12 +2370,12 @@ export const AccessKeyControllerApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @param {string} courseId 
-         * @param {string} courseKey 
+         * @param {CreateCourseKeyDto} createCourseKeyDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCourseKey(courseId: string, courseKey: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseAccessKeyDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createCourseKey(courseId, courseKey, options);
+        async createCourseKey(courseId: string, createCourseKeyDto: CreateCourseKeyDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseAccessKeyDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCourseKey(courseId, createCourseKeyDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AccessKeyControllerApi.createCourseKey']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2405,12 +2417,12 @@ export const AccessKeyControllerApiFactory = function (configuration?: Configura
         /**
          * 
          * @param {string} courseId 
-         * @param {string} courseKey 
+         * @param {CreateCourseKeyDto} createCourseKeyDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCourseKey(courseId: string, courseKey: string, options?: RawAxiosRequestConfig): AxiosPromise<CourseAccessKeyDto> {
-            return localVarFp.createCourseKey(courseId, courseKey, options).then((request) => request(axios, basePath));
+        createCourseKey(courseId: string, createCourseKeyDto: CreateCourseKeyDto, options?: RawAxiosRequestConfig): AxiosPromise<CourseAccessKeyDto> {
+            return localVarFp.createCourseKey(courseId, createCourseKeyDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2443,13 +2455,13 @@ export class AccessKeyControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} courseId 
-     * @param {string} courseKey 
+     * @param {CreateCourseKeyDto} createCourseKeyDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AccessKeyControllerApi
      */
-    public createCourseKey(courseId: string, courseKey: string, options?: RawAxiosRequestConfig) {
-        return AccessKeyControllerApiFp(this.configuration).createCourseKey(courseId, courseKey, options).then((request) => request(this.axios, this.basePath));
+    public createCourseKey(courseId: string, createCourseKeyDto: CreateCourseKeyDto, options?: RawAxiosRequestConfig) {
+        return AccessKeyControllerApiFp(this.configuration).createCourseKey(courseId, createCourseKeyDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -24,6 +24,7 @@ const singleTeamSchema = z.object({
         // eslint-disable-next-line no-useless-escape
         .regex(/^[a-zA-Z0-9\s\_\-]+$/, t("createTeam.validation.teamNameRegex")),
     key: z.string()
+        .min(4, t("createTeam.validation.keyMinLength"))
         .max(20, t("createTeam.validation.keyMaxLength"))
         // eslint-disable-next-line no-useless-escape
         .regex(/^[a-zA-Z0-9\_\-]*$/, t("createTeam.validation.keyRegex"))
@@ -88,24 +89,20 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
     }
 
     const onBulkSubmit = async (data: BulkTeamForm) => {
-        try {
-            await createBatchTeams({
-                courseId,
-                prefix: data.prefix,
-                teamSize: data.teamSize,
-                numberOfTeams: data.numberOfTeams
-            });
-            setOpen(false);
-            bulkForm.reset();
-        } catch (error) {
-            console.error(error);
-        }
+        await createBatchTeams({
+            courseId,
+            prefix: data.prefix,
+            teamSize: data.teamSize,
+            numberOfTeams: data.numberOfTeams
+        });
+        setOpen(false);
+        bulkForm.reset();
     }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="secondary">
+                <Button variant="default">
                     <Plus className="h-4 w-4"/>
                     {t("coursePageB.teamsTable.createTeam")}
                 </Button>
@@ -122,13 +119,15 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
 
                     <TabsContent value="single">
                         <Form {...singleForm}>
-                            <form onSubmit={singleForm.handleSubmit(onSingleSubmit)} className="space-y-6">
+                                        <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+                            
+                            <form onSubmit={singleForm.handleSubmit(onSingleSubmit)} className="space-y-4 mt-4">
                                 <FormField
                                     control={singleForm.control}
                                     name="teamName"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>{t('createTeam.name')}</FormLabel>
+                                            <FormLabel>{t('createTeam.name')}*</FormLabel>
                                             <FormControl>
                                                 <Input {...field}/>
                                             </FormControl>
@@ -145,6 +144,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                                             <FormControl>
                                                 <Input {...field}/>
                                             </FormControl>
+                                            <FormDescription>{t('createTeam.keyDescription')}</FormDescription>
                                             <FormMessage/>
                                         </FormItem>
                                     )}
@@ -154,7 +154,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                                     name="maxSize"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>{t('createTeam.maxSize')}</FormLabel>
+                                            <FormLabel>{t('createTeam.maxSize')}*</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
@@ -191,13 +191,16 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
 
                     <TabsContent value="bulk">
                         <Form {...bulkForm}>
-                            <form onSubmit={bulkForm.handleSubmit(onBulkSubmit)} className="space-y-6">
+                        <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+                        <FormDescription className="mt-2">{t("createTeam.keyCreatedAutomatically")}</FormDescription>
+
+                            <form onSubmit={bulkForm.handleSubmit(onBulkSubmit)} className="space-y-6 mt-4">
                                 <FormField
                                     control={bulkForm.control}
                                     name="prefix"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>{t('createTeam.prefix')}</FormLabel>
+                                            <FormLabel>{t('createTeam.prefix')}*</FormLabel>
                                             <FormControl>
                                                 <Input {...field}/>
                                             </FormControl>
@@ -213,7 +216,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                                     name="numberOfTeams"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>{t('createTeam.teamCount')}</FormLabel>
+                                            <FormLabel>{t('createTeam.teamCount')}*</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
@@ -232,7 +235,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                                     name="teamSize"
                                     render={({field}) => (
                                         <FormItem>
-                                            <FormLabel>{t('createTeam.maxSize')}</FormLabel>
+                                            <FormLabel>{t('createTeam.maxSize')}*</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
@@ -269,8 +272,7 @@ const CreateTeamModal = ({courseId}: CreateTeamModalProps) => {
                 </Tabs>
             </DialogContent>
         </Dialog>
-    )
-        ;
+    );
 };
 
 export default CreateTeamModal;

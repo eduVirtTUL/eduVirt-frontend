@@ -154,7 +154,7 @@ const coursePage = {
   resetAction: {
     confirmation: "Czy na pewno chcesz zresetować ten przedmiot?",
     confirmationText:
-      "Wysztkie zespoły, pody oraz rezerwacje zostaną usunięte. Grupy zasobów i pulę pozostaną bez zmian. Tej operacji nie można cofnąć.",
+      "Wszystkie zespoły, pody oraz rezerwacje zostaną usunięte. Grupy zasobów i pulę pozostaną bez zmian. Tej operacji nie można cofnąć.",
     success: "Przedmiot został zresetowany",
     error: "Nie udało się zresetować przedmiotu",
   },

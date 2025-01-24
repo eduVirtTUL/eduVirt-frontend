@@ -22,7 +22,7 @@ export const useRemoveStudentFromTeam = () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM, teamId] });
       queryClient.invalidateQueries({ queryKey: [keys.USER] });
       queryClient.invalidateQueries({ queryKey: [keys.COURSE] });
-      toast.success(t("coursePageB.courseTeamsPage.removeStudentFromTeamSuccess"));
+      toast.success(t("manageTeamUsers.delete.success"));
     },
   });
 

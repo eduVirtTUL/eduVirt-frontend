@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useLeaveTeamOrCourse = () => {
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export const useLeaveTeamOrCourse = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Opuszczono zespół pomyślnie");
+      toast.success(t("teamDetails.leaveTeam.success"));
     },
   });
 

@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
 import { EmailDto } from "@/api";
+import { t } from "i18next";
 
 export const useAddStudentToCourse = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const useAddStudentToCourse = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Dodano studenta do przedmiotu");
+      toast.success(t("manageCourseUsers.addUser.success"));
     },
   });
 

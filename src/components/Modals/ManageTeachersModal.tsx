@@ -1,29 +1,22 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAddTeachersToCourse } from "@/data/course/teachers/useAddTeachersToCourse";
-import { useRemoveTeachersFromCourse } from "@/data/course/teachers/useRemoveTeachersFromCourse";
-import { useGetTeachersForCourse } from "@/data/course/teachers/useGetTeachersForCourse";
-import { XCircleIcon, UserMinusIcon, UserPlus } from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDialog } from "@/stores/dialogStore";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {useAddTeachersToCourse} from "@/data/course/teachers/useAddTeachersToCourse";
+import {useRemoveTeachersFromCourse} from "@/data/course/teachers/useRemoveTeachersFromCourse";
+import {useGetTeachersForCourse} from "@/data/course/teachers/useGetTeachersForCourse";
+import {UserMinusIcon, UserPlus, XCircleIcon} from "lucide-react";
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useDialog} from "@/stores/dialogStore";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-import { UserDto } from "@/api";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {UserDto} from "@/api";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import { t } from "i18next";
 
 interface ManageTeachersModalProps {
     courseId: string;
@@ -31,17 +24,17 @@ interface ManageTeachersModalProps {
 }
 
 const addTeacherSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    email: z.string().email(t("manageTeachers.addTeacher.validation.email")),
 });
 
 type AddTeacherForm = z.infer<typeof addTeacherSchema>;
 
-export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModalProps) {
-    const { isOpen, close, open } = useDialog();
-    const { t } = useTranslation();
-    const { removeTeacherFromCourse } = useRemoveTeachersFromCourse();
-    const { addTeacherToCourse } = useAddTeachersToCourse();
-    const { teachers, isLoading } = useGetTeachersForCourse(courseId);
+export function ManageTeachersModal({courseId, courseName}: ManageTeachersModalProps) {
+    const {isOpen, close, open} = useDialog();
+    const {t} = useTranslation();
+    const {removeTeacherFromCourse} = useRemoveTeachersFromCourse();
+    const {addTeacherToCourse} = useAddTeachersToCourse();
+    const {teachers, isLoading} = useGetTeachersForCourse(courseId);
     const [activeTab, setActiveTab] = useState("current");
     const [teacherToRemove, setTeacherToRemove] = useState<UserDto | null>(null);
 
@@ -59,30 +52,22 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
 
     const handleConfirmRemove = async () => {
         if (!teacherToRemove?.email) return;
-        
-        try {
-            await removeTeacherFromCourse({ 
-                courseId, 
-                email: teacherToRemove.email 
-            });
-            setTeacherToRemove(null);
-            close();
-        } catch (error) {
-            console.error(error);
-        }
+
+        await removeTeacherFromCourse({
+            courseId,
+            email: teacherToRemove.email
+        });
+        setTeacherToRemove(null);
+        close();
     };
 
     const onSubmit = async (values: AddTeacherForm) => {
-        try {
-            await addTeacherToCourse({ 
-                courseId, 
-                email: values.email 
-            });
-            form.reset();
-            close();
-        } catch (error) {
-            console.error(error);
-        }
+        await addTeacherToCourse({
+            courseId,
+            email: values.email
+        });
+        form.reset();
+        close();
     };
 
     return (
@@ -115,13 +100,13 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
                             ) : (
                                 <div className="space-y-2">
                                     {teachers.map((teacher) => (
-                                        <div 
-                                            key={teacher.id} 
+                                        <div
+                                            key={teacher.id}
                                             className="flex items-center justify-between p-2 border rounded-lg"
                                         >
                                             <div className="flex flex-col">
                                                 <Badge variant="secondary">
-                                                    {teacher.firstName && teacher.lastName 
+                                                    {teacher.firstName && teacher.lastName
                                                         ? `${teacher.firstName} ${teacher.lastName}`
                                                         : teacher.userName || teacher.email}
                                                 </Badge>
@@ -136,7 +121,7 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
                                                 size="sm"
                                                 onClick={() => handleRemoveClick(teacher)}
                                             >
-                                                <UserMinusIcon className="h-4 w-4 mr-2" />
+                                                <UserMinusIcon className="h-4 w-4 mr-2"/>
                                                 {t("manageTeachers.remove")}
                                             </Button>
                                         </div>
@@ -147,20 +132,21 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
 
                         <TabsContent value="add" className="space-y-4">
                             <Form {...form}>
+                                <FormDescription>{t("requiredFieldDescription")}</FormDescription>
                                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                                     <FormField
                                         control={form.control}
                                         name="email"
-                                        render={({ field }) => (
+                                        render={({field}) => (
                                             <FormItem>
-                                                <FormLabel>{t("manageTeachers.addTeacher.email")}</FormLabel>
+                                                <FormLabel>{t("manageTeachers.addTeacher.email")}*</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="teacher@example.com" {...field} />
                                                 </FormControl>
                                                 <FormDescription>
                                                     {t("manageTeachers.addTeacher.description")}
                                                 </FormDescription>
-                                                <FormMessage />
+                                                <FormMessage/>
                                             </FormItem>
                                         )}
                                     />
@@ -171,15 +157,15 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
 
                     <div className="flex justify-between">
                         <Button variant="secondary" onClick={() => close()}>
-                            <XCircleIcon className="h-4 w-4 mr-2" />
+                            <XCircleIcon className="h-4 w-4 mr-2"/>
                             {t("cancel")}
                         </Button>
                         {activeTab === "add" && (
-                            <Button 
+                            <Button
                                 onClick={form.handleSubmit(onSubmit)}
                                 disabled={!form.formState.isValid}
                             >
-                                <UserPlus className="h-4 w-4 mr-2" />
+                                <UserPlus className="h-4 w-4 mr-2"/>
                                 {t("manageTeachers.add")}
                             </Button>
                         )}
@@ -189,17 +175,8 @@ export function ManageTeachersModal({ courseId, courseName }: ManageTeachersModa
 
             {teacherToRemove && (
                 <ConfirmationDialog
-                    header={t("manageTeachers.delete.title", {
-                        user: teacherToRemove.firstName && teacherToRemove.lastName 
-                            ? `${teacherToRemove.firstName} ${teacherToRemove.lastName}`
-                            : teacherToRemove.userName || teacherToRemove.email,
-                        course: courseName
-                    })}
-                    text={t("manageTeachers.delete.description", {
-                        user: teacherToRemove.firstName && teacherToRemove.lastName 
-                            ? `${teacherToRemove.firstName} ${teacherToRemove.lastName}`
-                            : teacherToRemove.userName || teacherToRemove.email
-                    })}
+                    header={t("manageTeachers.delete.title")}
+                    text={t("manageTeachers.delete.description")}
                     onConfirm={handleConfirmRemove}
                 />
             )}
