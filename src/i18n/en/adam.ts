@@ -250,6 +250,7 @@ const resourceGroupEditor = {
   attachNetwork: {
     success: "Interface has been attached",
     error: "Failed to attach interface",
+    segment: "Segment*",
   },
   detachNetwork: {
     success: "Interface has been detached",

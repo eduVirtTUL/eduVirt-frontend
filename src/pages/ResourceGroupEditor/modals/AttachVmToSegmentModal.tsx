@@ -10,6 +10,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -89,13 +90,14 @@ const AttachVmToSegmentModal: React.FC<AttachVmToSegmentModalProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
             <FormField
               control={form.control}
               name="networkId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    {t("resourceGroupEditor.interfaceList.segment")}
+                    {t("resourceGroupEditor.attachNetwork.segment")}
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
