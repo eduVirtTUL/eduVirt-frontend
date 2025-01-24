@@ -217,8 +217,6 @@ const errorKeys = {
     "The POD has active reservations and cannot be deleted",
   "team.deletion.exception":
     "The team has assigned PODs - to delete the team, remove its assigned PODs first",
-  ".vnic.profile.currently.in.use":
-      "Vnic profile is currently in use, which prohibits performing operations on it",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
