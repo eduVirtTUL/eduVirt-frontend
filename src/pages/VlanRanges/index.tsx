@@ -12,7 +12,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import {useRemoveVlansRange} from "@/data/network/vlan/useRemoveVlansRange";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import React from "react";
 import {RouteHandle} from "@/AuthGuard";
 import {useTranslation} from "react-i18next";
@@ -21,6 +21,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 
 const VlanRangesPage: React.FC = () => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     const {vlansRanges, isLoading} = useVlansRanges();
     const {open} = useDialog();
@@ -37,15 +38,12 @@ const VlanRangesPage: React.FC = () => {
             <>
                 <CreateVlansRangeModal/>
 
-                <div>
-                    <Button asChild variant="outline" size="icon">
-                        <Link to={"/networks"}>
-                            <Undo2/>
-                        </Link>
+                <div className="flex justify-start">
+                    <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
+                        <Undo2/>
                     </Button>
+                    <PageHeader title={t("vlansRange.title")}/>
                 </div>
-
-                <PageHeader title={t("vlansRange.title")}/>
 
                 <div className="pb-5">
                     <Button
@@ -69,15 +67,12 @@ const VlanRangesPage: React.FC = () => {
         <>
             <CreateVlansRangeModal/>
 
-            <div>
-                <Button asChild variant="outline" size="icon">
-                    <Link to={"/networks"}>
-                        <Undo2/>
-                    </Link>
+            <div className="flex justify-start">
+                <Button variant="outline" onClick={() => (navigate(-1))} size="icon" className="mr-5">
+                    <Undo2/>
                 </Button>
+                <PageHeader title={t("vlansRange.title")}/>
             </div>
-
-            <PageHeader title={t("vlansRange.title")}/>
 
             <div className="pb-5">
                 <Button
@@ -118,5 +113,5 @@ export const handle: RouteHandle = {
 };
 
 export const meta = () => {
-    return [{ title: i18next.t("pageTitles.vlansRanges") }];
+    return [{title: i18next.t("pageTitles.vlansRanges")}];
 };
