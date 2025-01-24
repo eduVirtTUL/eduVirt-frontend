@@ -83,6 +83,7 @@ export type ErrorKey =
   | "teacher.self.modification.exception"
   | "pod.deletion.exception"
   | "team.deletion.exception"
+  | "ovirt.vnic.profile.currently.in.use"
 
 export type ErrorResponse = {
   message: string;
