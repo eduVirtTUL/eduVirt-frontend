@@ -19,7 +19,7 @@ import {keys} from "@/data/keys";
 import {useCreateStatelessPodsBatch} from "@/data/pods/useCreateStatelessPodsBatch";
 import {useDeleteStatelessPodsBatch} from "@/data/pods/useDeleteStatelessPodsBatch";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {ArrowDownIcon, ArrowUpIcon, Plus, Search, Trash2} from "lucide-react";
+import {ArrowDownIcon, ArrowUpIcon, CircleOffIcon, Plus, Search, Trash2} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 
@@ -277,7 +277,7 @@ export function BulkStatelessPodManager({
                             <ScrollArea className="h-[60vh]">
                                 {isLoadingPools ? (
                                     <ResourcePoolsSkeleton/>
-                                ) : (
+                                ) : pools && pools.length > 0 ? (
                                     <RadioGroup value={selectedPool || ""} onValueChange={setSelectedPool}>
                                         {pools?.map(pool => (
                                             <div
@@ -297,6 +297,12 @@ export function BulkStatelessPodManager({
                                             </div>
                                         ))}
                                     </RadioGroup>
+                                ) : (
+                                    <div
+                                        className="h-full flex flex-col items-center justify-center gap-2 text-muted-foreground text-center">
+                                        <CircleOffIcon className="h-8 w-8"/>
+                                        <span>{t("podManagement.noResourceGroupPools")}</span>
+                                    </div>
                                 )}
                             </ScrollArea>
                         </div>

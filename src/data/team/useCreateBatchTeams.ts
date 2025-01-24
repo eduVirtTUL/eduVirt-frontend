@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
 import { CreateTeamBatchDto, TeamWithKeyDto } from "@/api";
+import { t } from "i18next";
 
 export const useCreateBatchTeams = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const useCreateBatchTeams = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Teams created successfully");
+      toast.success(t("createTeam.batchSuccess"));
     },
   });
 

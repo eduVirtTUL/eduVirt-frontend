@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useDeleteTeam = () => {
   const queryClient = useQueryClient();
@@ -15,7 +16,7 @@ export const useDeleteTeam = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: [keys.TEAM]});
-      toast.success("Zespół został usunięty pomyślnie");
+      toast.success(t("createTeam.deleteSuccess"));
     },
   });
 

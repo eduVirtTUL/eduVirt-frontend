@@ -8,19 +8,22 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {FileX2, SearchIcon, UserPlus, XIcon} from "lucide-react";
+import {FileX2, SearchIcon, Undo2, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
 import {useCoursesTeamsByEmail} from "@/data/team/useCoursesTeamsByEmail";
 import {SearchStudentsInCourseModal} from "@/components/Modals/SearchStudentsInCourseModal";
 import {BulkStatelessPodManager} from "./BulkStatelessPodManager";
+import {useNavigate} from "react-router";
+import {useUser} from "@/stores/userStore";
 
 const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
     const {course} = useCourse(id);
     const isTeamBased = course?.courseType === "TEAM_BASED";
     const {open} = useDialog();
+    const {activeRole} = useUser();
 
     const [pageNumber, setPageNumber] = useState(0);
     const pageSize = 10;
@@ -28,6 +31,8 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const [searchValue] = useDebounce(search, 500);
     const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("ASC");
     const [searchType, setSearchType] = useState<SearchType>("TEAM_NAME");
+
+    const navigate = useNavigate();
 
     const {teams, isLoading} = useCourseTeams(
         id,
@@ -37,7 +42,6 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
         searchType,
         sortOrder
     );
-    console.table(teams);
 
     const [emailSearchOpen, setEmailSearchOpen] = useState(false);
     const [emailPrefixes, setEmailPrefixes] = useState<string[]>([]);
@@ -63,16 +67,28 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 
     return (
         <>
-            <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
-            <div className="flex justify-end gap-2 mb-4">
+            <div className="flex justify-between items-center mb-4">
+                <PageHeader title={course?.name ?? ""} type={t("coursePageB.teamsTable.title")}/>
                 <Button
-                    className="mr-auto"
                     variant="outline"
-                    onClick={() => setBulkPodManagerOpen(true)}
+                    onClick={() => navigate(-1)}
                 >
-                    <FileX2 className="h-4 w-4 mr-2"/>
-                    {t("podManagement.button")}
+                    <Undo2/>
+                    {t("coursePageB.teamsTable.back")}
                 </Button>
+            </div>
+
+            <div className="flex justify-end gap-2 mb-4">
+                {activeRole === "teacher" && !isTeamBased && (
+                    <Button
+                        className="mr-auto"
+                        variant="outline"
+                        onClick={() => setBulkPodManagerOpen(true)}
+                    >
+                        <FileX2 className="h-4 w-4 mr-2"/>
+                        {t("podManagement.button")}
+                    </Button>
+                )}
 
                 {emailPrefixes.length > 0 ? (
                     <Button
@@ -92,12 +108,14 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     </Button>
                 )}
                 {isTeamBased ? (
-                    <CreateTeamModal courseId={id}/>
+                    activeRole === "teacher" && <CreateTeamModal courseId={id}/>
                 ) : (
-                    <Button variant="secondary" onClick={() => open("manageCourseUsers")}>
-                        <UserPlus className="h-4 w-4 mr-2"/>
-                        {t("coursePageB.teamsTable.students")}
-                    </Button>
+                    activeRole === "teacher" && (
+                        <Button variant="default" onClick={() => open("manageCourseUsers")}>
+                            <UserPlus className="h-4 w-4 mr-2"/>
+                            {t("coursePageB.teamsTable.students")}
+                        </Button>
+                    )
                 )}
             </div>
             <TeamListCard
@@ -117,6 +135,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 setSortOrder={setSortOrder}
                 emailPrefixes={emailPrefixes}
                 onRemoveEmailPrefix={handleRemoveEmailPrefix}
+                activeRole={activeRole}
             />
             <SearchStudentsInCourseModal
                 open={emailSearchOpen}
@@ -137,7 +156,7 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
 export default TeamsInCoursePage;
 
 export const handle: RouteHandle = {
-    roles: ["teacher"],
+    roles: ["teacher", "administrator"],
 };
 
 interface MetaData {

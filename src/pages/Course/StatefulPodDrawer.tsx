@@ -28,6 +28,7 @@ interface StatefulPodDrawerProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     teamId: string
+    activeRole: string
 }
 
 const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
@@ -57,7 +58,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
                     <div className="flex items-center gap-2">
                         {isOpen ? <ChevronDown className="h-4 w-4"/> : <ChevronRight className="h-4 w-4"/>}
                         <span>{rg.name}</span>
-                        <Badge variant="outline" className="px-2">
+                        <Badge variant="default" className="px-2">
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -139,7 +140,7 @@ const CollapsibleRow = ({rg, checked, onCheckedChange, hasPod}: {
 }
 
 const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
-                                                                 open, onOpenChange, teamId
+                                                                 open, onOpenChange, teamId, activeRole
                                                              }) => {
     const {id: courseId} = useParams<{ id: string }>();
     const {statefulPods = [], isLoading: isLoadingStateful} = useStatefulPodsForTeam(teamId);
@@ -245,14 +246,16 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                                         )}
                                     </ScrollArea>
                                     <div className="flex justify-end mt-4">
-                                        <Button
-                                            onClick={handleSubmit}
-                                            className="w-32"
-                                            disabled={!selectedResource}
-                                        >
-                                            <PlusIcon/>
-                                            {t('statefulPodManagement.createPod')}
-                                        </Button>
+                                        {activeRole === "teacher" && (
+                                            <Button
+                                                onClick={handleSubmit}
+                                                className="w-32"
+                                                disabled={!selectedResource}
+                                            >
+                                                <PlusIcon/>
+                                                {t('statefulPodManagement.createPod')}
+                                            </Button>
+                                        )}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -286,15 +289,17 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
                                                                 <TableCell>{pod.resourceGroup?.name}</TableCell>
                                                                 <TableCell>{pod.maxRent}</TableCell>
                                                                 <TableCell>
-                                                                    <Button
-                                                                        variant="destructive"
-                                                                        size="sm"
-                                                                        disabled={isDeleting}
-                                                                        onClick={() => handleClickPodDelete(pod.id!)}
-                                                                    >
-                                                                        <Trash2 className="h-4 w-4"/>
-                                                                        {t('statefulPodManagement.delete.button')}
-                                                                    </Button>
+                                                                    {activeRole === "teacher" && (
+                                                                        <Button
+                                                                            variant="destructive"
+                                                                            size="sm"
+                                                                            disabled={isDeleting}
+                                                                            onClick={() => handleClickPodDelete(pod.id!)}
+                                                                        >
+                                                                            <Trash2 className="h-4 w-4"/>
+                                                                            {t('statefulPodManagement.delete.button')}
+                                                                        </Button>
+                                                                    )}
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}

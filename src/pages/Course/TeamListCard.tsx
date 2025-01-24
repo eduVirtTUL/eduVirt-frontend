@@ -61,6 +61,7 @@ interface TeamsTableProps {
     setSortOrder: (order: "ASC" | "DESC") => void;
     emailPrefixes?: string[];
     onRemoveEmailPrefix?: (email: string) => void;
+    activeRole: string;
 }
 
 const TableSkeleton = () => (
@@ -98,6 +99,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                                      setSortOrder,
                                                      emailPrefixes,
                                                      onRemoveEmailPrefix,
+                                                     activeRole
                                                  }) => {
     const {t} = useTranslation();
     const {open} = useDialog();
@@ -132,15 +134,12 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     const handleRemoveStudent = async () => {
         if (!userToRemove?.user.email) return;
 
-        try {
-            await removeStudentFromCourse({
-                courseId,
-                email: userToRemove.user.email
-            });
-            setUserToRemove(null);
-        } catch (error) {
-            console.error(error);
-        }
+        await removeStudentFromCourse({
+            courseId,
+            email: userToRemove.user.email
+        });
+        setUserToRemove(null);
+
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -245,7 +244,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        {isTeamBased && (
+                        {activeRole === "teacher" && isTeamBased && (
                             <>
                                 <DropdownMenuItem onClick={() => handleEditClick(row.original)}>
                                     <PencilIcon className="h-4 w-4 mr-2"/>
@@ -284,7 +283,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                             <CalendarIcon className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.reservations")}
                         </DropdownMenuItem>
-                        {!isTeamBased && row.original.users?.[0] && (
+                        {activeRole === "teacher" && !isTeamBased && row.original.users?.[0] && (
                             <DropdownMenuItem
                                 onClick={() => {
                                     setUserToRemove({
@@ -298,7 +297,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                                 {t("coursePageB.teamsTable.dropdownMenu.removeStudent")}
                             </DropdownMenuItem>
                         )}
-                        {isTeamBased && (
+                        {activeRole === "teacher" && isTeamBased && (
                             <DropdownMenuItem
                                 onClick={() => {
                                     setTeamToDelete(row.original);
@@ -435,6 +434,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     open={manageStatefulPodsOpen}
                     onOpenChange={setManageStatefulPodsOpen}
                     teamId={selectedTeamId}
+                    activeRole={activeRole}
                 />
             )}
 
@@ -444,6 +444,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     onOpenChange={setManageStatelessPodsOpen}
                     teamId={selectedTeamId}
                     courseId={courseId}
+                    activeRole={activeRole}
                 />
             )}
             {editingTeam && editingTeamId && editingTeamEtag && (
@@ -494,7 +495,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
 
             {userToRemove && (
                 <ConfirmationDialog
-                    header={t("manageCourseUsers.delete.title")}
+                    header={`${t("manageCourseUsers.delete.title")} ${userToRemove.user.firstName} ${userToRemove.user.lastName} ${t("manageCourseUsers.delete.title2")} ${courseName}`}
                     text={t("manageCourseUsers.delete.description")}
                     onConfirm={handleRemoveStudent}
                 />

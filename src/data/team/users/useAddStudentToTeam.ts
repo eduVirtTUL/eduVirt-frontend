@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "@/data/keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useAddStudentToTeam = () => {
   const queryClient = useQueryClient();
@@ -16,11 +17,8 @@ export const useAddStudentToTeam = () => {
     onSuccess: (_, { teamId }) => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
       queryClient.invalidateQueries({ queryKey: [keys.TEAM, teamId] });
-      toast.success("Dodano studenta do zespołu");
+      toast.success(t("manageTeamUsers.addUser.success"));
     },
-    onError: () => {
-      toast.error("Nie udało się dodać studenta do zespołu");
-    }
   });
 
   return { addStudentToTeam };

@@ -21,9 +21,10 @@ interface StatelessPodDrawerProps {
     onOpenChange: (open: boolean) => void
     teamId: string
     courseId: string
+    activeRole: string
 }
 
-const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPodDrawerProps) => {
+const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId, activeRole}: StatelessPodDrawerProps) => {
     const [selectedPool, setSelectedPool] = useState<string | null>(null)
     const {team, isLoading: isLoadingTeam} = useTeam(teamId)
     const {courseResourceGroupPools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId)
@@ -124,14 +125,16 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                     )}
                                 </ScrollArea>
                                 <div className="flex justify-end mt-4">
-                                    <Button
-                                        onClick={handleSubmit}
-                                        className="w-32"
-                                        disabled={!selectedPool}
-                                    >
-                                        <PlusIcon/>
-                                        {t('statelessPodManagement.createPod')}
-                                    </Button>
+                                    {activeRole === "teacher" && (
+                                        <Button
+                                            onClick={handleSubmit}
+                                            className="w-32"
+                                            disabled={!selectedPool}
+                                        >
+                                            <PlusIcon/>
+                                            {t('statelessPodManagement.createPod')}
+                                        </Button>
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>
@@ -164,15 +167,17 @@ const StatelessPodDrawer = ({open, onOpenChange, teamId, courseId}: StatelessPod
                                                             {courseResourceGroupPools?.find(p => p.id === pod.resourceGroupPool?.id)?.name}
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Button
-                                                                variant="destructive"
-                                                                size="sm"
-                                                                disabled={isDeleting}
-                                                                onClick={() => handleClickPodDelete(pod.id!)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4"/>
-                                                                {t("statelessPodManagement.delete.button")}
-                                                            </Button>
+                                                            {activeRole === "teacher" && (
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="sm"
+                                                                    disabled={isDeleting}
+                                                                    onClick={() => handleClickPodDelete(pod.id!)}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4"/>
+                                                                    {t("statelessPodManagement.delete.button")}
+                                                                </Button>
+                                                            )}
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}

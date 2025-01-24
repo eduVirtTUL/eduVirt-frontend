@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { keys } from "../keys";
 import { privateAxios } from "@/data/privateAxios";
+import { t } from "i18next";
 
 export const useCreateTeam = () => {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ export const useCreateTeam = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [keys.TEAM] });
-      toast.success("Team created successfully!");
+      toast.success(t("createTeam.success"));
     },
   });
 

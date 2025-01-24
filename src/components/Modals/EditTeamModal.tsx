@@ -32,7 +32,8 @@ const editTeamSchema = z.object({
     name: z.string()
     .min(1, t("editTeam.validation.teamNameMin"))
     .max(50, t("editTeam.validation.teamNameMin"))
-    .regex(/^[a-zA-Z0-9 ]+$/, t("editTeam.validation.teamNameRegex")),
+    // eslint-disable-next-line no-useless-escape
+    .regex(/^[a-zA-Z0-9\_\-]*$/, t("editTeam.validation.teamNameRegex")),
     maxSize: z.number()
     .min(2, t("editTeam.validation.maxSizeMin"))
     .max(10, t("editTeam.validation.maxSizeMax"))
@@ -80,6 +81,7 @@ export function EditTeamModal({ open, onOpenChange, team, existingNames }: EditT
                     <DialogTitle>{t("editTeam.title")}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
+                    
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
