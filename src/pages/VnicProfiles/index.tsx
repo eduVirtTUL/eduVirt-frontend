@@ -7,37 +7,55 @@ import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool";
 import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool";
 import {Link} from "react-router";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, FoldHorizontal, MoreHorizontal,} from "lucide-react";
-import DataTable from "@/pages/VnicProfiles/DataTable";
-import {Column, ColumnDef, SortDirection} from "@tanstack/react-table";
+import {ArrowDown, ArrowUp, ArrowUpDown, FoldHorizontal, MoreHorizontal,} from "lucide-react";
+// import DataTable from "@/pages/VnicProfiles/DataTable";
+import {ColumnDef, SortDirection} from "@tanstack/react-table";
 import {VnicProfileDto, VnicProfilePoolMemberDto} from "@/api";
-import React, {useEffect} from "react";
-import {Label} from "@/components/ui/label";
+import React, {useCallback, useEffect, useState} from "react";
+// import {Label} from "@/components/ui/label";
 import {Popover, PopoverContent} from "@/components/ui/popover";
 import {PopoverTrigger} from "@radix-ui/react-popover";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-import {Input} from "@/components/ui/input";
-import BounceLoader from "react-spinners/BounceLoader";
+// import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+// import {Input} from "@/components/ui/input";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
 import {useTranslation} from "react-i18next";
 import {Skeleton} from "@/components/ui/skeleton";
+import SimpleDataTable from "@/components/SimpleDataTable";
+import SimplePagination from "@/components/SimplePagination";
 
 const VnicProfilesPage: React.FC = () => {
     const {t} = useTranslation();
 
-    const {vnicProfiles, isLoading} = useVnicProfiles();
+    const [ pageNumber, setPageNumber ] = useState<number>(0);
+    const [ pageSize ] = useState<number>(10);
+    const [ sortColumn, setSortColumn ] = useState<string>("vlanid");
+    const [ sortDirection, setSortDirection ] = useState<SortDirection>("asc");
+
+    const {vnicProfiles, isLoading} = useVnicProfiles({
+        size: pageSize,
+        page: pageNumber,
+        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+    });
+
+    const {vnicProfiles: nextVnicProfiles, isLoading: nextLoading} = useVnicProfiles({
+        size: pageSize,
+        page: pageNumber + 1,
+        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+    });
+
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
 
-    const [data, setData] = React.useState<VnicProfilePoolMemberDto[]>([]);
-    const {vnicProfilesDetails, isLoading: isLoadingDetails} = useVnicProfilesDetails();
-    useEffect(() => {
-        setData(vnicProfilesDetails ?? []);
-    }, [vnicProfilesDetails]);
+    //todo
+    // const [data, setData] = React.useState<VnicProfilePoolMemberDto[]>([]);
+    // const {vnicProfilesDetails, isLoading: isLoadingDetails} = useVnicProfilesDetails();
+    // useEffect(() => {
+    //     setData(vnicProfilesDetails ?? []);
+    // }, [vnicProfilesDetails]);
 
-    const [selectedFiltering, setSelectedFiltering] =
-        React.useState<string>("allItems");
+    // const [selectedFiltering, setSelectedFiltering] =
+    //     React.useState<string>("allItems");
 
     const handleAddVnicProfile = async (vnicProfileId?: string) => {
         if (vnicProfileId) {
@@ -51,44 +69,44 @@ const VnicProfilesPage: React.FC = () => {
         }
     };
 
-    const chooseSortingArrow = (param: false | SortDirection) => {
-        if (param === "asc") {
+    const chooseSortingArrow = (columnName: string) => {
+        if (columnName === sortColumn && sortDirection === "asc") {
             return <ArrowUp className="ml-2 h-4 w-4"/>;
         }
-        if (param === "desc") {
+        if (columnName === sortColumn && sortDirection === "desc") {
             return <ArrowDown className="ml-2 h-4 w-4"/>;
         }
         return <ArrowUpDown className="ml-2 h-4 w-4"/>;
     };
 
-    const handleSortingToggling = (column: Column<VnicProfileDto>) => {
-        if (column.getIsSorted() === false) {
-            column.toggleSorting(false);
-        } else if (column.getIsSorted() === "asc") {
-            column.toggleSorting(true);
+    const handleSortingToggling = useCallback((columnName: string) => {
+        if (columnName === sortColumn) {
+            setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
         } else {
-            column.clearSorting();
+            setSortColumn(columnName);
+            setSortDirection("asc");
         }
-    };
+    }, [sortColumn]);
 
     const handleDto = (dto: VnicProfilePoolMemberDto | undefined) => {
-        if (!isLoadingDetails && dto) {
-            return (
-                <>
-                    <div className="w-80">
-                        <b>{t("vnicProfiles.pool.actions.details.props.id")}: </b>
-                        {dto?.id ?? null}
-                        <br/>
-                        <b>{t("vnicProfiles.pool.actions.details.props.name")}: </b>
-                        {dto?.name ?? null}
-                        <br/>
-                        <b>{t("vnicProfiles.pool.actions.details.props.inUse")}: </b>
-                        {dto.inUse ? t("yes") : t("no")}
-                        <br/>
-                    </div>
-                </>
-            );
-        }
+        //todo
+        // if (!isLoadingDetails && dto) {
+        //     return (
+        //         <>
+        //             <div className="w-90">
+        //                 <b>{t("vnicProfiles.pool.actions.details.props.id")}: </b>
+        //                 {dto?.id ?? null}
+        //                 <br/>
+        //                 <b>{t("vnicProfiles.pool.actions.details.props.name")}: </b>
+        //                 {dto?.name ?? null}
+        //                 <br/>
+        //                 <b>{t("vnicProfiles.pool.actions.details.props.inUse")}: </b>
+        //                 {dto.inUse ? t("yes") : t("no")}
+        //                 <br/>
+        //             </div>
+        //         </>
+        //     );
+        // }
         return (
             <>
                 ...
@@ -100,11 +118,13 @@ const VnicProfilesPage: React.FC = () => {
     const columns: ColumnDef<VnicProfileDto>[] = [
         {
             accessorKey: "name",
-            header: ({column}) => {
+            header: () => {
                 return (
-                    <Button variant="ghost" onClick={() => handleSortingToggling(column)}>
+                    <Button variant="ghost"
+                            // onClick={() => handleSortingToggling(column)}
+                    >
                         {t("vnicProfiles.pool.table.vnicProfileName")}
-                        {chooseSortingArrow(column.getIsSorted())}
+                        {/*{chooseSortingArrow(column.getIsSorted())}*/}
                     </Button>
                 );
             },
@@ -114,11 +134,11 @@ const VnicProfilesPage: React.FC = () => {
         },
         {
             accessorKey: "networkName",
-            header: ({column}) => {
+            header: () => {
                 return (
-                    <Button variant="ghost" onClick={() => handleSortingToggling(column)}>
+                    <Button variant="ghost" onClick={() => handleSortingToggling("name")}>
                         {t("vnicProfiles.pool.table.networkName")}
-                        {chooseSortingArrow(column.getIsSorted())}
+                        {chooseSortingArrow("name")}
                     </Button>
                 );
             },
@@ -128,11 +148,11 @@ const VnicProfilesPage: React.FC = () => {
         },
         {
             accessorKey: "networkVlanId",
-            header: ({column}) => {
+            header: () => {
                 return (
-                    <Button variant="ghost" onClick={() => handleSortingToggling(column)}>
+                    <Button variant="ghost" onClick={() => handleSortingToggling("vlanid")}>
                         {t("vnicProfiles.pool.table.networkVlanId")}
-                        {chooseSortingArrow(column.getIsSorted())}
+                        {chooseSortingArrow("vlanid")}
                     </Button>
                 );
             },
@@ -142,62 +162,63 @@ const VnicProfilesPage: React.FC = () => {
         },
         {
             accessorKey: "inPool",
-            header: ({column}) => {
-                return (
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button variant="ghost">
-                                {t("vnicProfiles.pool.table.inPool.name")}
-                                {column.getFilterValue() == null ? (
-                                    <FilterIcon className="ml-2 h-4 w-4"/>
-                                ) : (
-                                    <FilterX className="ml-2 h-4 w-4"/>
-                                )}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <RadioGroup value={selectedFiltering}>
-                                <div
-                                    className="flex items-center space-x-2"
-                                    onClick={() => {
-                                        setSelectedFiltering("allItems");
-                                        column.setFilterValue(null);
-                                    }}
-                                >
-                                    <RadioGroupItem value="allItems" id="r1"/>
-                                    <Label htmlFor="r1">
-                                        {t("vnicProfiles.pool.table.inPool.selectOptions.all")}
-                                    </Label>
-                                </div>
-                                <div
-                                    className="flex items-center space-x-2"
-                                    onClick={() => {
-                                        setSelectedFiltering("inPoolItem");
-                                        column.setFilterValue(true);
-                                    }}
-                                >
-                                    <RadioGroupItem value="inPoolItem" id="r2"/>
-                                    <Label htmlFor="r2">
-                                        {t("vnicProfiles.pool.table.inPool.selectOptions.inPool")}
-                                    </Label>
-                                </div>
-                                <div
-                                    className="flex items-center space-x-2"
-                                    onClick={() => {
-                                        setSelectedFiltering("notInPoolItem");
-                                        column.setFilterValue(false);
-                                    }}
-                                >
-                                    <RadioGroupItem value="notInPoolItem" id="r3"/>
-                                    <Label htmlFor="r3">
-                                        {t("vnicProfiles.pool.table.inPool.selectOptions.notInPool")}
-                                    </Label>
-                                </div>
-                            </RadioGroup>
-                        </PopoverContent>
-                    </Popover>
-                );
-            },
+            //todo sort on backend
+            // header: ({column}) => {
+            //     return (
+            //         <Popover>
+            //             <PopoverTrigger asChild>
+            //                 <Button variant="ghost">
+            //                     {t("vnicProfiles.pool.table.inPool.name")}
+            //                     {column.getFilterValue() == null ? (
+            //                         <FilterIcon className="ml-2 h-4 w-4"/>
+            //                     ) : (
+            //                         <FilterX className="ml-2 h-4 w-4"/>
+            //                     )}
+            //                 </Button>
+            //             </PopoverTrigger>
+            //             <PopoverContent>
+            //                 <RadioGroup value={selectedFiltering}>
+            //                     <div
+            //                         className="flex items-center space-x-2"
+            //                         onClick={() => {
+            //                             setSelectedFiltering("allItems");
+            //                             column.setFilterValue(null);
+            //                         }}
+            //                     >
+            //                         <RadioGroupItem value="allItems" id="r1"/>
+            //                         <Label htmlFor="r1">
+            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.all")}
+            //                         </Label>
+            //                     </div>
+            //                     <div
+            //                         className="flex items-center space-x-2"
+            //                         onClick={() => {
+            //                             setSelectedFiltering("inPoolItem");
+            //                             column.setFilterValue(true);
+            //                         }}
+            //                     >
+            //                         <RadioGroupItem value="inPoolItem" id="r2"/>
+            //                         <Label htmlFor="r2">
+            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.inPool")}
+            //                         </Label>
+            //                     </div>
+            //                     <div
+            //                         className="flex items-center space-x-2"
+            //                         onClick={() => {
+            //                             setSelectedFiltering("notInPoolItem");
+            //                             column.setFilterValue(false);
+            //                         }}
+            //                     >
+            //                         <RadioGroupItem value="notInPoolItem" id="r3"/>
+            //                         <Label htmlFor="r3">
+            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.notInPool")}
+            //                         </Label>
+            //                     </div>
+            //                 </RadioGroup>
+            //             </PopoverContent>
+            //         </Popover>
+            //     );
+            // },
             cell: ({row}) => {
                 const vnicProfile = row.original;
 
@@ -213,15 +234,15 @@ const VnicProfilesPage: React.FC = () => {
         },
         {
             id: "actions",
-            header: ({table}) => {
-                return (
-                    <Input
-                        className="w-full"
-                        placeholder={t("vnicProfiles.pool.table.searchPlaceholder")}
-                        onChange={(e) => table.setGlobalFilter(e.target.value)}
-                    />
-                );
-            },
+            // header: ({table}) => {
+            //     return (
+            //         <Input
+            //             className="w-full"
+            //             placeholder={t("vnicProfiles.pool.table.searchPlaceholder")}
+            //             onChange={(e) => table.setGlobalFilter(e.target.value)}
+            //         />
+            //     );
+            // },
             cell: ({row}) => {
                 const vnicProfile = row.original;
 
@@ -267,7 +288,9 @@ const VnicProfilesPage: React.FC = () => {
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-100">
-                                        {handleDto(data.filter((dto) => dto.id === vnicProfile.id)[0])}
+                                        {/*todo*/}
+                                        {/*{handleDto(data.filter((dto) => dto.id === vnicProfile.id)[0])}*/}
+                                        ...
                                     </PopoverContent>
                                 </Popover>
                             </DropdownMenuItem>
@@ -278,7 +301,7 @@ const VnicProfilesPage: React.FC = () => {
         },
     ];
 
-    if (isLoading) {
+    if (isLoading || nextLoading) {
         return (
             <>
                 <PageHeader title={t("vnicProfiles.title")}/>
@@ -334,10 +357,20 @@ const VnicProfilesPage: React.FC = () => {
                 </Button>
             </div>
 
-            <DataTable
+            {/*<DataTable*/}
+            {/*    data={vnicProfiles ?? []}*/}
+            {/*    columns={columns}*/}
+            {/*    paginationEnabled={true}*/}
+            {/*/>*/}
+            <SimpleDataTable
                 data={vnicProfiles ?? []}
                 columns={columns}
-                paginationEnabled={true}
+            />
+
+            <SimplePagination
+                page={pageNumber}
+                setPage={setPageNumber}
+                hasMore={nextVnicProfiles !== undefined && nextVnicProfiles.length !== 0}
             />
         </>
     );
