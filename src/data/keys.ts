@@ -25,6 +25,7 @@ export const keys = {
   STATELESS_POD: "statelessPod",
   USER: "user",
   TEACHER: "teacher",
+  STATISTICS: "statistics",
 };
 
 export const resourceGroupKeys = {
