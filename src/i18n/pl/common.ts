@@ -119,6 +119,7 @@ const errorKeys = {
   "metrics.error.name.already.taken": "Wybrana nazwa metryki jest już zajęta",
   "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
   "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",
+  "clusterMetricValues.error.conflict.exception": "Nie pracujesz na najnowszych danych, spróbuj ponownie po odświeżeniu strony.",
   "maintenanceIntervals.error.not.found": "Wybrana przerwa administracyjna nie została znaleziona",
   "maintenanceIntervals.error.invalid.time.window": "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
   "maintenanceIntervals.error.begin.too.early": "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",

@@ -125,6 +125,8 @@ const errorKeys = {
       "The metric value for the cluster has not yet been defined",
   "clusterMetricValues.error.value.already.defined":
       "The metric value for the cluster has already been defined",
+  "clusterMetricValues.error.conflict.exception":
+      "You are not working with the latest data. Please try again after refreshing the page.",
   "maintenanceIntervals.error.not.found":
       "The selected maintenance interval was not found",
   "maintenanceIntervals.error.invalid.time.window":

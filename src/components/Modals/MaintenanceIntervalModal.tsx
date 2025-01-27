@@ -30,8 +30,8 @@ const MaintenanceIntervalModal: React.FC<MaintenanceIntervalModal> = ({ interval
   const user = useUser();
 
   const handleDelete = async () => {
-    await removeMaintenanceIntervalAsync(intervalId);
     close();
+    await removeMaintenanceIntervalAsync(intervalId);
   };
 
   return (

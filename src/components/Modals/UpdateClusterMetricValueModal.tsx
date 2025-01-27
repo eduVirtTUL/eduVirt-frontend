@@ -3,7 +3,6 @@ import { useDialog } from "@/stores/dialogStore";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MetricValueDto } from "@/api";
 import {
   Dialog,
   DialogContent,
@@ -37,10 +36,12 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { SaveIcon, XCircleIcon } from "lucide-react";
+import { useClusterMetricValue } from "@/data/cluster-metrics/useClusterMetricValue";
+import {Skeleton} from "@/components/ui/skeleton";
 
 type UpdateClusterMetricValueProps = {
   clusterId: string;
-  metric: MetricValueDto;
+  metricId: string;
 };
 
 const updateClusterMetricValueSchema = (t: TFunction) =>
@@ -56,35 +57,50 @@ type UpdateClusterMetricValueSchema = z.infer<
 >;
 
 const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = ({
-  clusterId, metric
+  clusterId, metricId
 }) => {
   const { t } = useTranslation();
   const { isOpen, close } = useDialog();
-  const { updateClusterMetricValueAsync } = useUpdateClusterMetricValue(clusterId!, metric.id!);
-  const availableUnits: UnitDefinition[] = getUnitsCategory(metric.category!).units;
+  const { metricValue, etag, isLoading } = useClusterMetricValue({clusterId, metricId});
+  console.log(metricValue);
+
+  const { updateClusterMetricValueAsync } = useUpdateClusterMetricValue();
+  const availableUnits: UnitDefinition[] =  metricValue?.metric?.category ? getUnitsCategory(metricValue.metric.category).units : [];
 
   const form = useForm<UpdateClusterMetricValueSchema>({
     resolver: zodResolver(updateClusterMetricValueSchema(t)),
     defaultValues: {
-      value: getBaseUnitValue(metric.category!, metric.value!),
-      unit: getBaseUnit(metric.category!).symbol
+        value: metricValue?.metric?.category ? getBaseUnitValue(metricValue.metric.category, metricValue.value ?? 0) : 0,
+        unit: metricValue?.metric?.category ? getBaseUnit(metricValue.metric.category).symbol : "",
     },
   });
 
   useEffect(() => {
-    form.reset({
-      value: getBaseUnitValue(metric.category!, metric.value!),
-      unit: getBaseUnit(metric.category!).symbol
-    });
-  }, [metric, form]);
+    console.log("executes");
+    console.log(metricValue);
+    if (metricValue && metricValue.metric?.category) {
+      console.log("loaded");
+      form.reset({
+        value: getBaseUnitValue(metricValue.metric.category, metricValue.value!),
+        unit: getBaseUnit(metricValue.metric.category).symbol
+      });
+    }
+  }, [metricValue, isLoading, form]);
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
-      await updateClusterMetricValueAsync({
-        value: convertValue(metric.category!, values.value, values.unit)
-      });
+      if (!metricValue || !metricValue.metric?.category) return;
+
       close();
       form.reset();
+      await updateClusterMetricValueAsync({
+        clusterId: clusterId,
+        metricId: metricId,
+        etag: etag ?? "",
+        metricValueId: metricValue.id!,
+        version: metricValue.version,
+        value: convertValue(metricValue.metric.category!, values.value, values.unit)
+      });
     }
   );
 
@@ -100,26 +116,46 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
       <DialogHeader>
         <DialogTitle>{t("clusterMetricValues.updateClusterMetricValue.title")}</DialogTitle>
       </DialogHeader>
-      <Form {...form}>
-        <form onSubmit={handleSubmit} className={"space-y-4"}>
-          <FormDescription>{t("requiredFieldDescription")}</FormDescription>
-          <FormField
-            control={form.control}
-            name="value"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>* {t("clusterMetricValues.updateClusterMetricValue.value")}</FormLabel>
-                <FormControl>
-                  <Input {...field} type={"number"} />
-                </FormControl>
-                <FormDescription>
+        {isLoading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-3/4" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+
+            <div className="flex flex-row justify-between pt-4">
+              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-10 w-24" />
+            </div>
+          </div>
+        ) : <Form {...form}>
+          <form onSubmit={handleSubmit} className={"space-y-4"}>
+            <FormDescription>{t("requiredFieldDescription")}</FormDescription>
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>* {t("clusterMetricValues.updateClusterMetricValue.value")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} type={"number"} />
+                  </FormControl>
+                  <FormDescription>
                     {t("clusterMetricValues.updateClusterMetricValue.valueDescription")}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {availableUnits.length > 0 && (
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {availableUnits.length > 0 && (
               <FormField
                 control={form.control}
                 name="unit"
@@ -177,7 +213,7 @@ const UpdateClusterMetricValueModal: React.FC<UpdateClusterMetricValueProps> = (
             </Button>
           </div>
         </form>
-      </Form>
+      </Form>}
     </DialogContent>
     </Dialog>
   );

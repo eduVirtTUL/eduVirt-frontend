@@ -826,6 +826,37 @@ export interface ExceptionResponse {
 /**
  * 
  * @export
+ * @interface GeneralMetricValueDto
+ */
+export interface GeneralMetricValueDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralMetricValueDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralMetricValueDto
+     */
+    'version'?: number;
+    /**
+     * 
+     * @type {MetricDto}
+     * @memberof GeneralMetricValueDto
+     */
+    'metric'?: MetricDto;
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralMetricValueDto
+     */
+    'value'?: number;
+}
+/**
+ * 
+ * @export
  * @interface HostDto
  */
 export interface HostDto {
@@ -2265,6 +2296,18 @@ export interface UserDto {
 export interface ValueDto {
     /**
      * 
+     * @type {string}
+     * @memberof ValueDto
+     */
+    'metricValueId': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ValueDto
+     */
+    'version'?: number;
+    /**
+     * 
      * @type {number}
      * @memberof ValueDto
      */
@@ -3389,6 +3432,47 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getClusterMetricDetails: async (clusterId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'clusterId' is not null or undefined
+            assertParamExists('getClusterMetricDetails', 'clusterId', clusterId)
+            // verify required parameter 'metricId' is not null or undefined
+            assertParamExists('getClusterMetricDetails', 'metricId', metricId)
+            const localVarPath = `/clusters/{clusterId}/metrics/{metricId}`
+                .replace(`{${"clusterId"}}`, encodeURIComponent(String(clusterId)))
+                .replace(`{${"metricId"}}`, encodeURIComponent(String(metricId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
          * @summary Update certain metric value for given cluster
          * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
@@ -3489,6 +3573,19 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralMetricValueDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getClusterMetricDetails(clusterId, metricId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.getClusterMetricDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
          * @summary Update certain metric value for given cluster
          * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
@@ -3545,6 +3642,16 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
          */
         getAllMetricValues(clusterId: string, pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoMetricValueDto> {
             return localVarFp.getAllMetricValues(clusterId, pageable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<GeneralMetricValueDto> {
+            return localVarFp.getClusterMetricDetails(clusterId, metricId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
@@ -3605,6 +3712,18 @@ export class ClusterMetricControllerApi extends BaseAPI {
      */
     public getAllMetricValues(clusterId: string, pageable: Pageable, options?: RawAxiosRequestConfig) {
         return ClusterMetricControllerApiFp(this.configuration).getAllMetricValues(clusterId, pageable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} clusterId 
+     * @param {string} metricId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ClusterMetricControllerApi
+     */
+    public getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig) {
+        return ClusterMetricControllerApiFp(this.configuration).getClusterMetricDetails(clusterId, metricId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
