@@ -78,7 +78,6 @@ const JoinTeamModal = () => {
                             </Button>
                             <Button 
                                 type="submit" 
-                                disabled={!form.formState.isValid || !form.formState.isDirty}
                             >
                                 <CheckIcon/>
                                 {t("join")}
