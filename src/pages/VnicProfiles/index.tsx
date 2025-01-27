@@ -7,7 +7,7 @@ import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool";
 import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool";
 import {Link} from "react-router";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, MoreHorizontal,} from "lucide-react";
+import {ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, FilterX, FoldHorizontal, MoreHorizontal,} from "lucide-react";
 import DataTable from "@/pages/VnicProfiles/DataTable";
 import {Column, ColumnDef, SortDirection} from "@tanstack/react-table";
 import {VnicProfileDto, VnicProfilePoolMemberDto} from "@/api";
@@ -21,6 +21,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
 import {useTranslation} from "react-i18next";
+import {Skeleton} from "@/components/ui/skeleton";
 
 const VnicProfilesPage: React.FC = () => {
     const {t} = useTranslation();
@@ -52,10 +53,10 @@ const VnicProfilesPage: React.FC = () => {
 
     const chooseSortingArrow = (param: false | SortDirection) => {
         if (param === "asc") {
-            return <ArrowDown className="ml-2 h-4 w-4"/>;
+            return <ArrowUp className="ml-2 h-4 w-4"/>;
         }
         if (param === "desc") {
-            return <ArrowUp className="ml-2 h-4 w-4"/>;
+            return <ArrowDown className="ml-2 h-4 w-4"/>;
         }
         return <ArrowUpDown className="ml-2 h-4 w-4"/>;
     };
@@ -255,7 +256,6 @@ const VnicProfilesPage: React.FC = () => {
                                     {t("vnicProfiles.pool.actions.remove.name")}
                                 </Button>
                             </DropdownMenuItem>
-                            {/*TODO add displaying extended info about selected vnic profile (isInUse, maybe id etc...)*/}
                             <DropdownMenuItem asChild>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -285,12 +285,37 @@ const VnicProfilesPage: React.FC = () => {
 
                 <div className="pb-5">
                     <Button asChild>
-                        <Link to={"/networks/vlans"}>{t("vlansRange.title")}</Link>
+                        <Link to={"/networks/vlans"}>
+                            <FoldHorizontal/>
+                            {t("vlansRange.title")}
+                        </Link>
                     </Button>
                 </div>
 
-                <div className="flex justify-center items-center min-h-hull">
-                    <BounceLoader color="#1e1e1e"/>
+                <div className="space-y-6">
+                    <div className="rounded-md border">
+                        <div className="border-b">
+                            <div className="grid grid-cols-5 p-4">
+                                {[1, 2, 3, 4, 5].map((i) => (
+                                    <Skeleton key={i} className="h-4 w-[100px]"/>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            {Array.from({length: 10}, (_, i) => i + 1).map((row) => (
+                                <div key={row} className="grid grid-cols-5 p-4 border-b">
+                                    {[1, 2, 3, 4, 5].map((col) => (
+                                        <Skeleton key={col} className="h-4 w-[100px]"/>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-center space-x-3 mt-4">
+                        <Skeleton className="h-8 w-[100px]"/>
+                        <Skeleton className="h-8 w-[40px]"/>
+                        <Skeleton className="h-8 w-[100px]"/>
+                    </div>
                 </div>
             </>
         );
@@ -302,7 +327,10 @@ const VnicProfilesPage: React.FC = () => {
 
             <div className="pb-5">
                 <Button asChild>
-                    <Link to={"/networks/vlans"}>{t("vlansRange.title")}</Link>
+                    <Link to={"/networks/vlans"}>
+                        <FoldHorizontal/>
+                        {t("vlansRange.title")}
+                    </Link>
                 </Button>
             </div>
 

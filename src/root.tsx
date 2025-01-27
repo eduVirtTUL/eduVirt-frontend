@@ -18,12 +18,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta charSet="UTF-8" />
         <script
-          src={`${import.meta.env.VITE_BASENAME.replace(/\/$/, "")}/env-config.js`}
+          src={`${import.meta.env.VITE_BASENAME}env-config.js`}
         />
         <link
           rel="icon"
           type="image/x-icon"
-          href={`${import.meta.env.VITE_BASENAME.replace(/\/$/, "")}/favicon.ico`}
+          href={`${import.meta.env.VITE_BASENAME}favicon.ico`}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Meta />

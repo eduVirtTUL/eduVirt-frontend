@@ -18,6 +18,7 @@ import CreatePoolModal from "@/components/Modals/CreatePoolModal";
 import CreateCourseKeyModal from "@/components/Modals/CreateCourseKeyModal";
 import PageHeader from "@/components/PageHeader";
 import {
+    CalendarDays,
     ChartCandlestickIcon,
     ChevronDown,
     ChevronUp,
@@ -101,6 +102,14 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                         <Link to={`teams`}>
                             <UsersIcon className="mr-2 h-4 w-4"/>
                             {t("coursePageB.teamsTable.button")}
+                        </Link>
+                    </Button>
+                )}
+                {(activeRole === "teacher" || activeRole === "administrator") && (
+                    <Button asChild>
+                        <Link to={`./reservations`}>
+                            <CalendarDays />
+                            {"Rezerwacje"}
                         </Link>
                     </Button>
                 )}
