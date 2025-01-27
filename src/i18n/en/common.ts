@@ -201,7 +201,7 @@ const errorKeys = {
   "incorrect.team.type.exception": "Incorrect team type",
   "user.already.in.course.exception":
       "The user is already enrolled in the course",
-  "team.conflict.exception": "Team conflict",
+  "team.conflict.exception": "You are not working with the latest data. Please refresh the page",
   "pod.not.found": "POD not found",
   "pod.already.exists": "A POD with the given name already exists",
   "pod.invalid.type": "Invalid POD type",

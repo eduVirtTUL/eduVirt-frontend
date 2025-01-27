@@ -1,13 +1,19 @@
-export interface CourseStatsDto {
-    courseId: string;
-    courseName: string;
-    totalReservations: number;
-    totalHours: number;
-    averageLength: number;
-    totalTeams: number;
-    reservationsPerTeam: Record<string, number>;
-    hoursPerTeam: Record<string, number>;
-  }
+export interface BaseCourseStatsDto {
+  courseId: string;
+  courseName: string;
+  totalReservations: number;
+  totalHours: number;
+  averageLength: number;
+  totalTeams: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SoloCourseStatsDto extends BaseCourseStatsDto {}
+
+export interface CourseStatsDto extends BaseCourseStatsDto {
+  reservationsPerTeam: Record<string, number>;
+  hoursPerTeam: Record<string, number>;
+}
   
   export interface ReservationTimelineDto {
     startTime: string;
@@ -27,13 +33,3 @@ export interface CourseStatsDto {
     timeline: ReservationTimelineDto[];
   }
   
-  export interface ResourceStatsDto {
-    resourceId: string;
-    resourceName: string;
-    isStateful: boolean;
-    totalReservations: number;
-    totalHours: number;
-    totalTeams: number;
-    reservationsPerTeam: Record<string, number>;
-    hoursPerTeam: Record<string, number>;
-  }

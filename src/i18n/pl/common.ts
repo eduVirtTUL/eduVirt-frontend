@@ -169,7 +169,7 @@ const errorKeys = {
   "team.validation.exception": "Błąd walidacji zespołu",
   "incorrect.team.type.exception": "Nieprawidłowy typ zespołu",
   "user.already.in.course.exception": "Student znajduje się już w tym przedmiocie",
-  "team.conflict.exception": "Konflikt zespołów",
+  "team.conflict.exception": "Nie pracujesz na najnowszych danych, proszę odświeżyć stronę",
   "pod.not.found": "Nie znaleziono PODa",
   "pod.already.exists": "POD o podanej nazwie już istnieje",
   "pod.invalid.type": "Nieprawidłowy typ PODa",

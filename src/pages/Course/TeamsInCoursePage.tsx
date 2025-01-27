@@ -17,12 +17,13 @@ import {SearchStudentsInCourseModal} from "@/components/Modals/SearchStudentsInC
 import {BulkStatelessPodManager} from "./BulkStatelessPodManager";
 import {useNavigate} from "react-router";
 import {useUser} from "@/stores/userStore";
+import {CourseStatisticsModal} from "@/components/Modals/CourseStatisticsModal";
 
 const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
     const {t} = useTranslation();
     const {course} = useCourse(id);
     const isTeamBased = course?.courseType === "TEAM_BASED";
-    const {open} = useDialog();
+    const {open, isOpen, close} = useDialog();
     const {activeRole} = useUser();
 
     const [pageNumber, setPageNumber] = useState(0);
@@ -78,55 +79,56 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 </Button>
             </div>
 
-            <div className="flex justify-end gap-2 mb-4">
-            {(activeRole === "teacher" || activeRole === "administrator") && (
-                <Button
-                variant="outline"
-                onClick={() => navigate(`/courses/${id}/teams/statistics`)}
-                >
-                <BarChart2 className="h-4 w-4 mr-2" />
-                {t("coursePageB.courseTeamsPage.statistics")}
-                </Button>
-            )}
-
-                {activeRole === "teacher" && !isTeamBased && (
+            <div className="flex items-center gap-2 mb-4">
+                {(activeRole === "teacher" || activeRole === "administrator") && (
                     <Button
-                        className="mr-auto"
                         variant="outline"
-                        onClick={() => setBulkPodManagerOpen(true)}
+                        onClick={() => open("courseStatistics")}
                     >
-                        <FileX2 className="h-4 w-4 mr-2"/>
-                        {t("podManagement.button")}
+                        <BarChart2 className="h-4 w-4 mr-2"/>
+                        {t("courseStatistics.button")}
                     </Button>
                 )}
 
-                {emailPrefixes.length > 0 ? (
-                    <Button
-                        variant="outline"
-                        onClick={() => setEmailPrefixes([])}
-                    >
-                        <XIcon className="h-4 w-4 mr-2"/>
-                        {t("coursePageB.courseTeamsPage.searchByEmail.clear")}
-                    </Button>
-                ) : (
-                    <Button
-                        variant="outline"
-                        onClick={() => setEmailSearchOpen(true)}
-                    >
-                        <SearchIcon/>
-                        {t("coursePageB.courseTeamsPage.searchByEmail.button")}
-                    </Button>
-                )}
-                {isTeamBased ? (
-                    activeRole === "teacher" && <CreateTeamModal courseId={id}/>
-                ) : (
-                    activeRole === "teacher" && (
-                        <Button variant="default" onClick={() => open("manageCourseUsers")}>
-                            <UserPlus className="h-4 w-4 mr-2"/>
-                            {t("coursePageB.teamsTable.students")}
+                <div className="flex gap-2 ml-auto">
+                    {activeRole === "teacher" && !isTeamBased && (
+                        <Button
+                            variant="outline"
+                            onClick={() => setBulkPodManagerOpen(true)}
+                        >
+                            <FileX2 className="h-4 w-4 mr-2"/>
+                            {t("podManagement.button")}
                         </Button>
-                    )
-                )}
+                    )}
+
+                    {emailPrefixes.length > 0 ? (
+                        <Button
+                            variant="outline"
+                            onClick={() => setEmailPrefixes([])}
+                        >
+                            <XIcon className="h-4 w-4 mr-2"/>
+                            {t("coursePageB.courseTeamsPage.searchByEmail.clear")}
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="outline"
+                            onClick={() => setEmailSearchOpen(true)}
+                        >
+                            <SearchIcon/>
+                            {t("coursePageB.courseTeamsPage.searchByEmail.button")}
+                        </Button>
+                    )}
+                    {isTeamBased ? (
+                        activeRole === "teacher" && <CreateTeamModal courseId={id}/>
+                    ) : (
+                        activeRole === "teacher" && (
+                            <Button variant="default" onClick={() => open("manageCourseUsers")}>
+                                <UserPlus className="h-4 w-4 mr-2"/>
+                                {t("coursePageB.teamsTable.students")}
+                            </Button>
+                        )
+                    )}
+                </div>
             </div>
             <TeamListCard
                 isTeamBased={isTeamBased}
@@ -158,6 +160,11 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                 courseId={id}
                 teams={teams?.items ?? []}
                 isLoading={isLoading}
+            />
+            <CourseStatisticsModal
+                open={isOpen("courseStatistics")}
+                onOpenChange={(open) => !open && close()}
+                courseId={id}
             />
         </>
     );

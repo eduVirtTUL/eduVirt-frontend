@@ -269,174 +269,185 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                             </div>
                         </CardHeader>
                         <CardContent className="px-2 sm:p-6">
-                            <ChartContainer
-                                config={config}
-                                className="aspect-auto h-[400px] w-full"
-                            >
-                                <BarChart
-                                    data={chartData}
-                                    margin={{
-
-                                        right: 24,
-                                        top: 24,
-
-                                    }}
+                            {chartData.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center h-[400px]">
+                                    <Calendar className="h-12 w-12 text-muted-foreground mb-4"/>
+                                    <p className="text-lg font-medium text-center">
+                                        {t("statistics.teams.noReservations")}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground text-center mt-1">
+                                        {t("statistics.teams.noReservationsDescription")}
+                                    </p>
+                                </div>
+                            ) : (
+                                <ChartContainer
+                                    config={config}
+                                    className="aspect-auto h-[400px] w-full"
                                 >
-                                    <CartesianGrid vertical={false}/>
-                                    <XAxis
-                                        dataKey="date"
-                                        height={60}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        tickMargin={8}
-                                        interval={timeRange === 'day' ? 0 : 'preserveStartEnd'}
-                                        minTickGap={timeRange === 'day' ? 0 : 32}
-                                        tickFormatter={(value) => {
-                                            const date = new Date(value);
-                                            const formatOptions: Intl.DateTimeFormatOptions = {
-                                                month: 'short',
-                                                day: 'numeric',
-                                                ...(timeRange === 'month' && {year: 'numeric'})
-                                            };
-                                            return new Intl.DateTimeFormat(i18n.language, formatOptions).format(date);
+                                    <BarChart
+                                        data={chartData}
+                                        margin={{
+
+                                            right: 24,
+                                            top: 24,
+
                                         }}
-                                    />
-                                    <YAxis
-                                        width={40}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        allowDecimals={false}
-                                        domain={[0, 'auto']}
-                                        tickFormatter={(value) => Math.floor(value).toString()}
-                                        interval={0}
-                                    />
-                                    <Tooltip
-                                        cursor={{fill: 'rgba(0, 0, 0, 0.1)'}}
-                                        content={({active, payload, label}) => {
-                                            if (!active || !payload?.length) return null;
+                                    >
+                                        <CartesianGrid vertical={false}/>
+                                        <XAxis
+                                            dataKey="date"
+                                            height={60}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickMargin={8}
+                                            interval={timeRange === 'day' ? 0 : 'preserveStartEnd'}
+                                            minTickGap={timeRange === 'day' ? 0 : 32}
+                                            tickFormatter={(value) => {
+                                                const date = new Date(value);
+                                                const formatOptions: Intl.DateTimeFormatOptions = {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    ...(timeRange === 'month' && {year: 'numeric'})
+                                                };
+                                                return new Intl.DateTimeFormat(i18n.language, formatOptions).format(date);
+                                            }}
+                                        />
+                                        <YAxis
+                                            width={40}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            allowDecimals={false}
+                                            domain={[0, 'auto']}
+                                            tickFormatter={(value) => Math.floor(value).toString()}
+                                            interval={0}
+                                        />
+                                        <Tooltip
+                                            cursor={{fill: 'rgba(0, 0, 0, 0.1)'}}
+                                            content={({active, payload, label}) => {
+                                                if (!active || !payload?.length) return null;
 
-                                            const date = new Date(label);
-                                            const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
-                                                weekday: 'long',
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                            });
+                                                const date = new Date(label);
+                                                const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
+                                                    weekday: 'long',
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                });
 
-                                            const timeFormatter = new Intl.DateTimeFormat(i18n.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            });
-                                            let relevantReservations: ReservationTimelineDto[] = [];
+                                                const timeFormatter = new Intl.DateTimeFormat(i18n.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                });
+                                                let relevantReservations: ReservationTimelineDto[] = [];
 
-                                            switch (timeRange) {
-                                                case 'week': {
-                                                    const weekStart = startOfWeek(date);
-                                                    const weekEnd = endOfWeek(date);
-                                                    relevantReservations = Object.entries(reservationsByDay)
-                                                        .filter(([day]) => {
-                                                            const resDate = new Date(day);
-                                                            return resDate >= weekStart && resDate <= weekEnd;
-                                                        })
-                                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                                        .flatMap(([_, res]) => res);
-                                                    break;
+                                                switch (timeRange) {
+                                                    case 'week': {
+                                                        const weekStart = startOfWeek(date);
+                                                        const weekEnd = endOfWeek(date);
+                                                        relevantReservations = Object.entries(reservationsByDay)
+                                                            .filter(([day]) => {
+                                                                const resDate = new Date(day);
+                                                                return resDate >= weekStart && resDate <= weekEnd;
+                                                            })
+                                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                                            .flatMap(([_, res]) => res);
+                                                        break;
+                                                    }
+                                                    case 'month': {
+                                                        const monthStart = startOfMonth(date);
+                                                        const monthEnd = endOfMonth(date);
+                                                        relevantReservations = Object.entries(reservationsByDay)
+                                                            .filter(([day]) => {
+                                                                const resDate = new Date(day);
+                                                                return resDate >= monthStart && resDate <= monthEnd;
+                                                            })
+                                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                                            .flatMap(([_, res]) => res);
+                                                        break;
+                                                    }
+                                                    default:
+                                                        relevantReservations = reservationsByDay[format(date, 'yyyy-MM-dd')] || [];
                                                 }
-                                                case 'month': {
-                                                    const monthStart = startOfMonth(date);
-                                                    const monthEnd = endOfMonth(date);
-                                                    relevantReservations = Object.entries(reservationsByDay)
-                                                        .filter(([day]) => {
-                                                            const resDate = new Date(day);
-                                                            return resDate >= monthStart && resDate <= monthEnd;
-                                                        })
-                                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                                        .flatMap(([_, res]) => res);
-                                                    break;
-                                                }
-                                                default:
-                                                    relevantReservations = reservationsByDay[format(date, 'yyyy-MM-dd')] || [];
-                                            }
 
-                                            return (
-                                                <div
-                                                    className="bg-background border rounded-md shadow-sm p-2 min-w-[300px]">
-                                                    <p className="font-medium mb-2 pb-2 border-b">
-                                                        {timeRange === 'month'
-                                                            ? new Intl.DateTimeFormat(i18n.language, {
-                                                                month: 'long',
-                                                                year: 'numeric'
-                                                            }).format(date)
-                                                            : timeRange === 'week'
-                                                                ? `${new Intl.DateTimeFormat(i18n.language, {
-                                                                    month: 'short',
-                                                                    day: 'numeric'
-                                                                }).format(startOfWeek(date))} - ${new Intl.DateTimeFormat(i18n.language, {
-                                                                    month: 'short',
-                                                                    day: 'numeric',
+                                                return (
+                                                    <div
+                                                        className="bg-background border rounded-md shadow-sm p-2 min-w-[300px]">
+                                                        <p className="font-medium mb-2 pb-2 border-b">
+                                                            {timeRange === 'month'
+                                                                ? new Intl.DateTimeFormat(i18n.language, {
+                                                                    month: 'long',
                                                                     year: 'numeric'
-                                                                }).format(endOfWeek(date))}`
-                                                                : dateFormatter.format(date)}
-                                                    </p>
+                                                                }).format(date)
+                                                                : timeRange === 'week'
+                                                                    ? `${new Intl.DateTimeFormat(i18n.language, {
+                                                                        month: 'short',
+                                                                        day: 'numeric'
+                                                                    }).format(startOfWeek(date))} - ${new Intl.DateTimeFormat(i18n.language, {
+                                                                        month: 'short',
+                                                                        day: 'numeric',
+                                                                        year: 'numeric'
+                                                                    }).format(endOfWeek(date))}`
+                                                                    : dateFormatter.format(date)}
+                                                        </p>
 
-                                                    <div className="mb-2 pb-2 border-b">
-                                                        {payload
-                                                            .filter(p => typeof p.value === 'number' && p.value > 0)
-                                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                                            .map((p: any) => (
-                                                                <p key={p.name}
-                                                                   className="text-sm flex justify-between gap-2">
-                                                                    <span>{config[p.name]?.label}</span>
-                                                                    <span className="font-medium">
-    {formatDuration(p.value, t)}
-</span>
+                                                        <div className="mb-2 pb-2 border-b">
+                                                            {payload
+                                                                .filter(p => typeof p.value === 'number' && p.value > 0)
+                                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                                .map((p: any) => (
+                                                                    <p key={p.name}
+                                                                       className="text-sm flex justify-between gap-2">
+                                                                        <span>{config[p.name]?.label}</span>
+                                                                        <span className="font-medium">
+                                                                        {formatDuration(p.value, t)}
+                                                                    </span>
+                                                                    </p>
+                                                                ))}
+                                                        </div>
+
+                                                        {relevantReservations.length > 0 ? (
+                                                            <div className="space-y-2">
+                                                                <p className="text-sm font-medium text-muted-foreground">
+                                                                    {t("statistics.teams.reservationDetails")}
                                                                 </p>
-                                                            ))}
-                                                    </div>
-
-                                                    {relevantReservations.length > 0 ? (
-                                                        <div className="space-y-2">
-                                                            <p className="text-sm font-medium text-muted-foreground">
-                                                                {t("statistics.teams.reservationDetails")}
-                                                            </p>
-                                                            {relevantReservations.map((reservation, index) => (
-                                                                <div key={index}
-                                                                     className="text-sm space-y-1 pb-2 last:pb-0 border-b last:border-0">
-                                                                    <p className="font-medium">{reservation.resourceName}</p>
-                                                                    <div
-                                                                        className="flex justify-between text-muted-foreground">
+                                                                {relevantReservations.map((reservation, index) => (
+                                                                    <div key={index}
+                                                                         className="text-sm space-y-1 pb-2 last:pb-0 border-b last:border-0">
+                                                                        <p className="font-medium">{reservation.resourceName}</p>
+                                                                        <div
+                                                                            className="flex justify-between text-muted-foreground">
                                                                         <span>
-                                                                            {timeFormatter.format(new Date(reservation.startTime))} -
-                                                                            {timeFormatter.format(new Date(reservation.endTime))}
+                                                                            {timeFormatter.format(new Date(reservation.startTime))} - {timeFormatter.format(new Date(reservation.endTime))}
                                                                         </span>
                                                                         <span>
                                                                             {formatDuration(reservation.lengthInHours, t)}
                                                                         </span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <p className="text-sm text-muted-foreground text-center py-2">
-                                                            {t("statistics.teams.noReservationsForDay")}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            );
-                                        }}
-                                    />
-                                    {Object.keys(config).map((resource) => (
-                                        (!activeResource || activeResource === resource) && (
-                                            <Bar
-                                                key={resource}
-                                                dataKey={resource}
-                                                fill={(config as ChartConfig)[resource]?.color ?? '#000000'}
-                                                radius={[4, 4, 0, 0]}
-                                            />
-                                        )
-                                    ))}
-                                </BarChart>
-                            </ChartContainer>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <p className="text-sm text-muted-foreground text-center py-2">
+                                                                {t("statistics.teams.noReservationsForDay")}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                );
+                                            }}
+                                        />
+                                        {Object.keys(config).map((resource) => (
+                                            (!activeResource || activeResource === resource) && (
+                                                <Bar
+                                                    key={resource}
+                                                    dataKey={resource}
+                                                    fill={(config as ChartConfig)[resource]?.color ?? '#000000'}
+                                                    radius={[4, 4, 0, 0]}
+                                                />
+                                            )
+                                        ))}
+                                    </BarChart>
+                                </ChartContainer>
+                            )}
                         </CardContent>
                     </Card>
                 )}

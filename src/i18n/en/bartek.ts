@@ -405,16 +405,16 @@ const reservationStatisticsModal = {
     button: "Reservation statistics",
     title: "Reservation statistics",
     teams: {
-        modalTitle: "reservation statistics",
+        modalTitle: "Reservation statistics",
         noReservations: "No reservations found",
         noReservationsDescription: "This team has no historical reservation data to display",
-        totalReservations: "Total reservations",
-        totalHours: "Total hours",
-        averageLength: "Average length",
+        totalReservations: "Total number of reservations",
+        totalHours: "Total reservations length",
+        averageLength: "Average reservation length",
         statefulCount: "Stateful resource reservations",
         poolCount: "Stateless resource reservations",
-        dailyUsage: "Daily resource usage",
-        dailyUsageDescription: "Chart shows the total number of hours reserved per resource each day",
+        dailyUsage: "Resource usage",
+        dailyUsageDescription: "Total number of hours reserved per resource each selected timeframe (day, week, month)",
         noReservationsForDay: "This day had no reservations",
         reservationDetails: "Detailed reservation timeline",
         units: {
@@ -432,6 +432,21 @@ const reservationStatisticsModal = {
         week: "Week",
         month: "Month",
         all: "All"
+    }
+};
+
+const courseStatistics = {
+    button: "Reservations summary",
+    modalTitle: "Reservations summary",
+    totalReservations: "Total number of reservations",
+    totalHours: "Total reservations length",
+    averageLength: "Average reservation length",
+    totalTeams: "Total number of teams with reservations",
+    teamMetrics: "Team statistics",
+    teamMetricsDescription: "Compare reservation statistics across teams",
+    metrics: {
+        reservations: "Reservations",
+        hours: "Hours"
     }
 };
 
@@ -456,5 +471,6 @@ export default {
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
     podManagement,
-    statistics: reservationStatisticsModal
+    statistics: reservationStatisticsModal,
+    courseStatistics: courseStatistics
 };
