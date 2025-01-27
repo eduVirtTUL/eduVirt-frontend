@@ -7,10 +7,11 @@ import {StatCard} from "@/components/StatCard";
 import {Skeleton} from "@/components/ui/skeleton";
 import {t} from "i18next";
 import {useMemo, useState} from "react";
-import {format} from "date-fns";
+import {endOfMonth, endOfWeek, format, startOfMonth, startOfWeek} from "date-fns";
 import {Calendar, Clock, Database, Layers, Timer} from "lucide-react";
 import {ReservationTimelineDto} from "@/api/statistics";
 import {cn} from "@/lib/utils";
+import {useTranslation} from "react-i18next";
 
 export interface ChartConfig {
     [key: string]: {
@@ -48,19 +49,68 @@ const ChartContainer = ({children, className, config}: ChartContainerProps) => (
     </div>
 );
 
-const processTimelineData = (timeline: ReservationTimelineDto[]) => {
-    if (!timeline?.length) return {chartData: [], config: {}};
+type TimeRange = 'day' | 'week' | 'month' | 'all';
 
-    const dates = timeline.map(t => new Date(t.startTime));
-    const minDate = new Date(Math.min(...dates.map(d => d.getTime())));
-    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
+const TimeRangeSelector = ({value, onChange}: { value: TimeRange; onChange: (value: TimeRange) => void }) => (
+    <div className="flex gap-2">
+        {[
+            {value: 'all', label: t('statistics.timeRanges.day') as string},
+            {value: 'week', label: t('statistics.timeRanges.week') as string},
+            {value: 'month', label: t('statistics.timeRanges.month') as string},
+        ].map(option => (
+            <button
+                key={option.value}
+                onClick={() => onChange(option.value as TimeRange)}
+                className={cn(
+                    "px-3 py-1 rounded-md text-sm",
+                    value === option.value
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted hover:bg-muted/80"
+                )}
+            >
+                {option.label}
+            </button>
+        ))}
+    </div>
+);
 
-    const allDates: string[] = [];
-    const currentDate = new Date(minDate);
-    while (currentDate <= maxDate) {
-        allDates.push(format(currentDate, 'yyyy-MM-dd'));
-        currentDate.setDate(currentDate.getDate() + 1);
+const formatDuration = (hours: number, t: { (key: string): string; (key: string, options: object): string }) => {
+    const fullHours = Math.floor(hours);
+    const minutes = Math.round((hours - fullHours) * 60);
+
+    if (minutes === 0) {
+        return `${fullHours}${t('statistics.teams.units.hours')}`;
     }
+
+    if (fullHours === 0) {
+        return `${minutes}${t('statistics.teams.units.minutes')}`;
+    }
+
+    return `${fullHours}${t('statistics.teams.units.hours')} ${minutes}${t('statistics.teams.units.minutes')}`;
+};
+
+const processTimelineData = (timeline: ReservationTimelineDto[], range: TimeRange = 'day') => {
+    if (!timeline?.length) return {chartData: [], config: {}, reservationsByDay: {}};
+
+    const groupData = (date: Date) => {
+        switch (range) {
+            case 'day':
+                return format(date, 'yyyy-MM-dd');
+            case 'week':
+                return format(startOfWeek(date), 'yyyy-MM-dd');
+            case 'month':
+                return format(startOfMonth(date), 'yyyy-MM');
+            default:
+                return format(date, 'yyyy-MM-dd');
+        }
+    };
+
+    const reservationsByDay = timeline.reduce((acc, r) => {
+        const day = format(new Date(r.startTime), 'yyyy-MM-dd');
+        if (!acc[day]) acc[day] = [];
+        acc[day].push(r);
+        return acc;
+    }, {} as Record<string, ReservationTimelineDto[]>);
 
     const resources = [...new Set(timeline.map(t => t.resourceName))];
     const config = resources.reduce((acc, resource, index) => {
@@ -71,29 +121,26 @@ const processTimelineData = (timeline: ReservationTimelineDto[]) => {
         return acc;
     }, {} as ChartConfig);
 
-    const dailyData = timeline.reduce((acc, reservation) => {
-        const day = format(new Date(reservation.startTime), 'yyyy-MM-dd');
-        if (!acc[day]) acc[day] = {};
-        acc[day][reservation.resourceName] = (acc[day][reservation.resourceName] || 0) + reservation.lengthInHours;
+    const groupedData = timeline.reduce((acc, reservation) => {
+        const groupKey = groupData(new Date(reservation.startTime));
+        if (!acc[groupKey]) acc[groupKey] = {};
+        if (!acc[groupKey][reservation.resourceName]) {
+            acc[groupKey][reservation.resourceName] = 0;
+        }
+        // @ts-expect-error - TS doesn't know that acc[groupKey] is defined
+        acc[groupKey][reservation.resourceName] += reservation.lengthInHours;
         return acc;
     }, {} as Record<string, Record<string, number>>);
 
-    const chartData = allDates.map(date => ({
-        date,
-        ...resources.reduce((acc, resource) => ({
-            ...acc,
-            [resource]: dailyData[date]?.[resource] || 0
-        }), {})
-    }));
-
-    const reservationsByDay = timeline.reduce((acc, reservation) => {
-        const day = format(new Date(reservation.startTime), 'yyyy-MM-dd');
-        if (!acc[day]) acc[day] = [];
-        acc[day].push(reservation);
-        return acc;
-    }, {} as Record<string, ReservationTimelineDto[]>);
+    const chartData = Object.entries(groupedData)
+        .map(([date, resources]) => ({
+            date,
+            ...resources,
+        }))
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
     return {chartData, config, reservationsByDay};
+
 };
 
 interface TeamStatisticsModalProps {
@@ -107,12 +154,15 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
     const {data: teamStats, isLoading} = useTeamStats(courseId, teamId);
     const [activeResource, setActiveResource] = useState<string | null>(null);
     const {team} = useTeam(teamId);
+    const {t, i18n} = useTranslation();
+
+    const [timeRange, setTimeRange] = useState<TimeRange>('week');
 
     console.table(teamStats);
 
     const {chartData, config, reservationsByDay} = useMemo(() =>
-            processTimelineData(teamStats?.timeline ?? []),
-        [teamStats]
+            processTimelineData(teamStats?.timeline ?? [], timeRange),
+        [teamStats, timeRange]
     );
 
     const total = useMemo(
@@ -127,7 +177,7 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
     if (isLoading) {
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className="max-w-[80vw] max-h-[80vh]">
+                <DialogContent className="max-w-[90vw] max-h-[90vh]">
                     <DialogHeader>
                         <DialogTitle>{t("statistics.teams.modalTitle")}</DialogTitle>
                     </DialogHeader>
@@ -145,7 +195,7 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[80vw] max-h-[80vh]">
+            <DialogContent className="max-w-[90vw] max-h-[90vh]">
                 <DialogHeader>
                     <DialogTitle>{team?.name} - {t("statistics.teams.modalTitle")}</DialogTitle>
                 </DialogHeader>
@@ -158,12 +208,12 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                     />
                     <StatCard
                         title={t("statistics.teams.totalHours")}
-                        value={`${teamStats?.totalHours ?? 0}h`}
+                        value={formatDuration(teamStats?.totalHours ?? 0, t)}
                         icon={<Clock className="h-4 w-4"/>}
                     />
                     <StatCard
                         title={t("statistics.teams.averageLength")}
-                        value={`${teamStats?.averageLength?.toFixed(1) ?? 0}h`}
+                        value={formatDuration(teamStats?.averageLength ?? 0, t)}
                         icon={<Timer className="h-4 w-4"/>}
                     />
                     <StatCard
@@ -194,10 +244,11 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                     <Card>
                         <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
                             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-                                <CardTitle>{t("statistics.teams.dailyUsage")}</CardTitle>
-                                <CardDescription>
-                                    {t("statistics.teams.dailyUsageDescription")}
-                                </CardDescription>
+                                <div className="flex justify-between items-center mb-4">
+                                    <CardTitle>{t("statistics.teams.dailyUsage")}</CardTitle>
+                                    <TimeRangeSelector value={timeRange} onChange={setTimeRange}/>
+                                </div>
+                                <CardDescription>{t("statistics.teams.dailyUsageDescription")}</CardDescription>
                             </div>
                             <div className="flex">
                                 {Object.entries(config).map(([key, value]) => (
@@ -211,7 +262,7 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                             {value.label}
                                         </span>
                                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                                            {total[key]}h
+                                            {formatDuration(total[key] ?? 0, t)}
                                         </span>
                                     </button>
                                 ))}
@@ -238,13 +289,16 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                         tickLine={false}
                                         axisLine={false}
                                         tickMargin={8}
-                                        minTickGap={32}
+                                        interval={timeRange === 'day' ? 0 : 'preserveStartEnd'}
+                                        minTickGap={timeRange === 'day' ? 0 : 32}
                                         tickFormatter={(value) => {
                                             const date = new Date(value);
-                                            return date.toLocaleDateString("en-US", {
-                                                month: "short",
-                                                day: "numeric",
-                                            });
+                                            const formatOptions: Intl.DateTimeFormatOptions = {
+                                                month: 'short',
+                                                day: 'numeric',
+                                                ...(timeRange === 'month' && {year: 'numeric'})
+                                            };
+                                            return new Intl.DateTimeFormat(i18n.language, formatOptions).format(date);
                                         }}
                                     />
                                     <YAxis
@@ -260,40 +314,112 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                         cursor={{fill: 'rgba(0, 0, 0, 0.1)'}}
                                         content={({active, payload, label}) => {
                                             if (!active || !payload?.length) return null;
-                                            const dayReservations = reservationsByDay?.[label] || [];
+
+                                            const date = new Date(label);
+                                            const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
+                                                weekday: 'long',
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                            });
+
+                                            const timeFormatter = new Intl.DateTimeFormat(i18n.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            });
+                                            let relevantReservations: ReservationTimelineDto[] = [];
+
+                                            switch (timeRange) {
+                                                case 'week': {
+                                                    const weekStart = startOfWeek(date);
+                                                    const weekEnd = endOfWeek(date);
+                                                    relevantReservations = Object.entries(reservationsByDay)
+                                                        .filter(([day]) => {
+                                                            const resDate = new Date(day);
+                                                            return resDate >= weekStart && resDate <= weekEnd;
+                                                        })
+                                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                                        .flatMap(([_, res]) => res);
+                                                    break;
+                                                }
+                                                case 'month': {
+                                                    const monthStart = startOfMonth(date);
+                                                    const monthEnd = endOfMonth(date);
+                                                    relevantReservations = Object.entries(reservationsByDay)
+                                                        .filter(([day]) => {
+                                                            const resDate = new Date(day);
+                                                            return resDate >= monthStart && resDate <= monthEnd;
+                                                        })
+                                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                                        .flatMap(([_, res]) => res);
+                                                    break;
+                                                }
+                                                default:
+                                                    relevantReservations = reservationsByDay[format(date, 'yyyy-MM-dd')] || [];
+                                            }
 
                                             return (
                                                 <div
                                                     className="bg-background border rounded-md shadow-sm p-2 min-w-[300px]">
                                                     <p className="font-medium mb-2 pb-2 border-b">
-                                                        {new Date(label).toLocaleDateString("en-US", {
-                                                            weekday: "long",
-                                                            month: "short",
-                                                            day: "numeric",
-                                                            year: "numeric",
-                                                        })}
+                                                        {timeRange === 'month'
+                                                            ? new Intl.DateTimeFormat(i18n.language, {
+                                                                month: 'long',
+                                                                year: 'numeric'
+                                                            }).format(date)
+                                                            : timeRange === 'week'
+                                                                ? `${new Intl.DateTimeFormat(i18n.language, {
+                                                                    month: 'short',
+                                                                    day: 'numeric'
+                                                                }).format(startOfWeek(date))} - ${new Intl.DateTimeFormat(i18n.language, {
+                                                                    month: 'short',
+                                                                    day: 'numeric',
+                                                                    year: 'numeric'
+                                                                }).format(endOfWeek(date))}`
+                                                                : dateFormatter.format(date)}
                                                     </p>
-                                                    {dayReservations.length === 0 ? (
-                                                        <p className="text-sm text-muted-foreground text-center py-2">
-                                                            {t("statistics.teams.noReservationsForDay")}
-                                                        </p>
-                                                    ) : (
+
+                                                    <div className="mb-2 pb-2 border-b">
+                                                        {payload
+                                                            .filter(p => typeof p.value === 'number' && p.value > 0)
+                                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                            .map((p: any) => (
+                                                                <p key={p.name}
+                                                                   className="text-sm flex justify-between gap-2">
+                                                                    <span>{config[p.name]?.label}</span>
+                                                                    <span className="font-medium">
+    {formatDuration(p.value, t)}
+</span>
+                                                                </p>
+                                                            ))}
+                                                    </div>
+
+                                                    {relevantReservations.length > 0 ? (
                                                         <div className="space-y-2">
-                                                            {dayReservations.map((reservation, index) => (
+                                                            <p className="text-sm font-medium text-muted-foreground">
+                                                                {t("statistics.teams.reservationDetails")}
+                                                            </p>
+                                                            {relevantReservations.map((reservation, index) => (
                                                                 <div key={index}
                                                                      className="text-sm space-y-1 pb-2 last:pb-0 border-b last:border-0">
                                                                     <p className="font-medium">{reservation.resourceName}</p>
                                                                     <div
                                                                         className="flex justify-between text-muted-foreground">
-                                                                            <span>
-                                                                                {format(new Date(reservation.startTime), 'HH:mm')} -
-                                                                                {format(new Date(reservation.endTime), 'HH:mm')}
-                                                                            </span>
-                                                                        <span>{reservation.lengthInHours}h</span>
+                                                                        <span>
+                                                                            {timeFormatter.format(new Date(reservation.startTime))} -
+                                                                            {timeFormatter.format(new Date(reservation.endTime))}
+                                                                        </span>
+                                                                        <span>
+                                                                            {formatDuration(reservation.lengthInHours, t)}
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             ))}
                                                         </div>
+                                                    ) : (
+                                                        <p className="text-sm text-muted-foreground text-center py-2">
+                                                            {t("statistics.teams.noReservationsForDay")}
+                                                        </p>
                                                     )}
                                                 </div>
                                             );

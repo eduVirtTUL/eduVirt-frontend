@@ -413,14 +413,25 @@ const reservationStatisticsModal = {
         averageLength: "Średnia długość rezerwacji",
         statefulCount: "Rezerwacje zasobów stanowych",
         poolCount: "Rezerwacje zasobów bezstanowych",
-        dailyUsage: "Dzienne wykorzystanie zasobów",
-        dailyUsageDescription: "Wykres przedstawia liczbę godzin zarezerwowanych dla każdego zasobu w ciągu dnia",
-        noReservationsForDay: "Ten dzień nie posiada żadnych rezerwacji",
+        dailyUsage: "Wykorzystanie zasobów",
+        dailyUsageDescription: "Wykres przedstawia łączną liczbę godzin zarezerwowanych dla każdego zasobu w ciągu wybranego przedziału czasu",
+        noReservationsForDay: "W tym dniu nie było żadnych rezerwacji",
+        reservationDetails: "Szczegółowy przebieg rezerwacji",
+        units: {
+            hours: "godz.",
+            minutes: "min."
+        }
     },
     tabs: {
         overview: "Przegląd",
         teams: "Zespoły",
         resources: "Zasoby"
+    },
+    timeRanges: {
+        day: "Dzień",
+        week: "Tydzień",
+        month: "Miesiąc",
+        all: "Wszystko"
     }
 };
 

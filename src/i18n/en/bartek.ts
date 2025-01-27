@@ -414,13 +414,24 @@ const reservationStatisticsModal = {
         statefulCount: "Stateful resource reservations",
         poolCount: "Stateless resource reservations",
         dailyUsage: "Daily resource usage",
-        dailyUsageDescription: "Chart shows the number of hours reserved per resource each day",
+        dailyUsageDescription: "Chart shows the total number of hours reserved per resource each day",
         noReservationsForDay: "This day had no reservations",
+        reservationDetails: "Detailed reservation timeline",
+        units: {
+            hours: "h",
+            minutes: "m"
+        }
     },
     tabs: {
         overview: "Overview",
         teams: "Teams",
         resources: "Resources"
+    },
+    timeRanges: {
+        day: "Day",
+        week: "Week",
+        month: "Month",
+        all: "All"
     }
 };
 
