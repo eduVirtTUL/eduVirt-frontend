@@ -58,11 +58,10 @@ const CreateMetricModal: React.FC = () => {
   });
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    close();
+    form.reset();
     await createMetricAsync({name: values.name, category: values.category} as CreateMetricDto);
-      form.reset();
-      close();
-    }
-  );
+  });
 
   return (
     <Dialog

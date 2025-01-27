@@ -111,12 +111,12 @@ const CreateClusterMetricValueModal: React.FC<
   };
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    close();
+    form.reset();
     await createClusterMetricValueAsync({
       metricId: values.metricId!,
       value: convertValue(selectedCategory!, values.value, values.unit)
     });
-    close();
-    form.reset();
   });
 
   return (

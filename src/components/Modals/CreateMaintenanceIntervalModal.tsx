@@ -91,9 +91,9 @@ const CreateMaintenanceIntervalModal: React.FC<CreateMaintenanceIntervalModalPro
         endAt: endTime.toISOString(),
       };
 
-      await createMaintenanceIntervalAsync(createDto);
       close();
       form.reset();
+      await createMaintenanceIntervalAsync(createDto);
     }
   );
 

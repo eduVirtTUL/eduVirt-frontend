@@ -98,9 +98,9 @@ const CreateReservationModal: React.FC<ResourceGroupProps> = ({
         notificationTime: values.notificationTime,
       };
 
-      await createReservationAsync(createDto);
       close();
       form.reset();
+      await createReservationAsync(createDto);
     }
   );
 

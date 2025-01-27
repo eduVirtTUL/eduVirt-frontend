@@ -25,6 +25,7 @@ export type ErrorKey =
   | "metrics.error.name.already.taken"
   | "clusterMetricValues.error.value.not.defined"
   | "clusterMetricValues.error.value.already.defined"
+  | "clusterMetricValues.error.conflict.exception"
   | "maintenanceIntervals.error.not.found"
   | "maintenanceIntervals.error.invalid.time.window"
   | "maintenanceIntervals.error.begin.too.early"
