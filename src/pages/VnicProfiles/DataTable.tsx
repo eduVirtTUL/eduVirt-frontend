@@ -17,8 +17,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {useTranslation} from "react-i18next";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from "@/components/ui/pagination";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -143,26 +150,38 @@ const DataTable = <TData, TValue>({
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-          >
-            {t("previous")}
-          </Button>
-          <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-          >
-            {t("next")}
-          </Button>
-        </div>
+        {/*Pagination*/}
+        <Pagination className="space-x-3">
+          <PaginationContent className={"flex items-center justify-between mt-4"}>
+            <PaginationItem>
+              <PaginationPrevious
+                  onClick={() => table.previousPage()}
+                  aria-disabled={!table.getCanPreviousPage()}
+                  tabIndex={pagination.pageIndex <= 0 ? -1 : undefined}
+                  className={pagination.pageIndex <= 0 ? "pointer-events-none opacity-50" : undefined}
+              >
+                {t("general.previous")}
+              </PaginationPrevious>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink>
+                {pagination.pageIndex + 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                  onClick={() => table.nextPage()}
+                  aria-disabled={!table.getCanNextPage()}
+                  tabIndex={!table.getCanNextPage() ? -1 : undefined}
+                  className={
+                    !table.getCanNextPage() ? "pointer-events-none opacity-50" : undefined
+                  }
+              >
+                {t("general.next")}
+              </PaginationNext>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
   );
 };

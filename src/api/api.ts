@@ -268,6 +268,55 @@ export type CourseDtoCourseTypeEnum = typeof CourseDtoCourseTypeEnum[keyof typeo
 /**
  * 
  * @export
+ * @interface CourseStatisticsDto
+ */
+export interface CourseStatisticsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseStatisticsDto
+     */
+    'courseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseStatisticsDto
+     */
+    'courseName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseStatisticsDto
+     */
+    'totalReservations'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseStatisticsDto
+     */
+    'averageReservationLength'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseStatisticsDto
+     */
+    'totalTeamsWithReservations'?: number;
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof CourseStatisticsDto
+     */
+    'reservationsPerMonth'?: { [key: string]: number; };
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseStatisticsDto
+     */
+    'resourceUtilizationPercentage'?: number;
+}
+/**
+ * 
+ * @export
  * @interface CreateCourseDto
  */
 export interface CreateCourseDto {
@@ -1583,6 +1632,62 @@ export interface ReservationDto {
 /**
  * 
  * @export
+ * @interface ReservationStatisticsDto
+ */
+export interface ReservationStatisticsDto {
+    /**
+     * 
+     * @type {CourseStatisticsDto}
+     * @memberof ReservationStatisticsDto
+     */
+    'courseStats'?: CourseStatisticsDto;
+    /**
+     * 
+     * @type {Array<TeamStatisticsDto>}
+     * @memberof ReservationStatisticsDto
+     */
+    'teamStats'?: Array<TeamStatisticsDto>;
+    /**
+     * 
+     * @type {Array<ResourceStatisticsDto>}
+     * @memberof ReservationStatisticsDto
+     */
+    'resourceStats'?: Array<ResourceStatisticsDto>;
+    /**
+     * 
+     * @type {TimeStatisticsDto}
+     * @memberof ReservationStatisticsDto
+     */
+    'timeStats'?: TimeStatisticsDto;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationTimeSlotDto
+ */
+export interface ReservationTimeSlotDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimeSlotDto
+     */
+    'start'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimeSlotDto
+     */
+    'end'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimeSlotDto
+     */
+    'resourceName'?: string;
+}
+/**
+ * 
+ * @export
  * @interface ReservationTimeframeModifiersDto
  */
 export interface ReservationTimeframeModifiersDto {
@@ -1720,6 +1825,55 @@ export interface ResourceGroupPoolWithMaxRentTimeDto {
 /**
  * 
  * @export
+ * @interface ResourceStatisticsDto
+ */
+export interface ResourceStatisticsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceStatisticsDto
+     */
+    'resourceId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResourceStatisticsDto
+     */
+    'resourceName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceStatisticsDto
+     */
+    'totalReservations'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceStatisticsDto
+     */
+    'totalHoursReserved'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResourceStatisticsDto
+     */
+    'utilizationPercentage'?: number;
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof ResourceStatisticsDto
+     */
+    'reservationsPerTeam'?: { [key: string]: number; };
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ResourceStatisticsDto
+     */
+    'stateless'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface ResourcesAvailabilityDto
  */
 export interface ResourcesAvailabilityDto {
@@ -1833,6 +1987,49 @@ export interface TeamDto {
 /**
  * 
  * @export
+ * @interface TeamStatisticsDto
+ */
+export interface TeamStatisticsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamStatisticsDto
+     */
+    'teamId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamStatisticsDto
+     */
+    'teamName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatisticsDto
+     */
+    'totalReservations'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatisticsDto
+     */
+    'averageReservationLength'?: number;
+    /**
+     * 
+     * @type {Array<ReservationTimeSlotDto>}
+     * @memberof TeamStatisticsDto
+     */
+    'reservationTimeline'?: Array<ReservationTimeSlotDto>;
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof TeamStatisticsDto
+     */
+    'resourceUsageCount'?: { [key: string]: number; };
+}
+/**
+ * 
+ * @export
  * @interface TeamWithCourseDto
  */
 export interface TeamWithCourseDto {
@@ -1903,6 +2100,31 @@ export interface TeamWithKeyDto {
      * @memberof TeamWithKeyDto
      */
     'keyValue'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TimeStatisticsDto
+ */
+export interface TimeStatisticsDto {
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof TimeStatisticsDto
+     */
+    'reservationsPerHourOfDay'?: { [key: string]: number; };
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof TimeStatisticsDto
+     */
+    'reservationsPerDayOfWeek'?: { [key: string]: number; };
+    /**
+     * 
+     * @type {number}
+     * @memberof TimeStatisticsDto
+     */
+    'averageUtilizationPerDay'?: number;
 }
 /**
  * 
@@ -4011,6 +4233,61 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {string} from 
+         * @param {string} to 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourseStatistics: async (courseId: string, from: string, to: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getCourseStatistics', 'courseId', courseId)
+            // verify required parameter 'from' is not null or undefined
+            assertParamExists('getCourseStatistics', 'from', from)
+            // verify required parameter 'to' is not null or undefined
+            assertParamExists('getCourseStatistics', 'to', to)
+            const localVarPath = `/course/courses/{courseId}/statistics`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (from !== undefined) {
+                localVarQueryParameter['from'] = (from as any instanceof Date) ?
+                    (from as any).toISOString() :
+                    from;
+            }
+
+            if (to !== undefined) {
+                localVarQueryParameter['to'] = (to as any instanceof Date) ?
+                    (to as any).toISOString() :
+                    to;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {string} [search] 
@@ -4381,13 +4658,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -4550,6 +4828,20 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCourseStatefulResourceGroups(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourseStatefulResourceGroups']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} from 
+         * @param {string} to 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCourseStatistics(courseId: string, from: string, to: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReservationStatisticsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourseStatistics(courseId, from, to, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourseStatistics']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4792,6 +5084,17 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {string} from 
+         * @param {string} to 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourseStatistics(courseId: string, from: string, to: string, options?: RawAxiosRequestConfig): AxiosPromise<ReservationStatisticsDto> {
+            return localVarFp.getCourseStatistics(courseId, from, to, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {string} [search] 
@@ -5021,6 +5324,19 @@ export class CourseControllerApi extends BaseAPI {
      */
     public getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).getCourseStatefulResourceGroups(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {string} from 
+     * @param {string} to 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public getCourseStatistics(courseId: string, from: string, to: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourseStatistics(courseId, from, to, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7908,13 +8224,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7953,13 +8270,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9504,13 +9822,14 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9732,13 +10051,14 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9782,11 +10102,12 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10274,13 +10595,14 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10613,13 +10935,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10663,11 +10986,12 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10828,13 +11152,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11649,13 +11974,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};

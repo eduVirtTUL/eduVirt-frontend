@@ -13,6 +13,7 @@ export const keys = {
   NETWORKS: "networks",
   RESOURCE_GROUP: "resourceGroup",
   RESERVATIONS: "reservations",
+  ONGOING_RESERVATIONS: "ongoingReservations",
   VNIC_PROFILE: "vnicProfile",
   VNIC_PROFILE_DETAIL: "vnicProfileDetail",
   VLANS_RANGE: "vlansRange",
@@ -24,6 +25,7 @@ export const keys = {
   STATELESS_POD: "statelessPod",
   USER: "user",
   TEACHER: "teacher",
+  STATISTICS: "statistics",
 };
 
 export const resourceGroupKeys = {
@@ -38,7 +40,7 @@ export const courseKeys = {
   detail: (id: string) => ["course", id] as const,
   metrics: (id: string) => ["course", id, "metrics"] as const,
   metric: (id: string, metricId: string) =>
-    ["course", id, "metrics", metricId] as const,
+      ["course", id, "metrics", metricId] as const,
   resourceGroups: (id: string) => ["course", id, "resourceGroups"] as const,
 };
 

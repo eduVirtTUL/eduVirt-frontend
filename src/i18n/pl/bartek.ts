@@ -401,6 +401,55 @@ const podManagement = {
     deleteSuccess: "PODy bezstanowe zostały usunięte pomyślnie",
 };
 
+const reservationStatisticsModal = {
+    button: "Statystyki rezerwacji",
+    title: "Statystyki rezerwacji",
+    teams: {
+        modalTitle: "Statystyki rezerwacji",
+        noReservations: "Brak rezerwacji",
+        noReservationsDescription: "Ten zespół nie posiada historycznych danych o rezerwacjach",
+        totalReservations: "Całkowita liczba rezerwacji",
+        totalHours: "Całkowita długość wszystkich rezerwacji",
+        averageLength: "Średnia długość rezerwacji",
+        statefulCount: "Rezerwacje zasobów stanowych",
+        poolCount: "Rezerwacje zasobów bezstanowych",
+        dailyUsage: "Wykorzystanie zasobów",
+        dailyUsageDescription: "Łączna liczba godzin zarezerwowanych dla każdego zasobu w ciągu wybranego przedziału czasu",
+        noReservationsForDay: "W tym dniu nie było żadnych rezerwacji",
+        reservationDetails: "Szczegółowy przebieg rezerwacji",
+        units: {
+            hours: "godz.",
+            minutes: "min."
+        }
+    },
+    tabs: {
+        overview: "Przegląd",
+        teams: "Zespoły",
+        resources: "Zasoby"
+    },
+    timeRanges: {
+        day: "Dzień",
+        week: "Tydzień",
+        month: "Miesiąc",
+        all: "Wszystko"
+    }
+};
+
+const courseStatistics = {
+    button: "Podsumowanie rezerwacji",
+    modalTitle: "Podsumowanie rezerwacji",
+    totalReservations: "Całkowita liczba rezerwacji",
+    totalHours: "Całkowita długość wszystkich rezerwacji",
+    averageLength: "Średnia długość rezerwacji",
+    totalTeams: "Łączna liczba zespołów mających rezerwacje",
+    teamMetrics: "Statystyki zespołów",
+    teamMetricsDescription: "Porównanie statystyk rezerwacji dla każdego zespołu w ramach przedmiotu",
+    metrics: {
+        reservations: "Rezerwacje",
+        hours: "Godziny"
+    }
+};
+
 export default {
     podType,
     activeStatus,
@@ -422,4 +471,6 @@ export default {
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
     podManagement,
+    statistics: reservationStatisticsModal,
+    courseStatistics,
 };
