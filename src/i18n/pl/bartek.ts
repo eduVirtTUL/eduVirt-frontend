@@ -401,6 +401,29 @@ const podManagement = {
     deleteSuccess: "PODy bezstanowe zostały usunięte pomyślnie",
 };
 
+const reservationStatisticsModal = {
+    button: "Statystyki rezerwacji",
+    title: "Statystyki rezerwacji",
+    teams: {
+        modalTitle: "statystyki rezerwacji",
+        noReservations: "Brak rezerwacji",
+        noReservationsDescription: "Ten zespół nie posiada historycznych danych o rezerwacjach",
+        totalReservations: "Całkowita liczba rezerwacji",
+        totalHours: "Całkowita liczba godzin rezerwacji",
+        averageLength: "Średnia długość rezerwacji",
+        statefulCount: "Rezerwacje zasobów stanowych",
+        poolCount: "Rezerwacje zasobów bezstanowych",
+        dailyUsage: "Dzienne wykorzystanie zasobów",
+        dailyUsageDescription: "Wykres przedstawia liczbę godzin zarezerwowanych dla każdego zasobu w ciągu dnia",
+        noReservationsForDay: "Ten dzień nie posiada żadnych rezerwacji",
+    },
+    tabs: {
+        overview: "Przegląd",
+        teams: "Zespoły",
+        resources: "Zasoby"
+    }
+};
+
 export default {
     podType,
     activeStatus,
@@ -422,4 +445,5 @@ export default {
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
     podManagement,
+    statistics: reservationStatisticsModal
 };

@@ -251,6 +251,7 @@ const pageTitles = {
   courseTeams: "Teams from course {{courseName}} - eduVirt",
   vlansRanges: "VLAN ranges - eduVirt",
   vnicProfiles: "Private segments - eduVirt",
+  reservationStatistics: "Reservation statistics - eduVirt",
 };
 
 export default {

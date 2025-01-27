@@ -84,7 +84,7 @@ const teamDetails = {
 const podCard = {
     course: "Course",
     description: "Course Description",
-    makeAReservation: "Reserve",
+    makeAReservation: "Make a reservation",
     maxRent: "Maximum number of reservations",
     availableRents: "Number of available reservations",
     noRentLimit: "No reservation limit"
@@ -231,7 +231,7 @@ const statelessPodManagementDrawer = {
 const soloTeamEditModal = {
     title: "Edit team",
     active: "Activity status",
-    activeDescription: "When a team is deactivated, students cannot join the team or reserve its assigned resources",
+    activeDescription: "When a team is deactivated, students cannot join the team or make a reservation on its assigned resources",
     success: "Team has been updated successfully",
 };
 
@@ -265,7 +265,7 @@ const manageTeamUsersModal = {
     addUser: {
         email: "Email address",
         description: "Email address of the student to be added to the team",
-        success: "Student has been added to team successfully",
+        success: "Student has been added to the team successfully",
         validation: {
             email: "Invalid email format"
         }
@@ -286,7 +286,7 @@ const manageCourseUsersModal = {
     addUser: {
         email: "Email address",
         description: "Email address of the student to be added to the course",
-        success: "Student has been added to course successfully",
+        success: "Student has been added to the course successfully",
         validation: {
             email: "Invalid email format"
         }
@@ -302,7 +302,7 @@ const manageTeachersModal = {
     addTeacher: {
         email: "Email address",
         description: "Enter the email address of the teacher you want to add to the course",
-        success: "Teacher has been added to the course",
+        success: "Teacher has been added to the course successfully",
         validation: {
             email: "Invalid email format"
         }
@@ -401,6 +401,29 @@ const podManagement = {
     deleteSuccess: "Stateless PODs have been deleted successfully",
 };
 
+const reservationStatisticsModal = {
+    button: "Reservation statistics",
+    title: "Reservation statistics",
+    teams: {
+        modalTitle: "reservation statistics",
+        noReservations: "No reservations found",
+        noReservationsDescription: "This team has no historical reservation data to display",
+        totalReservations: "Total reservations",
+        totalHours: "Total hours",
+        averageLength: "Average length",
+        statefulCount: "Stateful resource reservations",
+        poolCount: "Stateless resource reservations",
+        dailyUsage: "Daily resource usage",
+        dailyUsageDescription: "Chart shows the number of hours reserved per resource each day",
+        noReservationsForDay: "This day had no reservations",
+    },
+    tabs: {
+        overview: "Overview",
+        teams: "Teams",
+        resources: "Resources"
+    }
+};
+
 export default {
     podType,
     activeStatus,
@@ -422,4 +445,5 @@ export default {
     manageTeachers: manageTeachersModal,
     searchByEmail: searchByEmailModal,
     podManagement,
+    statistics: reservationStatisticsModal
 };

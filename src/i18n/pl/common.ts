@@ -217,6 +217,7 @@ const pageTitles = {
   courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
   vlansRanges: "Zakresy VLANów - eduVirt",
   vnicProfiles: "Segmenty prywatne - eduVirt",
+  reservationStatistics: "Statystyki rezerwacji - eduVirt",
 };
 
 export default {

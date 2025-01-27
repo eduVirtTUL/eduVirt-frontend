@@ -8,7 +8,7 @@ import {Route} from "./+types";
 import {t} from "i18next";
 import {RouteHandle} from "@/AuthGuard";
 import {Button} from "@/components/ui/button";
-import {FileX2, SearchIcon, Undo2, UserPlus, XIcon} from "lucide-react";
+import {BarChart2, FileX2, SearchIcon, Undo2, UserPlus, XIcon} from "lucide-react";
 import {useDialog} from "@/stores/dialogStore";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import {useDebounce} from "use-debounce";
@@ -79,6 +79,16 @@ const TeamsInCoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
             </div>
 
             <div className="flex justify-end gap-2 mb-4">
+            {(activeRole === "teacher" || activeRole === "administrator") && (
+                <Button
+                variant="outline"
+                onClick={() => navigate(`/courses/${id}/teams/statistics`)}
+                >
+                <BarChart2 className="h-4 w-4 mr-2" />
+                {t("coursePageB.courseTeamsPage.statistics")}
+                </Button>
+            )}
+
                 {activeRole === "teacher" && !isTeamBased && (
                     <Button
                         className="mr-auto"
