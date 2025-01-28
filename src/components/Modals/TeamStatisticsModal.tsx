@@ -417,7 +417,12 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                                                         <div
                                                                             className="flex justify-between text-muted-foreground">
                                                                         <span>
-                                                                            {timeFormatter.format(new Date(reservation.startTime))} - {timeFormatter.format(new Date(reservation.endTime))}
+                                                                            {new Intl.DateTimeFormat(i18n.language, {
+                                                                                day: 'numeric',
+                                                                                month: 'short',
+                                                                                hour: '2-digit',
+                                                                                minute: '2-digit'
+                                                                            }).format(new Date(reservation.startTime))} - {timeFormatter.format(new Date(reservation.endTime))}
                                                                         </span>
                                                                         <span>
                                                                             {formatDuration(reservation.lengthInHours, t)}

@@ -439,6 +439,7 @@ const courseStatistics = {
     button: "Reservations summary",
     modalTitle: "Reservations summary",
     totalReservations: "Total number of reservations",
+    noReservationsDescription: "This course has no historical reservation data to display",
     totalHours: "Total reservations length",
     averageLength: "Average reservation length",
     totalTeams: "Total number of teams with reservations",
