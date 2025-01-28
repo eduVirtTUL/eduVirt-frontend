@@ -13,7 +13,12 @@ const vnicProfiles = {
                     notInPool: "Nie w puli"
                 }
             },
-            searchPlaceholder: "Wyszukaj wpisując wartość"
+            searchPlaceholder: "Wyszukaj wpisując wartość",
+            valid: {
+                title: "Zgodność",
+                compliance: "Pełna zgodność",
+                errors: "Niektóre dane różnią się"
+            }
         },
         actions: {
             add: {
@@ -36,6 +41,19 @@ const vnicProfiles = {
             }
         }
     },
+}
+const validations = {
+    compliance: {
+        errors: {
+            vlan: {
+                id: "numer VLANu",
+            },
+            name: "nazwa vnic profilu",
+            network: {
+                name: "nazwa segmentu sieciowego",
+            }
+        }
+    }
 }
 
 const vlansRange = {
@@ -78,5 +96,6 @@ export default {
     vnicProfiles,
     vlansRange,
     createVlansRangeModal,
-    ongoingReservations
+    ongoingReservations,
+    validations
 };

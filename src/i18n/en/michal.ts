@@ -13,7 +13,8 @@ const vnicProfiles = {
                     notInPool: "Not in pool"
                 }
             },
-            searchPlaceholder: "Search by typing a value"
+            searchPlaceholder: "Search by typing a value",
+            valid: "Valid"
         },
         actions: {
             add: {

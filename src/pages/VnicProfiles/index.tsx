@@ -1,47 +1,57 @@
 import PageHeader from "@/components/PageHeader";
 import {useVnicProfiles} from "@/data/network/useVnicProfiles";
-import {useVnicProfilesDetails} from "@/data/network/useVnicProfilesDetails";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {useAddVnicProfileToPool} from "@/data/network/useAddVnicProfileToPool";
 import {useRemoveVnicProfileFromPool} from "@/data/network/useRemoveVnicProfileFromPool";
 import {Link} from "react-router";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import {ArrowDown, ArrowUp, ArrowUpDown, FoldHorizontal, MoreHorizontal,} from "lucide-react";
-// import DataTable from "@/pages/VnicProfiles/DataTable";
+import {
+    ArrowDown,
+    ArrowUp,
+    ArrowUpDown,
+    CircleCheck, Dot,
+    FilterIcon,
+    FilterX,
+    FoldHorizontal, Info, Minus,
+    MoreHorizontal, OctagonX,
+} from "lucide-react";
 import {ColumnDef, SortDirection} from "@tanstack/react-table";
-import {VnicProfileDto, VnicProfilePoolMemberDto} from "@/api";
-import React, {useCallback, useEffect, useState} from "react";
-// import {Label} from "@/components/ui/label";
+import {VnicProfileDto} from "@/api";
+import React, {useCallback, useState} from "react";
 import {Popover, PopoverContent} from "@/components/ui/popover";
 import {PopoverTrigger} from "@radix-ui/react-popover";
-// import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-// import {Input} from "@/components/ui/input";
 import {RouteHandle} from "@/AuthGuard";
 import i18next from "i18next";
 import {useTranslation} from "react-i18next";
 import {Skeleton} from "@/components/ui/skeleton";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
+import {useNavigate} from "react-router-dom";
 
 const VnicProfilesPage: React.FC = () => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     const [ pageNumber, setPageNumber ] = useState<number>(0);
     const [ pageSize ] = useState<number>(10);
-    const [ sortColumn, setSortColumn ] = useState<string>("vlanid");
+    const [ sortColumn, setSortColumn ] = useState<('vlanId' | 'networkName')>("vlanId");
     const [ sortDirection, setSortDirection ] = useState<SortDirection>("asc");
+
+    const [ inPoolFlag, setInPoolFlag ] = useState<number>(0);
 
     const {vnicProfiles, isLoading} = useVnicProfiles({
         size: pageSize,
         page: pageNumber,
-        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ],
+        inPool: inPoolFlag
     });
 
     const {vnicProfiles: nextVnicProfiles, isLoading: nextLoading} = useVnicProfiles({
         size: pageSize,
         page: pageNumber + 1,
-        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ]
+        sort: sortColumn === null ? [] : [ `${sortColumn},${sortDirection}` ],
+        inPool: inPoolFlag
     });
 
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
@@ -79,7 +89,7 @@ const VnicProfilesPage: React.FC = () => {
         return <ArrowUpDown className="ml-2 h-4 w-4"/>;
     };
 
-    const handleSortingToggling = useCallback((columnName: string) => {
+    const handleSortingToggling = useCallback((columnName: 'vlanId' | 'networkName') => {
         if (columnName === sortColumn) {
             setSortDirection((prevDirection) => prevDirection === "asc" ? "desc" : "asc");
         } else {
@@ -88,7 +98,17 @@ const VnicProfilesPage: React.FC = () => {
         }
     }, [sortColumn]);
 
-    const handleDto = (dto: VnicProfilePoolMemberDto | undefined) => {
+    const handleInPoolFilter = () => {
+        if (inPoolFlag === 0) {
+            setInPoolFlag(1);
+            setPageNumber(0);
+        } else {
+            setInPoolFlag(0);
+            setPageNumber(0);
+        }
+    };
+
+    // const handleDto = (dto: VnicProfilePoolMemberDto | undefined) => {
         //todo
         // if (!isLoadingDetails && dto) {
         //     return (
@@ -107,13 +127,13 @@ const VnicProfilesPage: React.FC = () => {
         //         </>
         //     );
         // }
-        return (
-            <>
-                ...
-            </>
-        );
+        // return (
+        //     <>
+        //         ...
+        //     </>
+        // );
 
-    }
+    // }
 
     const columns: ColumnDef<VnicProfileDto>[] = [
         {
@@ -136,7 +156,7 @@ const VnicProfilesPage: React.FC = () => {
             accessorKey: "networkName",
             header: () => {
                 return (
-                    <Button variant="ghost" onClick={() => handleSortingToggling("name")}>
+                    <Button variant="ghost" onClick={() => handleSortingToggling("networkName")}>
                         {t("vnicProfiles.pool.table.networkName")}
                         {chooseSortingArrow("name")}
                     </Button>
@@ -150,75 +170,81 @@ const VnicProfilesPage: React.FC = () => {
             accessorKey: "networkVlanId",
             header: () => {
                 return (
-                    <Button variant="ghost" onClick={() => handleSortingToggling("vlanid")}>
+                    <Button variant="ghost" onClick={() => handleSortingToggling("vlanId")}>
                         {t("vnicProfiles.pool.table.networkVlanId")}
                         {chooseSortingArrow("vlanid")}
                     </Button>
                 );
             },
             cell: ({row}) => {
-                return <div className="ml-14">{row.original.networkVlanId}</div>;
+                return <div className="ml-20">{row.original.networkVlanId}</div>;
             },
         },
         {
             accessorKey: "inPool",
-            //todo sort on backend
-            // header: ({column}) => {
-            //     return (
-            //         <Popover>
-            //             <PopoverTrigger asChild>
-            //                 <Button variant="ghost">
-            //                     {t("vnicProfiles.pool.table.inPool.name")}
-            //                     {column.getFilterValue() == null ? (
-            //                         <FilterIcon className="ml-2 h-4 w-4"/>
-            //                     ) : (
-            //                         <FilterX className="ml-2 h-4 w-4"/>
-            //                     )}
-            //                 </Button>
-            //             </PopoverTrigger>
-            //             <PopoverContent>
-            //                 <RadioGroup value={selectedFiltering}>
-            //                     <div
-            //                         className="flex items-center space-x-2"
-            //                         onClick={() => {
-            //                             setSelectedFiltering("allItems");
-            //                             column.setFilterValue(null);
-            //                         }}
-            //                     >
-            //                         <RadioGroupItem value="allItems" id="r1"/>
-            //                         <Label htmlFor="r1">
-            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.all")}
-            //                         </Label>
-            //                     </div>
-            //                     <div
-            //                         className="flex items-center space-x-2"
-            //                         onClick={() => {
-            //                             setSelectedFiltering("inPoolItem");
-            //                             column.setFilterValue(true);
-            //                         }}
-            //                     >
-            //                         <RadioGroupItem value="inPoolItem" id="r2"/>
-            //                         <Label htmlFor="r2">
-            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.inPool")}
-            //                         </Label>
-            //                     </div>
-            //                     <div
-            //                         className="flex items-center space-x-2"
-            //                         onClick={() => {
-            //                             setSelectedFiltering("notInPoolItem");
-            //                             column.setFilterValue(false);
-            //                         }}
-            //                     >
-            //                         <RadioGroupItem value="notInPoolItem" id="r3"/>
-            //                         <Label htmlFor="r3">
-            //                             {t("vnicProfiles.pool.table.inPool.selectOptions.notInPool")}
-            //                         </Label>
-            //                     </div>
-            //                 </RadioGroup>
-            //             </PopoverContent>
-            //         </Popover>
-            //     );
-            // },
+            header: () => {
+                return (
+                    <Button variant="ghost" onClick={() => handleInPoolFilter()}>
+                        {t("vnicProfiles.pool.table.inPool.name")}
+                        {inPoolFlag != 1 && inPoolFlag != 2 ? (
+                            <FilterIcon className="ml-2 h-4 w-4"/>
+                        ) : (
+                            <FilterX className="ml-2 h-4 w-4"/>
+                        )}
+                    </Button>
+                );
+                // return (
+                //     <Popover>
+                //         <PopoverTrigger asChild>
+                //             <Button variant="ghost">
+                //                 {t("vnicProfiles.pool.table.inPool.name")}
+                //                 {inPoolFlag != 1 && inPoolFlag != 2 ? (
+                //                     <FilterIcon className="ml-2 h-4 w-4"/>
+                //                 ) : (
+                //                     <FilterX className="ml-2 h-4 w-4"/>
+                //                 )}
+                //             </Button>
+                //         </PopoverTrigger>
+                //         <PopoverContent>
+                //             <RadioGroup>
+                //                 <div
+                //                     className="flex items-center space-x-2"
+                //                     onClick={() => {
+                //                         setInPoolFlag(0);
+                //                     }}
+                //                 >
+                //                     <RadioGroupItem value="allItems" id="r1"/>
+                //                     <Label htmlFor="r1">
+                //                         {t("vnicProfiles.pool.table.inPool.selectOptions.all")}
+                //                     </Label>
+                //                 </div>
+                //                 <div
+                //                     className="flex items-center space-x-2"
+                //                     onClick={() => {
+                //                         setInPoolFlag(1);
+                //                     }}
+                //                 >
+                //                     <RadioGroupItem value="inPoolItem" id="r2"/>
+                //                     <Label htmlFor="r2">
+                //                         {t("vnicProfiles.pool.table.inPool.selectOptions.inPool")}
+                //                     </Label>
+                //                 </div>
+                //                 <div
+                //                     className="flex items-center space-x-2"
+                //                     onClick={() => {
+                //                         setInPoolFlag(2);
+                //                     }}
+                //                 >
+                //                     <RadioGroupItem value="notInPoolItem" id="r3"/>
+                //                     <Label htmlFor="r3">
+                //                         {t("vnicProfiles.pool.table.inPool.selectOptions.notInPool")}
+                //                     </Label>
+                //                 </div>
+                //             </RadioGroup>
+                //         </PopoverContent>
+                //     </Popover>
+                // );
+            },
             cell: ({row}) => {
                 const vnicProfile = row.original;
 
@@ -231,6 +257,55 @@ const VnicProfilesPage: React.FC = () => {
                 );
             },
             enableGlobalFilter: false,
+        },
+        {
+            accessorKey: "valid",
+            header: () => {
+                return (
+                    <Button variant="ghost">
+                        {t("vnicProfiles.pool.table.valid.title")}
+                    </Button>
+                );
+            },
+            cell: ({row}) => {
+                if (row.original.valid === true) {
+                    return (
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <CircleCheck color={"#01b80a"} className="ml-5"/>
+                            </PopoverTrigger>
+                            <PopoverContent side="right" className="w-80">
+                                <p className="text-sm">
+                                    {t("vnicProfiles.pool.table.valid.compliance")}
+                                </p>
+                            </PopoverContent>
+                        </Popover>
+                    );
+                }
+                if (row.original.valid === false) {
+                    return (
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <OctagonX color={"#ff1900"} className="ml-5"/>
+                            </PopoverTrigger>
+                            <PopoverContent side="right" className="w-50">
+                                <p className="text-sm">
+                                    <b>{t("vnicProfiles.pool.table.valid.errors")}:</b>
+                                    {(row.original.validationErrors ?? []).map((key: string, index) => (
+                                        <div key={index} style={{ color: 'red' }}>
+                                            <br />
+                                            {/* @ts-expect-error this doesn't impact the page */}
+                                            {t("validations." + key)}
+                                        </div>
+                                    ))}
+                                </p>
+                            </PopoverContent>
+                        </Popover>
+                    );
+                }
+
+                return <Minus className="ml-5"/>
+            }
         },
         {
             id: "actions",
