@@ -248,7 +248,7 @@ const pageTitles = {
   clusterMetricValues: "Cluster - Metrics - eduVirt",
   login: "Log into eduVirt",
   notFound: "Page not found",
-  courseTeams: "Teams from course {{courseName}} - eduVirt",
+  courseTeams: "Course teams - eduVirt",
   vlansRanges: "VLAN ranges - eduVirt",
   vnicProfiles: "Private segments - eduVirt",
   ongoingReservations: "Ongoing reservations - eduVirt",
