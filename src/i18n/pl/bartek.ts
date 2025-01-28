@@ -418,8 +418,8 @@ const reservationStatisticsModal = {
         noReservationsForDay: "W tym dniu nie było żadnych rezerwacji",
         reservationDetails: "Szczegółowy przebieg rezerwacji",
         units: {
-            hours: "godz.",
-            minutes: "min."
+            hours: "g",
+            minutes: "m"
         }
     },
     tabs: {

@@ -258,12 +258,16 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                         className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                                         onClick={() => setActiveResource(activeResource === key ? null : key)}
                                     >
-                                        <span className="text-xs text-muted-foreground">
-                                            {value.label}
-                                        </span>
+                                    <span className="text-xs text-muted-foreground flex items-center gap-2">
+                                        <span
+                                            className="inline-block w-3 h-3 rounded-full"
+                                            style={{backgroundColor: value.color}}
+                                        />
+                                        {value.label}
+                                    </span>
                                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                                            {formatDuration(total[key] ?? 0, t)}
-                                        </span>
+                                        {formatDuration(total[key] ?? 0, t)}
+                                    </span>
                                     </button>
                                 ))}
                             </div>
@@ -424,7 +428,7 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                                                                 minute: '2-digit'
                                                                             }).format(new Date(reservation.startTime))} - {timeFormatter.format(new Date(reservation.endTime))}
                                                                         </span>
-                                                                        <span>
+                                                                            <span>
                                                                             {formatDuration(reservation.lengthInHours, t)}
                                                                         </span>
                                                                         </div>
