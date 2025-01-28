@@ -14,7 +14,11 @@ const vnicProfiles = {
                 }
             },
             searchPlaceholder: "Search by typing a value",
-            valid: "Valid"
+            valid: {
+                title: "Validity",
+                compliance: "Full compliance",
+                errors: "Some data differs"
+            }
         },
         actions: {
             add: {
@@ -34,6 +38,20 @@ const vnicProfiles = {
                     name: "Profile",
                     inUse: "In use"
                 }
+            }
+        }
+    }
+}
+
+const validations = {
+    compliance: {
+        errors: {
+            vlan: {
+                id: "VLAN's identifier",
+            },
+            name: "vnic profile's name",
+            network: {
+                name: "network segment name",
             }
         }
     }
@@ -79,5 +97,6 @@ export default {
     vnicProfiles,
     vlansRange,
     createVlansRangeModal,
-    ongoingReservations
+    ongoingReservations,
+    validations
 };

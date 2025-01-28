@@ -42,6 +42,7 @@ const vnicProfiles = {
         }
     },
 }
+
 const validations = {
     compliance: {
         errors: {
