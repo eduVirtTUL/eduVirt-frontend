@@ -85,6 +85,7 @@ export type ErrorKey =
   | "pod.deletion.exception"
   | "team.deletion.exception"
   | "ovirt.vnic.profile.currently.in.use"
+  | "team.size.exception"
 
 export type ErrorResponse = {
   message: string;
