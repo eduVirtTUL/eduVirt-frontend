@@ -109,7 +109,7 @@ const CoursePage: React.FC<Route.ComponentProps> = ({params: {id}}) => {
                     <Button asChild>
                         <Link to={`./reservations`}>
                             <CalendarDays />
-                            {"Rezerwacje"}
+                            {t("reservations.title")}
                         </Link>
                     </Button>
                 )}

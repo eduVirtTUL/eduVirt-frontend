@@ -60,7 +60,7 @@ const columns = (
     accessorKey: "team.name",
     header: () => {
       return (
-        <Button variant="ghost" onClick={() => handleSort("resourceGroup.name")}>
+        <Button variant="ghost" onClick={() => handleSort("team.name")}>
           {t("reservations.table.columns.teamName")}
           {(chooseSortingArrow("team.name"))}
         </Button>
