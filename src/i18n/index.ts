@@ -6,24 +6,27 @@ import en from "./en/common";
 
 export const defaultNS = "common";
 
-i18next.use(detector).use(initReactI18next).init({
-  debug: true,
-  fallbackLng: "pl",
-  defaultNS,
-  resources: {
-    pl: {
-      common: pl,
-      keys: pl,
+i18next
+  .use(detector)
+  .use(initReactI18next)
+  .init({
+    debug: import.meta.env.MODE === "development",
+    fallbackLng: "pl",
+    defaultNS,
+    resources: {
+      pl: {
+        common: pl,
+        keys: pl,
+      },
+      en: {
+        common: en,
+        keys: en,
+      },
     },
-    en: {
-      common: en,
-      keys: en,
-    }
-  },
-  detection: {
-    order: ["localStorage", "navigator"],
-    caches: ["localStorage"]
-  }
-});
+    detection: {
+      order: ["localStorage", "navigator"],
+      caches: ["localStorage"],
+    },
+  });
 
 export default i18next;

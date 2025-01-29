@@ -205,7 +205,7 @@ const ClusterMetricsList: React.FC<ClusterMetricListProps> = ({ clusterId }) => 
       <CardContent className={"p-4"}>
         {updateMetric && <UpdateClusterMetricValueModal
           clusterId={clusterId}
-          metric={updateMetric}
+          metricId={updateMetric.id ?? ""}
         />}
 
         <ConfirmationDialog

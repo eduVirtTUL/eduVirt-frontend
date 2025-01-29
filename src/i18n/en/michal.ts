@@ -13,7 +13,12 @@ const vnicProfiles = {
                     notInPool: "Not in pool"
                 }
             },
-            searchPlaceholder: "Search by typing a value"
+            searchPlaceholder: "Search by typing a value",
+            valid: {
+                title: "Validity",
+                compliance: "Full compliance",
+                errors: "Some data differs"
+            }
         },
         actions: {
             add: {
@@ -33,6 +38,20 @@ const vnicProfiles = {
                     name: "Profile",
                     inUse: "In use"
                 }
+            }
+        }
+    }
+}
+
+const validations = {
+    compliance: {
+        errors: {
+            vlan: {
+                id: "VLAN's identifier",
+            },
+            name: "vnic profile's name",
+            network: {
+                name: "network segment name",
             }
         }
     }
@@ -70,8 +89,14 @@ const createVlansRangeModal = {
     }
 }
 
+const ongoingReservations = {
+    title: "Ongoing reservations"
+}
+
 export default {
     vnicProfiles,
     vlansRange,
     createVlansRangeModal,
+    ongoingReservations,
+    validations
 };

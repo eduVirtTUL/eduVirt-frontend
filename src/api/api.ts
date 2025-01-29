@@ -45,6 +45,49 @@ export interface AddVmDto {
 /**
  * 
  * @export
+ * @interface BaseCourseStatsDto
+ */
+export interface BaseCourseStatsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourseStatsDto
+     */
+    'courseId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseStatsDto
+     */
+    'averageLength'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseStatsDto
+     */
+    'totalHours'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourseStatsDto
+     */
+    'courseName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseStatsDto
+     */
+    'totalTeams'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseStatsDto
+     */
+    'totalReservations'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ClusterDetailsDto
  */
 export interface ClusterDetailsDto {
@@ -773,6 +816,37 @@ export interface ExceptionResponse {
      * @memberof ExceptionResponse
      */
     'key'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralMetricValueDto
+ */
+export interface GeneralMetricValueDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralMetricValueDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralMetricValueDto
+     */
+    'version'?: number;
+    /**
+     * 
+     * @type {MetricDto}
+     * @memberof GeneralMetricValueDto
+     */
+    'metric'?: MetricDto;
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralMetricValueDto
+     */
+    'value'?: number;
 }
 /**
  * 
@@ -1571,6 +1645,37 @@ export interface ReservationTimeframeModifiersDto {
 /**
  * 
  * @export
+ * @interface ReservationTimelineDto
+ */
+export interface ReservationTimelineDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimelineDto
+     */
+    'startTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimelineDto
+     */
+    'endTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationTimelineDto
+     */
+    'resourceName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationTimelineDto
+     */
+    'lengthInHours'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ResourceGroupDto
  */
 export interface ResourceGroupDto {
@@ -1798,6 +1903,61 @@ export interface TeamDto {
      * @memberof TeamDto
      */
     'users'?: Array<UserDto>;
+}
+/**
+ * 
+ * @export
+ * @interface TeamStatsDto
+ */
+export interface TeamStatsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamStatsDto
+     */
+    'teamId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamStatsDto
+     */
+    'teamName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatsDto
+     */
+    'totalReservations'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatsDto
+     */
+    'totalHours'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatsDto
+     */
+    'averageLength'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatsDto
+     */
+    'statefulResourceCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamStatsDto
+     */
+    'statelessPoolCount'?: number;
+    /**
+     * 
+     * @type {Array<ReservationTimelineDto>}
+     * @memberof TeamStatsDto
+     */
+    'timeline'?: Array<ReservationTimelineDto>;
 }
 /**
  * 
@@ -2043,6 +2203,18 @@ export interface UserDto {
 export interface ValueDto {
     /**
      * 
+     * @type {string}
+     * @memberof ValueDto
+     */
+    'metricValueId': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ValueDto
+     */
+    'version'?: number;
+    /**
+     * 
      * @type {number}
      * @memberof ValueDto
      */
@@ -2207,6 +2379,18 @@ export interface VnicProfileDto {
      * @memberof VnicProfileDto
      */
     'inPool'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VnicProfileDto
+     */
+    'valid'?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof VnicProfileDto
+     */
+    'validationErrors'?: Array<string>;
 }
 /**
  * 
@@ -3167,19 +3351,63 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getClusterMetricDetails: async (clusterId: string, metricId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'clusterId' is not null or undefined
+            assertParamExists('getClusterMetricDetails', 'clusterId', clusterId)
+            // verify required parameter 'metricId' is not null or undefined
+            assertParamExists('getClusterMetricDetails', 'metricId', metricId)
+            const localVarPath = `/clusters/{clusterId}/metrics/{metricId}`
+                .replace(`{${"clusterId"}}`, encodeURIComponent(String(clusterId)))
+                .replace(`{${"metricId"}}`, encodeURIComponent(String(metricId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
          * @summary Update certain metric value for given cluster
          * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
          * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {string} ifMatch 
          * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMetricValue: async (clusterId: string, metricId: string, valueDto: ValueDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateMetricValue: async (clusterId: string, metricId: string, ifMatch: string, valueDto: ValueDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clusterId' is not null or undefined
             assertParamExists('updateMetricValue', 'clusterId', clusterId)
             // verify required parameter 'metricId' is not null or undefined
             assertParamExists('updateMetricValue', 'metricId', metricId)
+            // verify required parameter 'ifMatch' is not null or undefined
+            assertParamExists('updateMetricValue', 'ifMatch', ifMatch)
             // verify required parameter 'valueDto' is not null or undefined
             assertParamExists('updateMetricValue', 'valueDto', valueDto)
             const localVarPath = `/clusters/{clusterId}/metrics/{metricId}`
@@ -3199,6 +3427,10 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
 
 
     
@@ -3267,16 +3499,30 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralMetricValueDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getClusterMetricDetails(clusterId, metricId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.getClusterMetricDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
          * @summary Update certain metric value for given cluster
          * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
          * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {string} ifMatch 
          * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMetricValue(clusterId: string, metricId: string, valueDto: ValueDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MetricValueDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMetricValue(clusterId, metricId, valueDto, options);
+        async updateMetricValue(clusterId: string, metricId: string, ifMatch: string, valueDto: ValueDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MetricValueDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMetricValue(clusterId, metricId, ifMatch, valueDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ClusterMetricControllerApi.updateMetricValue']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3325,16 +3571,27 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
             return localVarFp.getAllMetricValues(clusterId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @param {string} clusterId 
+         * @param {string} metricId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig): AxiosPromise<GeneralMetricValueDto> {
+            return localVarFp.getClusterMetricDetails(clusterId, metricId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
          * @summary Update certain metric value for given cluster
          * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
          * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+         * @param {string} ifMatch 
          * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMetricValue(clusterId: string, metricId: string, valueDto: ValueDto, options?: RawAxiosRequestConfig): AxiosPromise<MetricValueDto> {
-            return localVarFp.updateMetricValue(clusterId, metricId, valueDto, options).then((request) => request(axios, basePath));
+        updateMetricValue(clusterId: string, metricId: string, ifMatch: string, valueDto: ValueDto, options?: RawAxiosRequestConfig): AxiosPromise<MetricValueDto> {
+            return localVarFp.updateMetricValue(clusterId, metricId, ifMatch, valueDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3386,17 +3643,30 @@ export class ClusterMetricControllerApi extends BaseAPI {
     }
 
     /**
+     * 
+     * @param {string} clusterId 
+     * @param {string} metricId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ClusterMetricControllerApi
+     */
+    public getClusterMetricDetails(clusterId: string, metricId: string, options?: RawAxiosRequestConfig) {
+        return ClusterMetricControllerApiFp(this.configuration).getClusterMetricDetails(clusterId, metricId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * This endpoint can be used by the administrator to update existing metric value defined for given cluster.
      * @summary Update certain metric value for given cluster
      * @param {string} clusterId Identifier of the cluster, which the metric value will be updated for.
      * @param {string} metricId Identifier of the metric, which the value will be updated for given cluster.
+     * @param {string} ifMatch 
      * @param {ValueDto} valueDto Data transfer object containing essential information about updated metric value, which in fact is only the new value of the given metric.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
      */
-    public updateMetricValue(clusterId: string, metricId: string, valueDto: ValueDto, options?: RawAxiosRequestConfig) {
-        return ClusterMetricControllerApiFp(this.configuration).updateMetricValue(clusterId, metricId, valueDto, options).then((request) => request(this.axios, this.basePath));
+    public updateMetricValue(clusterId: string, metricId: string, ifMatch: string, valueDto: ValueDto, options?: RawAxiosRequestConfig) {
+        return ClusterMetricControllerApiFp(this.configuration).updateMetricValue(clusterId, metricId, ifMatch, valueDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -3735,6 +4005,52 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllOngoingCourseReservations: async (courseId: string, pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getAllOngoingCourseReservations', 'courseId', courseId)
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getAllOngoingCourseReservations', 'pageable', pageable)
+            const localVarPath = `/course/{courseId}/reservations`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3818,6 +4134,43 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             assertParamExists('getCourseStatefulResourceGroups', 'id', id)
             const localVarPath = `/course/{id}/stateful`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourseStatistics: async (courseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getCourseStatistics', 'courseId', courseId)
+            const localVarPath = `/course/{courseId}/statistics`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4064,6 +4417,47 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @param {string} courseId 
+         * @param {string} teamId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTeamStatistics: async (courseId: string, teamId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courseId' is not null or undefined
+            assertParamExists('getTeamStatistics', 'courseId', courseId)
+            // verify required parameter 'teamId' is not null or undefined
+            assertParamExists('getTeamStatistics', 'teamId', teamId)
+            const localVarPath = `/course/{courseId}/teams/{teamId}/statistics`
+                .replace(`{${"courseId"}}`, encodeURIComponent(String(courseId)))
+                .replace(`{${"teamId"}}`, encodeURIComponent(String(teamId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} courseId 
          * @param {EmailDto} emailDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4216,13 +4610,14 @@ export const CourseControllerApiAxiosParamCreator = function (configuration?: Co
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -4340,6 +4735,19 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllOngoingCourseReservations(courseId: string, pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageDtoReservationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllOngoingCourseReservations(courseId, pageable, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getAllOngoingCourseReservations']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4372,6 +4780,18 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCourseStatefulResourceGroups(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourseStatefulResourceGroups']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCourseStatistics(courseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseCourseStatsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCourseStatistics(courseId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getCourseStatistics']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4437,6 +4857,19 @@ export const CourseControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTeachersForCourse(courseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getTeachersForCourse']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} teamId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTeamStatistics(courseId: string, teamId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TeamStatsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTeamStatistics(courseId, teamId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseControllerApi.getTeamStatistics']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4577,6 +5010,16 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
+         * @param {string} courseId 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllOngoingCourseReservations(courseId: string, pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<PageDtoReservationDto> {
+            return localVarFp.getAllOngoingCourseReservations(courseId, pageable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4601,6 +5044,15 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          */
         getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ResourceGroupDto>> {
             return localVarFp.getCourseStatefulResourceGroups(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCourseStatistics(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<BaseCourseStatsDto> {
+            return localVarFp.getCourseStatistics(courseId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4651,6 +5103,16 @@ export const CourseControllerApiFactory = function (configuration?: Configuratio
          */
         getTeachersForCourse(courseId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<UserDto>> {
             return localVarFp.getTeachersForCourse(courseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} courseId 
+         * @param {string} teamId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTeamStatistics(courseId: string, teamId: string, options?: RawAxiosRequestConfig): AxiosPromise<TeamStatsDto> {
+            return localVarFp.getTeamStatistics(courseId, teamId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4792,6 +5254,18 @@ export class CourseControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} courseId 
+     * @param {Pageable} pageable 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public getAllOngoingCourseReservations(courseId: string, pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getAllOngoingCourseReservations(courseId, pageable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4821,6 +5295,17 @@ export class CourseControllerApi extends BaseAPI {
      */
     public getCourseStatefulResourceGroups(id: string, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).getCourseStatefulResourceGroups(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public getCourseStatistics(courseId: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getCourseStatistics(courseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4881,6 +5366,18 @@ export class CourseControllerApi extends BaseAPI {
      */
     public getTeachersForCourse(courseId: string, options?: RawAxiosRequestConfig) {
         return CourseControllerApiFp(this.configuration).getTeachersForCourse(courseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} courseId 
+     * @param {string} teamId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CourseControllerApi
+     */
+    public getTeamStatistics(courseId: string, teamId: string, options?: RawAxiosRequestConfig) {
+        return CourseControllerApiFp(this.configuration).getTeamStatistics(courseId, teamId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7708,13 +8205,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -7753,13 +8251,14 @@ export const PrivateNetworkControllerApiAxiosParamCreator = function (configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9304,13 +9803,14 @@ export const ResourceGroupControllerApiAxiosParamCreator = function (configurati
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9532,13 +10032,14 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9582,11 +10083,12 @@ export const ResourceGroupNetworkControllerApiAxiosParamCreator = function (conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10074,13 +10576,14 @@ export const ResourceGroupPoolControllerApiAxiosParamCreator = function (configu
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10413,13 +10916,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10463,11 +10967,12 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-
-    
             if (ifMatch != null) {
                 localVarHeaderParameter['If-Match'] = String(ifMatch);
             }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10628,13 +11133,14 @@ export const ResourceGroupVmControllerApiAxiosParamCreator = function (configura
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11449,13 +11955,14 @@ export const TeamControllerApiAxiosParamCreator = function (configuration?: Conf
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (ifMatch != null) {
-                localVarHeaderParameter['If-Match'] = String(ifMatch);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11952,6 +12459,450 @@ export class TeamControllerApi extends BaseAPI {
      */
     public updateTeam(id: string, ifMatch: string, updateTeamDto: UpdateTeamDto, options?: RawAxiosRequestConfig) {
         return TeamControllerApiFp(this.configuration).updateTeam(id, ifMatch, updateTeamDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * TestControllerApi - axios parameter creator
+ * @export
+ */
+export const TestControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNetworks: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/test/create-networks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendHtmlMail: async (mailTo: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mailTo' is not null or undefined
+            assertParamExists('sendHtmlMail', 'mailTo', mailTo)
+            const localVarPath = `/test/send-html-mail/{mail-to}`
+                .replace(`{${"mail-to"}}`, encodeURIComponent(String(mailTo)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendSimpleMail: async (mailTo: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mailTo' is not null or undefined
+            assertParamExists('sendSimpleMail', 'mailTo', mailTo)
+            const localVarPath = `/test/send-simple-mail/{mail-to}`
+                .replace(`{${"mail-to"}}`, encodeURIComponent(String(mailTo)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        test: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/test`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testFetch: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('testFetch', 'id', id)
+            const localVarPath = `/test/test-fetch/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testVnicProfilesPagination: async (pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('testVnicProfilesPagination', 'pageable', pageable)
+            const localVarPath = `/test/vnic-profiles-test`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * TestControllerApi - functional programming interface
+ * @export
+ */
+export const TestControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = TestControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createNetworks(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createNetworks(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.createNetworks']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendHtmlMail(mailTo: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendHtmlMail(mailTo, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.sendHtmlMail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendSimpleMail(mailTo, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.sendSimpleMail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async test(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.test(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.test']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testFetch(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testFetch(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.testFetch']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testVnicProfilesPagination(pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testVnicProfilesPagination(pageable, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TestControllerApi.testVnicProfilesPagination']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * TestControllerApi - factory interface
+ * @export
+ */
+export const TestControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = TestControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNetworks(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createNetworks(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendHtmlMail(mailTo: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.sendHtmlMail(mailTo, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} mailTo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.sendSimpleMail(mailTo, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        test(options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.test(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testFetch(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.testFetch(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {Pageable} pageable 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testVnicProfilesPagination(pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.testVnicProfilesPagination(pageable, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * TestControllerApi - object-oriented interface
+ * @export
+ * @class TestControllerApi
+ * @extends {BaseAPI}
+ */
+export class TestControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public createNetworks(options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).createNetworks(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} mailTo 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public sendHtmlMail(mailTo: string, options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).sendHtmlMail(mailTo, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} mailTo 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public sendSimpleMail(mailTo: string, options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).sendSimpleMail(mailTo, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public test(options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).test(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public testFetch(id: string, options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).testFetch(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {Pageable} pageable 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TestControllerApi
+     */
+    public testVnicProfilesPagination(pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return TestControllerApiFp(this.configuration).testVnicProfilesPagination(pageable, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -12721,10 +13672,13 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOvirtVnicProfiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getOvirtVnicProfiles: async (pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getOvirtVnicProfiles', 'pageable', pageable)
             const localVarPath = `/resources/vnic-profiles/ovirt`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12741,6 +13695,12 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12754,10 +13714,14 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * 
+         * @param {Pageable} pageable 
+         * @param {number} [inPool] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSynchronizedVnicProfiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSynchronizedVnicProfiles: async (pageable: Pageable, inPool?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getSynchronizedVnicProfiles', 'pageable', pageable)
             const localVarPath = `/resources/vnic-profiles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12773,6 +13737,16 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (inPool !== undefined) {
+                localVarQueryParameter['inPool'] = inPool;
+            }
 
 
     
@@ -12824,10 +13798,13 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVnicProfilesFromPool: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVnicProfilesFromPool: async (pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageable' is not null or undefined
+            assertParamExists('getVnicProfilesFromPool', 'pageable', pageable)
             const localVarPath = `/resources/vnic-profiles/eduvirt`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12843,6 +13820,12 @@ export const VnicProfileControllerApiAxiosParamCreator = function (configuration
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (pageable !== undefined) {
+                for (const [key, value] of Object.entries(pageable)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
 
 
     
@@ -12916,22 +13899,25 @@ export const VnicProfileControllerApiFp = function(configuration?: Configuration
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getOvirtVnicProfiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOvirtVnicProfiles(options);
+        async getOvirtVnicProfiles(pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOvirtVnicProfiles(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getOvirtVnicProfiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
+         * @param {Pageable} pageable 
+         * @param {number} [inPool] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSynchronizedVnicProfiles(options);
+        async getSynchronizedVnicProfiles(pageable: Pageable, inPool?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfileDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSynchronizedVnicProfiles(pageable, inPool, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getSynchronizedVnicProfiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12950,11 +13936,12 @@ export const VnicProfileControllerApiFp = function(configuration?: Configuration
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVnicProfilesFromPool(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfilePoolMemberDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVnicProfilesFromPool(options);
+        async getVnicProfilesFromPool(pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VnicProfilePoolMemberDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVnicProfilesFromPool(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VnicProfileControllerApi.getVnicProfilesFromPool']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12992,19 +13979,22 @@ export const VnicProfileControllerApiFactory = function (configuration?: Configu
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOvirtVnicProfiles(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
-            return localVarFp.getOvirtVnicProfiles(options).then((request) => request(axios, basePath));
+        getOvirtVnicProfiles(pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
+            return localVarFp.getOvirtVnicProfiles(pageable, options).then((request) => request(axios, basePath));
         },
         /**
          * 
+         * @param {Pageable} pageable 
+         * @param {number} [inPool] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
-            return localVarFp.getSynchronizedVnicProfiles(options).then((request) => request(axios, basePath));
+        getSynchronizedVnicProfiles(pageable: Pageable, inPool?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfileDto>> {
+            return localVarFp.getSynchronizedVnicProfiles(pageable, inPool, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -13017,11 +14007,12 @@ export const VnicProfileControllerApiFactory = function (configuration?: Configu
         },
         /**
          * 
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVnicProfilesFromPool(options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfilePoolMemberDto>> {
-            return localVarFp.getVnicProfilesFromPool(options).then((request) => request(axios, basePath));
+        getVnicProfilesFromPool(pageable: Pageable, options?: RawAxiosRequestConfig): AxiosPromise<Array<VnicProfilePoolMemberDto>> {
+            return localVarFp.getVnicProfilesFromPool(pageable, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -13055,22 +14046,25 @@ export class VnicProfileControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VnicProfileControllerApi
      */
-    public getOvirtVnicProfiles(options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getOvirtVnicProfiles(options).then((request) => request(this.axios, this.basePath));
+    public getOvirtVnicProfiles(pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getOvirtVnicProfiles(pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
+     * @param {Pageable} pageable 
+     * @param {number} [inPool] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VnicProfileControllerApi
      */
-    public getSynchronizedVnicProfiles(options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getSynchronizedVnicProfiles(options).then((request) => request(this.axios, this.basePath));
+    public getSynchronizedVnicProfiles(pageable: Pageable, inPool?: number, options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getSynchronizedVnicProfiles(pageable, inPool, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -13086,12 +14080,13 @@ export class VnicProfileControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VnicProfileControllerApi
      */
-    public getVnicProfilesFromPool(options?: RawAxiosRequestConfig) {
-        return VnicProfileControllerApiFp(this.configuration).getVnicProfilesFromPool(options).then((request) => request(this.axios, this.basePath));
+    public getVnicProfilesFromPool(pageable: Pageable, options?: RawAxiosRequestConfig) {
+        return VnicProfileControllerApiFp(this.configuration).getVnicProfilesFromPool(pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -5,16 +5,25 @@ import { keys } from "@/data/keys";
 import { toast } from "sonner";
 import { privateAxios } from "@/data/privateAxios";
 
-export const useUpdateClusterMetricValue = (clusterId: string, metricId: string) => {
+type UpdateClusterMetricValue = {
+  clusterId: string;
+  metricId: string;
+  etag: string;
+} & ValueDto;
+
+export const useUpdateClusterMetricValue = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, mutateAsync } = useMutation({
     meta: { headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` } },
     mutationKey: [ "updateClusterMetricValue" ],
-    mutationFn: async (updateDto: ValueDto) => {
+    mutationFn: async ({ clusterId, metricId, etag, ...updateDto }: UpdateClusterMetricValue) => {
       const response = await privateAxios.patch<MetricValueDto>(
-        `/clusters/${clusterId}/metrics/${metricId}`, updateDto
-      );
+        `/clusters/${clusterId}/metrics/${metricId}`, updateDto, {
+          headers: {
+            "If-Match": etag
+          }
+        });
       return response.data;
     },
     onSuccess: () => {

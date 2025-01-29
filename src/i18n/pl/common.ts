@@ -56,15 +56,15 @@ const general = {
 
   error: {
     "not.authorized":
-      "Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.",
+        "Nie posiadasz wymaganych uprawnień aby wyświetlić tę stronę.",
     "operation.not.implemented": "Wybrana operacja nie jest jeszcze dostępna.",
     "connection.open.error":
-      "Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.",
+        "Błąd podczas nawiązywania połączenia z silnikiem wirtualizacji oVirt.",
     "constraint.violation.exception":
-      "Podane dane nie spełniają wymogów składniowych",
+        "Podane dane nie spełniają wymogów składniowych",
     "optimistic.lock.exception": "Wystąpił błąd. Spróbuj ponownie!",
     "internal.server.error":
-      "W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.",
+        "W trakcie przetwarzania żądania wystąpił nieznany błąd. Spróbuj ponownie później.",
   },
 };
 
@@ -91,46 +91,40 @@ const units = {
 const errorKeys = {
   "course.not.found": "Nie znaleziono przedmiotu",
   noNetworkAvailable:
-    "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
+      "Liczba sieci została ograniczona przez przedmiot, brak dostepnych sieci",
   "courseLimits.error.value.already.defined":
-    "Przedmiot posiada już tą metrykę",
+      "Przedmiot posiada już tą metrykę",
   "courseLimits.error.value.not.defined": "Przedmiot nie posiada tej metryki",
   "resource.group.not.found": "Nie znaleziono grupy zasobów",
   "resource.group.pool.not.found": "Nie znaleziono puli grup zasobów",
   courseAlreadyExists: "Przedmiot o podanej nazwie już istnieje",
   courseConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   courseMetricNetworksNotSufficient:
-    "W przedmiocie znajduje sie, która posiada więcej sieci niż wartość metryki.",
+      "W przedmiocie znajduje sie, która posiada więcej sieci niż wartość metryki.",
   rgAlreadyExists: "Grupa zasobów o podanej nazwie już istnieje",
   resourceGroupConflict:
-    "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
+      "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   resourceGroupPoolAlreadyExists:
-    "Pula grup zasobów o podanej nazwie już istnieje",
+      "Pula grup zasobów o podanej nazwie już istnieje",
   rgPoolConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
   virtualMachineAlreadyExists:
-    "Maszyna wirtualna o podanej nazwie już istnieje",
+      "Maszyna wirtualna o podanej nazwie już istnieje",
   virtualMachineClusterMismatch:
-    "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
+      "Maszyna wirtualna znajduje się w innym klastrze niż klaster przedmiotu",
   vmConflict: "Nie pracujesz na najnowszych danych, proszę odśwież stronę",
 
   "clusters.error.not.found": "Wybrany klaster nie został odnaleziony",
   "metrics.error.not.found": "Metryka nie została znaleziona",
   "metrics.error.delete.exception": "Metryka nie mogła zostać usunięta",
   "metrics.error.name.already.taken": "Wybrana nazwa metryki jest już zajęta",
-  "clusterMetricValues.error.value.not.defined":
-    "Wartość metryki dla klastra nie została jeszcze zdefniowana",
-  "clusterMetricValues.error.value.already.defined":
-    "Wartość metryki dla klastra została już zdefniowana",
-  "maintenanceIntervals.error.not.found":
-    "Wybrana przerwa administracyjna nie została znaleziona",
-  "maintenanceIntervals.error.invalid.time.window":
-    "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
-  "maintenanceIntervals.error.begin.too.early":
-    "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",
-  "maintenanceIntervals.error.conflict":
-    "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
-  "maintenanceIntervals.error.already.finished":
-    "Wybrana przerwa administracyjna już się zakończyła",
+  "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
+  "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",
+  "clusterMetricValues.error.conflict.exception": "Nie pracujesz na najnowszych danych, spróbuj ponownie po odświeżeniu strony.",
+  "maintenanceIntervals.error.not.found": "Wybrana przerwa administracyjna nie została znaleziona",
+  "maintenanceIntervals.error.invalid.time.window": "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
+  "maintenanceIntervals.error.begin.too.early": "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",
+  "maintenanceIntervals.error.conflict": "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
+  "maintenanceIntervals.error.already.finished": "Wybrana przerwa administracyjna już się zakończyła",
 
   "reservations.error.not.found": "Wybrana rezerwacja nie została odnaleziona",
   "reservations.error.conflict":
@@ -197,9 +191,8 @@ const errorKeys = {
   "team.user.already.member": "Użytkownik jest już członkiem zespołu",
   "team.validation.exception": "Błąd walidacji zespołu",
   "incorrect.team.type.exception": "Nieprawidłowy typ zespołu",
-  "user.already.in.course.exception":
-    "Student znajduje się już w tym przedmiocie",
-  "team.conflict.exception": "Konflikt zespołów",
+  "user.already.in.course.exception": "Student znajduje się już w tym przedmiocie",
+  "team.conflict.exception": "Nie pracujesz na najnowszych danych, proszę odświeżyć stronę",
   "pod.not.found": "Nie znaleziono PODa",
   "pod.already.exists": "POD o podanej nazwie już istnieje",
   "pod.invalid.type": "Nieprawidłowy typ PODa",
@@ -208,14 +201,12 @@ const errorKeys = {
   "access.key.invalid.format": "Nieprawidłowy format klucza dostępu",
   "access.key.invalid.type": "Nieprawidłowy typ klucza dostępu",
   "access.key.duplicate": "Zduplikowany klucz dostępu",
-  "access.key.could.not.be.generated":
-    "Nie można było wygenerować klucza dostępu",
-  "teacher.self.modification.exception":
-    "Nauczyciel nie może zarządzać sobą w przedmiocie",
-  "pod.deletion.exception":
-    "POD posiada aktywne rezerwacje i nie może zostać usunięty",
-  "team.deletion.exception":
-    "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
+  "access.key.could.not.be.generated": "Nie można było wygenerować klucza dostępu",
+  "teacher.self.modification.exception": "Nauczyciel nie może zarządzać sobą w przedmiocie",
+  "pod.deletion.exception": "POD posiada aktywne rezerwacje i nie może zostać usunięty",
+  "team.deletion.exception": "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
+  "ovirt.vnic.profile.currently.in.use":
+      "Vnic profile znajduje się aktualnie w użyciu, co uniemożliwia wykonywania na nim operacji",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
@@ -252,9 +243,11 @@ const pageTitles = {
   clusterMetricValues: "Klaster - Metryki - eduVirt",
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
-  courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
+  courseTeams: "Zespoły przedmiotu - eduVirt",
   vlansRanges: "Zakresy VLANów - eduVirt",
   vnicProfiles: "Segmenty prywatne - eduVirt",
+  ongoingReservations: "Trwające rezerwacje - eduVirt",
+  reservationStatistics: "Statystyki rezerwacji - eduVirt",
 };
 
 export default {

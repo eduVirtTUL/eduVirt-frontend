@@ -76,7 +76,9 @@ const JoinTeamModal = () => {
                                 <XCircleIcon/>
                                 {t("cancel")}
                             </Button>
-                            <Button type="submit">
+                            <Button 
+                                type="submit" 
+                            >
                                 <CheckIcon/>
                                 {t("join")}
                             </Button>

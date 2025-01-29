@@ -253,6 +253,8 @@ const resourceGroupEditor = {
   attachNetwork: {
     success: "Interfejs został podłączony",
     error: "Nie udało się podłączyć interfejsu",
+    noNetworks: "Brak sieci, przejdź do zarządania segmentami prywatnymi",
+    segment: "Segment*",
   },
   detachNetwork: {
     success: "Interfejs został odłączony",

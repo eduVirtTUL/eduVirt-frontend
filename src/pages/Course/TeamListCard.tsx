@@ -6,6 +6,7 @@ import DataTable from "@/components/DataTable";
 import {ColumnDef, Row} from "@tanstack/react-table";
 import {
     ArrowUpDown,
+    BarChart3,
     CalendarIcon,
     Copy,
     FileCheck2,
@@ -43,6 +44,7 @@ import {useTeam} from "@/data/team/useTeam";
 import {SearchType} from "@/data/team/useCoursesTeams";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useRemoveStudentFromCourse} from "@/data/team/users/useRemoveStudentFromCourse";
+import {TeamStatisticsModal} from "@/components/Modals/TeamStatisticsModal";
 
 interface TeamsTableProps {
     isTeamBased: boolean;
@@ -106,6 +108,7 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
     const {deleteTeam} = useDeleteTeam();
 
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+    const [teamForStats, setTeamForStats] = useState<string | null>(null);
     const [teamToDelete, setTeamToDelete] = useState<TeamDto | null>(null);
     const [selectedTeamForUsers, setSelectedTeamForUsers] = useState<TeamDto | null>(null);
     const [manageStatefulPodsOpen, setManageStatefulPodsOpen] = useState(false);
@@ -282,6 +285,12 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                         >
                             <CalendarIcon className="h-4 w-4 mr-2"/>
                             {t("coursePageB.teamsTable.dropdownMenu.reservations")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => setTeamForStats(row.original.id)}
+                        >
+                            <BarChart3 className="h-4 w-4 mr-2"/>
+                            {t("statistics.button")}
                         </DropdownMenuItem>
                         {activeRole === "teacher" && !isTeamBased && row.original.users?.[0] && (
                             <DropdownMenuItem
@@ -498,6 +507,15 @@ const TeamListCard: React.FC<TeamsTableProps> = ({
                     header={`${t("manageCourseUsers.delete.title")} ${userToRemove.user.firstName} ${userToRemove.user.lastName} ${t("manageCourseUsers.delete.title2")} ${courseName}`}
                     text={t("manageCourseUsers.delete.description")}
                     onConfirm={handleRemoveStudent}
+                />
+            )}
+
+            {teamForStats && (
+                <TeamStatisticsModal
+                    open={!!teamForStats}
+                    onOpenChange={(open) => !open && setTeamForStats(null)}
+                    courseId={courseId}
+                    teamId={teamForStats}
                 />
             )}
         </>
