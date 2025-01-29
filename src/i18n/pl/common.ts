@@ -2,7 +2,7 @@ import { ErrorKey } from "@/data/privateAxios";
 import adam from "./adam";
 import piotrek from "./piotrek";
 import bartek from "./bartek";
-import {Language, Role} from "@/stores/userStore";
+import { Language, Role } from "@/stores/userStore";
 import michal from "@/i18n/pl/michal";
 
 const menu = {
@@ -39,7 +39,7 @@ const menu = {
 const languages = {
   pl: "Polski",
   en: "Angielski",
-} satisfies { [key in Language]: string }
+} satisfies { [key in Language]: string };
 
 const roles = {
   administrator: "Administrator",
@@ -72,20 +72,20 @@ const units = {
   memory: {
     name: "Pamięć",
     units: {
-      mebibytes: {name: "Mebibajty", symbol: "MiB"},
-      gibibytes: {name: "Gibibajty", symbol: "GiB"},
-      tebibytes: {name: "Tebibajty", symbol: "TiB"},
-    }
+      mebibytes: { name: "Mebibajty", symbol: "MiB" },
+      gibibytes: { name: "Gibibajty", symbol: "GiB" },
+      tebibytes: { name: "Tebibajty", symbol: "TiB" },
+    },
   },
   countable: {
     name: "Policzalne",
     units: {
       pieces: {
         name: "Sztuki",
-        symbol: "szt."
-      }
-    }
-  }
+        symbol: "szt.",
+      },
+    },
+  },
 };
 
 const errorKeys = {
@@ -117,39 +117,68 @@ const errorKeys = {
   "metrics.error.not.found": "Metryka nie została znaleziona",
   "metrics.error.delete.exception": "Metryka nie mogła zostać usunięta",
   "metrics.error.name.already.taken": "Wybrana nazwa metryki jest już zajęta",
-  "clusterMetricValues.error.value.not.defined": "Wartość metryki dla klastra nie została jeszcze zdefniowana",
-  "clusterMetricValues.error.value.already.defined": "Wartość metryki dla klastra została już zdefniowana",
-  "maintenanceIntervals.error.not.found": "Wybrana przerwa administracyjna nie została znaleziona",
-  "maintenanceIntervals.error.invalid.time.window": "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
-  "maintenanceIntervals.error.begin.too.early": "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",
-  "maintenanceIntervals.error.conflict": "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
-  "maintenanceIntervals.error.already.finished": "Wybrana przerwa administracyjna już się zakończyła",
+  "clusterMetricValues.error.value.not.defined":
+    "Wartość metryki dla klastra nie została jeszcze zdefniowana",
+  "clusterMetricValues.error.value.already.defined":
+    "Wartość metryki dla klastra została już zdefniowana",
+  "maintenanceIntervals.error.not.found":
+    "Wybrana przerwa administracyjna nie została znaleziona",
+  "maintenanceIntervals.error.invalid.time.window":
+    "Początek przerwy administarcyjnej musi nastąpić przed jej końcem",
+  "maintenanceIntervals.error.begin.too.early":
+    "Przerwa administracyjna musi zostać zdefiniowana z conajmniej sześciogodzinnym wyprzedzeniem",
+  "maintenanceIntervals.error.conflict":
+    "Inne przerwy administracyjne już istnieją w wybranym oknie czasowym",
+  "maintenanceIntervals.error.already.finished":
+    "Wybrana przerwa administracyjna już się zakończyła",
 
   "reservations.error.not.found": "Wybrana rezerwacja nie została odnaleziona",
-  "reservations.error.conflict": "W wybranym oknie czasowym wprowadzone są już inne rezerwacje",
-  "reservations.error.end.before.start": "Koniec rezerwacji musi następić po jej rozpoczęciu",
-  "reservations.error.start.in.past": "Rezerwacja nie może rozpoczynać się w przeszłości",
-  "reservations.error.too.short": "Minimalna długość rezerwacji w systemie eduVirt wynosi dwukrotność minimalnego okna czasu",
-  "reservations.error.creation.error": "Wystąpił błąd w trakcie tworzenia rezerwacji",
-  "reservations.error.maintenance.interval.conflict": "W trakcie planowanej rezerwacji zdefiniowane są przerwy administracyjne",
-  "reservations.error.course.resources.insufficient": "Zasoby kursu są niewystarczające do stworzenia nowej rezerwacji",
-  "reservations.error.cluster.resources.insufficient": "Zasoby klastra są niewystarczające do stworzenia nowej rezerwacji",
-  "reservations.error.max.length.exceeded": "Przekroczono maksymalną długość rezerwacji",
-  "reservations.error.grace.period.not.finished": "Okres karencji od ostatniej rezerwacji musi upłynąć",
-  "reservations.error.grace.period.could.not.finish": "Okres karencji planowanej rezerwacji przeciągnąłby się na kolejną rezerwację",
-  "reservations.error.resource.group.already.reserved": "Podana grupa zasobów jest już zarezerwowana",
-  "reservations.error.notification.time.too.long": "Czas wysłania powiadomienia o końcu rezerwacji nie może przekroczyć połowy długości rezerwacji",
-  "reservations.error.reservation.count.exceeded": "Osiągnięto limit rezerwacji dla danego PODa",
-  "reservations.error.stateful.pod.not.assigned": "Wybrany POD stanowy nie jest przypisany do twojego zespołu",
-  "reservations.error.stateless.pod.not.assigned": "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
+  "reservations.error.conflict":
+    "W wybranym oknie czasowym wprowadzone są już inne rezerwacje",
+  "reservations.error.end.before.start":
+    "Koniec rezerwacji musi następić po jej rozpoczęciu",
+  "reservations.error.start.in.past":
+    "Rezerwacja nie może rozpoczynać się w przeszłości",
+  "reservations.error.too.short":
+    "Minimalna długość rezerwacji w systemie eduVirt wynosi dwukrotność minimalnego okna czasu",
+  "reservations.error.creation.error":
+    "Wystąpił błąd w trakcie tworzenia rezerwacji",
+  "reservations.error.maintenance.interval.conflict":
+    "W trakcie planowanej rezerwacji zdefiniowane są przerwy administracyjne",
+  "reservations.error.course.resources.insufficient":
+    "Zasoby kursu są niewystarczające do stworzenia nowej rezerwacji",
+  "reservations.error.cluster.resources.insufficient":
+    "Zasoby klastra są niewystarczające do stworzenia nowej rezerwacji",
+  "reservations.error.max.length.exceeded":
+    "Przekroczono maksymalną długość rezerwacji",
+  "reservations.error.grace.period.not.finished":
+    "Okres karencji od ostatniej rezerwacji musi upłynąć",
+  "reservations.error.grace.period.could.not.finish":
+    "Okres karencji planowanej rezerwacji przeciągnąłby się na kolejną rezerwację",
+  "reservations.error.resource.group.already.reserved":
+    "Podana grupa zasobów jest już zarezerwowana",
+  "reservations.error.notification.time.too.long":
+    "Czas wysłania powiadomienia o końcu rezerwacji nie może przekroczyć połowy długości rezerwacji",
+  "reservations.error.reservation.count.exceeded":
+    "Osiągnięto limit rezerwacji dla danego PODa",
+  "reservations.error.stateful.pod.not.assigned":
+    "Wybrany POD stanowy nie jest przypisany do twojego zespołu",
+  "reservations.error.stateless.pod.not.assigned":
+    "Wybrany POD bezstanowy nie jest przypisany do twojego zespołu",
 
-  "ovirt.vnic.profile.not.found": "Wybrany vnic profile nie jest dostępny w oVirt, proszę odśwież stronę",
-  "eduvirt.vnic.profile.not.found": "Wybrany vnic profile nie jest dostępny w eduVirt, proszę odśwież stronę",
-  "vnic.profile.already.exists": "Wybrany vnic profile aktualnie znajduje się już w puli, proszę odśwież stronę",
+  "ovirt.vnic.profile.not.found":
+    "Wybrany vnic profile nie jest dostępny w oVirt, proszę odśwież stronę",
+  "eduvirt.vnic.profile.not.found":
+    "Wybrany vnic profile nie jest dostępny w eduVirt, proszę odśwież stronę",
+  "vnic.profile.already.exists":
+    "Wybrany vnic profile aktualnie znajduje się już w puli, proszę odśwież stronę",
   "vlans.range.not.found": "Wybrany zakres VLANów nie został odnaleziony",
-  "vlans.range.invalid.definition": "Zakres VLANów został niepoprawnie zdefiniowany",
-  "vlans.range.conflicting.range": "Ramy nowotworzonego zakresu VLANów pokrywają się z już istniejącym zakresem",
-  "general.error.connection.open.error": "Wystąpił problem z połączeniem do oVirta",
+  "vlans.range.invalid.definition":
+    "Zakres VLANów został niepoprawnie zdefiniowany",
+  "vlans.range.conflicting.range":
+    "Ramy nowotworzonego zakresu VLANów pokrywają się z już istniejącym zakresem",
+  "general.error.connection.open.error":
+    "Wystąpił problem z połączeniem do oVirta",
 
   networkAlreadyExists: "Sieć o podanej nazwie już istnieje",
 
@@ -168,7 +197,8 @@ const errorKeys = {
   "team.user.already.member": "Użytkownik jest już członkiem zespołu",
   "team.validation.exception": "Błąd walidacji zespołu",
   "incorrect.team.type.exception": "Nieprawidłowy typ zespołu",
-  "user.already.in.course.exception": "Student znajduje się już w tym przedmiocie",
+  "user.already.in.course.exception":
+    "Student znajduje się już w tym przedmiocie",
   "team.conflict.exception": "Konflikt zespołów",
   "pod.not.found": "Nie znaleziono PODa",
   "pod.already.exists": "POD o podanej nazwie już istnieje",
@@ -178,17 +208,28 @@ const errorKeys = {
   "access.key.invalid.format": "Nieprawidłowy format klucza dostępu",
   "access.key.invalid.type": "Nieprawidłowy typ klucza dostępu",
   "access.key.duplicate": "Zduplikowany klucz dostępu",
-  "access.key.could.not.be.generated": "Nie można było wygenerować klucza dostępu",
-  "teacher.self.modification.exception": "Nauczyciel nie może zarządzać sobą w przedmiocie",
-  "pod.deletion.exception": "POD posiada aktywne rezerwacje i nie może zostać usunięty",
-  "team.deletion.exception": "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
-
+  "access.key.could.not.be.generated":
+    "Nie można było wygenerować klucza dostępu",
+  "teacher.self.modification.exception":
+    "Nauczyciel nie może zarządzać sobą w przedmiocie",
+  "pod.deletion.exception":
+    "POD posiada aktywne rezerwacje i nie może zostać usunięty",
+  "team.deletion.exception":
+    "Zespół posiada przypisane PODy - aby usunąć zespół, usuń najpierw przypisane mu PODy",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {
   title: "Strona nie znaleziona",
   description: "Strona, której szukasz, nie istnieje. Sprawdź adres URL.",
   back: "Powrót na stronę główną",
+};
+
+const loginNotFoundPage = {
+  title: "Użytkownik nie został znaleziony w bazie systemu oVirt",
+  description:
+    "eduVirt wymaga zarejestrowania się w systemie oVirt. Skorzystaj z linku poniżej, aby przejść do strony logowania. Po zalogowaniu się w systemie oVirt, wróć do eduVirt i spróbuj ponownie.",
+  oVirtLogin: "Zaloguj się w systemie oVirt",
+  goBackToLogin: "Wróć do strony logowania",
 };
 
 const pageTitles = {
@@ -199,16 +240,16 @@ const pageTitles = {
   resourceGroupPools: "Pule grup zasobów - eduVirt",
   resourceGroupPool: "Pula grup zasobów - eduVirt",
   courseMetrics: "Przedmiot - Metryki - eduVirt",
-  teams: 'Zespoły - eduVirt',
-  team: 'Zespół - eduVirt',
-  metrics: 'Metryki - eduVirt',
-  clusters: 'Klastry - eduVirt',
-  reservations: 'Rezerwacje - eduVirt',
-  reservationCalendar: 'Kalendarz rezerwacji - eduVirt',
-  maintenanceCalendar: 'Kalendarz przerw administracyjnych - eduVirt',
-  maintenanceInterval: 'Przerwa administracyjna - eduVirt',
-  maintenanceIntervals: 'Przerwy administracyjne - eduVirt',
-  clusterMetricValues: 'Klaster - Metryki - eduVirt',
+  teams: "Zespoły - eduVirt",
+  team: "Zespół - eduVirt",
+  metrics: "Metryki - eduVirt",
+  clusters: "Klastry - eduVirt",
+  reservations: "Rezerwacje - eduVirt",
+  reservationCalendar: "Kalendarz rezerwacji - eduVirt",
+  maintenanceCalendar: "Kalendarz przerw administracyjnych - eduVirt",
+  maintenanceInterval: "Przerwa administracyjna - eduVirt",
+  maintenanceIntervals: "Przerwy administracyjne - eduVirt",
+  clusterMetricValues: "Klaster - Metryki - eduVirt",
   login: "Zaloguj się do eduVirt",
   notFound: "Strona nie znaleziona",
   courseTeams: "Zespoły przedmiotu {{courseName}} - eduVirt",
@@ -241,6 +282,7 @@ export default {
   roles,
   notFoundPage,
   pageTitles,
+  loginNotFoundPage,
   ...adam,
   ...piotrek,
   ...bartek,
