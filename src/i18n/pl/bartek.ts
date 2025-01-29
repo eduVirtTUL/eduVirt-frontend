@@ -418,8 +418,8 @@ const reservationStatisticsModal = {
         noReservationsForDay: "W tym dniu nie było żadnych rezerwacji",
         reservationDetails: "Szczegółowy przebieg rezerwacji",
         units: {
-            hours: "godz.",
-            minutes: "min."
+            hours: "g",
+            minutes: "m"
         }
     },
     tabs: {
@@ -439,6 +439,7 @@ const courseStatistics = {
     button: "Podsumowanie rezerwacji",
     modalTitle: "Podsumowanie rezerwacji",
     totalReservations: "Całkowita liczba rezerwacji",
+    noReservationsDescription: "Ten przedmiot nie posiada historycznych danych o rezerwacjach",
     totalHours: "Całkowita długość wszystkich rezerwacji",
     averageLength: "Średnia długość rezerwacji",
     totalTeams: "Łączna liczba zespołów mających rezerwacje",

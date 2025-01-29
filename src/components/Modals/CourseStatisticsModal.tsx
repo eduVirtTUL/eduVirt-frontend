@@ -9,7 +9,7 @@ import {Calendar, Clock, Timer, Users} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
 import {useCourse} from "@/data/course/useCourse";
-import { CourseStatsDto } from "@/api/statistics";
+import {CourseStatsDto} from "@/api/statistics";
 
 const formatDuration = (hours: number, t: { (key: string): string; (key: string, options: object): string }) => {
     if (!hours) return '0' + t('statistics.teams.units.hours');
@@ -45,10 +45,10 @@ export const CourseStatisticsModal = ({open, onOpenChange, courseId}: CourseStat
 
     const chartData = useMemo(() => {
         if (!hasTeamStats || !courseStats) return [];
-        
+
         const stats = courseStats as CourseStatsDto;
-        const data = activeMetric === 'reservations' 
-            ? stats.reservationsPerTeam 
+        const data = activeMetric === 'reservations'
+            ? stats.reservationsPerTeam
             : stats.hoursPerTeam;
 
         if (!data) return [];
@@ -118,7 +118,7 @@ export const CourseStatisticsModal = ({open, onOpenChange, courseId}: CourseStat
                                     {t("statistics.teams.noReservations")}
                                 </p>
                                 <p className="text-sm text-muted-foreground text-center mt-1">
-                                    {t("statistics.teams.noReservationsDescription")}
+                                    {t("courseStatistics.noReservationsDescription")}
                                 </p>
                             </CardContent>
                         ) : (
