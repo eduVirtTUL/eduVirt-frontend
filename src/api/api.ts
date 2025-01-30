@@ -56,16 +56,16 @@ export interface BaseCourseStatsDto {
     'courseId'?: string;
     /**
      * 
+     * @type {number}
+     * @memberof BaseCourseStatsDto
+     */
+    'totalTeams'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof BaseCourseStatsDto
      */
     'courseName'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseCourseStatsDto
-     */
-    'totalHours'?: number;
     /**
      * 
      * @type {number}
@@ -77,7 +77,7 @@ export interface BaseCourseStatsDto {
      * @type {number}
      * @memberof BaseCourseStatsDto
      */
-    'totalTeams'?: number;
+    'totalHours'?: number;
     /**
      * 
      * @type {number}
@@ -2391,6 +2391,12 @@ export interface VnicProfileDto {
      * @memberof VnicProfileDto
      */
     'validationErrors'?: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof VnicProfileDto
+     */
+    'inUse'?: boolean;
 }
 /**
  * 
@@ -3351,9 +3357,10 @@ export const ClusterMetricControllerApiAxiosParamCreator = function (configurati
             };
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to fetch value of the certain metric, defined for given cluster.
+         * @summary Get value of certain metric, that was defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be fetched for.
+         * @param {string} metricId Identifier of the metric, which is to be fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3499,9 +3506,10 @@ export const ClusterMetricControllerApiFp = function(configuration?: Configurati
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to fetch value of the certain metric, defined for given cluster.
+         * @summary Get value of certain metric, that was defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be fetched for.
+         * @param {string} metricId Identifier of the metric, which is to be fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3571,9 +3579,10 @@ export const ClusterMetricControllerApiFactory = function (configuration?: Confi
             return localVarFp.getAllMetricValues(clusterId, pageable, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {string} clusterId 
-         * @param {string} metricId 
+         * This endpoint can be used by the administrator to fetch value of the certain metric, defined for given cluster.
+         * @summary Get value of certain metric, that was defined for the given cluster
+         * @param {string} clusterId Identifier of the cluster, which the metric value will be fetched for.
+         * @param {string} metricId Identifier of the metric, which is to be fetched.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3643,9 +3652,10 @@ export class ClusterMetricControllerApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @param {string} clusterId 
-     * @param {string} metricId 
+     * This endpoint can be used by the administrator to fetch value of the certain metric, defined for given cluster.
+     * @summary Get value of certain metric, that was defined for the given cluster
+     * @param {string} clusterId Identifier of the cluster, which the metric value will be fetched for.
+     * @param {string} metricId Identifier of the metric, which is to be fetched.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ClusterMetricControllerApi
@@ -6650,307 +6660,6 @@ export class MetricControllerApi extends BaseAPI {
      */
     public getAllMetrics(pageable: Pageable, options?: RawAxiosRequestConfig) {
         return MetricControllerApiFp(this.configuration).getAllMetrics(pageable, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * OVirtUserControllerApi - axios parameter creator
- * @export
- */
-export const OVirtUserControllerApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllUsers: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/users`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllUsersWithPermissions: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/users/permissions`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserById: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('getUserById', 'userId', userId)
-            const localVarPath = `/resources/users/{userId}`
-                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {string} principal 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserByPrincipal: async (principal: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'principal' is not null or undefined
-            assertParamExists('getUserByPrincipal', 'principal', principal)
-            const localVarPath = `/resources/users/principal/{principal}`
-                .replace(`{${"principal"}}`, encodeURIComponent(String(principal)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * OVirtUserControllerApi - functional programming interface
- * @export
- */
-export const OVirtUserControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = OVirtUserControllerApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllUsers(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getAllUsers']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllUsersWithPermissions(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllUsersWithPermissions(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getAllUsersWithPermissions']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUserById(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserById(userId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getUserById']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {string} principal 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserByPrincipal(principal, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OVirtUserControllerApi.getUserByPrincipal']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * OVirtUserControllerApi - factory interface
- * @export
- */
-export const OVirtUserControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = OVirtUserControllerApiFp(configuration)
-    return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllUsers(options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getAllUsers(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllUsersWithPermissions(options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getAllUsersWithPermissions(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserById(userId: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getUserById(userId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {string} principal 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.getUserByPrincipal(principal, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * OVirtUserControllerApi - object-oriented interface
- * @export
- * @class OVirtUserControllerApi
- * @extends {BaseAPI}
- */
-export class OVirtUserControllerApi extends BaseAPI {
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OVirtUserControllerApi
-     */
-    public getAllUsers(options?: RawAxiosRequestConfig) {
-        return OVirtUserControllerApiFp(this.configuration).getAllUsers(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OVirtUserControllerApi
-     */
-    public getAllUsersWithPermissions(options?: RawAxiosRequestConfig) {
-        return OVirtUserControllerApiFp(this.configuration).getAllUsersWithPermissions(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} userId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OVirtUserControllerApi
-     */
-    public getUserById(userId: string, options?: RawAxiosRequestConfig) {
-        return OVirtUserControllerApiFp(this.configuration).getUserById(userId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} principal 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OVirtUserControllerApi
-     */
-    public getUserByPrincipal(principal: string, options?: RawAxiosRequestConfig) {
-        return OVirtUserControllerApiFp(this.configuration).getUserByPrincipal(principal, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
