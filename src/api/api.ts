@@ -56,10 +56,10 @@ export interface BaseCourseStatsDto {
     'courseId'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof BaseCourseStatsDto
      */
-    'averageLength'?: number;
+    'courseName'?: string;
     /**
      * 
      * @type {number}
@@ -68,10 +68,10 @@ export interface BaseCourseStatsDto {
     'totalHours'?: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof BaseCourseStatsDto
      */
-    'courseName'?: string;
+    'averageLength'?: number;
     /**
      * 
      * @type {number}
