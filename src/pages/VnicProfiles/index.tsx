@@ -28,8 +28,6 @@ import {Skeleton} from "@/components/ui/skeleton";
 import SimpleDataTable from "@/components/SimpleDataTable";
 import SimplePagination from "@/components/SimplePagination";
 
-// todo vnic profile details
-
 const VnicProfilesPage: React.FC = () => {
     const {t} = useTranslation();
 
@@ -56,15 +54,6 @@ const VnicProfilesPage: React.FC = () => {
 
     const {addVnicProfileToPoolAsync} = useAddVnicProfileToPool();
     const {removeVnicProfileFromPoolAsync} = useRemoveVnicProfileFromPool();
-
-    // const [data, setData] = React.useState<VnicProfilePoolMemberDto[]>([]);
-    // const {vnicProfilesDetails, isLoading: isLoadingDetails} = useVnicProfilesDetails();
-    // useEffect(() => {
-    //     setData(vnicProfilesDetails ?? []);
-    // }, [vnicProfilesDetails]);
-
-    // const [selectedFiltering, setSelectedFiltering] =
-    //     React.useState<string>("allItems");
 
     const handleAddVnicProfile = async (vnicProfileId?: string) => {
         if (vnicProfileId) {
@@ -107,42 +96,13 @@ const VnicProfilesPage: React.FC = () => {
         }
     };
 
-    // const handleDto = (dto: VnicProfilePoolMemberDto | undefined) => {
-        // if (!isLoadingDetails && dto) {
-        //     return (
-        //         <>
-        //             <div className="w-90">
-        //                 <b>{t("vnicProfiles.pool.actions.details.props.id")}: </b>
-        //                 {dto?.id ?? null}
-        //                 <br/>
-        //                 <b>{t("vnicProfiles.pool.actions.details.props.name")}: </b>
-        //                 {dto?.name ?? null}
-        //                 <br/>
-        //                 <b>{t("vnicProfiles.pool.actions.details.props.inUse")}: </b>
-        //                 {dto.inUse ? t("yes") : t("no")}
-        //                 <br/>
-        //             </div>
-        //         </>
-        //     );
-        // }
-        // return (
-        //     <>
-        //         ...
-        //     </>
-        // );
-
-    // }
-
     const columns: ColumnDef<VnicProfileDto>[] = [
         {
             accessorKey: "name",
             header: () => {
                 return (
-                    <Button variant="ghost"
-                            // onClick={() => handleSortingToggling(column)}
-                    >
+                    <Button variant="ghost">
                         {t("vnicProfiles.pool.table.vnicProfileName")}
-                        {/*{chooseSortingArrow(column.getIsSorted())}*/}
                     </Button>
                 );
             },
@@ -156,7 +116,7 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <Button variant="ghost" onClick={() => handleSortingToggling("networkName")}>
                         {t("vnicProfiles.pool.table.networkName")}
-                        {chooseSortingArrow("name")}
+                        {chooseSortingArrow("networkName")}
                     </Button>
                 );
             },
@@ -170,7 +130,7 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <Button variant="ghost" onClick={() => handleSortingToggling("vlanId")}>
                         {t("vnicProfiles.pool.table.networkVlanId")}
-                        {chooseSortingArrow("vlanid")}
+                        {chooseSortingArrow("vlanId")}
                     </Button>
                 );
             },
@@ -203,7 +163,25 @@ const VnicProfilesPage: React.FC = () => {
                     />
                 );
             },
-            enableGlobalFilter: false,
+        },
+        {
+            accessorKey: "inUse",
+            header: () => {
+                return (
+                    <Button variant="ghost">
+                        {t("vnicProfiles.pool.table.free")}
+                    </Button>
+                );
+            },
+            cell: ({row}) => {
+                if (row.original.inUse === false) {
+                    return <CircleCheck color={"#01b80a"} className="ml-7"/>
+                }
+                if (row.original.inUse === true) {
+                    return <OctagonX color={"#ff1900"} className="ml-7"/>
+                }
+                return <Minus className="ml-7"/>
+            }
         },
         {
             accessorKey: "valid",
@@ -219,7 +197,7 @@ const VnicProfilesPage: React.FC = () => {
                     return (
                         <Popover>
                             <PopoverTrigger asChild>
-                                <CircleCheck color={"#01b80a"} className="ml-5"/>
+                                <CircleCheck color={"#01b80a"} className="ml-7"/>
                             </PopoverTrigger>
                             <PopoverContent side="right" className="w-80">
                                 <p className="text-sm">
@@ -233,7 +211,7 @@ const VnicProfilesPage: React.FC = () => {
                     return (
                         <Popover>
                             <PopoverTrigger asChild>
-                                <OctagonX color={"#ff1900"} className="ml-5"/>
+                                <OctagonX color={"#ff1900"} className="ml-7"/>
                             </PopoverTrigger>
                             <PopoverContent side="right" className="w-50">
                                 <p className="text-sm">
@@ -251,7 +229,7 @@ const VnicProfilesPage: React.FC = () => {
                     );
                 }
 
-                return <Minus className="ml-5"/>
+                return <Minus className="ml-7"/>
             }
         },
         {
@@ -262,7 +240,7 @@ const VnicProfilesPage: React.FC = () => {
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0 ml-40">
+                            <Button variant="ghost" className="h-8 w-8 p-0 ml-10">
                                 <span className="sr-only">Open menu</span>
                                 <MoreHorizontal/>
                             </Button>
@@ -290,22 +268,6 @@ const VnicProfilesPage: React.FC = () => {
                                     {t("vnicProfiles.pool.actions.remove.name")}
                                 </Button>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            className={"h-full w-full"}
-                                            variant="ghost"
-                                        >
-                                            {t("vnicProfiles.pool.actions.details.name")}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-100">
-                                        {/*{handleDto(data.filter((dto) => dto.id === vnicProfile.id)[0])}*/}
-                                        ...
-                                    </PopoverContent>
-                                </Popover>
-                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
@@ -331,7 +293,7 @@ const VnicProfilesPage: React.FC = () => {
                     <div className="rounded-md border">
                         <div className="border-b">
                             <div className="grid grid-cols-5 p-4">
-                                {[1, 2, 3, 4, 5, 6].map((i) => (
+                                {[1, 2, 3, 4, 5].map((i) => (
                                     <Skeleton key={i} className="h-4 w-[100px]"/>
                                 ))}
                             </div>
@@ -339,7 +301,7 @@ const VnicProfilesPage: React.FC = () => {
                         <div>
                             {Array.from({length: 10}, (_, i) => i + 1).map((row) => (
                                 <div key={row} className="grid grid-cols-5 p-4 border-b">
-                                    {[1, 2, 3, 4, 5, 6].map((col) => (
+                                    {[1, 2, 3, 4, 5].map((col) => (
                                         <Skeleton key={col} className="h-4 w-[100px]"/>
                                     ))}
                                 </div>
