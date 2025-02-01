@@ -11,5 +11,5 @@ export const useWindowLength = () => {
     }
   });
 
-  return {length: data, isLoading}
+  return { length: data, isLoading }
 }

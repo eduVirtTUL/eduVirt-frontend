@@ -25,10 +25,7 @@ export const useMaintenanceIntervalsInTimePeriod = (
 
       if (response.status === 204) return [];
       return response.data;
-    },
-    refetchInterval: 60000,
-    refetchOnWindowFocus: true,
-    staleTime: 30000
+    }
   });
 
   return { intervals: data, isLoading };

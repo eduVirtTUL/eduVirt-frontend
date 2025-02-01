@@ -11,10 +11,7 @@ export const useMaintenanceInterval = (id: string) => {
         `/maintenance-intervals/${id}`
       );
       return response.data;
-    },
-    refetchInterval: 60000,
-    refetchOnWindowFocus: true,
-    staleTime: 30000
+    }
   });
 
   return { interval: data, isLoading };
