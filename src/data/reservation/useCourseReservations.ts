@@ -39,5 +39,5 @@ export const useCourseReservations = ({
     }
   });
 
-  return {reservations: data, isLoading}
+  return { reservations: data, isLoading }
 };
