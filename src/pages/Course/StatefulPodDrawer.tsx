@@ -184,7 +184,8 @@ const StatefulPodDrawer: React.FC<StatefulPodDrawerProps> = ({
     }
 
     const hasAssignedPod = (rgId: string) => {
-        return coursePods?.some(pod => pod.resourceGroup?.id === rgId) ?? false;
+        const podsArray = Array.isArray(coursePods) ? coursePods : [];
+        return podsArray.some(pod => pod.resourceGroup?.id === rgId);
     };
 
     return (

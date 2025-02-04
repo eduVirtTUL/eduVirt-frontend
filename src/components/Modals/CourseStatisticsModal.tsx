@@ -154,7 +154,9 @@ export const CourseStatisticsModal = ({open, onOpenChange, courseId}: CourseStat
                                                 <CartesianGrid vertical={false}/>
                                                 <XAxis
                                                     dataKey="team"
-                                                    height={40}
+                                                    height={120}
+                                                    angle={-90}
+                                                    textAnchor="end"
                                                     interval={0}
                                                     tickLine={false}
                                                     padding={{left: 10, right: 10}}

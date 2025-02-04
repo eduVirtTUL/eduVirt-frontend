@@ -222,6 +222,7 @@ const errorKeys = {
     "The team has assigned PODs - to delete the team, remove its assigned PODs first",
   "ovirt.vnic.profile.currently.in.use":
       "Vnic profile is currently in use, which prohibits performing operations on it",
+      "team.size.exception": "The max team size cannot be exceeded",
 } satisfies { [key in ErrorKey]: string };
 
 const notFoundPage = {

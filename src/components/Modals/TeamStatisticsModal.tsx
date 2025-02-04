@@ -250,26 +250,33 @@ export const TeamStatisticsModal = ({open, onOpenChange, courseId, teamId}: Team
                                 </div>
                                 <CardDescription>{t("statistics.teams.dailyUsageDescription")}</CardDescription>
                             </div>
-                            <div className="flex">
-                                {Object.entries(config).map(([key, value]) => (
-                                    <button
-                                        key={key}
-                                        data-active={activeResource === key}
-                                        className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                                        onClick={() => setActiveResource(activeResource === key ? null : key)}
-                                    >
-                                    <span className="text-xs text-muted-foreground flex items-center gap-2">
-                                        <span
-                                            className="inline-block w-3 h-3 rounded-full"
-                                            style={{backgroundColor: value.color}}
-                                        />
-                                        {value.label}
-                                    </span>
-                                        <span className="text-lg font-bold leading-none sm:text-3xl">
-                                        {formatDuration(total[key] ?? 0, t)}
-                                    </span>
-                                    </button>
-                                ))}
+                            <div className="border-l max-h-[400px] overflow-y-auto">
+                                <div className={cn(
+                                    "grid",
+                                    Object.keys(config).length > 8
+                                        ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+                                        : "grid-cols-1"
+                                )}>
+                                    {Object.entries(config).map(([key, value]) => (
+                                        <button
+                                            key={key}
+                                            data-active={activeResource === key}
+                                            className="relative z-30 flex flex-col justify-center gap-1 px-4 py-3 text-left border-b last:border-b-0 data-[active=true]:bg-muted/50"
+                                            onClick={() => setActiveResource(activeResource === key ? null : key)}
+                                        >
+                                        <span className="text-xs text-muted-foreground flex items-center gap-2">
+                                            <span
+                                                className="inline-block w-3 h-3 rounded-full flex-shrink-0"
+                                                style={{backgroundColor: value.color}}
+                                            />
+                                            <span className="truncate">{value.label}</span>
+                                        </span>
+                                                                <span className="text-sm font-bold leading-none">
+                                            {formatDuration(total[key] ?? 0, t)}
+                                        </span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </CardHeader>
                         <CardContent className="px-2 sm:p-6">
