@@ -11,5 +11,5 @@ export const useReservationTimeframeModifiers = () => {
     }
   });
 
-  return {modifiers: data, isLoading}
+  return { modifiers: data, isLoading }
 }

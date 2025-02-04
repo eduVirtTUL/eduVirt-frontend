@@ -9,6 +9,7 @@ import {
 export default [
   route("login", "./pages/Login/index.tsx"),
   route("auth/callback", "./AuthCallback.tsx"),
+  route("loginNotFound", "./pages/LoginNotFound/index.tsx"),
 
   layout("./AuthGuard.tsx", [
     layout("./layout/RootLayout.tsx", [
@@ -53,31 +54,48 @@ export default [
         index("./pages/Reservations/index.tsx"),
         route(":id", "./pages/Reservation/index.tsx"),
         ...prefix("calendar/resource-group", [
-          route(":id", "./pages/Reservations/calendar/RgReservationCalendar.tsx"),
+          route(
+            ":id",
+            "./pages/Reservations/calendar/RgReservationCalendar.tsx"
+          ),
           ...prefix("/presentation", [
-            route(":id", "./pages/Reservations/calendar/RgPresentationCalendar.tsx"),
-          ])
+            route(
+              ":id",
+              "./pages/Reservations/calendar/RgPresentationCalendar.tsx"
+            ),
+          ]),
         ]),
         ...prefix("calendar/resource-group-pool", [
-          route(":id", "./pages/Reservations/calendar/RgPoolReservationCalendar.tsx"),
+          route(
+            ":id",
+            "./pages/Reservations/calendar/RgPoolReservationCalendar.tsx"
+          ),
           ...prefix("/presentation", [
-            route(":id", "./pages/Reservations/calendar/RgPoolPresentationCalendar.tsx"),
-          ])
+            route(
+              ":id",
+              "./pages/Reservations/calendar/RgPoolPresentationCalendar.tsx"
+            ),
+          ]),
         ]),
         ...prefix("courses", [
           route(":id", "./pages/Reservations/ReservationList.tsx"),
         ]),
         ...prefix("teams", [
           route(":id", "./pages/Reservations/TeamReservationsList.tsx"),
-        ])
+        ]),
       ]),
 
       ...prefix("maintenance", [
         index("./pages/MaintenanceIntervals/index.tsx"),
-        route("/clusters/:id", "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"),
+        route(
+          "/clusters/:id",
+          "./pages/MaintenanceIntervals/ClusterIntervalList.tsx"
+        ),
         ...prefix("calendar", [
           index("./pages/MaintenanceIntervals/MaintenanceCalendar.tsx"),
-          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", { id: "id"}),
+          route(":id", "./pages/MaintenanceIntervals/MaintenanceCalendar.tsx", {
+            id: "id",
+          }),
         ]),
       ]),
     ]),

@@ -21,10 +21,7 @@ export const useResourceGroupPoolAvailability = (
         `/course/${id}/resource-group-pools/${resourceGroupPool}/availability`, { params: searchParams }
       );
       return response.data;
-    },
-    refetchInterval: 60000,
-    refetchOnWindowFocus: true,
-    staleTime: 30000,
+    }
   });
 
   return { resources: data, isLoading };

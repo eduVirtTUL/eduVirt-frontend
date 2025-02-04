@@ -13,7 +13,7 @@ const vnicProfiles = {
                     notInPool: "Nie w puli"
                 }
             },
-            searchPlaceholder: "Wyszukaj wpisując wartość",
+            free: "Czy dostępny",
             valid: {
                 title: "Zgodność",
                 compliance: "Pełna zgodność",
