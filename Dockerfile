@@ -2,6 +2,8 @@ FROM docker.io/node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+#https://github.com/nodejs/corepack/issues/612
+RUN corepack prepare pnpm@9.15.3 --activate
 COPY . /eduVirt
 WORKDIR /eduVirt
 
