@@ -192,7 +192,7 @@ const errorKeys = {
   "teacher.not.in.course": "The teacher is not assigned to the course",
   "course.no.teachers": "The course has no assigned teachers",
   "user.not.found": "User not found",
-  "user.not.authorized": "The user is not authorized",
+  "user.not.authorized": "This user cannot be a part of this operation.",
   "user.name.already.exists": "The username is already taken",
   "team.not.found": "Team not found",
   "team.not.found.in.course": "The team was not found in the course",

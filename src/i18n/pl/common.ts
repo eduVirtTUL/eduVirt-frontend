@@ -181,7 +181,7 @@ const errorKeys = {
   "teacher.not.in.course": "Nauczyciel nie jest przypisany do przedmiotu",
   "course.no.teachers": "Przedmiot nie posiada przypisanych nauczycieli",
   "user.not.found": "Nie znaleziono użytkownika",
-  "user.not.authorized": "Użytkownik nie ma uprawnień",
+  "user.not.authorized": "Ten użytkownik nie może być częścią wykonywanej operacji.",
   "user.name.already.exists": "Nazwa użytkownika jest już zajęta",
   "team.not.found": "Nie znaleziono zespołu",
   "team.not.found.in.course": "Nie znaleziono zespołu w przedmiocie",
