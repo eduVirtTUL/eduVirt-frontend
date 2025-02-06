@@ -33,5 +33,5 @@ export const useVmEvents = ({
     },
   });
 
-  return {events: data, isLoading};
+  return { events: data, isLoading };
 };

@@ -64,6 +64,7 @@ const general = {
     "optimistic.lock.exception": "Error occurred. Try once again!",
     "internal.server.error":
         "Some error occurred during processing of the request. Try again later.",
+
   },
 };
 
@@ -258,6 +259,14 @@ const pageTitles = {
   reservationStatistics: "Reservation statistics - eduVirt",
 };
 
+const loginNotFoundPage = {
+  title: "User not found in the oVirt system database",
+  description:
+    "eduVirt requires registration in the oVirt system. Use the link below to go to the login page. After logging into the oVirt system, return to eduVirt and try again.",
+  oVirtLogin: "Log in to the oVirt system",
+  goBackToLogin: "Go back to the login page",
+};
+
 export default {
   save: "Save",
   cancel: "Cancel",
@@ -277,6 +286,7 @@ export default {
   loginUsingSSO: "Login using oVirt SSO",
   menu,
   units,
+  loginNotFoundPage,
   general,
   errorKeys,
   languages,

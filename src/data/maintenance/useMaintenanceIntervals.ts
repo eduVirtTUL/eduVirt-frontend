@@ -26,13 +26,10 @@ export const useMaintenanceIntervals = ({
       sort.forEach((sortElement) => (searchParams.append("sort", sortElement)));
 
       const response = await privateAxios.get<PageDtoMaintenanceIntervalDto>(
-        `/maintenance-intervals`, { params: searchParams }
+        `/maintenance-intervals`, {params: searchParams}
       );
       return response.data.items ?? [];
-    },
-    refetchInterval: 60000,
-    refetchOnWindowFocus: true,
-    staleTime: 30000
+    }
   });
 
   return { intervals: data, isLoading };
