@@ -85,7 +85,7 @@ export type ErrorKey =
   | "pod.deletion.exception"
   | "team.deletion.exception"
   | "ovirt.vnic.profile.currently.in.use"
-  | "team.size.exception"
+  | "team.size.exception";
 
 export type ErrorResponse = {
   message: string;
@@ -105,12 +105,24 @@ privateAxios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    config.headers["X-Refresh-Token"] = localStorage.getItem("refreshToken");
   }
   return config;
 });
 
 privateAxios.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const token = response.headers["x-access-token"];
+    const refreshToken = response.headers["x-refresh-token"];
+    if (token) {
+      localStorage.setItem("token", token);
+    }
+    if (refreshToken) {
+      localStorage.setItem("refreshToken", refreshToken);
+    }
+
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       // localStorage.removeItem("token");

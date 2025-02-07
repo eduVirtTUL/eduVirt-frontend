@@ -14,7 +14,7 @@ const AuthGuard: React.FC = () => {
   const matches = useMatches();
   const lastMatch = matches.at(-1);
   const routeHandle = lastMatch?.handle as RouteHandle | undefined;
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("refreshToken");
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -24,6 +24,7 @@ const AuthGuard: React.FC = () => {
   const isExpired = Date.now() >= exp! * 1000;
   if (isExpired) {
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     return <Navigate to={"/"} />;
   }
 
