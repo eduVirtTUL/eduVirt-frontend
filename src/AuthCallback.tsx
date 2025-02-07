@@ -18,12 +18,21 @@ type TokenPayload = {
 } & JwtPayload;
 
 const AuthCallback: React.FC = () => {
-  const [cookies, , removeCookie] = useCookies(["access_token"]);
+  const [cookies, , removeCookie] = useCookies([
+    "access_token",
+    "refresh_token",
+  ]);
   const { set, changeActiveRole } = useUser();
 
   let token = cookies.access_token as string | undefined;
   if (!token) {
     token = localStorage.getItem("token") ?? undefined;
+  }
+
+  const refreshToken = cookies.refresh_token as string | undefined;
+  if (refreshToken) {
+    localStorage.setItem("refreshToken", refreshToken ?? "");
+    removeCookie("refresh_token");
   }
 
   React.useEffect(() => {
