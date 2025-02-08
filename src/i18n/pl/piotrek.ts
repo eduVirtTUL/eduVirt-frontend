@@ -99,7 +99,7 @@ const metrics = {
     name: 'Nazwa',
     nameDescription: 'Nazwa metryki musi być unikalna w skali wszystkich zdefniowanych metryk.',
     category: 'Kategoria',
-    categoryDescription: 'Kategoria metryki określa zakres możliwych do wyboru dla danej metryki jednostek miary.',
+    categoryDescription: 'Kategoria metryki określa zakres możliwych do wyboru jednostek miary.',
     select: 'Wybierz kategorię metryki',
     success: 'Nowa metryka została pomyślnie utworzona',
     error: 'Nowa metryka nie mogła zostać utworzona'
@@ -139,7 +139,7 @@ const clusterMetricValues = {
     name: 'Nazwa',
     nameDescription: 'Jest to nazwa metryki dla której definiowana będzie wartość',
     value: 'Wartość',
-    valueDescription: 'Wartość jednostki miary nie powinna przekraczać zasobów dostępnych w ramach klastra oVirt',
+    valueDescription: 'Wartość nie powinna przekraczać ilości dostępnych zasobów w ramach klastra oVirt',
     unit: 'Jednostka miary',
     unitDescription: 'Jednostka miary wskazująca na wielkość zdefiniowanej wartości metryki',
     select: {

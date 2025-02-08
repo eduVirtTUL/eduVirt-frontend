@@ -139,7 +139,7 @@ const clusterMetricValues = {
     name: 'Name',
     nameDescription: 'This is the name of the metric for which the value will be defined.',
     value: 'Value',
-    valueDescription: 'The unit value should not exceed the amount of resource available within the oVirt cluster.',
+    valueDescription: 'Value should not exceed the amount of resource available within the oVirt cluster.',
     unit: 'Unit of measurement',
     unitDescription: 'The measurement unit indicating the size of the defined metric value.',
     select: {

@@ -111,11 +111,13 @@ const CreateClusterMetricValueModal: React.FC<
   };
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    setSelectedCategory(undefined);
+    setAvailableUnits([]);
     close();
     form.reset();
     await createClusterMetricValueAsync({
       metricId: values.metricId!,
-      value: convertValue(selectedCategory!, values.value, values.unit)
+      value: convertValue(selectedCategory!, values.value, values.unit) ?? 0
     });
   });
 
@@ -229,6 +231,8 @@ const CreateClusterMetricValueModal: React.FC<
                 type="button"
                 variant="secondary"
                 onClick={() => {
+                  setSelectedCategory(undefined);
+                  setAvailableUnits([]);
                   form.reset();
                   close();
                 }}
