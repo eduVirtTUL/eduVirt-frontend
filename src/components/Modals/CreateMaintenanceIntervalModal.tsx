@@ -35,7 +35,7 @@ const createMaintenanceIntervalSchema = (t: TFunction) =>
   z.object({
     cause: z.string()
       .nonempty(t("maintenanceIntervals.validation.cause.required"))
-      .min(4, t("maintenanceIntervals.validation.cause.too.short"))
+      .min(8, t("maintenanceIntervals.validation.cause.too.short"))
       .max(128, t("maintenanceIntervals.validation.cause.too.long")),
     description: z.string()
       .max(256, t("maintenanceIntervals.validation.description.too.long"))
