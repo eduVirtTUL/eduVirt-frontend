@@ -141,11 +141,11 @@ export function BulkStatelessPodManager({
     const {courseResourceGroupPools: pools, isLoading: isLoadingPools} = useCourseResourceGroupPools(courseId);
 
     const teamsWithPodStatus = useMemo(() => {
-        if (!teams?.items || !statelessPods) return [];
-
+        if (!teams?.items) return [];
+    
         return teams.items.map(team => ({
             ...team,
-            hasPod: selectedPool ? statelessPods.some(
+            hasPod: selectedPool && statelessPods ? statelessPods.some(
                 pod => pod?.team?.id === team.id && pod.resourceGroupPool?.id === selectedPool
             ) : false
         }));
@@ -169,8 +169,8 @@ export function BulkStatelessPodManager({
     }, [selectedTeams, teamsWithPodStatus, selectedPool]);
 
     const filteredTeams = useMemo(() => {
-        if (!selectedPool) return [];
-
+        if (!selectedPool || !teamsWithPodStatus) return [];
+    
         return teamsWithPodStatus
             .filter(team => {
                 const searchMatch = search.toLowerCase() === '' ||
@@ -178,12 +178,12 @@ export function BulkStatelessPodManager({
                         (user.firstName + ' ' + user.lastName)?.toLowerCase().includes(search.toLowerCase()) ||
                         user.email?.toLowerCase().includes(search.toLowerCase())
                     );
-
+    
                 const podStatusMatch =
                     podFilter === 'all' ? true :
                         podFilter === 'withPod' ? team.hasPod :
                             !team.hasPod;
-
+    
                 return searchMatch && podStatusMatch;
             })
             .sort((a, b) => {
