@@ -10,7 +10,8 @@ export const useAddStudentToTeam = () => {
   const { mutateAsync: addStudentToTeam } = useMutation({
     mutationFn: async ({ teamId, email }: { teamId: string; email: string }) => {
       const response = await privateAxios.post<void>(
-        `/teams/${teamId}/add-student?email=${encodeURIComponent(email)}`
+        `/teams/${teamId}/add-student`,
+        { email }
       );
       return response.data;
     },
