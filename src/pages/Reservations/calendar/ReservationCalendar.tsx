@@ -53,7 +53,7 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
       const resourceTime = resource.time! + 'Z';
       const startTime = new Date(resourceTime);
       const timeVar = new Date(resourceTime);
-      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + 30));
+      const endTime = new Date(timeVar.setMinutes(timeVar.getMinutes() + (length ?? 15)));
 
       newEvents.push({
         start: startTime,
@@ -120,7 +120,8 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
     if (start < currentDate || end < currentDate) return false;
 
     const overlappingBackgroundEvents: EventInput[] = events.filter(
-      (event) => event.end! > start && event.start! < end && event.selectable !== null
+      (event) => event.end! > start && event.start! < end && event.selectable !== null &&
+          event.groupId !== 'MAINTENANCE_INTERVAL' && event.groupId !== 'RESERVATION'
     );
 
     for (const foundEvent of overlappingBackgroundEvents) {
